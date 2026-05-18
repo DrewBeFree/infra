@@ -1,5 +1,22 @@
 # Session Log
 
+## 2026-05-18 — Task 1: Audit & document directory structure + naming conventions
+
+**What we did:**
+- Scanned entire GitHub directory structure across all 7 categories (apps/, sites/, agents/, infra/, notes/, DrewBeFree/, _worktrees/)
+- Analyzed project patterns: 9 web apps, 3 sites, 1 agent, infra, backend
+- Documented directory structure templates for 4 project types (PWA, static site, Python, Docker)
+- Identified naming conventions: kebab-case projects, lowercase standard dirs, git branch patterns (main/dev/feat/fix/claude)
+- Created `STRUCTURE.md` — comprehensive reference documenting all standards
+
+**Where we stopped:**
+- Task 1 complete and committed
+
+**Next up:**
+- Task 2: Create project templates for apps and sites (blocked by Task 1 ✅ now unblocked)
+
+---
+
 ## 2026-05-18 — Infrastructure repo creation and backlog setup
 
 **What we did:**
