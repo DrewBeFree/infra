@@ -327,8 +327,83 @@ Feature roadmap for planned work:
 
 ---
 
+## Multi-Machine Setup: Clone Script & Manifest
+
+When setting up a new machine (or syncing with PowerEdge), use the provided clone tools to replicate the entire folder structure at once.
+
+### repos.json (Manifest)
+
+Lists all repositories with their GitHub URLs and target directories:
+
+```json
+{
+  "baseDirectory": "C:\\Users\\drewb\\Documents\\GitHub",
+  "repositories": [
+    {
+      "name": "daily-planner",
+      "github": "https://github.com/DrewBeFree/daily-planner.git",
+      "targetDirectory": "apps/daily-planner",
+      "type": "app"
+    },
+    ...
+  ]
+}
+```
+
+Edit `baseDirectory` and paths as needed for different systems.
+
+### clone-all.ps1 (Windows/PowerShell)
+
+**Usage:**
+```powershell
+# Clone all repos to the base directory (from repos.json)
+.\clone-all.ps1
+
+# Clone to a custom base directory
+.\clone-all.ps1 -BaseDirectory "D:\projects"
+
+# Dry run (preview what would happen)
+.\clone-all.ps1 -DryRun
+```
+
+**Behavior:**
+- Reads `repos.json` for repo list and target paths
+- Creates directories as needed
+- Clones each repo into its target directory
+- Skips repos that already exist
+- Reports success/skip/fail summary
+
+### clone-all.sh (Linux/macOS/Bash)
+
+**Usage:**
+```bash
+# Clone all repos to the base directory (from repos.json)
+./clone-all.sh
+
+# Clone to a custom base directory
+./clone-all.sh /custom/base/path
+```
+
+**Behavior:**
+- Same as PowerShell version
+- Uses `jq` to parse JSON manifest
+- Clones to specified base directory
+
+### Workflow for Multi-System Sync
+
+1. **Edit `repos.json`** — Update `baseDirectory` to match the target system
+2. **Run clone script** — Executes all clones to the correct folders
+3. **Result** — Complete folder structure replicated with all repos
+
+This enables quick sync when PowerEdge arrives (2026-06-02) — point the script at the new base directory and clone everything at once.
+
+---
+
 ## Related Documents
 
 - `alienware-vs-poweredge.md` — Workload split decision rule
 - `infrastructure-tools.md` — Tools reference for both systems
 - `INFRASTRUCTURE.md` — Strategic backlog and task list
+- `repos.json` — Manifest of all repositories and their target directories
+- `clone-all.ps1` — PowerShell clone script (Windows)
+- `clone-all.sh` — Bash clone script (Linux/macOS)
