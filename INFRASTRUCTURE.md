@@ -57,8 +57,9 @@ Reduce manual work for:
 - SESSION_LOG updates (project memory + repo)
 - App registry updates
 - Git commits and pushes
+- Backlog integration: export BACKLOG.md → HTML dashboard and/or Leantime/Monday.com sync
 
-Consider integrating with /logoff skill or creating helper scripts.
+Consider integrating with /logoff skill or creating helper scripts/automation.
 
 **Status:** Pending (blocked by Task 2)
 
