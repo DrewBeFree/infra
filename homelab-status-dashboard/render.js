@@ -86,6 +86,7 @@ function renderUpNext(upNext) {
     <div class="up-next-item">
       <span class="up-next-repo">${esc(task.repo)}</span>
       <span class="up-next-text">${esc(task.text)}</span>
+      ${task.remaining > 0 ? `<span class="up-next-more">+${task.remaining}</span>` : ''}
     </div>
   `).join('');
 }

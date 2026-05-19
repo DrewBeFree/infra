@@ -98,30 +98,31 @@ async function fetchAllBacklogs(repos) {
 }
 
 function getUpNext(backlogs) {
-  const upNext = [];
+  const TYPE_ORDER = ['infrastructure', 'app', 'site', 'agent'];
   const priority = ['In Progress', 'Blocked', 'Blocked / Ready', 'Ready'];
 
-  for (const backlog of backlogs) {
-    let found = false;
+  const sorted = [...backlogs].sort((a, b) => {
+    const ai = TYPE_ORDER.indexOf(a.type || 'app');
+    const bi = TYPE_ORDER.indexOf(b.type || 'app');
+    return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+  });
+
+  return sorted.map(backlog => {
+    const allOpen = Object.values(backlog.sections).flat().filter(t => !t.done);
+    let top = null;
+
     for (const heading of priority) {
-      if (found) break;
-      const tasks = backlog.sections[heading] || [];
-      const incomplete = tasks.filter(t => !t.done);
-      if (incomplete.length) {
-        upNext.push(incomplete[0]);
-        found = true;
-      }
+      const incomplete = (backlog.sections[heading] || []).filter(t => !t.done);
+      if (incomplete.length) { top = incomplete[0]; break; }
     }
-    if (!found) {
+    if (!top) {
       for (const tasks of Object.values(backlog.sections)) {
         const incomplete = tasks.filter(t => !t.done);
-        if (incomplete.length) {
-          upNext.push(incomplete[0]);
-          break;
-        }
+        if (incomplete.length) { top = incomplete[0]; break; }
       }
     }
-  }
 
-  return upNext;
+    if (!top) return null;
+    return { ...top, repo: backlog.repo, type: backlog.type, remaining: allOpen.length - 1 };
+  }).filter(Boolean);
 }
