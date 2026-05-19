@@ -1,5 +1,30 @@
 ﻿# Session Log
 
+## 2026-05-19 — Dashboard redesign + deploy to atlas
+
+**What we did:**
+- Verified dashboard was not deployed to atlas; fixed WSL SSH using Windows key
+- Merged infra dev → main and pushed to GitHub
+- Cloned infra repo on atlas; confirmed nginx already configured at /opt/homelab-status-dashboard
+- Redesigned dashboard with Pro Blue theme: Space Grotesk font, navy header, blue→purple→cyan gradient divider, white cards on light blue-gray bg
+- Added live indicator: pulsing dot (amber=fetching, green=live, red=error)
+- Added session timestamp support (YYYY-MM-DD HH:MM format) with same-day session stacking
+- Grouped backlog by type: Infrastructure / Apps / Sites / Agents
+- Added +N remaining badge to Up Next; infra sorted to top
+- Added hosting machine indicator (⬡ atlas) in header eyebrow
+- Added XSS-safe esc() helper in render.js
+
+**Where we stopped:**
+- Mobile browser may need hard refresh to pick up sort order change
+- `http://atlas` shortname not resolving on Windows (hosts file fix pending)
+
+**Next up:**
+- Verify mobile shows infra first after hard refresh
+- Add `100.71.165.80 atlas` to Windows hosts file for shortname access
+- Use `## YYYY-MM-DD HH:MM — context` format for all future session log entries
+
+---
+
 ## 2026-05-19 — homelab-status-dashboard build + housekeeping
 
 **What we did:**
