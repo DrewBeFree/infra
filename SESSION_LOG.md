@@ -1,5 +1,32 @@
 ﻿# Session Log
 
+## 2026-05-19 — homelab-status-dashboard build + housekeeping
+
+**What we did:**
+- Designed and built homelab-status-dashboard (data.js, render.js, index.html) inside infra repo
+- Wrote design spec and implementation plan to docs/superpowers/
+- Fixed UTF-8 decode bug and session log date parsing in data.js
+- Redesigned dashboard with Command Center-inspired dark aesthetic (single index.html)
+- Partially deployed to atlas — data loads, backlog accordion not expanding yet
+- Moved interactive-setup/ from infra/ to agents/interactive-setup/, inited as own git repo
+- Added interactive-setup to repos.json
+- Added 4 new backlog items (unified terminal, dashboard redesign, clone strategy, Docker strategy)
+
+**Where we stopped:**
+- infra dev branch not yet merged to main or pushed
+- interactive-setup not yet pushed to GitHub
+- Dashboard backlog accordion expand/collapse still broken
+- Dashboard redesign not fully verified on atlas
+
+**Next up:**
+- Fix backlog accordion expand/collapse
+- Verify redesigned index.html on atlas
+- Merge infra dev → main and push
+- Create interactive-setup GitHub repo and push
+- Tackle unified terminal / cross-machine access
+
+---
+
 ## 2026-05-18
 
 **What we did:**
