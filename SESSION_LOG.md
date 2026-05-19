@@ -1,5 +1,25 @@
 # Session Log
 
+## 2026-05-18 — Repository reorganization: Extract ai-dog-trainer from DrewBeFree
+
+**What we did:**
+- Created new `ai-dog-trainer` repository under `apps/`
+- Extracted dog trainer code from DrewBeFree: app.py, requirements.txt, static/, etc.
+- Initialized git repo locally and pushed to GitHub
+- Converted DrewBeFree to profile-only repository (GitHub profile README)
+- Updated `repos.json` to add ai-dog-trainer and remove DrewBeFree from cloning manifest
+- Result: cleaner organization with ai-dog-trainer as standalone app
+
+**Where we stopped:**
+- Repository reorganization complete
+- All repos committed and pushed
+- repos.json updated with new structure
+
+**Next up:**
+- Task 1 still in progress: update SESSION_LOG and close out
+
+---
+
 ## 2026-05-18 — Task 1: Audit & document directory structure + naming conventions
 
 **What we did:**
