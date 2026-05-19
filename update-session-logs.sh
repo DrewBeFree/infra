@@ -34,6 +34,12 @@ fi
 
 BASE_DIR=$(jq -r '.baseDirectory' "$MANIFEST" | sed 's|\\|/|g')
 
+# Convert Windows path to WSL path if needed
+if [[ "$BASE_DIR" =~ ^C: ]]; then
+    # C:/Users/... becomes /mnt/c/Users/...
+    BASE_DIR="/mnt/c/${BASE_DIR:3}"
+fi
+
 TODAY=$(date +%Y-%m-%d)
 REPOS=()
 

@@ -2,6 +2,7 @@
 # Clone all repositories to their target directories
 # Usage: ./clone-all.sh
 # Or:    ./clone-all.sh /custom/base/path
+# Supports both Windows and WSL paths
 
 set -e
 
@@ -16,6 +17,12 @@ fi
 # Use provided base directory or fallback to manifest default
 if [ -z "$1" ]; then
     BASE_DIR=$(jq -r '.baseDirectory' "$MANIFEST" | sed 's|\\|/|g')
+
+    # Convert Windows path to WSL path if needed
+    if [[ "$BASE_DIR" =~ ^C: ]]; then
+        # C:/Users/... becomes /mnt/c/Users/...
+        BASE_DIR="/mnt/c/${BASE_DIR:3}"
+    fi
 else
     BASE_DIR="$1"
 fi
