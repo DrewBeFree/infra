@@ -1,32 +1,14 @@
 # Clone all repositories to their target directories
-# Usage: .\clone-all.ps1
-# Or:    .\clone-all.ps1 -BaseDirectory "C:\custom\path"
+param([string]$BaseDirectory = $null, [switch]$DryRun = $false)
 
-param(
-    [string]$BaseDirectory = $null,
-    [switch]$DryRun = $false
-)
-
-# Load manifest
 $manifestPath = Join-Path $PSScriptRoot "repos.json"
-if (-not (Test-Path $manifestPath)) {
-    Write-Error "repos.json not found at $manifestPath"
-    exit 1
-}
+if (-not (Test-Path $manifestPath)) { Write-Error "repos.json not found"; exit 1 }
 
 $manifest = Get-Content $manifestPath | ConvertFrom-Json
-
-# Use provided base directory or fallback to manifest
-if (-not $BaseDirectory) {
-    $BaseDirectory = $manifest.baseDirectory
-}
+if (-not $BaseDirectory) { $BaseDirectory = $manifest.baseDirectory }
 
 Write-Host "Cloning repositories to: $BaseDirectory" -ForegroundColor Cyan
-Write-Host "Manifest: $manifestPath`n" -ForegroundColor Gray
-
-if ($DryRun) {
-    Write-Host "[DRY RUN MODE] No changes will be made`n" -ForegroundColor Yellow
-}
+if ($DryRun) { Write-Host "[DRY RUN MODE]`n" -ForegroundColor Yellow }
 
 $successCount = 0
 $skipCount = 0
@@ -37,54 +19,45 @@ foreach ($repo in $manifest.repositories) {
     $repoName = $repo.name
     $gitUrl = $repo.github
 
-    # Check if already cloned
     if (Test-Path $targetPath) {
-        Write-Host "⊘ $repoName" -ForegroundColor Gray
-        Write-Host "  Already exists at $targetPath" -ForegroundColor Gray
+        Write-Host "⊘ $repoName - Already exists" -ForegroundColor Gray
         $skipCount++
         continue
     }
 
-    # Create parent directory if needed
     $parentDir = Split-Path $targetPath -Parent
     if (-not (Test-Path $parentDir)) {
         if ($DryRun) {
-            Write-Host "  [DRY RUN] Would create directory: $parentDir"
+            Write-Host "  [DRY RUN] Would create: $parentDir" -ForegroundColor Yellow
         } else {
             New-Item -ItemType Directory -Path $parentDir -Force | Out-Null
         }
     }
 
-    # Clone repository
     Write-Host "→ $repoName" -ForegroundColor Cyan
-    Write-Host "  Cloning to: $targetPath" -ForegroundColor Gray
 
     if ($DryRun) {
-        Write-Host "  [DRY RUN] Would run: git clone $gitUrl $targetPath" -ForegroundColor Yellow
+        Write-Host "  Would clone to: $targetPath" -ForegroundColor Yellow
         $successCount++
     } else {
-        try {
-            Push-Location $parentDir
-            git clone $gitUrl (Split-Path $targetPath -Leaf) 2>&1 | Out-Null
-            Pop-Location
+        Push-Location $parentDir
+        git clone $gitUrl (Split-Path $targetPath -Leaf) 2>$null
+        $success = $?
+        Pop-Location
 
+        if ($success) {
             Write-Host "  ✓ Success" -ForegroundColor Green
             $successCount++
-        } catch {
-            Write-Host "  ✗ Failed: $_" -ForegroundColor Red
+        } else {
+            Write-Host "  ✗ Failed" -ForegroundColor Red
             $failCount++
         }
     }
-    Write-Host ""
 }
 
-# Summary
-Write-Host "────────────────────────────────" -ForegroundColor Gray
-Write-Host "Summary:" -ForegroundColor Cyan
-Write-Host "  ✓ Cloned: $successCount" -ForegroundColor Green
-Write-Host "  ⊘ Skipped: $skipCount" -ForegroundColor Gray
-Write-Host "  ✗ Failed: $failCount" -ForegroundColor Red
+Write-Host "`n────────────────────────" -ForegroundColor Gray
+Write-Host "✓ Cloned: $successCount" -ForegroundColor Green
+Write-Host "⊘ Skipped: $skipCount" -ForegroundColor Gray
+Write-Host "✗ Failed: $failCount" -ForegroundColor Red
 
-if ($failCount -gt 0) {
-    exit 1
-}
+if ($failCount -gt 0) { exit 1 }
