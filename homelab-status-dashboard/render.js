@@ -55,19 +55,22 @@ function renderBacklogAccordion(backlogs) {
       .flat()
       .filter(t => !t.done).length;
 
-    const sectionsHtml = ORDER
-      .filter(h => backlog.sections[h])
-      .map(h => {
-        const tasks = backlog.sections[h];
-        return `
-          <div class="bl-section">
-            <div class="bl-section-label">${h}</div>
-            <ul>
-              ${tasks.map(t => `<li class="${t.done ? 'done' : ''}">${t.text}</li>`).join('')}
-            </ul>
-          </div>
-        `;
-      }).join('');
+    const allHeadings = Object.keys(backlog.sections);
+    const ordered = [
+      ...ORDER.filter(h => backlog.sections[h]),
+      ...allHeadings.filter(h => !ORDER.includes(h))
+    ];
+    const sectionsHtml = ordered.map(h => {
+      const tasks = backlog.sections[h];
+      return `
+        <div class="bl-section">
+          <div class="bl-section-label">${h}</div>
+          <ul>
+            ${tasks.map(t => `<li class="${t.done ? 'done' : ''}">${t.text}</li>`).join('')}
+          </ul>
+        </div>
+      `;
+    }).join('');
 
     return `
       <details class="bl-repo">
