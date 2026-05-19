@@ -58,6 +58,28 @@ Strategic work to establish consistent structure, standards, and sync across sys
 
 ---
 
+- [ ] **Unified terminal / cross-machine access**
+  - Single window or tool to run commands across Alienware, atlas, and MacBook simultaneously
+  - Explore: tmux + SSH, Fabric/Ansible, or MCP SSH tools for Claude
+  - Goal: no more juggling 3 terminal windows
+
+- [ ] **Finish homelab-status-dashboard redesign**
+  - Complete Command Center-inspired single-page design
+  - Fix backlog accordion expand/collapse
+  - Deploy final version to atlas
+
+- [ ] **GitHub file structure + multi-machine clone strategy**
+  - Document which repos live where (private vs public, infra vs apps)
+  - Standardize how new machines clone the full repo set
+  - Integrate with clone-all scripts
+
+- [ ] **Docker strategy for homelab tools**
+  - Revisit whether status dashboard, Bob, and other tools should run in Docker on atlas
+  - Evaluate if Docker simplifies deployment, updates, and cross-machine access
+  - Set up Portainer on atlas first, then evaluate containerizing each tool
+
+---
+
 ## Notes
 
 - Task 1 is foundational; tasks 2, 3, 4 depend on completion
