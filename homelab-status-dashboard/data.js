@@ -23,31 +23,41 @@ async function fetchRepos() {
 
 async function fetchSessionLog() {
   const raw = await ghFetch(`${CONFIG.infraRepo}/contents/SESSION_LOG.md`);
-  if (!raw) return null;
+  if (!raw) return { today: [], fallback: null };
 
   const blocks = raw.split(/^## /m)
     .filter(b => b.trim())
     .filter(b => /^\d{4}-\d{2}-\d{2}/.test(b.trim()));
-  if (!blocks.length) return null;
 
-  const block = blocks[0];
-  const dateMatch = block.match(/^(\d{4}-\d{2}-\d{2}[^\n]*)/);
-  const date = dateMatch ? dateMatch[1].trim() : 'Unknown date';
+  function parseBlock(block) {
+    const firstLine = block.split('\n')[0].trim();
+    const dateMatch = firstLine.match(/^(\d{4}-\d{2}-\d{2})(?:\s+(\d{2}:\d{2}))?/);
+    if (!dateMatch) return null;
 
-  function extractSection(label) {
-    const re = new RegExp(`\\*\\*${label}\\*\\*([\\s\\S]*?)(?=\\*\\*|$)`);
-    const m = block.match(re);
-    if (!m) return [];
-    return m[1].split('\n')
-      .map(l => l.replace(/^[-*]\s*/, '').trim())
-      .filter(Boolean);
+    function extractSection(label) {
+      const re = new RegExp(`\\*\\*${label}\\*\\*([\\s\\S]*?)(?=\\*\\*|$)`);
+      const m = block.match(re);
+      if (!m) return [];
+      return m[1].split('\n')
+        .map(l => l.replace(/^[-*]\s*/, '').trim())
+        .filter(Boolean);
+    }
+
+    return {
+      date: dateMatch[1],
+      time: dateMatch[2] || null,
+      did:     extractSection('What we did:'),
+      stopped: extractSection('Where we stopped:'),
+      next:    extractSection('Next up:')
+    };
   }
 
+  const sessions = blocks.map(parseBlock).filter(Boolean);
+  const todayStr = new Date().toISOString().slice(0, 10);
+
   return {
-    date,
-    did: extractSection('What we did:'),
-    stopped: extractSection('Where we stopped:'),
-    next: extractSection('Next up:')
+    today:    sessions.filter(s => s.date === todayStr),
+    fallback: sessions.find(s => s.date !== todayStr) || null
   };
 }
 
@@ -76,7 +86,9 @@ async function fetchAllBacklogs(repos) {
     repos.map(async repo => {
       const raw = await ghFetch(`${repo.name}/contents/BACKLOG.md`);
       if (!raw) return null;
-      return parseBacklog(raw, repo.name);
+      const backlog = parseBacklog(raw, repo.name);
+      backlog.type = repo.type || 'app';
+      return backlog;
     })
   );
 
