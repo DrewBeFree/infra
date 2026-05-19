@@ -86,6 +86,12 @@
       "type": "agent"
     },
     {
+      "name": "interactive-setup",
+      "github": "https://github.com/DrewBeFree/interactive-setup.git",
+      "targetDirectory": "agents/interactive-setup",
+      "type": "agent"
+    },
+    {
       "name": "infra",
       "github": "https://github.com/DrewBeFree/infra.git",
       "targetDirectory": "infra",
