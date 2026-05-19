@@ -10,7 +10,8 @@ async function ghFetch(path) {
   });
   if (!res.ok) return null;
   const json = await res.json();
-  return atob(json.content.replace(/\n/g, ''));
+  const bytes = Uint8Array.from(atob(json.content.replace(/\n/g, '')), c => c.charCodeAt(0));
+  return new TextDecoder().decode(bytes);
 }
 
 async function fetchRepos() {
@@ -24,7 +25,9 @@ async function fetchSessionLog() {
   const raw = await ghFetch(`${CONFIG.infraRepo}/contents/SESSION_LOG.md`);
   if (!raw) return null;
 
-  const blocks = raw.split(/^## /m).filter(b => b.trim());
+  const blocks = raw.split(/^## /m)
+    .filter(b => b.trim())
+    .filter(b => /^\d{4}-\d{2}-\d{2}/.test(b.trim()));
   if (!blocks.length) return null;
 
   const block = blocks[0];
