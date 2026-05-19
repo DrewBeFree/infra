@@ -56,6 +56,12 @@
       "type": "app"
     },
     {
+      "name": "ai-dog-trainer",
+      "github": "https://github.com/DrewBeFree/ai-dog-trainer.git",
+      "targetDirectory": "apps/ai-dog-trainer",
+      "type": "app"
+    },
+    {
       "name": "dwebbsolutions",
       "github": "https://github.com/DrewBeFree/dwebbsolutions.git",
       "targetDirectory": "sites/dwebbsolutions",
@@ -78,12 +84,6 @@
       "github": "https://github.com/DrewBeFree/recap-agents.git",
       "targetDirectory": "agents/recap-agents",
       "type": "agent"
-    },
-    {
-      "name": "DrewBeFree",
-      "github": "https://github.com/DrewBeFree/DrewBeFree.git",
-      "targetDirectory": "DrewBeFree",
-      "type": "backend"
     },
     {
       "name": "infra",
