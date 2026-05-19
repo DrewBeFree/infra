@@ -25,6 +25,13 @@ Strategic work to establish consistent structure, standards, and sync across sys
 
 ## Blocked / Ready
 
+- [ ] **Cleanup — Remove hardcoded paths, use environment variables**
+  - Replace hardcoded `C:\Users\drewb\Documents\GitHub` with dynamic detection
+  - Use `repos.json` baseDirectory or environment variables
+  - Ensure all scripts work across Windows/Linux/macOS
+  - Applied to: clone-all scripts, session log updater, and future utilities
+  - **Status:** Ready; can be done in parallel
+
 - [ ] **Task 2 — Create project templates for apps and sites**
   - Build reusable templates for new app projects (structure, boilerplate, config files)
   - Build reusable templates for new site projects (structure, boilerplate, config files)
