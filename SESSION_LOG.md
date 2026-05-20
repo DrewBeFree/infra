@@ -1,5 +1,22 @@
 ﻿# Session Log
 
+## 2026-05-20 05:13 — Centralize Claude Code config in claude-config repo
+
+**What we did:**
+- Fixed Mac statusline rendering ANSI codes as literal text (switched to bash + `$'...'` syntax)
+- Added 5h/7d rate limit usage to statusline via `rate_limits.*.used_percentage`
+- Audited Claude config across Mac, Alienware Windows, Alienware WSL, and atlas — only Alienware Windows and atlas had full setups
+- Created `claude-config` private GitHub repo as single source of truth: shared CLAUDE.md, statusline, skills (logoff, log-session, update-atlas), commands (kybernet-prep, recap-agents), per-machine settings under machines/{mac,alienware-windows,alienware-wsl,atlas}
+- Deployed via setup.sh (Mac/WSL/atlas) and setup.ps1 (Windows) — all four use symlinks (Developer Mode on Windows)
+- Added SessionStart hook to all four machine configs to auto-pull on session start
+
+**Where we stopped:**
+- All four environments running off the repo, auto-pulling on startup
+- No open items
+
+**Next up:**
+- No pending work
+
 ## 2026-05-20 01:19 — Fix atlas dashboard deploy + session accordion
 
 **What we did:**
