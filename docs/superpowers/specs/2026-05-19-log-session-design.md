@@ -93,6 +93,28 @@ This keeps the output readable and confirms the skill ran completely.
 
 ---
 
+## How to Use
+
+**Non-app sessions** (config fixes, debugging, research, anything without version bumps):
+```
+/log-session
+```
+Run at the end of the conversation. That's it — summary is auto-generated and everything is pushed.
+
+**App development sessions:**
+```
+/logoff
+```
+Run as usual. `/logoff` handles version bumps, Command Center, and state.html, then calls `/log-session` automatically as its final step. No need to run both.
+
+**Mid-session checkpoint** (optional):
+```
+/log-session
+```
+Can be run at any point to capture progress so far — useful for long sessions where you want the atlas dashboard updated before the session ends.
+
+---
+
 ## Out of Scope
 
 - Auto-running at session end (hooks) — too hard to summarize context reliably
