@@ -1,5 +1,25 @@
 ﻿# Session Log
 
+## 2026-05-20 00:43 — WSL statusLine fix + log-session skill
+
+**What we did:**
+- Diagnosed why `/statusline` kept saying "not set up" — the statusline-setup skill checks `.zshrc` for PS1 and always gives a false negative; the real setup is a standalone bash script
+- Root cause: WSL uses `/home/drew/.claude/settings.json` (was missing `statusLine`); PowerShell uses `/mnt/c/Users/drewb/.claude/settings.json` (had it)
+- Fixed WSL statusLine by adding the config to `/home/drew/.claude/settings.json`
+- Saved memory so we never run statusline-setup again for this
+- Designed and built `/log-session` skill: auto-generates session entry, pushes to infra `SESSION_LOG.md` (atlas dashboard), memory log, and current project log
+- Updated `/logoff` skill to call `/log-session` as its final logging step
+- Updated `CLAUDE.md` logoff checklist to match (steps 6 & 7 collapsed into one)
+- Pushed infra repo (spec, plan, this entry)
+
+**Where we stopped:**
+- `/log-session` skill is live but requires a new Claude Code session to be discoverable
+
+**Next up:**
+- Open a new session and run `/log-session` to confirm it shows up on atlas
+
+---
+
 ## 2026-05-19 — Dashboard redesign + deploy to atlas
 
 **What we did:**
