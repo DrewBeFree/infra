@@ -96,6 +96,12 @@
       "github": "https://github.com/DrewBeFree/infra.git",
       "targetDirectory": "infra",
       "type": "infrastructure"
+    },
+    {
+      "name": "claude-config",
+      "github": "https://github.com/DrewBeFree/claude-config.git",
+      "targetDirectory": "claude-config",
+      "type": "infrastructure"
     }
   ]
 }

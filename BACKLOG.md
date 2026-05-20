@@ -6,6 +6,17 @@ Strategic work to establish consistent structure, standards, and sync across sys
 
 ## Completed
 
+- [x] **Centralize Claude Code config in `claude-config` repo** (2026-05-20)
+  - Created private GitHub repo `DrewBeFree/claude-config` as single source of truth
+  - Shared: CLAUDE.md, statusline-command.sh, skills (logoff, log-session, update-atlas), commands (kybernet-prep, recap-agents)
+  - Per-machine settings under machines/{mac,alienware-windows,alienware-wsl,atlas}
+  - Deployed to all 4 environments (Mac, Alienware Windows, Alienware WSL, atlas) using symlinks
+  - Added SessionStart hook to auto-pull on every session start — no manual updates needed
+
+- [x] **Test `/log-session` skill in a fresh Claude Code session** (2026-05-20)
+  - Verified entry prepends to infra SESSION_LOG.md and pushes via SSH from atlas
+  - Confirmed dashboard renders new session block correctly
+
 - [x] **Task 1 — Audit and document directory structure + naming conventions** (2026-05-18)
   - Created STRUCTURE.md with comprehensive standards
   - Created repos.json manifest (15 repos, 14 cloneable)
@@ -15,10 +26,6 @@ Strategic work to establish consistent structure, standards, and sync across sys
 ---
 
 ## In Progress
-
-- [ ] **Test `/log-session` skill in a fresh Claude Code session**
-  - Open new session, run `/log-session`, confirm entry appears on atlas dashboard
-  - Verify `/logoff` calls it correctly at end of an app dev session
 
 - [ ] **WSL Setup — Move infrastructure work to WSL**
   - Set up WSL development environment
