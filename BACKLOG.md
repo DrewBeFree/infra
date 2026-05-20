@@ -16,14 +16,14 @@ Strategic work to establish consistent structure, standards, and sync across sys
 
 ## In Progress
 
+- [ ] **Test `/log-session` skill in a fresh Claude Code session**
+  - Open new session, run `/log-session`, confirm entry appears on atlas dashboard
+  - Verify `/logoff` calls it correctly at end of an app dev session
+
 - [ ] **WSL Setup — Move infrastructure work to WSL**
   - Set up WSL development environment
   - Test clone scripts in WSL bash
   - Avoid PowerShell encoding issues for future work
-
-- [ ] **Test `/log-session` skill in a fresh Claude Code session**
-  - Open new session, run `/log-session`, confirm entry appears on atlas dashboard
-  - Verify `/logoff` calls it correctly at end of an app dev session
 
 ---
 
