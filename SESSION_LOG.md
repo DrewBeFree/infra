@@ -1,5 +1,25 @@
 ﻿# Session Log
 
+## 2026-05-20 01:19 — Fix atlas dashboard deploy + session accordion
+
+**What we did:**
+- Diagnosed /update-atlas failure: deploy.sh was pointing to /opt/homelab-status-dashboard which wasn't a git repo; infra repo lives at ~/infra on atlas
+- Fixed deploy.sh to git pull from ~/infra, then rsync files to /opt/homelab-status-dashboard (where nginx serves from)
+- Diagnosed session accordion not showing older entries: browser had cached old data.js which returned `fallback` (single session) instead of `previous` (array)
+- Traced the root cause: nginx config was never actually updated (sed command didn't save), so /opt was still being served
+- Restored config.js to /opt after rsync wiped it; added explicit cp to deploy.sh so config.js is always preserved
+- Committed and pushed all deploy.sh fixes to infra main
+
+**Where we stopped:**
+- Dashboard accordion now working; deploy pipeline fully functional
+- deploy.sh: git pull → rsync → cp config.js
+
+**Next up:**
+- Verify /update-atlas end-to-end in next session
+- Consider using sudo to point nginx root directly at ~/infra/homelab-status-dashboard to eliminate the rsync step
+
+---
+
 ## 2026-05-20 00:43 — WSL statusLine fix + log-session skill
 
 **What we did:**
