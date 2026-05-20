@@ -69,6 +69,12 @@ Strategic work to establish consistent structure, standards, and sync across sys
 
 ---
 
+- [ ] **Research project metrics + visualization approach**
+  - Decide what project-level metrics actually matter (commit activity, deploy frequency, task completion rate, time-to-ship, etc.)
+  - Evaluate options: extend current dashboard with Chart.js, GitHub Insights, Grafana (with GitHub plugin or scripted ingest), or other
+  - Grafana is great for time-series infra metrics but awkward for event/context-rich project data — confirm or refute with a small experiment
+  - Pick the tool and ship a first visual
+
 - [ ] **Unified terminal / cross-machine access**
   - Single window or tool to run commands across Alienware, atlas, and MacBook simultaneously
   - Explore: tmux + SSH, Fabric/Ansible, or MCP SSH tools for Claude
