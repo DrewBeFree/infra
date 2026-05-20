@@ -57,7 +57,7 @@ async function fetchSessionLog() {
 
   return {
     today:    sessions.filter(s => s.date === todayStr),
-    fallback: sessions.find(s => s.date !== todayStr) || null
+    previous: sessions.filter(s => s.date !== todayStr)
   };
 }
 

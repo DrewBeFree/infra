@@ -21,6 +21,10 @@ Strategic work to establish consistent structure, standards, and sync across sys
   - Test clone scripts in WSL bash
   - Avoid PowerShell encoding issues for future work
 
+- [ ] **Test `/log-session` skill in a fresh Claude Code session**
+  - Open new session, run `/log-session`, confirm entry appears on atlas dashboard
+  - Verify `/logoff` calls it correctly at end of an app dev session
+
 ---
 
 ## Blocked / Ready
@@ -50,7 +54,7 @@ Strategic work to establish consistent structure, standards, and sync across sys
 - [ ] **Task 4 — Automate recurring tasks: logoff checklist, version management, updates**
   - Reduce manual work for version bumping (patch/minor/major)
   - Automate Command Center card updates
-  - Automate SESSION_LOG updates (project memory + repo)
+  - ~~Automate SESSION_LOG updates (project memory + repo)~~ ✓ done via `/log-session` skill
   - Automate app registry updates
   - Automate git commits and pushes
   - Backlog integration: export BACKLOG.md → HTML dashboard and/or Leantime/Monday.com sync

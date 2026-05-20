@@ -29,9 +29,9 @@ function renderHeader(lastFetched) {
     lastFetched.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
 
-function renderLastSession({ today, fallback }) {
+function renderLastSession({ today, previous }) {
   const el = document.getElementById('last-session');
-  const sessions = today.length ? today : (fallback ? [fallback] : []);
+  const sessions = [...(today || []), ...(previous || [])];
 
   if (!sessions.length) {
     el.innerHTML = '<p class="empty">No session log found.</p>';
