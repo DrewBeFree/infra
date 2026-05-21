@@ -1,5 +1,30 @@
 ﻿# Session Log
 
+## 2026-05-20 20:42 — answering-agent ingestion pipeline + deploy
+
+**What we did:**
+- Wrote gmail_poller.py: polls Gmail every 60s for GV voicemail emails, parses caller number/name and transcript, calls process_voicemail() directly
+- Fixed orchestrator validate_agent_output: handle None draft_sms gracefully
+- Fixed process_email: mark_read in finally block so it always fires on error
+- Updated Gmail query to in:anywhere (GV emails were landing in Trash due to a filter)
+- Fixed caller name parsing: handles "New voicemail from Bob Smith" format (contact name) in addition to phone number format
+- Deployed answering-poller as user systemd service on atlas (100.71.165.80) with linger enabled — always-on
+- Moved ui/ to docs/ for GitHub Pages; added CNAME for answer.kybernet.tech
+- Enabled GitHub Pages on private repo (GitHub Pro); UI is live at answer.kybernet.tech
+- Opened GitHub Issues #1–7 with semantic version milestones (0.2.0, 0.3.0, 1.0.0)
+- Added Slack notification (Bob webhook) when a draft is ready — fires after draft written to Supabase
+- Tested full end-to-end: real voicemail from friend → Gmail → atlas poller → Claude → Supabase → UI → Slack notification
+
+**Where we stopped:**
+- Issue #1 (Slack notifications) complete and deployed
+- Issue #2 (Google Calendar real free/busy) is next in 0.2.0 milestone
+- Atlas deploy is still rsync-based (Issue #3 auto-deploy not done yet)
+
+**Next up:**
+- #2: Wire real Google Calendar free/busy into compute_candidate_slots()
+- #3: Auto-deploy on atlas (git clone + webhook or cron pull)
+- #4: 72h no-response escalation cron
+
 ## 2026-05-20 01:19 — Fix atlas dashboard deploy + session accordion
 
 **What we did:**
