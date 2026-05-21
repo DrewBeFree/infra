@@ -1,5 +1,25 @@
 ﻿# Session Log
 
+## 2026-05-20 22:29 — Twilio path C backlog + Slack notification
+
+**What we did:**
+- Added Slack notification to orchestrator (fires after draft created, uses Bob webhook)
+- Deployed notification to atlas via rsync + systemd restart
+- Decided to replace Google Voice + Gmail poller with Twilio end-to-end (Path C)
+- Opened GitHub Issues #9 (Cloudflare Tunnel), #10 (Twilio inbound TwiML), #11 (Twilio outbound click-to-send), all assigned to 0.2.0 milestone
+- User signed up for Twilio, has live credentials (SID + Auth Token), chose a Twilio number over porting GV
+
+**Where we stopped:**
+- Issue #1 (Slack notifications) shipped
+- Twilio credentials in hand, no number purchased yet
+- Issues #9–11 written and ready for next session
+
+**Next up:**
+- #9: Install cloudflared on atlas, create tunnel for api.kybernet.tech
+- #10: Add /twilio/voice and /twilio/recording endpoints to app.py
+- #11: Add /send endpoint + update UI Send button to call it
+- User to buy a Twilio number before next session
+
 ## 2026-05-20 20:42 — answering-agent ingestion pipeline + deploy
 
 **What we did:**
