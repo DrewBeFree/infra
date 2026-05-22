@@ -24,6 +24,10 @@ nav:
       - Tools: infrastructure/tools.md
       - Services: infrastructure/services.md
   - Projects: projects/index.md
+  - Agents & Skills:
+      - Overview: agents-and-skills/index.md
+      - Agents: agents-and-skills/agents.md
+      - Skills: agents-and-skills/skills.md
   - Workflows:
       - Overview: workflows/index.md
       - Conventions: workflows/conventions.md
