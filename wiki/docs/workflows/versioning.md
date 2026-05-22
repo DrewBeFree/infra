@@ -4,15 +4,22 @@ How version numbers are managed and propagated across the ecosystem.
 
 ## Version Format
 
-In the Command Center `card-meta`: `v{major}.{minor} · YYYY-MM-DD`
+`v{major}.{minor}.{patch} · YYYY-MM-DD`
+
+Three components: **Major Feature . Minor Feature . Bug/Hotfix**
+
+Example: `v1.5.2 · 2026-05-22`
 
 ## Rules
 
-| Change type | Version bump |
-| --- | --- |
-| Bug fix | Increment minor (v0.1 → v0.2) |
-| New feature | Increment minor (v0.1 → v0.2) or major if significant |
-| Command Center only | No bump needed |
+| Change type | Bump | Example |
+| --- | --- | --- |
+| Bug fix / hotfix | Patch (third number) | v1.5.2 → v1.5.3 |
+| Minor feature | Minor (second number) | v1.5.2 → v1.6.0 |
+| Major feature | Major (first number) | v1.5.2 → v2.0.0 |
+| Command Center only | No bump needed | — |
+
+Always update the date to today's date.
 
 Always update the date to today's date.
 
@@ -32,7 +39,7 @@ When committing changes to any app repo, also update the corresponding card in t
 ### What to Update
 
 1. **`card-meta`** — version string + date in the card element
-2. **Terminal scan line** — the `scan ./apps` line in the `.terminal` div must match card versions exactly (e.g. `linksy v0.2`)
+2. **Terminal scan line** — the `scan ./apps` line in the `.terminal` div must match card versions exactly (e.g. `linksy v0.2.2`)
 3. **`state.html`** — update version + date for the same app row
 
 ## Propagation Checklist
