@@ -115,3 +115,40 @@ def test_read_description_no_readme_returns_empty(tmp_path):
 def test_github_web_url_strips_dot_git():
     assert gen_catalog.github_web_url("https://github.com/DrewBeFree/golf.git") == "https://github.com/DrewBeFree/golf"
     assert gen_catalog.github_web_url(None) is None
+
+
+def test_enrich_mapped_repo_pulls_card_data(tmp_path):
+    repo_dir = _make_repo(tmp_path, "apps", "golf")
+    (repo_dir / "README.md").write_text("# Golf\n\nReadme desc.\n", encoding="utf-8")
+    repos = gen_catalog.scan_repos(tmp_path)
+    manifest = {"golf": {"github": "https://github.com/DrewBeFree/golf.git", "type": "app"}}
+    cards = {"APP_003": {"display_name": "LINKSY", "url": "linksy.drewbefree.com",
+                         "description": "Card desc.", "version": "0.2.2",
+                         "date": "2026-05-10", "status": "active"}}
+    card_map = {"golf": "APP_003"}
+
+    out = gen_catalog.enrich(repos, manifest, cards, card_map, tmp_path)
+    golf = next(p for p in out if p["name"] == "golf")
+
+    assert golf["display_name"] == "LINKSY"
+    assert golf["version"] == "0.2.2"
+    assert golf["status"] == "active"
+    assert golf["github"] == "https://github.com/DrewBeFree/golf.git"
+    assert golf["in_manifest"] is True
+    assert golf["description"] == "Card desc."  # card wins over README
+
+
+def test_enrich_unmapped_repo_falls_back(tmp_path):
+    repo_dir = _make_repo(tmp_path, "agents", "bob")
+    (repo_dir / "README.md").write_text("# Bob\n\nA Discord bot.\n", encoding="utf-8")
+    repos = gen_catalog.scan_repos(tmp_path)
+
+    out = gen_catalog.enrich(repos, {}, {}, {}, tmp_path)
+    bob = next(p for p in out if p["name"] == "bob")
+
+    assert bob["display_name"] == "bob"
+    assert bob["version"] is None
+    assert bob["status"] is None
+    assert bob["github"] is None
+    assert bob["in_manifest"] is False
+    assert bob["description"] == "A Discord bot."

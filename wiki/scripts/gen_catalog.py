@@ -85,3 +85,25 @@ def github_web_url(clone_url: str | None) -> str | None:
     if not clone_url:
         return None
     return clone_url[:-4] if clone_url.endswith(".git") else clone_url
+
+
+def enrich(repos: list[dict], manifest: dict, cards: dict, card_map: dict, base_dir: Path) -> list[dict]:
+    enriched = []
+    for repo in repos:
+        name = repo["name"]
+        m = manifest.get(name, {})
+        card_id = card_map.get(name)
+        card = cards.get(card_id, {}) if card_id else {}
+        description = card.get("description") or read_description(base_dir / repo["path"]) or "No description."
+        enriched.append({
+            **repo,
+            "github": m.get("github"),
+            "in_manifest": name in manifest,
+            "display_name": card.get("display_name") or name,
+            "version": card.get("version"),
+            "date": card.get("date"),
+            "status": card.get("status"),
+            "url": card.get("url"),
+            "description": description,
+        })
+    return enriched
