@@ -95,6 +95,14 @@ Strategic work to establish consistent structure, standards, and sync across sys
   - Evaluate if Docker simplifies deployment, updates, and cross-machine access
   - Set up Portainer on atlas first, then evaluate containerizing each tool
 
+- [ ] **Wiki — Make all URLs clickable**
+  - Live URLs, GitHub links, and local service addresses in project pages should all be hyperlinked
+  - Check infrastructure/services.md and project pages for plain-text URLs
+
+- [ ] **Wiki — Upgrade UI**
+  - Custom MkDocs Material theme overrides (colors, fonts, card layout)
+  - Consider custom CSS for project pages (icon + metadata side-by-side, manual in expandable section)
+
 ---
 
 ## Notes
