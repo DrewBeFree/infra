@@ -83,6 +83,13 @@ def read_description(repo_path: Path) -> str:
     return ""
 
 
+def read_manual(repo_path: Path) -> str:
+    manual = repo_path / "MANUAL.md"
+    if not manual.is_file():
+        return ""
+    return manual.read_text(encoding="utf-8").strip()
+
+
 def github_web_url(clone_url: str | None) -> str | None:
     if not clone_url:
         return None
@@ -108,6 +115,7 @@ def enrich(repos: list[dict], manifest: dict, cards: dict, card_map: dict, type_
             "status": card.get("status"),
             "url": card.get("url"),
             "description": description,
+            "manual": read_manual(base_dir / repo["path"]),
         })
     return enriched
 
@@ -164,6 +172,9 @@ def render_project_page(p: dict) -> str:
         lines.append(f"| Repo | {web} |")
     lines.append(f"| Local path | `{p['path']}` |")
     lines.append("")
+    if p.get("manual"):
+        lines.append(p["manual"])
+        lines.append("")
     return "\n".join(lines)
 
 
