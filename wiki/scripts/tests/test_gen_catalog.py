@@ -168,3 +168,38 @@ def test_detect_drift_reports_both_directions(tmp_path):
     assert "bob" in joined
     assert "ghost" in joined
     assert "infra" not in joined
+
+
+def _sample_project(**over):
+    base = {"name": "golf", "type": "app", "path": "apps/golf",
+            "github": "https://github.com/DrewBeFree/golf.git", "in_manifest": True,
+            "display_name": "LINKSY", "version": "0.2.2", "date": "2026-05-10",
+            "status": "active", "url": "linksy.drewbefree.com", "description": "Wager tracker."}
+    base.update(over)
+    return base
+
+
+def test_render_index_has_row_and_link(tmp_path):
+    md = gen_catalog.render_index([_sample_project()])
+
+    assert "| Project | Type | Version | Status | Repo |" in md
+    assert "[LINKSY](golf.md)" in md
+    assert "v0.2.2" in md
+    assert "https://github.com/DrewBeFree/golf" in md
+
+
+def test_render_index_blank_fields_use_dash():
+    md = gen_catalog.render_index([_sample_project(version=None, status=None, github=None)])
+
+    assert "| — |" in md  # at least one em-dash cell
+
+
+def test_render_project_page_includes_fields():
+    md = gen_catalog.render_project_page(_sample_project())
+
+    assert md.startswith("# LINKSY")
+    assert "Wager tracker." in md
+    assert "v0.2.2" in md
+    assert "linksy.drewbefree.com" in md
+    assert "`apps/golf`" in md
+    assert "https://github.com/DrewBeFree/golf" in md
