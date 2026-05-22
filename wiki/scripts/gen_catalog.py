@@ -161,3 +161,33 @@ def render_project_page(p: dict) -> str:
     lines.append(f"| Local path | `{p['path']}` |")
     lines.append("")
     return "\n".join(lines)
+
+
+def main(base_dir=None, output_dir=None, repos_json=None, command_center=None, card_map_path=None):
+    script_dir = Path(__file__).resolve().parent          # infra/wiki/scripts
+    base_dir = Path(base_dir) if base_dir else script_dir.parents[2]  # GitHub root
+    output_dir = Path(output_dir) if output_dir else script_dir.parent / "docs" / "projects"
+    repos_json = Path(repos_json) if repos_json else base_dir / "infra" / "repos.json"
+    command_center = Path(command_center) if command_center else base_dir / "apps" / "drewbefree-command-center" / "index.html"
+    card_map_path = Path(card_map_path) if card_map_path else script_dir / "card_map.json"
+
+    repos = scan_repos(base_dir)
+    manifest = load_manifest(repos_json)
+    cards = parse_command_center(command_center)
+    card_map = load_card_map(card_map_path)
+    projects = enrich(repos, manifest, cards, card_map, base_dir)
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    for old in output_dir.glob("*.md"):
+        old.unlink()
+    (output_dir / "index.md").write_text(render_index(projects), encoding="utf-8")
+    for p in projects:
+        (output_dir / f"{p['name']}.md").write_text(render_project_page(p), encoding="utf-8")
+
+    for w in detect_drift(repos, manifest, base_dir):
+        print(f"  [drift] {w}", file=sys.stderr)
+    print(f"Generated {len(projects)} project pages in {output_dir}")
+
+
+if __name__ == "__main__":
+    main()

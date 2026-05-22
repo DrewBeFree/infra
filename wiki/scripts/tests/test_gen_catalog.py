@@ -203,3 +203,23 @@ def test_render_project_page_includes_fields():
     assert "linksy.drewbefree.com" in md
     assert "`apps/golf`" in md
     assert "https://github.com/DrewBeFree/golf" in md
+
+
+def test_main_writes_index_and_pages(tmp_path, capsys):
+    repo_dir = _make_repo(tmp_path, "agents", "bob")
+    (repo_dir / "README.md").write_text("# Bob\n\nA Discord bot.\n", encoding="utf-8")
+    out_dir = tmp_path / "out"
+
+    gen_catalog.main(
+        base_dir=tmp_path,
+        output_dir=out_dir,
+        repos_json=tmp_path / "infra" / "repos.json",
+        command_center=tmp_path / "cc.html",
+        card_map_path=tmp_path / "card_map.json",
+    )
+
+    index = (out_dir / "index.md").read_text(encoding="utf-8")
+    page = (out_dir / "bob.md").read_text(encoding="utf-8")
+    assert "[bob](bob.md)" in index
+    assert "A Discord bot." in page
+    assert "missing from repos.json: bob" in capsys.readouterr().err
