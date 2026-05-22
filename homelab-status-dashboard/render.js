@@ -57,19 +57,62 @@ function renderLastSession({ today, previous }) {
     `;
   }
 
-  const [latest, ...rest] = sessions;
-  const dateLabel = latest.time ? `${esc(latest.date)} · ${esc(latest.time)}` : esc(latest.date);
+  // Group sessions by date
+  const byDate = {};
+  sessions.forEach(s => {
+    if (!byDate[s.date]) byDate[s.date] = [];
+    byDate[s.date].push(s);
+  });
 
-  let html = `<div class="session-date">${dateLabel}</div>${sessionBody(latest)}`;
+  const dates = Object.keys(byDate).sort().reverse();
+  const [latestDate, ...olderDates] = dates;
+  const latestSessions = byDate[latestDate];
 
-  for (const s of rest) {
-    const label = s.time ? `${esc(s.date)} · ${esc(s.time)}` : esc(s.date);
+  // Render latest date (expanded)
+  let html = `<div class="session-date">${esc(latestDate)}</div>`;
+
+  // If multiple sessions on latest date, show latest first, others collapsible
+  if (latestSessions.length === 1) {
+    html += sessionBody(latestSessions[0]);
+  } else {
+    const [latest, ...sameDayRest] = latestSessions;
+    html += sessionBody(latest);
+
+    for (const s of sameDayRest) {
+      const timeLabel = s.time ? `${esc(s.time)}` : 'Earlier';
+      html += `
+        <details class="session-older">
+          <summary>${timeLabel}</summary>
+          ${sessionBody(s)}
+        </details>
+      `;
+    }
+  }
+
+  // Render older dates (collapsed)
+  for (const date of olderDates) {
+    const dateSessions = byDate[date];
     html += `
       <details class="session-older">
-        <summary>${label}</summary>
-        ${sessionBody(s)}
-      </details>
+        <summary>${esc(date)}</summary>
     `;
+
+    if (dateSessions.length === 1) {
+      html += sessionBody(dateSessions[0]);
+    } else {
+      // Multiple sessions on this date - show each with time label
+      for (const s of dateSessions) {
+        const timeLabel = s.time ? `${esc(s.time)}` : 'No time';
+        html += `
+          <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border);">
+            <div style="font-size: 0.7rem; font-weight: 600; color: var(--text-mid); margin-bottom: 8px;">${timeLabel}</div>
+            ${sessionBody(s)}
+          </div>
+        `;
+      }
+    }
+
+    html += '</details>';
   }
 
   el.innerHTML = html;
