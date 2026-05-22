@@ -21,3 +21,16 @@ def scan_repos(base_dir: Path) -> list[dict]:
             if (child / ".git").exists():
                 repos.append({"name": child.name, "type": type_, "path": f"{sub}/{child.name}"})
     return repos
+
+
+def load_manifest(repos_json_path: Path) -> dict:
+    if not repos_json_path.is_file():
+        return {}
+    data = json.loads(repos_json_path.read_text(encoding="utf-8"))
+    return {r["name"]: r for r in data.get("repositories", [])}
+
+
+def load_card_map(card_map_path: Path) -> dict:
+    if not card_map_path.is_file():
+        return {}
+    return json.loads(card_map_path.read_text(encoding="utf-8"))
