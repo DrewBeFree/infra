@@ -42,15 +42,20 @@ def test_load_manifest_missing_file_returns_empty(tmp_path):
 
 def test_load_card_map(tmp_path):
     p = tmp_path / "card_map.json"
-    p.write_text(json.dumps({"golf": "APP_003", "_type_overrides": {"recap-viewer": "site"}}), encoding="utf-8")
+    p.write_text(json.dumps({
+        "golf": "APP_003",
+        "_type_overrides": {"recap-viewer": "site"},
+        "_icon_slugs": {"golf": "linksy"},
+    }), encoding="utf-8")
 
-    card_map, overrides = gen_catalog.load_card_map(p)
+    card_map, overrides, icon_slugs = gen_catalog.load_card_map(p)
     assert card_map == {"golf": "APP_003"}
     assert overrides == {"recap-viewer": "site"}
+    assert icon_slugs == {"golf": "linksy"}
 
 
 def test_load_card_map_missing_file_returns_empty(tmp_path):
-    assert gen_catalog.load_card_map(tmp_path / "nope.json") == ({}, {})
+    assert gen_catalog.load_card_map(tmp_path / "nope.json") == ({}, {}, {})
 
 
 CARD_HTML = """
@@ -129,7 +134,7 @@ def test_enrich_mapped_repo_pulls_card_data(tmp_path):
                          "date": "2026-05-10", "status": "active"}}
     card_map = {"golf": "APP_003"}
 
-    out = gen_catalog.enrich(repos, manifest, cards, card_map, {}, tmp_path)
+    out = gen_catalog.enrich(repos, manifest, cards, card_map, {}, {}, tmp_path)
     golf = next(p for p in out if p["name"] == "golf")
 
     assert golf["display_name"] == "LINKSY"
@@ -145,7 +150,7 @@ def test_enrich_unmapped_repo_falls_back(tmp_path):
     (repo_dir / "README.md").write_text("# Bob\n\nA Discord bot.\n", encoding="utf-8")
     repos = gen_catalog.scan_repos(tmp_path)
 
-    out = gen_catalog.enrich(repos, {}, {}, {}, {}, tmp_path)
+    out = gen_catalog.enrich(repos, {}, {}, {}, {}, {}, tmp_path)
     bob = next(p for p in out if p["name"] == "bob")
 
     assert bob["display_name"] == "bob"
@@ -184,7 +189,8 @@ def _sample_project(**over):
 def test_render_index_has_row_and_link(tmp_path):
     md = gen_catalog.render_index([_sample_project()])
 
-    assert "| Project | Type | Version | Status | Repo |" in md
+    assert "## Apps" in md
+    assert "| Project | Version | Status | Repo |" in md
     assert "[LINKSY](golf.md)" in md
     assert "v0.2.2" in md
     assert "https://github.com/DrewBeFree/golf" in md

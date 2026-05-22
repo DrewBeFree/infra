@@ -1,5 +1,7 @@
 # KYBERNET
 
+![KYBERNET](https://kybernet.tech/icons/kybernet-tech-192.png)
+
 `kybernet-tech`
 
 Ubiquiti UniFi network design & installation. Whole-property coverage, business-grade Wi-Fi — installed once, owned by you forever. Zero monthly fees.

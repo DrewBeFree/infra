@@ -1,5 +1,7 @@
 # LINKSY
 
+![LINKSY](https://linksy.drewbefree.com/icons/linksy-192.png)
+
 `golf`
 
 Live wager tracker for casual golf rounds. Skins with carryovers, birdies, sandies, greenies, and per-hole multipliers. Host controls, public leaderboard.

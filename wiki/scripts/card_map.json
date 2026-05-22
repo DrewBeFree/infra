@@ -12,5 +12,12 @@
   "photography": "SITE_004",
   "_type_overrides": {
     "recap-viewer": "site"
+  },
+  "_icon_slugs": {
+    "golf": "linksy",
+    "uhaul-load-planner": "uhaul",
+    "daily-planner": "planner",
+    "rv-maintenance": "rv",
+    "soccer-pickup": "soccer"
   }
 }

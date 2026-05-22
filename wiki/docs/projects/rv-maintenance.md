@@ -1,5 +1,7 @@
 # RV MAINTENANCE
 
+![RV MAINTENANCE](https://rv.drewbefree.com/icons/rv-192.png)
+
 `rv-maintenance`
 
 RV maintenance dashboard for the 2019 Thor Freedom Elite 26HE. Trip departure & pack-out checklists, persistent sessions, health score, per-item history, and overdue tracking.

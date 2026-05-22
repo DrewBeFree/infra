@@ -92,6 +92,18 @@
       "type": "agent"
     },
     {
+      "name": "answering-agent",
+      "github": "https://github.com/DrewBeFree/answering-agent.git",
+      "targetDirectory": "agents/answering-agent",
+      "type": "agent"
+    },
+    {
+      "name": "bob",
+      "github": "https://github.com/DrewBeFree/bob.git",
+      "targetDirectory": "agents/bob",
+      "type": "agent"
+    },
+    {
       "name": "infra",
       "github": "https://github.com/DrewBeFree/infra.git",
       "targetDirectory": "infra",

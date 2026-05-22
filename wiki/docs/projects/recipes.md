@@ -1,5 +1,7 @@
 # RECIPES
 
+![RECIPES](https://food.drewbefree.com/icons/recipes-192.png)
+
 Family recipe collection. Searchable card grid by category, with links to recipes hosted on other sites. Admin-editable with shared password.
 
 | Field | Value |

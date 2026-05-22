@@ -1,5 +1,7 @@
 # DAILY PLANNER
 
+![DAILY PLANNER](https://tasks.drewbefree.com/icons/planner-192.png)
+
 `daily-planner`
 
 Personal daily-driver for tasks, grocery lists, and trip packing lists. Supabase-backed persistence, auto-prints each morning via Windows Task Scheduler.

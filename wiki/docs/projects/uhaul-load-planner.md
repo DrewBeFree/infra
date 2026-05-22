@@ -1,5 +1,7 @@
 # UHAUL PLANNER
 
+![UHAUL PLANNER](https://uhaul.drewbefree.com/icons/uhaul-192.png)
+
 `uhaul-load-planner`
 
 Interactive overhead floor plan for a 26' U-Haul. Drag-and-drop items to scale, track floor usage in real time, auto-saves layout across visits.

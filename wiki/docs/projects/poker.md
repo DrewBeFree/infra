@@ -1,5 +1,7 @@
 # POKER NIGHT
 
+![POKER NIGHT](https://poker.drewbefree.com/icons/poker-192.png)
+
 `poker`
 
 Full session manager for No-Limit Hold'em cash games. Timer, rounds, buy-ins, rebuys, mid-game cashouts, and end-of-night payout balancer.

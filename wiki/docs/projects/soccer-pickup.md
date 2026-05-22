@@ -1,5 +1,7 @@
 # SOCCER PICKUP
 
+![SOCCER PICKUP](https://soccer.drewbefree.com/icons/soccer-192.png)
+
 `soccer-pickup`
 
 Pickup soccer sign-up page for Marietta, GA. Shows game details, live weather forecast, and an open sign-up list. Admin-editable with shared password.
