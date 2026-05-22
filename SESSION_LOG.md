@@ -1,5 +1,22 @@
 ﻿# Session Log
 
+## 2026-05-22 02:40 — Add Agents & Skills wiki section
+
+**What we did:**
+- Created `wiki/docs/agents-and-skills/` with three pages: index.md, agents.md, skills.md
+- index.md: differentiator table (agents vs skills) + quick reference for all agents and skills
+- agents.md: detailed entries for Bob, Answering Agent, Recap Agents, Interactive Setup — pipelines, design choices, project links
+- skills.md: detailed entries for /log-session, /logoff, /update-atlas — step-by-step breakdowns and when-to-use
+- Added "Agents & Skills" section to mkdocs.yml nav and wiki home page
+- Deployed via ./wiki/deploy.sh; built in 1.02s
+
+**Where we stopped:**
+- Wiki live at http://atlas/wiki/ with new Agents & Skills section; no open items
+
+**Next up:**
+- Make all URLs clickable in wiki
+- Upgrade wiki UI
+
 ## 2026-05-22 02:32 — Bob session log backfill
 
 **What we did:**
