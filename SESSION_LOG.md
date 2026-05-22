@@ -1,5 +1,29 @@
 ﻿# Session Log
 
+## 2026-05-21 20:46 — Atlas OpenClaw to custom Bob Slack bot
+
+**What we did:**
+- Diagnosed duplicate Ollama runtimes on Atlas (Docker + systemd conflict); killed stuck runner with `docker restart ollama`
+- Confirmed local llama3.2:3b and 1b both too slow for OpenClaw's 6800-token system prompt on CPU
+- Pulled llama3.2:1b to Atlas Docker Ollama
+- Built lightweight Python Slack bot (bob) using Slack Bolt + Ollama /api/chat directly — tiny system prompt, fast responses
+- Deployed as `bob.service` systemd user service on Atlas
+- Diagnosed competing socket mode conflict: Alienware's OpenClaw (Windows scheduled task, pid 18004) was intercepting all Slack events
+- Stopped Alienware OpenClaw (gateway stop + taskkill)
+- Fixed `app_mention` event handler so @mentions in channels work alongside DMs
+- Added dynamic date injection to system prompt to fix hallucinated dates
+- Created `github.com/DrewBeFree/bob` repo with bot.py, requirements.txt, bob.service
+
+**Where we stopped:**
+- Bob is live on Atlas, responding to DMs and @mentions using llama3.2:1b
+- Alienware OpenClaw disabled (service stopped, process killed)
+- Bob repo exists on dev branch — not yet merged to main
+
+**Next up:**
+- Merge bob dev → main
+- Consider conversation history / multi-turn context in bot.py
+- Optionally re-enable Alienware OpenClaw for other use cases (non-Slack)
+
 ## 2026-05-20 22:29 — Twilio path C backlog + Slack notification
 
 **What we did:**
