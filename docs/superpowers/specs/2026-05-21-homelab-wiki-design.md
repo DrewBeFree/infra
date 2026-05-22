@@ -26,8 +26,12 @@ infra/wiki/
   mkdocs.yml
   README.md                      # atlas one-time setup notes
   deploy.sh
+  requirements.txt               # mkdocs-material, beautifulsoup4, pytest
   scripts/
     gen_catalog.py               # filesystem scan + repos.json + Command Center → projects pages
+    card_map.json                # repo name → Command Center card id (for version/status)
+    tests/
+      test_gen_catalog.py        # pytest unit tests for the generator
   docs/
     index.md                     # landing: what this is + links to 3 pillars
     infrastructure/
@@ -66,20 +70,29 @@ Filesystem is the source of truth for *what exists*; `repos.json` and the Comman
 3. **Emit** `projects/index.md` (sortable table: name, type, version, status, repo link) and one `projects/<slug>.md` per project (description, type, version/status, GitHub URL, local path; screenshots deferred to a later phase).
 4. **Warn** on drift: print any repo on disk but missing from `repos.json`, and any manifest entry with no matching directory. Non-fatal — surfaces the staleness instead of hiding it.
 
-Runs as a pre-build step in `deploy.sh`.
+Version/status enrichment from the Command Center is **best-effort**: a small committed `scripts/card_map.json` binds repo name → card id (the names don't match automatically, e.g. `golf` → `LINKSY`/`APP_003`). Repos with no mapping still appear in the catalog with a blank version/status and a description pulled from their `README.md`.
+
+### Where generation runs (important constraint)
+
+Atlas has **only the `infra` repo** cloned — the `apps/`, `sites/`, and `agents/` repos are **not** present there. A filesystem scan therefore cannot run on atlas. So:
+
+- `gen_catalog.py` runs on the **dev machine** (WSL), where every repo is checked out.
+- Its output (`docs/projects/index.md` + `docs/projects/<slug>.md`) is **committed to the `infra` repo**.
+- Atlas only ever runs `git pull` + `mkdocs build` — it never regenerates.
 
 ## Hosting & deploy
 
 - Served at **`http://atlas/wiki/`** via a new Nginx `location /wiki/` block. Root `/` stays the status dashboard. Tailscale-only — no public exposure.
-- `deploy.sh` mirrors the status-dashboard pattern:
-  ```bash
-  ssh atlas "cd ~/infra && git pull && cd wiki && python scripts/gen_catalog.py && mkdocs build -d /opt/wiki"
-  ```
+- `deploy.sh` runs **from the dev machine**:
+  1. `python scripts/gen_catalog.py` — regenerate the catalog from the local filesystem.
+  2. If `docs/projects/` changed, refuse and tell the user to commit/push via their normal branch workflow (never auto-commits to main).
+  3. `git push`, then `ssh atlas "cd ~/infra && git pull && cd wiki && mkdocs build -d /opt/wiki"`.
 - One-time atlas prerequisites (documented in `wiki/README.md`):
-  - `pip install mkdocs-material`
+  - `pip install mkdocs-material` (build only — no beautifulsoup4 needed on atlas, since generation never runs there)
   - `sudo mkdir -p /opt/wiki && sudo chown drew:drew /opt/wiki`
   - add the Nginx `location /wiki/` block and reload Nginx
-- `mkdocs.yml` sets `site_url`/`use_directory_urls` appropriately for the `/wiki/` base path.
+- `mkdocs.yml` sets `site_url`/`use_directory_urls` and a `not_in_nav` glob so the generated per-app pages build without nav warnings (reachable via links from the catalog table).
+- Local preview: `python scripts/gen_catalog.py && mkdocs serve`.
 
 ## Out of scope (v1)
 
@@ -94,4 +107,8 @@ Runs as a pre-build step in `deploy.sh`.
 - `http://atlas/wiki/` loads over Tailscale with all three pillars navigable and searchable.
 - Projects catalog lists every git repo under `apps/`, `sites/`, `agents/` — including `bob` and `answering-agent` — with per-app pages.
 - Infra and workflow pages reflect the migrated content; old infra `.md` files point to the wiki.
-- A single `./deploy.sh` rebuilds and publishes.
+- A single `./deploy.sh` (run from dev) regenerates, guards on uncommitted catalog changes, pushes, and rebuilds on atlas.
+
+## Repo layout note
+
+Generated `docs/projects/*.md` are **committed** (generation runs on dev). Only the built `site/` is gitignored.
