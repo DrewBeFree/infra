@@ -2,6 +2,16 @@
 
 What runs where, with ports and addresses.
 
+## Notable URLs
+
+| Service | URL | Notes |
+| --- | --- | --- |
+| Status Dashboard | [http://atlas/](http://atlas/) | Tailscale-only |
+| Wiki (this site) | [http://atlas/wiki/](http://atlas/wiki/) | Tailscale-only |
+| State page | [https://drewbefree.com/state.html](https://drewbefree.com/state.html) | Public |
+| Recap Viewer | [https://recap.drewbefree.com](https://recap.drewbefree.com) | Public |
+| Infrastructure Diagram | [https://homelab.drewbefree.com/infrastructure.html](https://homelab.drewbefree.com/infrastructure.html) | Public |
+
 ## Atlas Services
 
 | Service | Port | Address | Notes |

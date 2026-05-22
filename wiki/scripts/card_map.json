@@ -3,7 +3,13 @@
   "uhaul-load-planner": "APP_002",
   "golf": "APP_003",
   "daily-planner": "APP_004",
+  "rv-maintenance": "APP_005",
+  "soccer-pickup": "APP_006",
+  "recipes": "APP_007",
   "kybernet-tech": "SITE_002",
   "dwebbsolutions": "SITE_003",
-  "photography": "SITE_004"
+  "photography": "SITE_004",
+  "_type_overrides": {
+    "recap-viewer": "site"
+  }
 }

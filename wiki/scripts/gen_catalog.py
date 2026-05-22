@@ -30,10 +30,12 @@ def load_manifest(repos_json_path: Path) -> dict:
     return {r["name"]: r for r in data.get("repositories", [])}
 
 
-def load_card_map(card_map_path: Path) -> dict:
+def load_card_map(card_map_path: Path) -> tuple[dict, dict]:
     if not card_map_path.is_file():
-        return {}
-    return json.loads(card_map_path.read_text(encoding="utf-8"))
+        return {}, {}
+    data = json.loads(card_map_path.read_text(encoding="utf-8"))
+    overrides = data.pop("_type_overrides", {})
+    return data, overrides
 
 
 def parse_command_center(index_html_path: Path) -> dict:
@@ -87,7 +89,7 @@ def github_web_url(clone_url: str | None) -> str | None:
     return clone_url[:-4] if clone_url.endswith(".git") else clone_url
 
 
-def enrich(repos: list[dict], manifest: dict, cards: dict, card_map: dict, base_dir: Path) -> list[dict]:
+def enrich(repos: list[dict], manifest: dict, cards: dict, card_map: dict, type_overrides: dict, base_dir: Path) -> list[dict]:
     enriched = []
     for repo in repos:
         name = repo["name"]
@@ -97,6 +99,7 @@ def enrich(repos: list[dict], manifest: dict, cards: dict, card_map: dict, base_
         description = card.get("description") or read_description(base_dir / repo["path"]) or "No description."
         enriched.append({
             **repo,
+            "type": type_overrides.get(name, repo["type"]),
             "github": m.get("github"),
             "in_manifest": name in manifest,
             "display_name": card.get("display_name") or name,
@@ -175,8 +178,8 @@ def main(base_dir=None, output_dir=None, repos_json=None, command_center=None, c
     repos = scan_repos(base_dir)
     manifest = load_manifest(repos_json)
     cards = parse_command_center(command_center)
-    card_map = load_card_map(card_map_path)
-    projects = enrich(repos, manifest, cards, card_map, base_dir)
+    card_map, type_overrides = load_card_map(card_map_path)
+    projects = enrich(repos, manifest, cards, card_map, type_overrides, base_dir)
 
     output_dir.mkdir(parents=True, exist_ok=True)
     for old in output_dir.glob("*.md"):
