@@ -1,5 +1,19 @@
 ﻿# Session Log
 
+## 2026-05-22 02:32 — Bob session log backfill
+
+**What we did:**
+- Noticed bob SESSION_LOG.md hadn't been updated after dev→main merge and MANUAL.md addition
+- Backfilled bob/SESSION_LOG.md with the 2026-05-22 01:59 entry covering those changes
+- Pushed bob repo to origin/main
+
+**Where we stopped:**
+- Bob fully deployed on Atlas; repo up to date on main; session logs accurate
+
+**Next up:**
+- Consider conversation history / multi-turn context in bot.py
+- Optionally re-enable Alienware OpenClaw for non-Slack use cases
+
 ## 2026-05-22 02:29 — Alienware specs added to wiki machines page
 
 **What we did:**
