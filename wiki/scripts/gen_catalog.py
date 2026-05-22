@@ -107,3 +107,16 @@ def enrich(repos: list[dict], manifest: dict, cards: dict, card_map: dict, base_
             "description": description,
         })
     return enriched
+
+
+def detect_drift(repos: list[dict], manifest: dict, base_dir: Path) -> list[str]:
+    warnings = []
+    scanned = {r["name"] for r in repos}
+    for name in sorted(scanned):
+        if name not in manifest:
+            warnings.append(f"on disk but missing from repos.json: {name}")
+    for name, m in sorted(manifest.items()):
+        target = m.get("targetDirectory", "")
+        if target.split("/")[0] in SCAN_DIRS and not (base_dir / target).is_dir():
+            warnings.append(f"in repos.json but not on disk: {name} ({target})")
+    return warnings

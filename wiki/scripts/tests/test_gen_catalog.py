@@ -152,3 +152,19 @@ def test_enrich_unmapped_repo_falls_back(tmp_path):
     assert bob["github"] is None
     assert bob["in_manifest"] is False
     assert bob["description"] == "A Discord bot."
+
+
+def test_detect_drift_reports_both_directions(tmp_path):
+    _make_repo(tmp_path, "agents", "bob")  # on disk, not in manifest
+    repos = gen_catalog.scan_repos(tmp_path)
+    manifest = {
+        "ghost": {"targetDirectory": "apps/ghost", "type": "app"},  # in manifest, not on disk
+        "infra": {"targetDirectory": "infra", "type": "infra"},     # not a scan dir -> ignored
+    }
+
+    warnings = gen_catalog.detect_drift(repos, manifest, tmp_path)
+    joined = "\n".join(warnings)
+
+    assert "bob" in joined
+    assert "ghost" in joined
+    assert "infra" not in joined
