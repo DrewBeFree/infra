@@ -1,5 +1,25 @@
 ﻿# Session Log
 
+## 2026-05-22 19:05 — kybernet-tech privacy/terms pages + footer fix
+
+**What we did:**
+- Created privacy.html and terms.html for Twilio A2P campaign registration
+- Both pages match the site's design (same fonts, colors, nav, footer)
+- Privacy policy covers SMS opt-in/out, data collection, sharing, and retention
+- Terms covers SMS messaging terms, scheduling links, liability, and governing law
+- Added Privacy Policy and Terms of Service links to the footer of index.html
+- Fixed root cause bug: global `nav { position: fixed }` CSS was pulling the footer `<nav>` out of the footer and rendering it at the top of the page — fixed by changing footer nav to a `<div>`
+- Fixed secondary CSS bug: `flex-wrap: gap` was invalid, changed to `flex-wrap: wrap; gap: 16px`
+- All changes committed and pushed to main
+
+**Where we stopped:**
+- Live site deployed successfully (GitHub Pages build confirmed via gh CLI)
+- CDN cache propagation may still be in progress for some users
+
+**Next up:**
+- Verify footer links are visible on live site after CDN propagates
+- Twilio A2P submission is already in — await carrier approval
+
 ## 2026-05-22 02:40 — Add Agents & Skills wiki section
 
 **What we did:**
