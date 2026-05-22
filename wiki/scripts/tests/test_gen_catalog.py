@@ -95,3 +95,23 @@ def test_parse_command_center_live_site_card(tmp_path):
 
 def test_parse_command_center_missing_file_returns_empty(tmp_path):
     assert gen_catalog.parse_command_center(tmp_path / "nope.html") == {}
+
+
+def test_read_description_returns_first_paragraph(tmp_path):
+    repo = tmp_path / "golf"
+    repo.mkdir()
+    (repo / "README.md").write_text("# Golf\n\n![badge](x.png)\n\nA wager tracker.\n", encoding="utf-8")
+
+    assert gen_catalog.read_description(repo) == "A wager tracker."
+
+
+def test_read_description_no_readme_returns_empty(tmp_path):
+    repo = tmp_path / "golf"
+    repo.mkdir()
+
+    assert gen_catalog.read_description(repo) == ""
+
+
+def test_github_web_url_strips_dot_git():
+    assert gen_catalog.github_web_url("https://github.com/DrewBeFree/golf.git") == "https://github.com/DrewBeFree/golf"
+    assert gen_catalog.github_web_url(None) is None

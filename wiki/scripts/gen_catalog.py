@@ -68,3 +68,20 @@ def parse_command_center(index_html_path: Path) -> dict:
             "status": status,
         }
     return cards
+
+
+def read_description(repo_path: Path) -> str:
+    readme = repo_path / "README.md"
+    if not readme.is_file():
+        return ""
+    for line in readme.read_text(encoding="utf-8").splitlines():
+        s = line.strip()
+        if s and not s.startswith("#") and not s.startswith("!["):
+            return s
+    return ""
+
+
+def github_web_url(clone_url: str | None) -> str | None:
+    if not clone_url:
+        return None
+    return clone_url[:-4] if clone_url.endswith(".git") else clone_url
