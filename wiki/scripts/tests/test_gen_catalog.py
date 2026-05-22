@@ -49,3 +49,49 @@ def test_load_card_map(tmp_path):
 
 def test_load_card_map_missing_file_returns_empty(tmp_path):
     assert gen_catalog.load_card_map(tmp_path / "nope.json") == {}
+
+
+CARD_HTML = """
+<a class="card" href="https://linksy.drewbefree.com">
+  <div class="card-id">APP_003 // UTILITY</div>
+  <div class="card-name">LINKSY</div>
+  <div class="card-url">linksy.drewbefree.com</div>
+  <div class="card-desc">Live wager tracker for golf.</div>
+  <div class="card-footer"><span class="card-meta">v0.2.2 · 2026-05-10</span></div>
+</a>
+<a class="card" href="https://kybernet.tech">
+  <div class="card-id">SITE_002 // NETWORKING</div>
+  <div class="card-name">KYBERNET</div>
+  <div class="card-url">kybernet.tech</div>
+  <div class="card-desc">UniFi network design.</div>
+  <div class="card-footer"><span class="card-meta live">LIVE</span></div>
+</a>
+"""
+
+
+def test_parse_command_center_app_card(tmp_path):
+    p = tmp_path / "index.html"
+    p.write_text(CARD_HTML, encoding="utf-8")
+
+    cards = gen_catalog.parse_command_center(p)
+
+    assert cards["APP_003"]["version"] == "0.2.2"
+    assert cards["APP_003"]["date"] == "2026-05-10"
+    assert cards["APP_003"]["status"] == "active"
+    assert cards["APP_003"]["display_name"] == "LINKSY"
+    assert cards["APP_003"]["url"] == "linksy.drewbefree.com"
+    assert cards["APP_003"]["description"] == "Live wager tracker for golf."
+
+
+def test_parse_command_center_live_site_card(tmp_path):
+    p = tmp_path / "index.html"
+    p.write_text(CARD_HTML, encoding="utf-8")
+
+    cards = gen_catalog.parse_command_center(p)
+
+    assert cards["SITE_002"]["status"] == "live"
+    assert cards["SITE_002"]["version"] is None
+
+
+def test_parse_command_center_missing_file_returns_empty(tmp_path):
+    assert gen_catalog.parse_command_center(tmp_path / "nope.html") == {}
