@@ -1,0 +1,43 @@
+site_name: DrewBeFree Wiki
+site_description: Homelab, projects, and workflow reference
+site_url: http://atlas/wiki/
+use_directory_urls: true
+
+theme:
+  name: material
+  palette:
+    - scheme: slate
+      primary: black
+      accent: cyan
+  features:
+    - navigation.sections
+    - navigation.top
+    - navigation.instant
+    - search.suggest
+    - content.code.copy
+
+nav:
+  - Home: index.md
+  - Infrastructure:
+      - Overview: infrastructure/index.md
+      - Machines: infrastructure/machines.md
+      - Tools: infrastructure/tools.md
+      - Services: infrastructure/services.md
+  - Projects: projects/index.md
+  - Workflows:
+      - Overview: workflows/index.md
+      - Conventions: workflows/conventions.md
+      - Versioning: workflows/versioning.md
+      - Logoff: workflows/logoff.md
+      - Claude Setup: workflows/claude-setup.md
+
+not_in_nav: |
+  /projects/*.md
+  !/projects/index.md
+
+markdown_extensions:
+  - admonition
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.superfences
