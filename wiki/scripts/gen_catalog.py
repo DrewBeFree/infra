@@ -154,7 +154,8 @@ def render_project_page(p: dict) -> str:
     if p["status"]:
         lines.append(f"| Status | {p['status']} |")
     if p["url"]:
-        lines.append(f"| Live | https://{p['url']} |")
+        url = p["url"] if p["url"].startswith("http") else f"https://{p['url']}"
+        lines.append(f"| Live | {url} |")
     web = github_web_url(p["github"])
     if web:
         lines.append(f"| Repo | {web} |")
