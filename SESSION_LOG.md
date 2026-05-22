@@ -1,5 +1,20 @@
 ﻿# Session Log
 
+## 2026-05-22 02:29 — Alienware specs added to wiki machines page
+
+**What we did:**
+- Updated `wiki/docs/infrastructure/machines.md` with detailed Alienware hardware specs from Speccy report
+- Added CPU (i9-14900F, 24c/32t), RAM (32 GB DDR5-5600), GPU (RTX 4070 Ti SUPER 16 GB), display (5120×1440 Odyssey G95C), storage, networking, peripherals, and services tables
+- Committed to feat branch, merged to main, deployed via `./wiki/deploy.sh`
+- Wiki rebuilt on atlas in 0.58s
+
+**Where we stopped:**
+- Wiki live at http://atlas/wiki/ with updated machines page; no open items
+
+**Next up:**
+- Make all URLs clickable in wiki
+- Upgrade wiki UI
+
 ## 2026-05-21 20:46 — Atlas OpenClaw to custom Bob Slack bot
 
 **What we did:**
