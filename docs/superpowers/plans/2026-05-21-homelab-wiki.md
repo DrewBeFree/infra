@@ -10,6 +10,8 @@
 
 **Repo / branch:** All work happens in the `infra` repo on the existing `feat/wiki` branch. All paths below are relative to the `infra` repo root unless noted. The "GitHub root" (parent of `infra/`, `apps/`, etc.) is `/mnt/c/Users/drewb/Documents/GitHub`.
 
+**Environment (IMPORTANT):** This machine enforces PEP 668 (externally-managed Python), so `pip install --user` fails. Task 1 creates a virtualenv at `infra/wiki/.venv`. **In every command below, invoke the venv interpreter explicitly as `.venv/bin/python` from inside `wiki/`** (e.g. `.venv/bin/python -m pytest`, `.venv/bin/python -m mkdocs build`, `.venv/bin/python scripts/gen_catalog.py`). The literal `python3 -m …`/`python3 …` forms shown in some steps mean "the venv's python." The `.venv/` directory is gitignored. Atlas needs its own venv (see Task 13 README).
+
 ---
 
 ## File Structure
@@ -52,13 +54,16 @@ infra/wiki/
 - Create: `wiki/requirements.txt`, `wiki/.gitignore`, `wiki/mkdocs.yml`
 - Create: `wiki/docs/index.md` and one placeholder per section index
 
-- [ ] **Step 1: Install tooling (dev machine)**
+- [ ] **Step 1: Create the virtualenv and install tooling (dev machine)**
 
 Run:
 ```bash
-python3 -m pip install --user mkdocs-material beautifulsoup4 pytest
+cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki
+python3 -m venv .venv
+.venv/bin/python -m pip install --upgrade pip
+.venv/bin/python -m pip install mkdocs-material beautifulsoup4 pytest
 ```
-Expected: installs succeed; `python3 -m mkdocs --version` prints a version.
+Expected: installs succeed; `.venv/bin/python -m mkdocs --version` prints a version. (Plain `pip install --user` fails on this machine due to PEP 668 — the venv is required.)
 
 - [ ] **Step 2: Create `wiki/requirements.txt`**
 
@@ -71,6 +76,7 @@ pytest
 - [ ] **Step 3: Create `wiki/.gitignore`**
 
 ```
+.venv/
 site/
 __pycache__/
 .cache/
@@ -153,7 +159,7 @@ Create each of these with a single `# Title` line as a placeholder (filled in la
 
 Run:
 ```bash
-cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && python3 -m mkdocs build --strict
+cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && .venv/bin/python -m mkdocs build --strict
 ```
 Expected: build succeeds, `site/` produced, **no warnings** (the `not_in_nav` glob keeps generated project pages from warning later).
 
@@ -206,7 +212,7 @@ def test_scan_repos_finds_git_repos_by_type(tmp_path):
 
 Run:
 ```bash
-cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && python3 -m pytest scripts/tests/test_gen_catalog.py -v
+cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && .venv/bin/python -m pytest scripts/tests/test_gen_catalog.py -v
 ```
 Expected: FAIL — `ModuleNotFoundError: No module named 'gen_catalog'` (or `AttributeError: scan_repos`).
 
@@ -239,7 +245,7 @@ def scan_repos(base_dir: Path) -> list[dict]:
 
 Run:
 ```bash
-cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && python3 -m pytest scripts/tests/test_gen_catalog.py -v
+cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && .venv/bin/python -m pytest scripts/tests/test_gen_catalog.py -v
 ```
 Expected: PASS.
 
@@ -296,7 +302,7 @@ def test_load_card_map_missing_file_returns_empty(tmp_path):
 
 Run:
 ```bash
-cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && python3 -m pytest scripts/tests/test_gen_catalog.py -v
+cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && .venv/bin/python -m pytest scripts/tests/test_gen_catalog.py -v
 ```
 Expected: FAIL — `AttributeError: module 'gen_catalog' has no attribute 'load_manifest'`.
 
@@ -321,7 +327,7 @@ def load_card_map(card_map_path: Path) -> dict:
 
 Run:
 ```bash
-cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && python3 -m pytest scripts/tests/test_gen_catalog.py -v
+cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && .venv/bin/python -m pytest scripts/tests/test_gen_catalog.py -v
 ```
 Expected: PASS (5 tests).
 
@@ -395,7 +401,7 @@ def test_parse_command_center_missing_file_returns_empty(tmp_path):
 
 Run:
 ```bash
-cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && python3 -m pytest scripts/tests/test_gen_catalog.py -v
+cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && .venv/bin/python -m pytest scripts/tests/test_gen_catalog.py -v
 ```
 Expected: FAIL — `AttributeError: ... 'parse_command_center'`.
 
@@ -441,7 +447,7 @@ def parse_command_center(index_html_path: Path) -> dict:
 
 Run:
 ```bash
-cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && python3 -m pytest scripts/tests/test_gen_catalog.py -v
+cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && .venv/bin/python -m pytest scripts/tests/test_gen_catalog.py -v
 ```
 Expected: PASS (8 tests).
 
@@ -489,7 +495,7 @@ def test_github_web_url_strips_dot_git():
 
 Run:
 ```bash
-cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && python3 -m pytest scripts/tests/test_gen_catalog.py -v
+cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && .venv/bin/python -m pytest scripts/tests/test_gen_catalog.py -v
 ```
 Expected: FAIL — `AttributeError: ... 'read_description'`.
 
@@ -518,7 +524,7 @@ def github_web_url(clone_url: str | None) -> str | None:
 
 Run:
 ```bash
-cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && python3 -m pytest scripts/tests/test_gen_catalog.py -v
+cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && .venv/bin/python -m pytest scripts/tests/test_gen_catalog.py -v
 ```
 Expected: PASS (11 tests).
 
@@ -583,7 +589,7 @@ def test_enrich_unmapped_repo_falls_back(tmp_path):
 
 Run:
 ```bash
-cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && python3 -m pytest scripts/tests/test_gen_catalog.py -v
+cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && .venv/bin/python -m pytest scripts/tests/test_gen_catalog.py -v
 ```
 Expected: FAIL — `AttributeError: ... 'enrich'`.
 
@@ -617,7 +623,7 @@ def enrich(repos: list[dict], manifest: dict, cards: dict, card_map: dict, base_
 
 Run:
 ```bash
-cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && python3 -m pytest scripts/tests/test_gen_catalog.py -v
+cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && .venv/bin/python -m pytest scripts/tests/test_gen_catalog.py -v
 ```
 Expected: PASS (13 tests).
 
@@ -661,7 +667,7 @@ def test_detect_drift_reports_both_directions(tmp_path):
 
 Run:
 ```bash
-cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && python3 -m pytest scripts/tests/test_gen_catalog.py -v
+cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && .venv/bin/python -m pytest scripts/tests/test_gen_catalog.py -v
 ```
 Expected: FAIL — `AttributeError: ... 'detect_drift'`.
 
@@ -686,7 +692,7 @@ def detect_drift(repos: list[dict], manifest: dict, base_dir: Path) -> list[str]
 
 Run:
 ```bash
-cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && python3 -m pytest scripts/tests/test_gen_catalog.py -v
+cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && .venv/bin/python -m pytest scripts/tests/test_gen_catalog.py -v
 ```
 Expected: PASS (14 tests).
 
@@ -749,7 +755,7 @@ def test_render_project_page_includes_fields():
 
 Run:
 ```bash
-cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && python3 -m pytest scripts/tests/test_gen_catalog.py -v
+cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && .venv/bin/python -m pytest scripts/tests/test_gen_catalog.py -v
 ```
 Expected: FAIL — `AttributeError: ... 'render_index'`.
 
@@ -802,7 +808,7 @@ def render_project_page(p: dict) -> str:
 
 Run:
 ```bash
-cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && python3 -m pytest scripts/tests/test_gen_catalog.py -v
+cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && .venv/bin/python -m pytest scripts/tests/test_gen_catalog.py -v
 ```
 Expected: PASS (17 tests).
 
@@ -852,7 +858,7 @@ def test_main_writes_index_and_pages(tmp_path, capsys):
 
 Run:
 ```bash
-cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && python3 -m pytest scripts/tests/test_gen_catalog.py -v
+cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && .venv/bin/python -m pytest scripts/tests/test_gen_catalog.py -v
 ```
 Expected: FAIL — `TypeError` / `AttributeError` on `main`.
 
@@ -894,7 +900,7 @@ if __name__ == "__main__":
 
 Run:
 ```bash
-cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && python3 -m pytest scripts/tests/test_gen_catalog.py -v
+cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && .venv/bin/python -m pytest scripts/tests/test_gen_catalog.py -v
 ```
 Expected: PASS (18 tests).
 
@@ -933,7 +939,7 @@ git commit -m "wiki: wire generator main + seed card_map"
 
 Run:
 ```bash
-cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && python3 scripts/gen_catalog.py
+cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && .venv/bin/python scripts/gen_catalog.py
 ```
 Expected: prints `Generated N project pages in .../docs/projects` and `[drift]` lines on stderr for `bob` and `answering-agent` (missing from repos.json).
 
@@ -949,7 +955,7 @@ Expected: a `bob.md` and `answering-agent.md` exist; the index has a row per rep
 
 Run:
 ```bash
-cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && python3 -m mkdocs build --strict
+cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && .venv/bin/python -m mkdocs build --strict
 ```
 Expected: build succeeds with no warnings (generated project pages covered by `not_in_nav`).
 
@@ -998,7 +1004,7 @@ Replace the body of `infra/infrastructure-tools.md` with:
 
 Run:
 ```bash
-cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && python3 -m mkdocs build --strict
+cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && .venv/bin/python -m mkdocs build --strict
 ```
 Expected: build succeeds, no warnings.
 
@@ -1031,7 +1037,7 @@ Source content from `~/.claude/CLAUDE.md` and `infra/STRUCTURE.md`. Write:
 
 Run:
 ```bash
-cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && python3 -m mkdocs build --strict
+cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && .venv/bin/python -m mkdocs build --strict
 ```
 Expected: build succeeds, no warnings.
 
@@ -1062,7 +1068,7 @@ INFRA_DIR="$(cd "$WIKI_DIR/.." && pwd)"
 cd "$WIKI_DIR"
 
 echo "Regenerating project catalog..."
-python3 scripts/gen_catalog.py
+.venv/bin/python scripts/gen_catalog.py
 
 if ! git -C "$INFRA_DIR" diff --quiet -- wiki/docs/projects; then
   echo "ERROR: catalog changed. Commit & push wiki/docs/projects via your branch workflow, then re-run."
@@ -1073,7 +1079,7 @@ echo "Pushing infra..."
 git -C "$INFRA_DIR" push
 
 echo "Building on atlas..."
-ssh atlas "cd ~/infra && git pull && cd wiki && python3 -m mkdocs build -d /opt/wiki"
+ssh atlas "cd ~/infra && git pull && cd wiki && .venv/bin/python -m mkdocs build -d /opt/wiki"
 
 echo "Done. Refresh http://atlas/wiki/"
 ```
@@ -1104,9 +1110,10 @@ atlas over Tailscale at `http://atlas/wiki/`.
 ## Local preview
 
 ```bash
-python3 -m pip install --user -r requirements.txt
-python3 scripts/gen_catalog.py   # regenerate the projects catalog from local repos
-python3 -m mkdocs serve          # http://127.0.0.1:8000
+python3 -m venv .venv                            # first time only
+.venv/bin/python -m pip install -r requirements.txt
+.venv/bin/python scripts/gen_catalog.py          # regenerate the projects catalog from local repos
+.venv/bin/python -m mkdocs serve                 # http://127.0.0.1:8000
 ```
 
 ## Deploy
@@ -1117,9 +1124,13 @@ pushes `infra`, then SSHes to atlas to `git pull` and `mkdocs build` into `/opt/
 
 ## One-time atlas setup
 
+This machine (and atlas, if Debian/Ubuntu) enforces PEP 668, so a virtualenv is required —
+`pip install --user` will fail.
+
 ```bash
-# on atlas
-python3 -m pip install --user mkdocs-material
+# on atlas, inside ~/infra/wiki
+python3 -m venv .venv
+.venv/bin/python -m pip install mkdocs-material
 sudo mkdir -p /opt/wiki && sudo chown drew:drew /opt/wiki
 ```
 
@@ -1160,7 +1171,7 @@ git commit -m "wiki: add deploy script + atlas setup README"
 
 Run:
 ```bash
-cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && python3 -m pytest scripts/tests/ -v
+cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && .venv/bin/python -m pytest scripts/tests/ -v
 ```
 Expected: all tests PASS (18).
 
@@ -1168,7 +1179,7 @@ Expected: all tests PASS (18).
 
 Run:
 ```bash
-cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && python3 scripts/gen_catalog.py && python3 -m mkdocs build --strict
+cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && .venv/bin/python scripts/gen_catalog.py && .venv/bin/python -m mkdocs build --strict
 ```
 Expected: catalog regenerated, build succeeds with no warnings.
 
@@ -1176,7 +1187,7 @@ Expected: catalog regenerated, build succeeds with no warnings.
 
 Run:
 ```bash
-cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && python3 -m mkdocs serve
+cd /mnt/c/Users/drewb/Documents/GitHub/infra/wiki && .venv/bin/python -m mkdocs serve
 ```
 Open `http://127.0.0.1:8000` and confirm: all three pillars navigate; search works; the Projects table lists every repo (including `bob`); clicking a project opens its page; Infrastructure machines/tools render the migrated content. Stop the server when done.
 
