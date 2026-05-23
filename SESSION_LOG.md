@@ -1,5 +1,31 @@
 ﻿# Session Log
 
+## 2026-05-23 19:02 — Twilio pipeline + dashboard + auto-deploy
+
+**What we did:**
+- Replaced Gmail/Google Voice ingestion with Twilio end-to-end (inbound voice, recording, transcription)
+- Built /twilio/voice, /twilio/recording, /twilio/transcription, /send endpoints in app.py
+- Fixed caller number: Twilio includes From in transcription callback — no API lookup needed
+- Added caller_name extraction from Claude agent output, written back to Supabase
+- Redesigned dashboard to 4-column status board (New/Drafted/Sent/Escalated), each showing 3 most recent cards
+- Added modal on card click with full voicemail, draft reply, slots, and action buttons
+- Added Remove button on all leads (index.html and all.html)
+- Added CORS middleware (answer.kybernet.tech → api.kybernet.tech)
+- Set up GitHub Actions auto-deploy: push to main triggers /webhook/deploy → git pull + systemctl restart
+- Added STARTED_AT and updated /health endpoint (version + started_at)
+- Added "last updated" deploy-info header to index.html and all.html (fetches /health on load)
+
+**Where we stopped:**
+- Last updated indicator committed and pushed (bdc6aa1)
+- A2P 10DLC approval still pending on Twilio — outbound SMS to real customers blocked until approved
+- Gmail poller (answering-poller systemd service) should be stopped/disabled on atlas
+
+**Next up:**
+- Verify auto-deploy fires on next push
+- Stop/disable answering-poller on atlas: systemctl --user stop answering-poller && systemctl --user disable answering-poller
+- Add Cloudflare CNAME: answer → drewbefree.github.io (DNS only) if not already done
+- Once A2P approved, test outbound SMS to a real customer number
+
 ## 2026-05-22 21:50 — Cloudflare tunnel + Twilio outbound SMS
 
 **What we did:**
