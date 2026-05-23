@@ -1,5 +1,27 @@
 ﻿# Session Log
 
+## 2026-05-22 21:50 — Cloudflare tunnel + Twilio outbound SMS
+
+**What we did:**
+- Installed cloudflared on atlas, created Tunnel for api.kybernet.tech (issue #9 ✓)
+- Added /twilio/voice and /twilio/recording endpoints for inbound calls (issue #10)
+- Added /send endpoint for outbound SMS via Twilio (issue #11 ✓)
+- Updated dashboard UI: Send button now calls /send instead of copying to clipboard
+- Served static dashboard from FastAPI at api.kybernet.tech
+- Tested Gmail poller: working end-to-end (voicemail → Claude draft → Supabase)
+- Confirmed Twilio credentials in .env, basic webhook structure in place
+
+**Where we stopped:**
+- Issue #11 (outbound SMS) complete and deployed
+- Issue #10 (Twilio inbound) closed/backlogged — transcription config too complex
+- Gmail poller confirmed working as primary ingestion
+- Dashboard live at https://api.kybernet.tech
+- User wants unified Twilio number with transcription next
+
+**Next up:**
+- Issue #10 revisited: simplify Twilio inbound transcription (fetch via API instead of webhook)
+- Issue #2: wire Google Calendar free/busy into slot computation
+
 ## 2026-05-22 19:05 — kybernet-tech privacy/terms pages + footer fix
 
 **What we did:**
