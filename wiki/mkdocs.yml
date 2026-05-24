@@ -45,6 +45,9 @@ hooks:
 plugins:
   - search
 
+extra_javascript:
+  - javascripts/localize-time.js
+
 markdown_extensions:
   - admonition
   - tables
