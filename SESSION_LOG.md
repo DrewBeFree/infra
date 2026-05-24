@@ -1,5 +1,38 @@
 ﻿# Session Log
 
+## 2026-05-24 12:42 — calendar booking fix + booked pill UI
+
+**What we did:**
+- Fixed 400 Bad Request from Google Calendar freeBusy/event insert: naive confirmed-slot datetimes now localized to BUSINESS_TZ before API calls
+- Added Booked pill to dashboard cards (index.html + all.html): glowing green pill with appointment tooltip when confirmed_slot is set
+- Merged fix/confirmed-slot-calendar-booking to main; auto-deploy landed on Atlas at v0.5.1
+- Verified end-to-end: fake Retell webhook with open slot → freeBusy check passes → Calendar event created → confirmed_slot persisted → lead drafted
+- Updated MANUAL.md: noted Booked pill, removed resolved pending item
+
+**Where we stopped:**
+- All changes merged, deployed, and verified on Atlas (v0.5.1)
+- No uncommitted changes
+
+**Next up:**
+- A2P 10DLC carrier approval (outbound SMS still blocked)
+- client_id multi-tenancy (orchestrator hardcoded to a-couple-two-trees)
+- Push Codex commits (user has pending work)
+
+## 2026-05-24 07:35 — Fix: Retell call_analyzed gate (verified live)
+
+**What we did:**
+- Fixed empty-lead bug: /retell/post-call now only processes the call_analyzed event (call_started/call_ended lack transcript + custom_analysis_data, and dedup was dropping the analyzed event) — v0.5.1, deployed to atlas
+- Verified a live VM call end to end: lead captured name "Johnny", intent new_job, confirmed_slot "Tuesday June 2 at 11 AM", draft SMS pinned to that time
+- Confirmed Supabase confirmed_slot column exists; Retell get_availability function + confirmed_slot analysis field are registered and firing
+
+**Where we stopped:**
+- Full pipeline verified on the live VM: live calendar offer → caller agrees → call_analyzed → captured → draft pinned + saved to Supabase
+- Old empty lead 98de750d (from the pre-fix call) can be trashed in the dashboard
+
+**Next up:**
+- Revisit multi-tenant calendar auth (issue #24) when adding more technicians/clients
+- Optional cleanup: root kb.yaml is unused on the VM (.env points to clients/ KB), so the repo's pending root-kb.yaml deletion is safe to commit
+
 ## 2026-05-24 07:03 — Live calendar availability + confirmed slot
 
 **What we did:**
