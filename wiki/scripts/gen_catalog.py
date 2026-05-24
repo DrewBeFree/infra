@@ -238,4 +238,13 @@ def main(base_dir=None, output_dir=None, repos_json=None, command_center=None, c
 
 
 if __name__ == "__main__":
-    main()
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--timestamp-only", action="store_true", help="Only update the home page timestamp, skip catalog regeneration")
+    args = parser.parse_args()
+    if args.timestamp_only:
+        script_dir = Path(__file__).resolve().parent
+        update_home_timestamp(script_dir.parent / "docs" / "index.md")
+        print("Updated timestamp (timestamp-only mode)")
+    else:
+        main()
