@@ -39,11 +39,11 @@ not_in_nav: |
   /projects/*.md
   !/projects/index.md
 
+hooks:
+  - hooks.py
+
 plugins:
   - search
-  - git-revision-date-localized:
-      enable_creation_date: false
-      type: date
 
 markdown_extensions:
   - admonition
