@@ -175,13 +175,70 @@ h1 span { color: #60a5fa; }
 }
 
 /* ── Last Session ── */
-.session-date {
+/* date accordion (parent) */
+details.session-date-group {
+  border-top: 1px solid var(--border);
+  margin-top: 8px;
+  padding-top: 8px;
+}
+details.session-date-group:first-child {
+  border-top: none;
+  margin-top: 0;
+  padding-top: 0;
+}
+summary.session-date-summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+  padding: 4px 0;
+}
+summary.session-date-summary::-webkit-details-marker { display: none; }
+.session-date-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
   font-size: 0.85rem;
   font-weight: 700;
   color: var(--text);
   letter-spacing: 0.5px;
-  margin-bottom: 14px;
 }
+.session-date-text::before {
+  content: '▸';
+  font-size: 0.7rem;
+  color: var(--accent);
+}
+details.session-date-group[open] > summary .session-date-text::before { content: '▾'; }
+.session-date-highlight {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.65rem;
+  font-weight: 400;
+  color: var(--text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.session-count {
+  flex-shrink: 0;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text-dim);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 2px 7px;
+  border-radius: 4px;
+}
+details.session-date-group[open] > summary .session-count {
+  color: var(--accent);
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
+.session-date-body { padding: 4px 0 2px 14px; }
 .session-block { margin-bottom: 12px; }
 .session-block-label {
   font-size: 0.55rem;
@@ -207,32 +264,46 @@ h1 span { color: #60a5fa; }
   font-weight: 700;
 }
 
-/* ── Same-day older sessions ── */
-details.session-older {
+/* ── Session times (sub-accordion within a date) ── */
+details.session-time {
   border-top: 1px solid var(--border);
-  margin-top: 14px;
-  padding-top: 10px;
+  margin-top: 8px;
+  padding-top: 8px;
 }
-details.session-older > summary {
-  font-size: 0.75rem;
+.session-date-body > details.session-time:first-child {
+  border-top: none;
+  margin-top: 4px;
+  padding-top: 0;
+}
+details.session-time > summary {
+  font-size: 0.72rem;
   font-weight: 600;
-  color: var(--text-dim);
+  color: var(--text-mid);
   cursor: pointer;
   list-style: none;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   padding: 2px 0;
   user-select: none;
 }
-details.session-older > summary::-webkit-details-marker { display: none; }
-details.session-older > summary::before {
+details.session-time > summary::-webkit-details-marker { display: none; }
+details.session-time > summary::before {
   content: '▸';
-  font-size: 0.65rem;
-  color: var(--accent);
+  font-size: 0.6rem;
+  color: var(--accent2);
+  flex-shrink: 0;
 }
-details.session-older[open] > summary::before { content: '▾'; }
-details.session-older .session-block { margin-top: 10px; }
+details.session-time[open] > summary::before { content: '▾'; }
+.session-time-title {
+  font-weight: 400;
+  color: var(--text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+details.session-time .session-block { margin-top: 8px; }
+details.session-time .session-block:first-of-type { margin-top: 10px; }
 
 /* ── Up Next ── */
 .up-next-item {

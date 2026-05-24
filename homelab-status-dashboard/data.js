@@ -43,9 +43,14 @@ async function fetchSessionLog() {
         .filter(Boolean);
     }
 
+    const title = firstLine
+      .replace(/^\d{4}-\d{2}-\d{2}(?:\s+\d{2}:\d{2})?\s*[—–-]\s*/, '')
+      .trim();
+
     return {
       date: dateMatch[1],
       time: dateMatch[2] || null,
+      title:   title || null,
       did:     extractSection('What we did:'),
       stopped: extractSection('Where we stopped:'),
       next:    extractSection('Next up:')

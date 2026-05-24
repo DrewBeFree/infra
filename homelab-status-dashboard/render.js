@@ -57,63 +57,51 @@ function renderLastSession({ today, previous }) {
     `;
   }
 
-  // Group sessions by date
+  // 3-4 word highlight for a date, from that day's latest titled entry.
+  function dayHighlight(daySessions) {
+    const titled = daySessions.find(s => s.title);
+    if (!titled) return '';
+    const words = titled.title.split(/\s+/);
+    let h = words.slice(0, 4).join(' ').replace(/[\s+·,;:–—-]+$/, '');
+    if (words.length > 4) h += '…';
+    return h;
+  }
+
+  // Group sessions by date, newest first.
   const byDate = {};
-  sessions.forEach(s => {
-    if (!byDate[s.date]) byDate[s.date] = [];
-    byDate[s.date].push(s);
-  });
-
+  sessions.forEach(s => { (byDate[s.date] = byDate[s.date] || []).push(s); });
   const dates = Object.keys(byDate).sort().reverse();
-  const [latestDate, ...olderDates] = dates;
-  const latestSessions = byDate[latestDate];
 
-  // Render latest date (expanded)
-  let html = `<div class="session-date">${esc(latestDate)}</div>`;
+  // One accordion per date; inside, one sub-accordion per session time.
+  // Latest date and its latest time open by default so the newest is visible at a glance.
+  const html = dates.map((date, di) => {
+    const daySessions = byDate[date]
+      .slice()
+      .sort((a, b) => (b.time || '').localeCompare(a.time || ''));
+    const dateOpen = di === 0 ? ' open' : '';
+    const highlight = dayHighlight(daySessions);
 
-  // If multiple sessions on latest date, show latest first, others collapsible
-  if (latestSessions.length === 1) {
-    html += sessionBody(latestSessions[0]);
-  } else {
-    const [latest, ...sameDayRest] = latestSessions;
-    html += sessionBody(latest);
-
-    for (const s of sameDayRest) {
-      const timeLabel = s.time ? `${esc(s.time)}` : 'Earlier';
-      html += `
-        <details class="session-older">
-          <summary>${timeLabel}</summary>
+    const times = daySessions.map((s, si) => {
+      const timeOpen = (di === 0 && si === 0) ? ' open' : '';
+      const label = s.time ? esc(s.time) : 'Session';
+      const title = s.title ? `<span class="session-time-title">${esc(s.title)}</span>` : '';
+      return `
+        <details class="session-time"${timeOpen}>
+          <summary>${label}${title}</summary>
           ${sessionBody(s)}
-        </details>
-      `;
-    }
-  }
+        </details>`;
+    }).join('');
 
-  // Render older dates (collapsed)
-  for (const date of olderDates) {
-    const dateSessions = byDate[date];
-    html += `
-      <details class="session-older">
-        <summary>${esc(date)}</summary>
-    `;
-
-    if (dateSessions.length === 1) {
-      html += sessionBody(dateSessions[0]);
-    } else {
-      // Multiple sessions on this date - show each with time label
-      for (const s of dateSessions) {
-        const timeLabel = s.time ? `${esc(s.time)}` : 'No time';
-        html += `
-          <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border);">
-            <div style="font-size: 0.7rem; font-weight: 600; color: var(--text-mid); margin-bottom: 8px;">${timeLabel}</div>
-            ${sessionBody(s)}
-          </div>
-        `;
-      }
-    }
-
-    html += '</details>';
-  }
+    return `
+      <details class="session-date-group"${dateOpen}>
+        <summary class="session-date-summary">
+          <span class="session-date-text">${esc(date)}</span>
+          ${highlight ? `<span class="session-date-highlight">${esc(highlight)}</span>` : '<span class="session-date-highlight"></span>'}
+          <span class="session-count">${daySessions.length}</span>
+        </summary>
+        <div class="session-date-body">${times}</div>
+      </details>`;
+  }).join('');
 
   el.innerHTML = html;
 }
