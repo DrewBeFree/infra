@@ -1,5 +1,28 @@
 ﻿# Session Log
 
+## 2026-05-24 03:27 — Retell AI integration + client KB structure
+
+**What we did:**
+- Integrated Retell AI as the live voice agent (replaces Twilio passive voicemail)
+- Added POST /retell/post-call webhook endpoint — receives Retell's post-call payload, short-circuits on out-of-area or no-appointment calls, hands off to orchestrator
+- Added call_id dedup to prevent double processing when Retell fires multiple webhook events
+- Built generate_prompt.py — generates Retell global prompt from kb.yaml (knowledge only, no collection logic)
+- Reorganized KB into clients/a-couple-two-trees/ folder structure for multi-client support
+- Generated ElevenLabs Grandma Rachel voicemail greeting (old-lady-vm2.mp3), served at api.kybernet.tech
+- Bumped app version to 0.3.0
+- Closed GitHub issues #11, #14, #15, #16, #19, #20, #21
+- Rewrote MANUAL.md to reflect Retell pipeline
+
+**Where we stopped:**
+- Full pipeline working end-to-end: Twilio → Retell AI conversation → webhook → Claude → Supabase → dashboard
+- A2P 10DLC approval still pending on Twilio
+- Google Calendar slots still mocked
+
+**Next up:**
+- Wire real Google Calendar free/busy into compute_candidate_slots()
+- client_id multi-tenancy (orchestrator hardcoded to a-couple-two-trees)
+- Connect ElevenLabs to Retell for Grandma Rachel voice in the agent
+
 ## 2026-05-23 20:17 — SMS compliance + wiki pipeline update + logoff automation
 
 **What we did:**
