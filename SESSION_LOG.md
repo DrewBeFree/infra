@@ -1,5 +1,28 @@
 ﻿# Session Log
 
+## 2026-05-24 07:03 — Live calendar availability + confirmed slot
+
+**What we did:**
+- Added POST /retell/get-availability so the Retell agent can pull real open slots mid-call (offer-only); returns spoken phrase + structured slots
+- Wired real Google Calendar free/busy into compute_candidate_slots() (was mocked): honors business hours, buffer, lead time, busy blocks in America/New_York
+- Fixed service-account creds to request calendar.readonly scope; fixed drew's google_cal_id typo (drew.befree → drewbefree)
+- Added OAuth fallback to calendar creds (service account if present, else calendar_token.json) — single-owner runs on OAuth, SA deferred to multi-tenant
+- Verified live against the real calendar end-to-end on atlas (v0.5.0): VM reflects real busy times (Monday OOO/league correctly skipped)
+- Removed placeholder tech billy from prefer_tech_order (fake calendar would mask real conflicts)
+- Wired confirmed_slot: /retell/post-call reads it, Claude pins the draft SMS to the agreed time, persisted to leads.confirmed_slot (guarded write)
+- Deployed to atlas; copied calendar_token.json to the VM, repointed VM .env KB_PATH to clients/ KB
+- Filed GitHub issue #24 (multi-tenant calendar auth) and added it to the Answering Agent project board
+
+**Where we stopped:**
+- Calendar availability live on the VM via OAuth; confirmed_slot code deployed (v0.5.0)
+- Pending manual steps: run `alter table leads add column confirmed_slot text;` in Supabase; register Retell custom function get_availability + post-call analysis field confirmed_slot
+
+**Next up:**
+- Register the Retell get_availability custom function + confirmed_slot analysis field so offer → capture → draft flows end to end
+- Add the Supabase confirmed_slot column
+- Revisit multi-tenant calendar auth (issue #24) when adding more technicians/clients
+- Optional: root kb.yaml is now unused on the VM, so the repo's pending root-kb.yaml deletion is safe to commit
+
 ## 2026-05-24 05:25 — U-Haul product roadmap + GitHub backlog
 
 **What we did:**
