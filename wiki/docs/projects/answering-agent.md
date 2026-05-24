@@ -1,6 +1,6 @@
 # answering-agent
 
-An AI-powered voicemail response system for SMBs. Captures voicemails, drafts personalized SMS responses with available appointment slots, and routes them for human approval.
+AI voice answering and follow-up for small service businesses. A Retell voice agent answers calls, collects job details, the Python backend drafts a personalized SMS with available appointment slots, and the dashboard keeps a human in the loop before sending.
 
 | Field | Value |
 | --- | --- |
@@ -19,9 +19,9 @@ Customer calls Twilio number
   → Retell AI agent answers (live voice conversation)
     → Collects: name, address, service type, urgency, requested day
       → Call ends → Retell fires POST /retell/post-call
-        → orchestrator.py: loads client KB + computes slots, calls Claude
+        → orchestrator.py: books agreed slot on Google Calendar if structured slot data is present
           → Claude drafts personalized SMS reply
-            → Draft written to Supabase
+            → Draft + agreed appointment written to Supabase
               → Slack notification sent
                 → Dashboard (answer.kybernet.tech) shows draft for review
                   → Human clicks Send → /send → Twilio SMS to caller
@@ -32,7 +32,7 @@ Customer calls Twilio number
 | Component | File | Role |
 | --- | --- | --- |
 | FastAPI server | `app.py` | Retell + Twilio webhook handlers, /send endpoint, auto-deploy webhook |
-| Orchestrator | `orchestrator.py` | Loads client KB + slots, calls Claude, validates output, writes to Supabase |
+| Orchestrator | `orchestrator.py` | Loads client KB + slots, books confirmed appointments, calls Claude, validates output, writes to Supabase |
 | Client KB | `clients/<id>/kb.yaml` | Per-client business config: services, hours, guardrails, technicians |
 | Prompt generator | `generate_prompt.py` | Builds Retell global prompt from KB YAML |
 | Generated prompt | `clients/<id>/prompt.txt` | Output of generate_prompt.py — paste into Retell Global Prompt |
@@ -76,7 +76,20 @@ To onboard a new client:
 The Retell agent uses two layers:
 
 - **Global Prompt** — business knowledge only: services, service area, tone, guardrails, closing line. Generated from `kb.yaml`.
-- **Flow nodes** — handle information collection deterministically (Flex Mode). Variables extracted: `customer_name`, `service_address`, `service_type`, `problem_description`, `urgency`, `requested_day`, `appointment_requested`, `service_area_valid`, `caller_confirmed`.
+- **Flow nodes** — handle information collection deterministically (Flex Mode). Variables extracted: `customer_name`, `service_address`, `service_type`, `problem_description`, `urgency`, `requested_day`, `appointment_requested`, `service_area_valid`, `caller_confirmed`, `confirmed_slot`.
+
+`confirmed_slot` should be structured data from the chosen availability result:
+
+```json
+{
+  "start": "2026-05-26T15:00:00+00:00",
+  "end": "2026-05-26T16:30:00+00:00",
+  "tech_id": "drew",
+  "label": "Tuesday May 26 at 11 AM"
+}
+```
+
+If Retell sends only human text, the dashboard will show it, but the backend escalates the lead instead of guessing and risking a double booking.
 
 ### Knowledge Base (`clients/<id>/kb.yaml`)
 
@@ -106,8 +119,9 @@ Open [answer.kybernet.tech](https://answer.kybernet.tech). Leads are organized i
 
 Click any card to open the full detail modal. From there you can Send, Escalate, or Remove the lead.
 
+Cards with a confirmed appointment show a green **Booked** pill; hovering reveals the agreed time.
+
 ### Pending
 
 - A2P 10DLC carrier approval — outbound SMS to real customers blocked until approved
-- Google Calendar free/busy integration (slots currently computed from schedule config only)
 - `client_id` multi-tenancy — orchestrator currently hardcoded to `a-couple-two-trees` KB

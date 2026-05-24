@@ -9,8 +9,8 @@ Interactive overhead floor plan for a 26' U-Haul. Drag-and-drop items to scale, 
 | Field | Value |
 | --- | --- |
 | Type | app |
-| Version | v0.9.2 |
-| Updated | 2026-05-10 |
+| Version | v0.9.3 |
+| Updated | 2026-05-24 |
 | Status | active |
 | Live | https://uhaul.drewbefree.com |
 | Repo | https://github.com/DrewBeFree/uhaul-load-planner |
