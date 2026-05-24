@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 from bs4 import BeautifulSoup
@@ -194,6 +196,17 @@ def render_project_page(p: dict) -> str:
     return "\n".join(lines)
 
 
+def update_home_timestamp(index_path: Path) -> None:
+    now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    text = index_path.read_text(encoding="utf-8")
+    replacement = f"_Last updated: {now}_"
+    if re.search(r"_Last updated: [^_\n]+_", text):
+        text = re.sub(r"_Last updated: [^_\n]+_", replacement, text)
+    else:
+        text = re.sub(r"(# [^\n]+\n)", f"\\1\n{replacement}\n", text, count=1)
+    index_path.write_text(text, encoding="utf-8")
+
+
 def main(base_dir=None, output_dir=None, repos_json=None, command_center=None, card_map_path=None):
     script_dir = Path(__file__).resolve().parent          # infra/wiki/scripts
     base_dir = Path(base_dir) if base_dir else script_dir.parents[2]  # GitHub root
@@ -218,6 +231,10 @@ def main(base_dir=None, output_dir=None, repos_json=None, command_center=None, c
     for w in detect_drift(repos, manifest, base_dir):
         print(f"  [drift] {w}", file=sys.stderr)
     print(f"Generated {len(projects)} project pages in {output_dir}")
+
+    home = script_dir.parent / "docs" / "index.md"
+    update_home_timestamp(home)
+    print(f"Updated timestamp in {home}")
 
 
 if __name__ == "__main__":

@@ -18,6 +18,6 @@ echo "Pushing infra..."
 git -C "$INFRA_DIR" push
 
 echo "Building on atlas..."
-ssh atlas "cd ~/infra && git pull && cd wiki && .venv/bin/python -m mkdocs build -d /opt/wiki"
+ssh atlas "cd ~/infra && git pull && cd wiki && .venv/bin/python scripts/gen_catalog.py && .venv/bin/python -m mkdocs build -d /opt/wiki"
 
 echo "Done. Refresh http://atlas/wiki/"
