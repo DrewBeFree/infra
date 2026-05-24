@@ -10,16 +10,16 @@ An AI-powered voicemail response system for SMBs. Captures voicemails, drafts pe
 
 ## How It Works
 
-Answering Agent is an AI-powered voicemail response system for small businesses. When a customer calls the Twilio number, the agent records and transcribes the voicemail, drafts a personalized SMS reply with available appointment slots, and routes the draft for human approval before sending.
+Answering Agent is a white-label AI voice answering service for small service businesses (HVAC, roofing, tree service, contractors, etc.). When a customer calls, a Retell AI agent answers and has a real-time conversation — collecting the caller's name, address, service need, and urgency. After the call, a post-call webhook fires, Claude drafts a personalized SMS reply with available appointment slots, and the draft routes to the dashboard for human review before sending.
 
 ### Pipeline
 
 ```
 Customer calls Twilio number
-  → /twilio/voice returns TwiML (greet + record)
-    → Twilio transcribes recording
-      → /twilio/transcription receives transcript + caller number
-        → orchestrator.py: loads KB + slots, calls Claude API
+  → Retell AI agent answers (live voice conversation)
+    → Collects: name, address, service type, urgency, requested day
+      → Call ends → Retell fires POST /retell/post-call
+        → orchestrator.py: loads client KB + computes slots, calls Claude
           → Claude drafts personalized SMS reply
             → Draft written to Supabase
               → Slack notification sent
@@ -31,10 +31,13 @@ Customer calls Twilio number
 
 | Component | File | Role |
 | --- | --- | --- |
-| FastAPI server | `app.py` | Twilio webhook handlers, /send endpoint, auto-deploy webhook |
-| Orchestrator | `orchestrator.py` | Loads KB + slots, calls Claude, validates output, writes to Supabase |
-| Knowledge base | `kb.yaml` | Business info (services, hours, guardrails) Claude uses to personalize responses |
+| FastAPI server | `app.py` | Retell + Twilio webhook handlers, /send endpoint, auto-deploy webhook |
+| Orchestrator | `orchestrator.py` | Loads client KB + slots, calls Claude, validates output, writes to Supabase |
+| Client KB | `clients/<id>/kb.yaml` | Per-client business config: services, hours, guardrails, technicians |
+| Prompt generator | `generate_prompt.py` | Builds Retell global prompt from KB YAML |
+| Generated prompt | `clients/<id>/prompt.txt` | Output of generate_prompt.py — paste into Retell Global Prompt |
 | Dashboard | `docs/` | Static GitHub Pages site — 4-column board: New / Drafted / Sent / Escalated |
+| Voicemail greeting | `docs/old-lady-vm2.mp3` | ElevenLabs-generated greeting (currently unused — Retell handles calls) |
 
 ### Infrastructure
 
@@ -44,10 +47,40 @@ Customer calls Twilio number
 | Public API | Cloudflare Tunnel at `api.kybernet.tech` |
 | Auto-deploy | Push to `main` → GitHub Actions → `POST /webhook/deploy` → git pull + restart |
 | Dashboard | GitHub Pages (`docs/` folder, CNAME `answer.kybernet.tech`) |
+| Voice AI | Retell AI agent — handles inbound calls on the Twilio number |
+| Telephony | Twilio — phone number, Retell voice routing, outbound SMS |
+| LLM | Claude (Anthropic) — post-call SMS drafting and lead classification |
+| Database | Supabase — leads table (caller info, transcript, draft reply, status) |
 
-### Knowledge Base (`kb.yaml`)
+### Client Onboarding
 
-Contains business info the agent uses to craft replies: services offered, service area, tone, technician list, scheduling preferences, and guardrails (phrases never to promise). Edit this file to keep responses accurate without touching code.
+Each client gets a folder under `clients/`:
+
+```
+clients/
+  a-couple-two-trees/
+    kb.yaml       ← business config
+    prompt.txt    ← generated Retell global prompt
+```
+
+To onboard a new client:
+1. Create `clients/<client-id>/kb.yaml` with their business info
+2. Run `python generate_prompt.py <client-id>` — generates `prompt.txt`
+3. Paste `prompt.txt` into Retell → Global Prompt
+4. Build Retell flow nodes (Greeting → Service → Name → Address → Urgency → Day → Confirm → End)
+5. Set Retell post-call webhook to `https://api.kybernet.tech/retell/post-call`
+6. Wire the client's Twilio number to Retell
+
+### Retell Agent Setup
+
+The Retell agent uses two layers:
+
+- **Global Prompt** — business knowledge only: services, service area, tone, guardrails, closing line. Generated from `kb.yaml`.
+- **Flow nodes** — handle information collection deterministically (Flex Mode). Variables extracted: `customer_name`, `service_address`, `service_type`, `problem_description`, `urgency`, `requested_day`, `appointment_requested`, `service_area_valid`, `caller_confirmed`.
+
+### Knowledge Base (`clients/<id>/kb.yaml`)
+
+Contains business info the orchestrator uses to craft replies: services offered, service area, tone, technician list, scheduling preferences, and guardrails (phrases never to promise). Edit this file to update responses, then re-run `generate_prompt.py --force` to regenerate the Retell prompt.
 
 ### Service Management
 
@@ -66,7 +99,7 @@ journalctl --user -u answering-api.service -f
 
 Open [answer.kybernet.tech](https://answer.kybernet.tech). Leads are organized into four columns:
 
-- **New** — voicemail received, not yet processed
+- **New** — call received, not yet processed
 - **Drafted** — Claude has written a reply, awaiting human review
 - **Sent** — SMS dispatched to caller
 - **Escalated** — needs human attention (validation failed or ambiguous intent)
@@ -77,3 +110,4 @@ Click any card to open the full detail modal. From there you can Send, Escalate,
 
 - A2P 10DLC carrier approval — outbound SMS to real customers blocked until approved
 - Google Calendar free/busy integration (slots currently computed from schedule config only)
+- `client_id` multi-tenancy — orchestrator currently hardcoded to `a-couple-two-trees` KB
