@@ -49,43 +49,61 @@ Edit `MODEL` in `bot.py`, then restart the service. Any model pulled via `docker
 
 ## Answering Agent
 
-An AI-powered voicemail response system for small businesses. Captures voicemail transcripts from Google Voice, drafts personalized SMS replies with available appointment slots, and routes them for human approval before sending.
+An AI-powered voicemail response system for small businesses. Receives inbound calls via Twilio, transcribes voicemails, drafts personalized SMS replies with available appointment slots, and routes them for human approval before sending.
 
 | | |
 |---|---|
 | Repo | [DrewBeFree/answering-agent](https://github.com/DrewBeFree/answering-agent) |
 | Local path | `agents/answering-agent` |
-| Runs on | Atlas (`answering-poller.service` — systemd user service) |
-| UI | [answer.kybernet.tech](https://answer.kybernet.tech) |
+| Runs on | Atlas (`answering-api.service` — systemd user service, FastAPI) |
+| Public API | [api.kybernet.tech](https://api.kybernet.tech) (Cloudflare Tunnel) |
+| UI | [answer.kybernet.tech](https://answer.kybernet.tech) (GitHub Pages) |
 | Project page | [projects/answering-agent](../projects/answering-agent.md) |
 
 ### How it works
 
 ```
-Customer leaves voicemail (Google Voice)
-  → Google Voice emails transcript to Gmail
-    → gmail_poller.py detects new email (polls every 60s)
-      → orchestrator.py: loads KB + slots, calls Claude API
-        → Claude drafts personalized SMS reply
-          → Draft written to Supabase
-            → Web UI shows draft for human review
-              → Human clicks Send / Edit
+Customer calls Twilio number
+  → /twilio/voice returns TwiML (greet + record)
+    → Twilio transcribes recording
+      → /twilio/transcription receives transcript + caller number
+        → orchestrator.py: loads KB + slots, calls Claude API
+          → Claude drafts personalized SMS reply
+            → Draft written to Supabase
+              → Slack notification sent
+                → Web UI shows draft for human review
+                  → Human clicks Send → /send → Twilio SMS to caller
 ```
 
 ### Components
 
 | File | Role |
 |---|---|
-| `gmail_poller.py` | Watches Gmail for new GV voicemail transcript emails |
-| `orchestrator.py` | Pulls knowledge base + slots, calls Claude, writes draft to Supabase |
-| `kb.yaml` | Business info (services, hours, contact) Claude uses to personalize replies |
-| Web UI | Supabase-backed frontend — review pending drafts, one-click send |
+| `app.py` | FastAPI server — Twilio webhooks, /send endpoint, auto-deploy webhook |
+| `orchestrator.py` | Loads KB + computes slots, calls Claude, validates output, writes to Supabase |
+| `kb.yaml` | Business info (services, hours, guardrails) Claude uses to personalize replies |
+| `docs/` | Static dashboard (GitHub Pages) — 4-column board: New / Drafted / Sent / Escalated |
 
 ### Key design choices
 
-- **Human-in-the-loop** — Claude drafts, a human approves. No SMS goes out automatically.
+- **Twilio end-to-end** — inbound calls, transcription, and outbound SMS all through Twilio; no Google Voice dependency
+- **Human-in-the-loop** — Claude drafts, a human approves in the dashboard. No SMS goes out automatically.
 - **Knowledge base (`kb.yaml`)** — editable business context so responses stay accurate without retraining
-- **Supabase as state store** — drafts, status (pending/sent/rejected), and audit trail all live in Supabase
+- **Supabase as state store** — drafts, status (new/drafted/sent/escalated), and audit trail
+- **Auto-deploy** — push to main triggers GitHub Actions → `POST /webhook/deploy` → git pull + systemctl restart on Atlas
+
+### Service management
+
+```bash
+# Status
+systemctl --user status answering-api.service
+
+# Restart
+systemctl --user restart answering-api.service
+
+# Live logs
+journalctl --user -u answering-api.service -f
+```
 
 ---
 
