@@ -1,5 +1,23 @@
 ﻿# Session Log
 
+## 2026-05-24 05:25 — U-Haul product roadmap + GitHub backlog
+
+**What we did:**
+- Wrote docs/PRODUCT_ROADMAP.md — U-Haul acquisition pitch + phased roadmap (3D-native data model, 2D top-down as first render mode) + Appendix A with web-verified truck specs (cargo van → 26')
+- Wrote docs/TASKS.md — 30-issue breakdown across 5 milestones
+- Created 10 labels, 5 milestones, 30 GitHub issues (#1–30 aligned to TASKS.md)
+- Created GitHub Projects board #5 "U-Haul Load Planner Roadmap" with all 30 issues
+- Committed docs on feat/product-roadmap-tasks, merged to main (ff), pushed, deleted branch
+- Resolved gh auth (missing project scope); user regenerated a minimal-scope PAT after a token leak + device-flow rate limits
+
+**Where we stopped:**
+- All complete on main; board live with 30 items; auth locked to project/read:org/repo/workflow
+- Pre-existing uncommitted WIP (CNAME, README, index.html, manifest.json, sw.js) left untouched
+
+**Next up:**
+- Issue #1 — refactor to 3D-native data model (foundation)
+- Research issues #27–30 (trailer/U-Box specs, furniture preset data, supply→SKU mapping, U-Haul app architecture)
+
 ## 2026-05-24 03:56 — Dashboard UI polish + dark theme
 
 **What we did:**
