@@ -1,5 +1,24 @@
 ﻿# Session Log
 
+## 2026-05-24 13:13 — uhaul 3D model + multi-truck features
+
+**What we did:**
+- Merged feat/3d-data-model branch (5 Codex commits) into main
+- 3D-native data model foundation: migrateItem() backfills hIn, weightLbs, fragility, z, rotation on all items (load, default, new)
+- Basic multi-truck support in 2D view
+- Improved layout management UX
+- Polish pass on multi-truck support before handoff
+- Service worker: removed empty no-op fetch handler
+- Bumped app to v0.10.0; updated Command Center card, terminal scan line, and state.html
+
+**Where we stopped:**
+- Branch merged to main, version bumped, housekeeping committed
+- No open items in this feature set
+
+**Next up:**
+- Continue 3D roadmap (rendering layer, stacking logic)
+- Multi-truck UX polish as needed
+
 ## 2026-05-24 12:42 — calendar booking fix + booked pill UI
 
 **What we did:**
