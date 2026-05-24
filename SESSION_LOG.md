@@ -1,5 +1,30 @@
 ﻿# Session Log
 
+## 2026-05-23 20:17 — SMS compliance + wiki pipeline update + logoff automation
+
+**What we did:**
+- Added SMS opt-in checkbox and full consent disclosure to kybernet-tech contact form
+- Added validation: phone number requires SMS consent checkbox before submit
+- Pushed kybernet-tech (A2P 10DLC compliance gap closed)
+- Updated wiki agents.md — answering agent section rewritten for Twilio pipeline
+- Discovered MANUAL.md in each repo is the source gen_catalog.py pulls into wiki project pages
+- Rewrote MANUAL.md in answering-agent repo to reflect current Twilio pipeline
+- Added git-revision-date-localized plugin to mkdocs.yml (last-updated timestamp on every wiki page)
+- Installed plugin on atlas venv, added to wiki requirements.txt
+- Deployed wiki successfully — answering-agent page now current
+- Added step 8 (update MANUAL.md) and step 9 (deploy wiki) to /logoff skill
+- Updated CLAUDE.md via claude-config with same steps, pushed to claude-config repo
+
+**Where we stopped:**
+- All repos committed and pushed
+- Wiki live and current at http://atlas/wiki/
+- A2P 10DLC carrier approval still pending on Twilio
+
+**Next up:**
+- Once A2P approved, test outbound SMS end-to-end with a real number
+- Stop/disable answering-poller on atlas (gmail poller, now deprecated)
+- Wire real Google Calendar free/busy into compute_candidate_slots()
+
 ## 2026-05-23 19:02 — Twilio pipeline + dashboard + auto-deploy
 
 **What we did:**
