@@ -1,5 +1,26 @@
 ﻿# Session Log
 
+## 2026-05-24 03:56 — Dashboard UI polish + dark theme
+
+**What we did:**
+- Formatted transcript in modal: structured summary grid + styled Agent/Caller conversation turns
+- Card snippets now show extracted data (service · urgency · address) instead of raw transcript
+- Reverted to dark slate theme (#1a2236 background) on both index.html and all.html
+- Replaced Remove button with SVG trash icon positioned in card footer
+- Added confirmation modal before removing any lead (Cancel / Remove)
+- Applied same dark theme + confirm modal to all.html
+- Bumped app version to 0.4.0
+
+**Where we stopped:**
+- Dashboard polished and deployed; full Retell pipeline still live
+- A2P 10DLC approval still pending
+- Google Calendar slots still mocked
+
+**Next up:**
+- Wire real Google Calendar free/busy into compute_candidate_slots()
+- client_id multi-tenancy (orchestrator hardcoded to a-couple-two-trees)
+- Connect ElevenLabs to Retell for Grandma Rachel voice
+
 ## 2026-05-24 03:27 — Retell AI integration + client KB structure
 
 **What we did:**
