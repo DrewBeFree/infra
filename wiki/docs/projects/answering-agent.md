@@ -10,51 +10,70 @@ An AI-powered voicemail response system for SMBs. Captures voicemails, drafts pe
 
 ## How It Works
 
-Answering Agent is an AI-powered voicemail response system for small businesses. When a customer leaves a voicemail via Google Voice, the agent captures the transcript, drafts a personalized SMS reply with available appointment slots, and routes the draft for human approval before sending.
+Answering Agent is an AI-powered voicemail response system for small businesses. When a customer calls the Twilio number, the agent records and transcribes the voicemail, drafts a personalized SMS reply with available appointment slots, and routes the draft for human approval before sending.
 
 ### Pipeline
 
 ```
-Google Voice voicemail
-  → Gmail transcript email
-    → Make mailhook (filter + parse)
-      → POST to /answering/inbound (PowerEdge)
-        → Orchestrator: KB + slots + Claude → draft
-          → Draft written to Supabase
-            → Web UI: review + click-to-send
+Customer calls Twilio number
+  → /twilio/voice returns TwiML (greet + record)
+    → Twilio transcribes recording
+      → /twilio/transcription receives transcript + caller number
+        → orchestrator.py: loads KB + slots, calls Claude API
+          → Claude drafts personalized SMS reply
+            → Draft written to Supabase
+              → Slack notification sent
+                → Dashboard (answer.kybernet.tech) shows draft for review
+                  → Human clicks Send → /send → Twilio SMS to caller
 ```
 
 ### Components
 
 | Component | File | Role |
 | --- | --- | --- |
-| Gmail poller | `gmail_poller.py` | Watches Gmail for new voicemail transcript emails |
-| Orchestrator | `orchestrator.py` | Pulls KB + slots, calls Claude, writes draft to Supabase |
-| Knowledge base | `kb.yaml` | Business info Claude uses to personalize responses |
-| Web UI | (Supabase + frontend) | Shows pending drafts for review and one-click send |
+| FastAPI server | `app.py` | Twilio webhook handlers, /send endpoint, auto-deploy webhook |
+| Orchestrator | `orchestrator.py` | Loads KB + slots, calls Claude, validates output, writes to Supabase |
+| Knowledge base | `kb.yaml` | Business info (services, hours, guardrails) Claude uses to personalize responses |
+| Dashboard | `docs/` | Static GitHub Pages site — 4-column board: New / Drafted / Sent / Escalated |
+
+### Infrastructure
+
+| Component | Detail |
+| --- | --- |
+| Service | `answering-api.service` — systemd user service on Atlas |
+| Public API | Cloudflare Tunnel at `api.kybernet.tech` |
+| Auto-deploy | Push to `main` → GitHub Actions → `POST /webhook/deploy` → git pull + restart |
+| Dashboard | GitHub Pages (`docs/` folder, CNAME `answer.kybernet.tech`) |
 
 ### Knowledge Base (`kb.yaml`)
 
-The KB contains business info the agent uses to craft replies: services offered, hours, contact info, typical appointment slots. Edit this file to keep responses accurate.
+Contains business info the agent uses to craft replies: services offered, service area, tone, technician list, scheduling preferences, and guardrails (phrases never to promise). Edit this file to keep responses accurate without touching code.
 
-### Running the Agent
+### Service Management
 
 ```bash
-# On Atlas
-python3 orchestrator.py
-```
+# Status
+systemctl --user status answering-api.service
 
-The agent runs as a persistent service on Atlas and listens for incoming webhooks from Make.
+# Restart
+systemctl --user restart answering-api.service
+
+# Live logs
+journalctl --user -u answering-api.service -f
+```
 
 ### Reviewing Drafts
 
-Open the web UI (Supabase-backed) to see pending draft responses. Each draft shows:
-- The original voicemail transcript
-- The proposed SMS reply
-- Available appointment slots mentioned
+Open [answer.kybernet.tech](https://answer.kybernet.tech). Leads are organized into four columns:
 
-Click **Send** to dispatch the SMS via Google Voice, or **Edit** to modify the draft before sending.
+- **New** — voicemail received, not yet processed
+- **Drafted** — Claude has written a reply, awaiting human review
+- **Sent** — SMS dispatched to caller
+- **Escalated** — needs human attention (validation failed or ambiguous intent)
 
-### Status
+Click any card to open the full detail modal. From there you can Send, Escalate, or Remove the lead.
 
-v0 prototype — orchestrator skeleton and Gmail poller built. Web UI pending.
+### Pending
+
+- A2P 10DLC carrier approval — outbound SMS to real customers blocked until approved
+- Google Calendar free/busy integration (slots currently computed from schedule config only)
