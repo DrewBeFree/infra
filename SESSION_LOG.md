@@ -1,5 +1,27 @@
 ﻿# Session Log
 
+## 2026-05-25 11:41 — logoff: 3D scene launch, bump to v0.13.0
+
+**What we did:**
+- Captured 14 unlogged commits since v0.11.2
+- Full Svelte 5 migration: 2D canvas and 3D scene both ported to Svelte components
+- Implemented Threlte (Three.js/Svelte) 3D scene: truck model, item boxes, floating labels, orbit camera
+- 3D drag-and-drop via raycasting plane, Svelte 5 prop-based pointer events
+- 3D physical stacking: item list order determines vertical position
+- CI: GitHub Actions workflow for Vite build + GitHub Pages deployment
+- Layout UX: sidebar collapses on mobile, empty new layouts prompt truck selection
+- Truck size persisted per layout and restored on load
+- Fixed layout name overwriting, race conditions on creation, hardcoded truck dims, empty layouts loading as defaults
+- Bumped to v0.13.0 · 2026-05-25 in Command Center card-meta, terminal scan line, and state.html
+- Rewrote MANUAL.md to document Svelte + Threlte tech stack and 3D scene controls
+
+**Where we stopped:**
+- All clean: documentation, Command Center, and state.html at v0.13.0
+
+**Next up:**
+- Continue 3D roadmap (weight distribution view, stacking UI refinement)
+- Phase 2 features from GitHub issues backlog
+
 ## 2026-05-25 09:52 — diagnose trips RLS write permission bugs
 
 **What we did:**
