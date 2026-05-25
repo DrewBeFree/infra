@@ -1,5 +1,20 @@
 ﻿# Session Log
 
+## 2026-05-24 20:40 — Vite migration merged, version bumped
+
+**What we did:**
+- Reviewed `feat/vite-migration` branch (1 commit ahead of main — Issue #31: monolithic index.html → Vite ES modules)
+- Merged `feat/vite-migration` into `main` via fast-forward; pushed to origin
+- Bumped version to v0.11.1 (patch: catches up missed v0.11.0 Command Center update + Vite refactor)
+- Updated Command Center card-meta, terminal scan line, and state.html to v0.11.1 · 2026-05-24
+
+**Where we stopped:**
+- Version files updated; final commit + push pending (logoff step 7)
+
+**Next up:**
+- Continue 3D roadmap (rendering layer, stacking logic)
+- Review MANUAL.md for Vite migration changes
+
 ## 2026-05-24 20:07 — confirm_slot, booking fallback, dashboard UI
 
 **What we did:**
