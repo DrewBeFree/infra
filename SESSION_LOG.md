@@ -1,5 +1,21 @@
 ﻿# Session Log
 
+## 2026-05-25 09:52 — diagnose trips RLS write permission bugs
+
+**What we did:**
+- Investigated "archive list doesn't persist" and "create new list does nothing" in Trips tab
+- Root cause: `trip_lists` table has RLS enabled but anon role lacks INSERT and UPDATE policies
+- Same pattern as v0.9.3/v0.9.5 fixes (tasks, trip_items got write policies; trip_lists was missed)
+- Provided SQL to add anon insert + update policies on `trip_lists` — no code changes needed
+
+**Where we stopped:**
+- Fix identified, SQL provided to user; not yet confirmed applied in Supabase
+
+**Next up:**
+- User runs the two-policy SQL in Supabase SQL editor to unblock trips create/archive
+
+---
+
 ## 2026-05-24 22:36 — pushed vite migration, cleaned up branch
 
 **What we did:**
