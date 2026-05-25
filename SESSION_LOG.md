@@ -1,5 +1,20 @@
 ﻿# Session Log
 
+## 2026-05-24 22:36 — pushed vite migration, cleaned up branch
+
+**What we did:**
+- Deleted stale feat/vite-migration branch (local and confirmed remote didn't exist)
+- Pushed 3 unpushed commits to origin/main: configure svelte plugin for vite, complete phase 1 features and fixes, add testing and 3d svelte libraries
+- Bumped version to v0.11.2 in Command Center card, state.html, and terminal scan line
+- Updated MANUAL.md to document phase 1 features (furniture presets, door fit check, weight/payload indicator) and Vite build instructions
+
+**Where we stopped:**
+- All clean: working tree empty, origin/main up to date at v0.11.2
+
+**Next up:**
+- Continue 3D roadmap (rendering layer, stacking logic)
+- Phase 2 features from GitHub issues backlog
+
 ## 2026-05-24 20:40 — Vite migration merged, version bumped
 
 **What we did:**
