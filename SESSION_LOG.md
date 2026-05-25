@@ -1,5 +1,26 @@
 ﻿# Session Log
 
+## 2026-05-24 20:07 — confirm_slot, booking fallback, dashboard UI
+
+**What we did:**
+- Diagnosed voicemail not appearing: calendar booking failure caused early return with no draft; fixed to always continue to Claude and draft SMS even when booking fails (status → escalated)
+- Added POST /retell/confirm-slot custom function — agent calls it mid-call when caller agrees to a slot, stores structured slot (start/end/tech_id/label) server-side by call_id; post-call webhook prefers this over text analysis field
+- Fixed availability offering: when no preferred day given, now spreads one slot per calendar day instead of filling all 3 from the same day
+- Added transcript accordion (collapsed by default) with pill label on main dashboard modal; structured summary always visible above it
+- Matched all-leads expanded row to main modal: structured summary always visible, Transcript pill accordion below
+- Fixed mobile header layout on both pages; transcript key-value grid stacks vertically on narrow screens
+- Cleaned up Retell global prompt — removed Scheduling section (workflow handles it), removed duplicate closing line
+- Updated MANUAL.md to reflect confirm_slot pipeline, workflow agent setup, custom functions, slot logic
+
+**Where we stopped:**
+- All changes merged and deployed on Atlas (v0.5.2)
+- confirm_slot registered in Retell workflow but not yet end-to-end tested on a real call
+
+**Next up:**
+- Test a real call end-to-end: slot offered → caller agrees → confirm_slot fires → calendar booked
+- A2P 10DLC carrier approval (outbound SMS still blocked)
+- client_id multi-tenancy
+
 ## 2026-05-24 13:13 — uhaul 3D model + multi-truck features
 
 **What we did:**
