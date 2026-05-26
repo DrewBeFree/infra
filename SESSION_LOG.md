@@ -1,5 +1,20 @@
 ﻿# Session Log
 
+## 2026-05-26 12:27 — repo sync and uhaul delete button
+
+**What we did:**
+- Cleaned up CRLF/LF line-ending noise in golf, poker, daily-planner (git restore, no real changes)
+- Committed and pushed answering-agent fix: removed erroneous "Rim Jobs" from A Couple Two Trees services prompt
+- Merged uhaul-load-planner feature/delete-button-edit-modal → main and pushed (delete button in edit modal, v0.13.1)
+- Confirmed Command Center and state.html already at v0.13.1 · 2026-05-26 (version bump was in the feature branch)
+- Diagnosed 3D camera angle concern as pre-existing change (42c02e4) — not caused by merge; confirmed working on phone
+
+**Where we stopped:**
+- All repos clean and in sync with origin
+
+**Next up:**
+- No pending work
+
 ## 2026-05-26 12:01 — logoff only, no session work
 
 **What we did:**
