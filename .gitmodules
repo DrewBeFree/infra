@@ -1,0 +1,3 @@
+[submodule "homelab"]
+	path = homelab
+	url = https://github.com/DrewBeFree/homelab.git
