@@ -1,5 +1,21 @@
 ﻿# Session Log
 
+## 2026-05-26 00:40 — 3D feedback fixes + wiki sync, v0.13.1
+
+**What we did:**
+- Identified post-v0.13.0 commits not captured in previous session log: PR #47 (wiki sync) and PR #48 (3D feedback fixes)
+- PR #47: added wiki sync GitHub Action, docs/Home.md landing page for GitHub Wiki
+- PR #48: 3D visual fixes — cab clipping into attic floor, troika text rendering crash, z-fighting on wheel wells/decals/grid, wheel offset corrections for all trucks, grid/camera/zoom polish; double-click to edit on 3D items added; MANUAL.md + README updated
+- Bumped version to v0.13.1 · 2026-05-26 in Command Center card-meta, terminal scan line, and state.html
+
+**Where we stopped:**
+- Command Center and state.html updated to v0.13.1; untracked agent artifacts (.agentrules, tests/, json files) left uncommitted
+
+**Next up:**
+- Commit Command Center update and push
+- Continue 3D roadmap (weight distribution view, stacking UI refinement)
+- Phase 2 features from GitHub issues backlog
+
 ## 2026-05-25 11:41 — logoff: 3D scene launch, bump to v0.13.0
 
 **What we did:**
