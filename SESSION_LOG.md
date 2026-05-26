@@ -1,5 +1,18 @@
 ﻿# Session Log
 
+## 2026-05-26 09:16 — fix atlas wiki conflict after deploy
+
+**What we did:**
+- Fixed atlas wiki conflict: stashed local M wiki/docs/index.md on atlas, git pull succeeded
+- Restored 18 project pages (git checkout -- wiki/docs/projects/) after erroneous gen_catalog.py run had zeroed them out
+- Rebuilt wiki on atlas (gen_catalog.py --timestamp-only + mkdocs build) — http://atlas/wiki/ confirmed working
+
+**Where we stopped:**
+- Atlas wiki fully rebuilt; all 18 project pages restored and live
+
+**Next up:**
+- No pending work
+
 ## 2026-05-26 00:40 — 3D feedback fixes + wiki sync, v0.13.1
 
 **What we did:**
