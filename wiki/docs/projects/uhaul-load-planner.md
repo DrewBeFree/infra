@@ -9,8 +9,8 @@ Interactive overhead floor plan for a 26' U-Haul. Drag-and-drop items to scale, 
 | Field | Value |
 | --- | --- |
 | Type | app |
-| Version | v0.13.0 |
-| Updated | 2026-05-25 |
+| Version | v0.13.1 |
+| Updated | 2026-05-26 |
 | Status | active |
 | Live | https://uhaul.drewbefree.com |
 | Repo | https://github.com/DrewBeFree/uhaul-load-planner |
@@ -51,11 +51,12 @@ You can also pick from the **Furniture Preset Catalog** (26 common items) to aut
 
 ### 3D View — Scene Controls
 
-The 3D scene renders items as boxes in the truck at their actual heights and stacking positions:
+The 3D scene renders items as physical boxes in the truck at their actual heights and stacking positions, with dynamically generated proportional models for the entire U-Haul fleet (Cargo Van, 10', 15', 20', 26'):
 - **Drag** items to reposition them on the truck floor
-- **Spacebar** resets the camera to the default orbit position
-- Items stack physically — the list order determines which items sit on top
-- Labels float above each item for identification
+- **Double-Click** an item to open the Edit Properties modal directly from the 3D view
+- **Re-center Button (⌖)** in the top right instantly smoothly resets the camera to the default orbit position
+- Items stack physically — the list order determines which items sit on top, and physics calculations automatically route items around internal truck wheel wells
+- Labels are dynamically wrapped and rendered flush onto the physical sides of each item
 
 ### Door Fit Check
 
