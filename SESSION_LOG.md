@@ -1,5 +1,26 @@
 ﻿# Session Log
 
+## 2026-05-28 04:06 — monitoring stack live, all exporters up
+
+**What we did:**
+- Deployed Prometheus + Grafana monitoring stack to Atlas via scp + docker compose
+- Fixed port conflicts: cAdvisor remapped to 8085 (8080 taken by Portainer), Grafana to 3001 (3000 taken by open-webui)
+- Fixed Grafana datasource UID mismatch: dashboard JSONs referenced uid "prometheus" but Grafana assigned "PBFA97CFB590B2093" — patched dashboards and restarted
+- Fixed Prometheus scrape targets: all exporters used localhost (unreachable from inside container) — changed to Docker service names (node-exporter:9100, smartctl-exporter:9633, cadvisor:8080, ollama-exporter:9642)
+- All 6 monitoring containers healthy: Prometheus, Grafana, node-exporter, smartctl-exporter, cAdvisor, ollama-exporter
+- All 4 exporters confirmed up=1 in Prometheus; dashboards populating with live data
+- Saved all fixes back to homelab/docs/528/ and pushed to GitHub
+
+**Where we stopped:**
+- Stack live at http://100.71.165.80:3001 — both dashboards loading with real data
+- Ephemeral volumes (data lost on container restart) — persistent volume migration pending
+
+**Next up:**
+- Convert to persistent Docker volumes to retain metric history across restarts
+- Change Grafana admin password from default (atlas_admin)
+- Watch SMART dashboard for sdh/sdi error trends on the WD Reds
+- Future: email/Slack alerts, GPU metrics (K80), Plex/UPS stats
+
 ## 2026-05-28 03:24 — monitoring stack deployment guide for Atlas
 
 **What we did:**
