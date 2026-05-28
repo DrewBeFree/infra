@@ -1,5 +1,18 @@
 ﻿# Session Log
 
+## 2026-05-28 — daily-planner, no-op session, log-session only
+
+**What we did:**
+- No changes made this session (daily-planner)
+
+**Where we stopped:**
+- Trips tab RLS fix (trip_lists INSERT/UPDATE policies) still pending user confirmation in Supabase
+
+**Next up:**
+- Confirm trip_lists RLS fix was applied; test create/archive in Trips tab
+
+---
+
 ## 2026-05-28 04:06 — monitoring stack live, all exporters up
 
 **What we did:**
