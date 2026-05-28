@@ -1,5 +1,27 @@
 ﻿# Session Log
 
+## 2026-05-28 03:24 — monitoring stack deployment guide for Atlas
+
+**What we did:**
+- Designed and built a complete Prometheus + Grafana monitoring stack for Atlas
+- Created homelab/docs/528/ with 10 ready-to-deploy config files: docker-compose.yml, prometheus.yml, prometheus-scrape.yml, alert.rules.yml, grafana-datasource.yml, dashboards.yml, atlas-overview.json, atlas-storage.json, ollama-exporter.js
+- Built 2 pre-built Grafana dashboards: Atlas Overview (CPU, RAM, load, Docker, Ollama) and Storage & SMART Health (SMART pass/fail, disk temps, UDMA CRC errors, I/O)
+- Stack includes 6 exporters: node-exporter, cAdvisor, process-exporter, SMART disk health exporter (privileged), Ollama custom Node.js exporter
+- Context: Atlas WD Reds showing concerning SMART data (sdh UDMA CRC errors, sdi reallocated sectors) — dashboards surface these in real-time
+- Created deployment docs: QUICK_SUMMARY.md, COPY_PASTE_DEPLOY.md, MONITORING_DEPLOYMENT_GUIDE.md, DASHBOARD_PREVIEW.md, 00_START_HERE.txt
+- Committed and pushed to homelab repo; infra submodule pointer updated
+
+**Where we stopped:**
+- All 10 config files and docs committed in homelab/docs/528/
+- Stack not yet deployed on Atlas — user runs COPY_PASTE_DEPLOY.md steps (15–20 min)
+- Ephemeral volumes for initial deploy; persistent volume migration is next session
+
+**Next up:**
+- SSH into Atlas, follow COPY_PASTE_DEPLOY.md to stand up the stack
+- Verify both dashboards load at http://[tailscale-ip]:3000
+- Next session: convert to persistent Docker volumes, change Grafana password
+- Future: email/Slack alerts when thresholds breach, GPU metrics (K80), Plex/UPS stats
+
 ## 2026-05-26 12:27 — repo sync and uhaul delete button
 
 **What we did:**
