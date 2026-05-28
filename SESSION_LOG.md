@@ -1,15 +1,17 @@
 ﻿# Session Log
 
-## 2026-05-28 — daily-planner, no-op session, log-session only
+## 2026-05-28 — daily-planner: Ideas, voice dictation, task categories
 
 **What we did:**
-- No changes made this session (daily-planner)
+- Added Ideas tab: full CRUD (add, delete, timestamp display), Supabase-backed with demo mode support
+- Added voice dictation via Web Speech API — mic button on task and idea inputs, toggles `.recording` state
+- Added task categories with colored badge rendering (Personal, Urgent, Work); category stored in Supabase `tasks` table
 
 **Where we stopped:**
-- Trips tab RLS fix (trip_lists INSERT/UPDATE policies) still pending user confirmation in Supabase
+- All features committed and pushed (a4f2af1)
 
 **Next up:**
-- Confirm trip_lists RLS fix was applied; test create/archive in Trips tab
+- Trips tab RLS fix (trip_lists INSERT/UPDATE policies) still pending user confirmation in Supabase
 
 ---
 
