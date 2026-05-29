@@ -31,16 +31,16 @@ This document summarizes significant features and improvements shipped across mu
   - One-tap "Add to Home Screen" for full-screen app experience
   - Dismissible via localStorage
 
-- **Camera Scanning Research** — Comprehensive guide documenting 5 approaches for auto-capturing item dimensions via device camera:
-  - Web Camera API (browser-native, immediate availability, lower accuracy)
-  - WebXR (AR measurement, high accuracy, limited device support)
-  - ML Detection (computer vision for object recognition, high accuracy, offline capable)
-  - Native Bridge (delegated to iOS/Android native code, highest accuracy, complex)
-  - LiDAR (hardware depth sensors, maximum accuracy, limited device support)
-  - Guide includes pros/cons matrix, implementation difficulty, accuracy/latency tradeoffs, and recommendations for Phase 1 selection
+- **Camera Scanning Research** ⚠️ **(Planning/Documentation only — not yet implemented)**
+  - Comprehensive guide documenting 5 approaches for auto-capturing item dimensions via device camera
+  - Approaches analyzed: Web Camera API, WebXR, ML Detection, Native Bridge, LiDAR
+  - Includes pros/cons matrix, implementation difficulty, accuracy/latency tradeoffs, and Phase 1 recommendations
+  - Document: `CAMERA_SCANNING_OPTIONS.md` (ready to review; decision point before Phase 1 coding)
 
 **Tech**: Vite + Svelte 5 + Threlte (Three.js)  
-**Status**: v0.14.0 ready for user review (PR #52, not yet merged); camera scanning roadmapped for future phases
+**Status**: v0.14.0 ready for user review (PR #52, not yet merged)
+- ✅ **Implemented & Testable**: Auto-pack, mobile UX polish (hints + auto-focus + weight warning), 3D camera easing, iOS PWA banner
+- 📋 **Planned/Documented (Not Yet Coded)**: Camera scanning research guide, mobile UX improvements roadmap
 
 ---
 
@@ -135,14 +135,18 @@ Use this section to validate that all overnight improvements work correctly.
 - [ ] Verify items don't clip through wheel wells or internal obstacles
 - [ ] Test on different truck sizes (Cargo Van, 10', 15', 20', 26')
 
-**Mobile UX**
+**Mobile UX — Implemented Features**
 - [ ] Open Add Item modal on mobile
 - [ ] Verify first input field (item name) auto-focuses
 - [ ] Type into the width field and verify hint text is visible (e.g., "e.g., 36 inches")
 - [ ] Add an item with weight near 90% of truck capacity
 - [ ] Verify weight warning toast appears
-- [ ] (Reference) Read `MOBILE_UX_IMPROVEMENTS.md` in uhaul-load-planner/ for 6 pain points + phased recommendations
-- [ ] Consider Phase 1 quick wins (e.g., keyboard shortcuts, input validation)
+
+**Mobile UX — Future Roadmap** 📋 *(Planning Document — Review, Not Test)*
+- [ ] Read `MOBILE_UX_IMPROVEMENTS.md` in uhaul-load-planner/ (in PR #52 or dev/overnight-improvements branch)
+- [ ] Review 6 pain points identified (e.g., keyboard navigation, input validation, accessibility)
+- [ ] Review phased recommendations (Phase 1 quick wins vs Phase 2 longer-term improvements)
+- [ ] **Decision Point**: Which Phase 1 quick wins to prioritize? (guides mobile UX iteration)
 
 **3D Camera**
 - [ ] Open 3D view with items loaded
@@ -160,13 +164,13 @@ Use this section to validate that all overnight improvements work correctly.
 - [ ] Manually add to home screen: Share → "Add to Home Screen"
 - [ ] Verify app launches fullscreen without browser chrome
 
-**Camera Scanning Research**
-- [ ] Read `CAMERA_SCANNING_OPTIONS.md` in uhaul-load-planner/ (or check PR #52)
+**Camera Scanning Research** 📋 *(Planning Document — Review, Not Test)*
+- [ ] Read `CAMERA_SCANNING_OPTIONS.md` in uhaul-load-planner/ (in PR #52 or dev/overnight-improvements branch)
 - [ ] Review the 5 approaches: Web Camera API, WebXR, ML Detection, Native Bridge, LiDAR
 - [ ] Review pros/cons matrix for each approach
 - [ ] Note the recommended Phase 1 approach (likely Web Camera API for immediate availability)
 - [ ] Understand tradeoffs: accuracy vs device support vs complexity
-- [ ] Decision point: Which approach to implement first? (guides next feature phase)
+- [ ] **Decision Point**: Which approach to implement first? (This decides the next feature phase)
 
 ### LLM Debate Union (v0.3.8)
 
@@ -251,13 +255,13 @@ Use this section to validate that all overnight improvements work correctly.
 
 ## Summary
 
-| Project | Change | Version | Status |
-|---------|--------|---------|--------|
-| UHaul Planner | Auto-pack, 3D polish, mobile UX, PWA banner | v0.14.0 | PR #52 pending review |
-| LLM Debate Union | Custom persona prompts | v0.3.8 | Merged to main |
-| Daily Planner | Voice dictation, ideas tab, task categories | Latest | Live |
-| Ollama Monitoring | Production monitoring stack | — | Ready to deploy |
-| Lead Gen Agent | Implementation plan & roadmap | Draft | Phase 1 ready |
+| Project | ✅ Implemented | 📋 Planned/Documented | Version | Status |
+|---------|---|---|---------|--------|
+| UHaul Planner | Auto-pack, 3D camera easing, mobile UX polish (hints, auto-focus, weight warning), iOS PWA banner | Camera scanning (5 approaches), Mobile UX roadmap (6 pain points) | v0.14.0 | PR #52 pending review |
+| LLM Debate Union | Custom persona prompts | — | v0.3.8 | Merged to main |
+| Daily Planner | Voice dictation, ideas tab, task categories | — | Latest | Live |
+| Ollama Monitoring | — | Production monitoring stack (docker-compose, dashboards, exporters) | — | Ready to deploy |
+| Lead Gen Agent | — | Implementation plan & roadmap (4 phases, 12–16 hours) | Draft | Phase 1 ready |
 
 **Next Steps**:
 1. Deploy Ollama monitoring to Atlas
