@@ -1,5 +1,23 @@
 ﻿# Session Log
 
+## 2026-05-29 17:28 — Game status badge with host cancel control
+
+**What we did:**
+- Added prominent status badge to signup page: "✓ Game On" (6+ signups), "⏳ Pending Seat Count" (<6), or "❌ Cancelled"
+- Added "🚫 Cancel Game" button to host panel to toggle game cancellation state
+- Added `is_cancelled` column to `poker_games` table in Supabase
+- Fixed version numbering to v0.7.0 across all files (signup page, host panel, Command Center, state.html)
+- Created CLAUDE.md with deployment checklist to prevent missed version/footer updates
+- Reserved v1.0 for after first full game playtest with user approval
+
+**Where we stopped:**
+- Live on main. v0.7.0 deployed.
+
+**Next up:**
+- Play through first complete game and approve for v1.0 release
+
+---
+
 ## 2026-05-29 (overnight session 2) — Ollama monitoring + lead gen agent plan
 
 **What we did:**
