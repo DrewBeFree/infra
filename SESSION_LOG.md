@@ -1,5 +1,26 @@
 ﻿# Session Log
 
+## 2026-05-29 03:50 — autonomous overnight UHaul improvements setup
+
+**What we did:**
+- Set up autonomous work permissions: .claude/settings.json in project root configured to allow Read/Write/Edit/Bash and safe git operations (blocks merges to main, force pushes)
+- Created reusable /autonomous-work skill for future autonomous sessions on any project
+- Created dev/overnight-improvements branch for accumulated UHaul improvements
+- Implemented PWA install banner: iOS Safari users see share-to-home-screen prompt on first visit, dismissible via localStorage
+- Recovered and corrected SESSION_LOG.md after accidental overwrite (preserved full history)
+
+**Where we stopped:**
+- PWA banner committed and tested; branch pushed to origin
+- Permissions configured and tracked in git (will auto-load next session)
+- Ready for next session to continue: keyboard shortcuts, modal improvements, performance optimizations, then merge to main as v0.14.0
+
+**Next up:**
+- Add keyboard shortcuts (? for help, Ctrl+N for new item, etc.)
+- Enhance ModalAddEdit with better input hints and validation feedback
+- Optimize Sidebar's uniqueSqFt calculation
+- Polish truck recommendation algorithm
+- Test, merge, and bump version to v0.14.0
+
 ## 2026-05-28 23:12 — CRLF line-ending normalization cleanup
 
 **What we did:**
