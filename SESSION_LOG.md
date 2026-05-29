@@ -1,5 +1,18 @@
 ﻿# Session Log
 
+## 2026-05-28 23:12 — CRLF line-ending normalization cleanup
+
+**What we did:**
+- Ran logoff on llm-debate-union; discovered 8 files had CRLF → LF line-ending drift (.gitignore, CONTEXT.md, SESSION_LOG.md, app.js, index.html, start_server.py, style.css, sw.js)
+- Confirmed via `git diff -w` that no functional code was changed — pure whitespace normalization
+
+**Where we stopped:**
+- No open items; pending commit of the line-ending cleanup
+
+**Next up:**
+- Commit the CRLF cleanup and push to main
+- Optional: add `.gitattributes` with `* text=auto eol=lf` to prevent recurrence
+
 ## 2026-05-28 — daily-planner: Ideas, voice dictation, task categories
 
 **What we did:**
