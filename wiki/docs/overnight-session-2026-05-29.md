@@ -126,22 +126,22 @@ This document summarizes significant features and improvements shipped across mu
 
 Use this section to validate that all overnight improvements work correctly.
 
-### UHaul Load Planner (v0.14.0)
+### UHaul Load Planner (v0.14.0 → v0.14.1)
 
-**Auto-Pack Feature**
-- [ ] Add 5–10 items of varying sizes to a truck layout
-- [ ] Click 📦 Auto-Pack button
-- [ ] Verify items are arranged without overlaps
-- [ ] Verify large items are prioritized (placed first)
-- [ ] Verify items don't clip through wheel wells or internal obstacles
-- [ ] Test on different truck sizes (Cargo Van, 10', 15', 20', 26')
+**Auto-Pack Feature** ✅ **PASSED**
+- [✅] Add 5–10 items of varying sizes to a truck layout
+- [✅] Click 📦 Auto-Pack button
+- [✅] Verify items are arranged without overlaps
+- [✅] Verify large items are prioritized (placed first)
+- [✅] Verify items don't clip through wheel wells or internal obstacles
+- [✅] Test on different truck sizes (Cargo Van, 10', 15', 20', 26')
 
-**Mobile UX — Implemented Features**
-- [ ] Open Add Item modal on mobile
-- [ ] Verify first input field (item name) auto-focuses
-- [ ] Type into the width field and verify hint text is visible (e.g., "e.g., 36 inches")
-- [ ] Add an item with weight near 90% of truck capacity
-- [ ] Verify weight warning toast appears
+**Mobile UX — Implemented Features** ✅ **TESTED & FIXED**
+- [✅] Open Add Item modal on mobile
+- [✅] Verify first input field (item name) auto-focuses
+- [✅] Type into the width field and verify hint text is visible (e.g., "e.g., 36 inches") — **FIX**: Items now spawn outside truck on ground plane initially
+- [✅] Add an item with weight near 90% of truck capacity — **FIX**: Added "Capacity: XX%" display in Weight & Balance sidebar
+- [✅] Verify weight warning toast appears — **FIX**: Updated message to "Truck is XX% full (X lbs remaining)" for clarity
 
 **Mobile UX — Future Roadmap** 📋 *(Planning Document — Review, Not Test)*
 - [ ] Read `apps/uhaul-load-planner/MOBILE_UX_IMPROVEMENTS.md` (in PR #52 or dev/overnight-improvements branch)
@@ -149,13 +149,13 @@ Use this section to validate that all overnight improvements work correctly.
 - [ ] Review phased recommendations (Phase 1 quick wins vs Phase 2 longer-term improvements)
 - [ ] **Decision Point**: Which Phase 1 quick wins to prioritize? (guides mobile UX iteration)
 
-**3D Camera**
-- [ ] Open 3D view with items loaded
-- [ ] Click Re-center button (⌖) multiple times
-- [ ] Verify smooth easing animation (not snappy/instant)
-- [ ] Switch between two different trucks (Cargo Van → 26')
-- [ ] Verify camera auto-frames to show entire new truck with smooth animation
-- [ ] Verify truck model updates correctly
+**3D Camera** ✅ **TESTED & FIXED**
+- [✅] Open 3D view with items loaded
+- [✅] Click Re-center button (⌖) multiple times — **FIX**: Camera rotation now responsive immediately after centering
+- [✅] Verify smooth easing animation (not snappy/instant)
+- [✅] Switch between two different trucks (Cargo Van → 26')
+- [✅] Verify camera auto-frames to show entire new truck with smooth animation
+- [✅] Verify truck model updates correctly
 
 **iOS PWA (if on iOS Safari)**
 - [ ] Visit app on iOS Safari for first time
@@ -258,7 +258,7 @@ Use this section to validate that all overnight improvements work correctly.
 
 | Project | ✅ Implemented | 📋 Planned/Documented | Version | Status |
 |---------|---|---|---------|--------|
-| UHaul Planner | Auto-pack, 3D camera easing, mobile UX polish (hints, auto-focus, weight warning), iOS PWA banner | Camera scanning (5 approaches), Mobile UX roadmap (6 pain points) | v0.14.0 | PR #52 pending review |
+| UHaul Planner | Auto-pack, 3D camera easing, mobile UX polish (hints, auto-focus, weight warning), iOS PWA banner | Camera scanning (5 approaches), Mobile UX roadmap (6 pain points) | v0.14.1 | ✅ Merged to main |
 | LLM Debate Union | Custom persona prompts | — | v0.3.8 | Merged to main |
 | Daily Planner | Voice dictation, ideas tab, task categories | — | Latest | Live |
 | Ollama Monitoring | — | Production monitoring stack (docker-compose, dashboards, exporters) | — | Ready to deploy |
