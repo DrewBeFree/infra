@@ -1,5 +1,35 @@
 ﻿# Session Log
 
+## 2026-05-29 (overnight session 2) — Ollama monitoring + lead gen agent plan
+
+**What we did:**
+
+### Ollama Monitoring Stack (Complete, Production-Ready)
+- Created comprehensive monitoring setup guide: `ollama-monitoring-setup.md` (5 approaches analyzed)
+- Built custom Prometheus exporter (`ollama-exporter/exporter.py`) collecting model metrics
+- Created complete Docker Compose stack: Ollama + Prometheus + Grafana + Node Exporter
+- Pre-configured Grafana dashboard "Ollama Overview" (auto-loads on startup)
+- Included pre-built alerts, config templates, standalone exporter option
+- Comprehensive README with quick-start, troubleshooting, metrics reference
+
+### Facebook/Monday.com Lead Gen Agent (Implementation Plan)
+- Created detailed 12-16 hour implementation plan: `facebook-monday-lead-gen-agent.md`
+- 4 phases documented: POC (4-6h), Testing (2-3h), Automation (2-4h), Scaling (4-6h)
+- Tech stack: Playwright + Claude API + SQLite + homelab cron
+- 4 detailed implementation tasks with code sketches (scraper, classifier, state mgmt, agent loop)
+- 3 deployment options analyzed (homelab cron recommended, cost-free)
+- Risk mitigation: bot detection, privacy, quality assurance
+- Success metrics and future enhancements outlined
+
+**Where we stopped:**
+- Ollama monitoring: Production-ready, can deploy immediately (`cd ollama-exporter && docker-compose up -d`)
+- Lead gen agent: Implementation plan complete, ready for Phase 1 execution
+
+**Next up:**
+- Deploy Ollama stack to homelab
+- Clarify 6 refinement questions on lead gen agent, start Phase 1 POC
+- Monitor Ollama metrics in Grafana, tune dashboard
+
 ## 2026-05-29 03:50 — autonomous overnight UHaul improvements setup
 
 **What we did:**
