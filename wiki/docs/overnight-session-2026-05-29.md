@@ -34,8 +34,8 @@ This document summarizes significant features and improvements shipped across mu
 - **Camera Scanning Research** ⚠️ **(Planning/Documentation only — not yet implemented)**
   - Comprehensive guide documenting 5 approaches for auto-capturing item dimensions via device camera
   - Approaches analyzed: Web Camera API, WebXR, ML Detection, Native Bridge, LiDAR
-  - Includes pros/cons matrix, implementation difficulty, accuracy/latency tradeoffs, and Phase 1 recommendations
-  - Document: `CAMERA_SCANNING_OPTIONS.md` (ready to review; decision point before Phase 1 coding)
+  - Includes pros/cos matrix, implementation difficulty, accuracy/latency tradeoffs, and Phase 1 recommendations
+  - Document: `apps/uhaul-load-planner/CAMERA_SCANNING_OPTIONS.md` (ready to review; decision point before Phase 1 coding)
 
 **Tech**: Vite + Svelte 5 + Threlte (Three.js)  
 **Status**: v0.14.0 ready for user review (PR #52, not yet merged)
@@ -104,11 +104,12 @@ This document summarizes significant features and improvements shipped across mu
   - **Ollama Overview** — Model inference performance, queue health, error tracking
   - Built-in alerting rules for slow inference or queue overload
 - **Docker Compose Stack** — Complete monitoring setup: Prometheus + Grafana + Node Exporter + cAdvisor + Smart Health Exporter
+- **Docs**: `infra/docs/528/` (config files, deployment guides, dashboards)
 - **Status**: Production-ready, can deploy to Atlas immediately
 
 ### Facebook/Monday.com Lead Gen Agent (Implementation Plan)
 
-- **Comprehensive 12–16 hour roadmap** (`facebook-monday-lead-gen-agent.md`):
+- **Comprehensive 12–16 hour roadmap** (`infra/homelab/facebook-monday-lead-gen-agent.md`):
   - **Phase 1** (4–6h): POC — single end-to-end cycle (scrape → classify → generate → post)
   - **Phase 2** (2–3h): Refinement — improve accuracy, test at scale
   - **Phase 3** (2–4h): Automation — 24/7 cron monitoring, metrics dashboard
@@ -143,7 +144,7 @@ Use this section to validate that all overnight improvements work correctly.
 - [ ] Verify weight warning toast appears
 
 **Mobile UX — Future Roadmap** 📋 *(Planning Document — Review, Not Test)*
-- [ ] Read `MOBILE_UX_IMPROVEMENTS.md` in uhaul-load-planner/ (in PR #52 or dev/overnight-improvements branch)
+- [ ] Read `apps/uhaul-load-planner/MOBILE_UX_IMPROVEMENTS.md` (in PR #52 or dev/overnight-improvements branch)
 - [ ] Review 6 pain points identified (e.g., keyboard navigation, input validation, accessibility)
 - [ ] Review phased recommendations (Phase 1 quick wins vs Phase 2 longer-term improvements)
 - [ ] **Decision Point**: Which Phase 1 quick wins to prioritize? (guides mobile UX iteration)
@@ -165,7 +166,7 @@ Use this section to validate that all overnight improvements work correctly.
 - [ ] Verify app launches fullscreen without browser chrome
 
 **Camera Scanning Research** 📋 *(Planning Document — Review, Not Test)*
-- [ ] Read `CAMERA_SCANNING_OPTIONS.md` in uhaul-load-planner/ (in PR #52 or dev/overnight-improvements branch)
+- [ ] Read `apps/uhaul-load-planner/CAMERA_SCANNING_OPTIONS.md` (in PR #52 or dev/overnight-improvements branch)
 - [ ] Review the 5 approaches: Web Camera API, WebXR, ML Detection, Native Bridge, LiDAR
 - [ ] Review pros/cons matrix for each approach
 - [ ] Note the recommended Phase 1 approach (likely Web Camera API for immediate availability)
@@ -233,9 +234,9 @@ Use this section to validate that all overnight improvements work correctly.
 ### Infrastructure — Ollama Monitoring
 
 **Deployment Readiness**
-- [ ] Read `ollama-monitoring-setup.md` in infra/docs/528/
-- [ ] Verify all 10 config files are present in `docs/528/`
-- [ ] Review `COPY_PASTE_DEPLOY.md` for deployment steps
+- [ ] Read `infra/docs/528/ollama-monitoring-setup.md`
+- [ ] Verify all 10 config files are present in `infra/docs/528/`
+- [ ] Review `infra/docs/528/COPY_PASTE_DEPLOY.md` for deployment steps
 - [ ] (When ready) SSH to Atlas and run deployment steps
 - [ ] Verify Prometheus is up: `curl http://localhost:9090` (or Tailscale IP)
 - [ ] Verify Grafana is up: `curl http://localhost:3001` (or Tailscale IP)
@@ -244,7 +245,7 @@ Use this section to validate that all overnight improvements work correctly.
 ### Facebook/Monday.com Lead Gen Agent
 
 **Plan Review**
-- [ ] Read `facebook-monday-lead-gen-agent.md` in infra/homelab/
+- [ ] Read `infra/homelab/facebook-monday-lead-gen-agent.md`
 - [ ] Review Phase 1 scope (4–6 hours)
 - [ ] Verify all 4 implementation tasks have code sketches
 - [ ] Confirm 3 deployment options are documented
