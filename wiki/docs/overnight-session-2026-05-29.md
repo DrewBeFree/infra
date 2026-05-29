@@ -31,8 +31,16 @@ This document summarizes significant features and improvements shipped across mu
   - One-tap "Add to Home Screen" for full-screen app experience
   - Dismissible via localStorage
 
+- **Camera Scanning Research** — Comprehensive guide documenting 5 approaches for auto-capturing item dimensions via device camera:
+  - Web Camera API (browser-native, immediate availability, lower accuracy)
+  - WebXR (AR measurement, high accuracy, limited device support)
+  - ML Detection (computer vision for object recognition, high accuracy, offline capable)
+  - Native Bridge (delegated to iOS/Android native code, highest accuracy, complex)
+  - LiDAR (hardware depth sensors, maximum accuracy, limited device support)
+  - Guide includes pros/cons matrix, implementation difficulty, accuracy/latency tradeoffs, and recommendations for Phase 1 selection
+
 **Tech**: Vite + Svelte 5 + Threlte (Three.js)  
-**Status**: v0.14.0 ready for user review (PR #52, not yet merged)
+**Status**: v0.14.0 ready for user review (PR #52, not yet merged); camera scanning roadmapped for future phases
 
 ---
 
@@ -133,6 +141,8 @@ Use this section to validate that all overnight improvements work correctly.
 - [ ] Type into the width field and verify hint text is visible (e.g., "e.g., 36 inches")
 - [ ] Add an item with weight near 90% of truck capacity
 - [ ] Verify weight warning toast appears
+- [ ] (Reference) Read `MOBILE_UX_IMPROVEMENTS.md` in uhaul-load-planner/ for 6 pain points + phased recommendations
+- [ ] Consider Phase 1 quick wins (e.g., keyboard shortcuts, input validation)
 
 **3D Camera**
 - [ ] Open 3D view with items loaded
@@ -149,6 +159,14 @@ Use this section to validate that all overnight improvements work correctly.
 - [ ] Verify prompt doesn't reappear (stored in localStorage)
 - [ ] Manually add to home screen: Share → "Add to Home Screen"
 - [ ] Verify app launches fullscreen without browser chrome
+
+**Camera Scanning Research**
+- [ ] Read `CAMERA_SCANNING_OPTIONS.md` in uhaul-load-planner/ (or check PR #52)
+- [ ] Review the 5 approaches: Web Camera API, WebXR, ML Detection, Native Bridge, LiDAR
+- [ ] Review pros/cons matrix for each approach
+- [ ] Note the recommended Phase 1 approach (likely Web Camera API for immediate availability)
+- [ ] Understand tradeoffs: accuracy vs device support vs complexity
+- [ ] Decision point: Which approach to implement first? (guides next feature phase)
 
 ### LLM Debate Union (v0.3.8)
 
