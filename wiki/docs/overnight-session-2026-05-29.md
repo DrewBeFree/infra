@@ -4,7 +4,7 @@ This document summarizes significant features and improvements shipped across mu
 
 ---
 
-## UHaul Load Planner — v0.14.0
+## UHaul Load Planner — v0.14.0 — `dev/overnight-improvements`
 
 **Auto-Pack + Mobile Polish**
 
@@ -44,7 +44,7 @@ This document summarizes significant features and improvements shipped across mu
 
 ---
 
-## LLM Debate Union — v0.3.8
+## LLM Debate Union — v0.3.8 — `main`
 
 **Custom Persona System Prompts**
 
@@ -66,7 +66,7 @@ This document summarizes significant features and improvements shipped across mu
 
 ---
 
-## Daily Planner — Voice + Ideas + Categories
+## Daily Planner — `main`
 
 **Voice Dictation + New Ideas Tab**
 
@@ -93,9 +93,9 @@ This document summarizes significant features and improvements shipped across mu
 
 ---
 
-## Infrastructure — Ollama Monitoring + Lead Gen Agent Plan
+## Infrastructure (infra/homelab) — `main`
 
-**Production Monitoring Stack**
+**Ollama Monitoring + Lead Gen Agent Plan**
 
 ### Ollama Monitoring (Complete)
 
