@@ -1,5 +1,22 @@
 ﻿# Session Log
 
+## 2026-05-29 18:37 — UHaul Planner v0.14.1 test & fixes
+
+**What we did:**
+- Tested UHaul Load Planner v0.14.0 features from overnight session checklist
+- Found 4 UX issues: items spawning inside truck, missing capacity % display, confusing weight warning, camera rotation disabled post-centering
+- Fixed all 4 issues and committed to dev/overnight-improvements
+- Merged branch to main, bumped version to v0.14.1
+- Updated Command Center, state.html, and testing documentation
+
+**Where we stopped:**
+- Testing complete, all fixes merged to main, version bumped
+
+**Next up:**
+- No pending work
+
+---
+
 ## 2026-05-29 17:28 — Game status badge with host cancel control
 
 **What we did:**
