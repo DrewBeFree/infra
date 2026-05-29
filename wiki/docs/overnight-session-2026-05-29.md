@@ -113,6 +113,124 @@ This document summarizes significant features and improvements shipped across mu
 
 ---
 
+## Testing Checklist
+
+Use this section to validate that all overnight improvements work correctly.
+
+### UHaul Load Planner (v0.14.0)
+
+**Auto-Pack Feature**
+- [ ] Add 5–10 items of varying sizes to a truck layout
+- [ ] Click 📦 Auto-Pack button
+- [ ] Verify items are arranged without overlaps
+- [ ] Verify large items are prioritized (placed first)
+- [ ] Verify items don't clip through wheel wells or internal obstacles
+- [ ] Test on different truck sizes (Cargo Van, 10', 15', 20', 26')
+
+**Mobile UX**
+- [ ] Open Add Item modal on mobile
+- [ ] Verify first input field (item name) auto-focuses
+- [ ] Type into the width field and verify hint text is visible (e.g., "e.g., 36 inches")
+- [ ] Add an item with weight near 90% of truck capacity
+- [ ] Verify weight warning toast appears
+
+**3D Camera**
+- [ ] Open 3D view with items loaded
+- [ ] Click Re-center button (⌖) multiple times
+- [ ] Verify smooth easing animation (not snappy/instant)
+- [ ] Switch between two different trucks (Cargo Van → 26')
+- [ ] Verify camera auto-frames to show entire new truck with smooth animation
+- [ ] Verify truck model updates correctly
+
+**iOS PWA (if on iOS Safari)**
+- [ ] Visit app on iOS Safari for first time
+- [ ] Verify install prompt appears (usually bottom banner or notification)
+- [ ] Dismiss the prompt
+- [ ] Verify prompt doesn't reappear (stored in localStorage)
+- [ ] Manually add to home screen: Share → "Add to Home Screen"
+- [ ] Verify app launches fullscreen without browser chrome
+
+### LLM Debate Union (v0.3.8)
+
+**Custom Persona Prompts**
+- [ ] Click 🎭 PERSONAS button in header
+- [ ] Modal opens showing all 6 personas
+- [ ] Click on one persona's textarea, enter a custom prompt (e.g., "Be very sarcastic")
+- [ ] Click "Save" button
+- [ ] Verify system message confirms save in the feed
+- [ ] Start a new debate with that persona
+- [ ] Verify persona's speech reflects the custom prompt tone
+- [ ] Click "View Default" to see original prompt
+- [ ] Click "Reset" on one persona, verify it returns to default
+- [ ] Click "Reset All Prompts", verify all personas reset
+- [ ] Verify custom prompts persist across debate sessions (localStorage)
+
+**Debate with Custom Prompts**
+- [ ] Customize Claude persona: "Only respond in haikus"
+- [ ] Run a debate with Claude as a speaker
+- [ ] Verify Claude's responses follow the custom constraint
+
+### Daily Planner
+
+**Voice Dictation**
+- [ ] Navigate to Tasks tab
+- [ ] Click 🎤 button next to task input
+- [ ] Speak a task (e.g., "Buy milk")
+- [ ] Verify task text appears in input field
+- [ ] Press Enter to add task
+- [ ] Repeat for Groceries tab and Ideas tab
+
+**Task Categories**
+- [ ] Add a new task
+- [ ] Verify category dropdown/selector appears (Personal, Urgent, Work, etc.)
+- [ ] Assign a category to a task
+- [ ] Verify colored badge appears on the task
+- [ ] Switch categories on an existing task
+- [ ] Verify badge color updates
+- [ ] Reload the page
+- [ ] Verify category persists after reload (Supabase sync)
+
+**Ideas Tab**
+- [ ] Click on Ideas tab
+- [ ] Add an idea by typing and pressing Enter
+- [ ] Verify idea appears in list with timestamp
+- [ ] Add another idea via voice (click 🎤)
+- [ ] Verify both ideas appear with timestamps
+- [ ] Delete an idea by clicking ×
+- [ ] Verify idea is removed
+- [ ] Open app on another device
+- [ ] Verify ideas sync in real-time (Supabase)
+
+**Data Sync**
+- [ ] Open app on two devices simultaneously
+- [ ] Add a task on Device 1
+- [ ] Verify task appears on Device 2 within a few seconds
+- [ ] Delete an idea on Device 2
+- [ ] Verify idea is removed on Device 1
+
+### Infrastructure — Ollama Monitoring
+
+**Deployment Readiness**
+- [ ] Read `ollama-monitoring-setup.md` in infra/docs/528/
+- [ ] Verify all 10 config files are present in `docs/528/`
+- [ ] Review `COPY_PASTE_DEPLOY.md` for deployment steps
+- [ ] (When ready) SSH to Atlas and run deployment steps
+- [ ] Verify Prometheus is up: `curl http://localhost:9090` (or Tailscale IP)
+- [ ] Verify Grafana is up: `curl http://localhost:3001` (or Tailscale IP)
+- [ ] Open Grafana dashboard and verify metrics are populating
+
+### Facebook/Monday.com Lead Gen Agent
+
+**Plan Review**
+- [ ] Read `facebook-monday-lead-gen-agent.md` in infra/homelab/
+- [ ] Review Phase 1 scope (4–6 hours)
+- [ ] Verify all 4 implementation tasks have code sketches
+- [ ] Confirm 3 deployment options are documented
+- [ ] Read through the 6 refinement questions at the end
+- [ ] (When ready) Answer the 6 questions to clarify Phase 1 scope
+
+---
+
 ## Summary
 
 | Project | Change | Version | Status |
