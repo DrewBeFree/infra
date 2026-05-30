@@ -1086,3 +1086,17 @@
 **Next up:**
 - Document the repeatable schema in the app repo `memory-db/` task.
 - Wire future gateway/ingestion workers to `postgres://ai_memory:<secret>@127.0.0.1:5432/ai_memory` from Atlas-local services only.
+
+## 2026-05-30 18:18:00 -04:00 - Merge LLM Debate Union Atlas infra branch
+
+**What we did:**
+- Committed the Atlas memory vault service session-log update on `feat/llm-debate-union-atlas-pocketbase-plan`.
+- Pushed the feature branch, fast-forward merged it into `main`, and pushed `infra/main` to GitHub.
+- Confirmed the related app branch `feat/atlas-pocketbase-cloud-llm` was also merged and pushed to `llm-debate-union/main`.
+
+**Where we stopped:**
+- `infra/main` includes the LLM Debate Union Atlas workflow docs and memory-vault service log.
+- Atlas `postgres-memory-vault` is live and verified.
+
+**Next up:**
+- Continue app-side memory schema/docs and cloud gateway work from `llm-debate-union/main`.
