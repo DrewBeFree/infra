@@ -1004,3 +1004,18 @@
 
 **Next up:**
 - Inventory existing GitHub Projects, choose the canonical ecosystem board, then seed issues for the known unfinished work.
+
+## 2026-05-30 03:11 EDT - Logoff checkpoint after ecosystem portal deploy
+
+**What we did:**
+- Confirmed `infra/main` and `drewbefree-command-center/main` are pushed after the ecosystem portal work.
+- Confirmed the internal portal is deployed on Atlas at `http://atlas/ecosystem/`.
+- Corrected the ecosystem session-log headings to include timestamps.
+
+**Where we stopped:**
+- `drewbefree-command-center` is clean on `main`.
+- `infra` is on `main` with only the pre-existing `wiki/docs/index.md` timestamp edit still uncommitted.
+- Local preview on `127.0.0.1:8765` is no longer needed because Atlas is live.
+
+**Next up:**
+- Start a fresh session for GitHub Projects/Issues cleanup, Leantime evaluation planning, or UHaul IP/edge restriction work.
