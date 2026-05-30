@@ -947,14 +947,15 @@
 - Added `lead-gen-agent` to `ecosystem.json` and the internal portal registry contract.
 - Added an Atlas wiki project page and linked it from the project and agent catalogs.
 - Confirmed `DrewBeFree/lead-gen-agent` now has `main` as its GitHub default branch.
+- Merged infra PR #4 and deployed the updated Atlas wiki plus internal portal registry.
 
 **Where we stopped:**
-- Infra work is on branch `feat-track-lead-gen-agent`.
-- `wiki/docs/index.md` still has a pre-existing timestamp-only edit and was intentionally left separate.
+- `infra/main` includes the lead-gen-agent project tracking docs.
+- Atlas wiki verifies `http://atlas/wiki/projects/lead-gen-agent/`.
+- Atlas internal portal registry verifies `lead-gen-agent` in `http://atlas/ecosystem/ecosystem.json`.
 
 **Next up:**
-- Commit, push, and merge the project registry/wiki update.
-- Deploy the updated wiki/internal portal to Atlas if live docs should reflect the change immediately.
+- Continue lead-gen implementation from `DrewBeFree/lead-gen-agent`.
 
 ## 2026-05-30 03:05 EDT - Build internal ecosystem portal
 
