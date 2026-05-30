@@ -940,7 +940,7 @@
 - In a fresh desktop Codex session rooted at `C:\Users\drewb\Documents\GitHub\infra`, design and implement the internal ecosystem portal around the canonical registry.
 - Include UHaul Planner public visibility cleanup in the implementation plan.
 
-## 2026-05-30 - Build internal ecosystem portal
+## 2026-05-30 03:05 EDT - Build internal ecosystem portal
 
 **What we did:**
 - Created `feat/internal-ecosystem-portal` in `infra` and built the canonical `ecosystem.json` registry with repos, services, dashboards, docs, deploy targets, GitHub links, local paths, live URLs, visibility levels, and status/control metadata.
@@ -957,7 +957,7 @@
 - Deploy `internal-portal/` plus `ecosystem.json` to Atlas and wire nginx at `http://atlas/ecosystem/`.
 - Implement the actual UHaul edge/IP restriction before exposing it anywhere public again.
 
-## 2026-05-30 - Polish portal preview and link behavior
+## 2026-05-30 03:05 EDT - Polish portal preview and link behavior
 
 **What we did:**
 - Reworked the internal portal UI into a darker, sleeker operator-console style.
@@ -975,7 +975,7 @@
 - Commit/push both feature branches when the look and behavior feel right.
 - Deploy the same assets to Atlas under `http://atlas/ecosystem/`.
 
-## 2026-05-30 - Commit, push, and deploy ecosystem portal
+## 2026-05-30 03:05 EDT - Commit, push, and deploy ecosystem portal
 
 **What we did:**
 - Fast-forward merged `feat/internal-ecosystem-portal` into `main` for both `infra` and `drewbefree-command-center`.
@@ -993,7 +993,7 @@
 - Review the live Atlas portal from Tailscale.
 - Open/seed GitHub Project issues for the remaining portal control hooks, UHaul restriction, and possible future Leantime evaluation.
 
-## 2026-05-30 - Add ecosystem tracking backlog item
+## 2026-05-30 03:05 EDT - Add ecosystem tracking backlog item
 
 **What we did:**
 - Added a dedicated `BACKLOG.md` item for standardizing GitHub Projects + Issues across the ecosystem.
