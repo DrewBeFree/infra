@@ -24,6 +24,7 @@ const requiredRepos = [
   "infra",
   "interactive-setup",
   "kybernet-tech",
+  "lead-gen-agent",
   "llm-debate-union",
   "photography",
   "poker",
