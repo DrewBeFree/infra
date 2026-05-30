@@ -1,5 +1,22 @@
 # Session Log
 
+## 2026-05-30 16:41 — Fixed telemetry report persistence bug
+
+**What we did:**
+- Identified root cause: `loadHistorySession()` restored stats, but `handleMotionSelect()` called `resetState()` which cleared them
+- Fixed by saving stats before `resetState()` and restoring them after (lines 2081-2091 in app.js)
+- Verified fix with code simulation: stats now preserve through session load (turns: 15 → 0 → 15)
+- Confirmed pre-populated test session has complete telemetry (15 turns, 1,774 tokens, detailed logs)
+- Committed fix with detailed message explaining bug and solution
+
+**Where we stopped:**
+- Clarification needed: Previous session apparently planned to deploy to Atlas (PowerEdge server), but deployment method/scope was unclear
+- Current state: Fix is committed to main, app running locally on http://localhost:8080/, awaiting deployment plan clarification
+
+**Next up:**
+- Check with Codex about Atlas deployment plan (Docker container? Persistent backend storage? Accessibility requirements?)
+- Once plan is confirmed, set up appropriate deployment infrastructure (docker-compose, reverse proxy, etc.)
+
 ## 2026-05-30 - Track workspace cleanup notes
 
 **What we did:**
