@@ -61,12 +61,12 @@ Every time you're done working. Even for small sessions — the habit is the poi
 
 **Invoke:** `/update-atlas`
 
-Deploys the latest `homelab-status-dashboard` code to Atlas after you've pushed changes to the infra repo.
+Deploys the latest `homelab-status-dashboard` code to Atlas after you've pushed changes to the homelab repo.
 
 ### What it does
 
-SSHes to Atlas, pulls the latest infra repo, and rsyncs the dashboard files to `/opt/homelab-status-dashboard/` where nginx serves them. Nginx doesn't need to restart — it's serving static files.
+SSHes to Atlas, pulls the latest homelab repo, and rsyncs the dashboard files to `/opt/homelab-status-dashboard/` where nginx serves them. Nginx doesn't need to restart — it's serving static files.
 
 ### When to use
 
-After pushing any changes to the homelab status dashboard (HTML/CSS/JS files in `infra/`). The dashboard at `http://atlas` won't update until you run this.
+After pushing any changes to the homelab status dashboard (HTML/CSS/JS files in `homelab/homelab-status-dashboard/`). The dashboard at `http://atlas` won't update until you run this.

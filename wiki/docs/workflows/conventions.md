@@ -11,7 +11,8 @@ All projects live in `~/Documents/GitHub/` organized by category:
 | `apps/` | Web applications (PWAs) |
 | `sites/` | Static/marketing websites |
 | `agents/` | Agentic automation projects |
-| `infra/` | Infrastructure & homelab setup |
+| `infra/` | Workspace infrastructure, repo standards, wiki, and clone tooling |
+| `homelab/` | Alienware + Atlas homelab docs, maps, dashboards, and service plans |
 | `notes/` | Loose markdown notes |
 
 ## Project Naming

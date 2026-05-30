@@ -13,7 +13,8 @@ All projects live in `C:\Users\drewb\Documents\GitHub\` organized by category:
 | `apps/` | Web applications (PWAs) | 9 projects |
 | `sites/` | Static/marketing websites | 3 projects |
 | `agents/` | Agentic automation projects | 1 project |
-| `infra/` | Infrastructure & homelab setup | Current repo |
+| `infra/` | Workspace infrastructure, repo standards, wiki, and clone tooling | Current repo |
+| `homelab/` | Alienware + Atlas homelab docs, maps, and service plans | 1 project |
 | `notes/` | Loose markdown notes | N/A |
 | `DrewBeFree/` | Main Python backend | 1 project |
 
