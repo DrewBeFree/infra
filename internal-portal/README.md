@@ -12,20 +12,19 @@ Atlas/Tailscale-only launcher and status/control-ready surface for the DrewBeFre
 
 Serve this privately from Atlas, not the public internet.
 
-Suggested static target:
+Static target, using the existing Atlas nginx root:
 
 ```bash
-sudo mkdir -p /opt/internal-portal
-sudo chown drew:drew /opt/internal-portal
-rsync -a internal-portal/ /opt/internal-portal/
-cp ecosystem.json /opt/internal-portal/ecosystem.json
+mkdir -p /opt/homelab-status-dashboard/ecosystem
+rsync -a --delete internal-portal/ /opt/homelab-status-dashboard/ecosystem/
+cp ecosystem.json /opt/homelab-status-dashboard/ecosystem/ecosystem.json
 ```
 
-Suggested nginx location under the existing Atlas-only server:
+No nginx change is required while `/opt/homelab-status-dashboard` remains the server root. If the portal later moves outside that root, add a location like this:
 
 ```nginx
 location /ecosystem/ {
-  alias /opt/internal-portal/;
+  alias /opt/homelab-status-dashboard/ecosystem/;
   index index.html;
   try_files $uri $uri/ /ecosystem/index.html;
 }

@@ -975,6 +975,24 @@
 - Commit/push both feature branches when the look and behavior feel right.
 - Deploy the same assets to Atlas under `http://atlas/ecosystem/`.
 
+## 2026-05-30 - Commit, push, and deploy ecosystem portal
+
+**What we did:**
+- Fast-forward merged `feat/internal-ecosystem-portal` into `main` for both `infra` and `drewbefree-command-center`.
+- Pushed `main` for both repos to GitHub.
+- Pulled `infra` on Atlas and deployed the internal portal under the existing nginx root at `/opt/homelab-status-dashboard/ecosystem/`.
+- Verified `http://atlas/ecosystem/` and `http://atlas/ecosystem/ecosystem.json` both return `200`; verified deployed JSON schema is `drewbefree.ecosystem.v1`.
+- Updated deploy docs and registry metadata to use the live sudo-free Atlas path.
+
+**Where we stopped:**
+- The portal is live on Atlas at `http://atlas/ecosystem/`.
+- UHaul Planner is removed from public Command Center and tracked as sensitive in the portal registry.
+- The actual UHaul IP/edge restriction is still future work.
+
+**Next up:**
+- Review the live Atlas portal from Tailscale.
+- Open/seed GitHub Project issues for the remaining portal control hooks, UHaul restriction, and possible future Leantime evaluation.
+
 ## 2026-05-30 - Add ecosystem tracking backlog item
 
 **What we did:**

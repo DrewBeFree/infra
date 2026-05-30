@@ -963,7 +963,7 @@
         {
           "type": "nginx-static",
           "host": "atlas",
-          "path": "/opt/internal-portal",
+          "path": "/opt/homelab-status-dashboard/ecosystem",
           "url": "http://atlas/ecosystem/"
         }
       ],
@@ -1172,7 +1172,7 @@
         {
           "type": "nginx-static",
           "host": "atlas",
-          "path": "/opt/internal-portal",
+          "path": "/opt/homelab-status-dashboard/ecosystem",
           "url": "http://atlas/ecosystem/"
         }
       ],

@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-TARGET="${INTERNAL_PORTAL_TARGET:-/opt/internal-portal}"
+TARGET="${INTERNAL_PORTAL_TARGET:-/opt/homelab-status-dashboard/ecosystem}"
 
 mkdir -p "$TARGET"
 rsync -a --delete "$ROOT/internal-portal/" "$TARGET/"
