@@ -1,5 +1,16 @@
-﻿# Session Log
+# Session Log
 
+## 2026-05-30 - Track workspace cleanup notes
+
+**What we did:**
+- Tracked AI workspace cleanup and Atlas wiki deploy issue notes under `docs/`.
+- Ignored local wiki `.claude` settings so machine-specific permissions do not stay as untracked noise.
+
+**Where we stopped:**
+- Changes are on branch `docs/track-workspace-notes`.
+
+**Next up:**
+- Open and merge the follow-up PR.
 ## 2026-05-30 - Update wiki docs for homelab split
 
 **What we did:**
