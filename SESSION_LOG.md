@@ -1,5 +1,18 @@
 ﻿# Session Log
 
+## 2026-05-30 - Move homelab status dashboard to homelab repo
+
+**What we did:**
+- Moved `homelab-status-dashboard/` out of `infra` and into the sibling `homelab` repo.
+- Kept `infra` focused on workspace/repo/wiki tooling rather than homelab service assets.
+
+**Where we stopped:**
+- The folder removal is committed and pushed on `infra` branch `fix/separate-homelab-repo`.
+- The dashboard folder is committed and pushed in `homelab` branch `feat-lead-gen-agent-v2`.
+
+**Next up:**
+- Close the session; later, remove the old ignored `infra\homelab` copy after handles are released.
+
 ## 2026-05-30 - Split homelab into sibling repo
 
 **What we did:**
