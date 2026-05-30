@@ -1,5 +1,19 @@
 ﻿# Session Log
 
+## 2026-05-30 - Update wiki docs for homelab split
+
+**What we did:**
+- Updated wiki docs for `/update-atlas` to point at the `homelab` repo dashboard path.
+- Updated workflow conventions to list `infra/` and `homelab/` as separate top-level repos.
+- Checked that old `infra/homelab-status-dashboard` references no longer appear in the edited docs.
+
+**Where we stopped:**
+- Changes are ready to commit on branch `fix/separate-homelab-repo`.
+- Local wiki build was not run because WSL bash was blocked and the wiki venv is Linux-style.
+
+**Next up:**
+- Commit/push the wiki doc cleanup.
+- Run wiki build/deploy from WSL or Atlas-capable environment later.
 ## 2026-05-30 - Move homelab status dashboard to homelab repo
 
 **What we did:**

@@ -41,4 +41,4 @@ The core difference: agents run on servers and produce artifacts; skills run ins
 |---|---|
 | [`/log-session`](skills.md#log-session) | End of any session — generate + push session log |
 | [`/logoff`](skills.md#logoff) | End of a dev session — full wrap-up checklist |
-| [`/update-atlas`](skills.md#update-atlas) | After pushing infra changes — deploy to atlas |
+| [`/update-atlas`](skills.md#update-atlas) | After pushing homelab dashboard changes — deploy to atlas |
