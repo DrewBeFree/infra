@@ -136,3 +136,7 @@ Click the **🎭 PERSONAS** button in the header to customize the system prompt 
 - **Reset all prompts** — Bulk reset all custom prompts back to defaults
 
 Custom prompts are automatically applied to all debates in your session. This is useful for tuning debate styles, testing different argument approaches, or specializing personas for specific topics.
+
+## Infrastructure Plan
+
+- [Atlas + PocketBase deployment workflow](../workflows/llm-debate-union-atlas-pocketbase.md)

@@ -1036,3 +1036,19 @@
 
 **Next up:**
 - Start a fresh session for GitHub Projects/Issues cleanup, Leantime evaluation planning, or UHaul IP/edge restriction work.
+
+## 2026-05-30 — LLM Debate Union Atlas deployment plan
+
+**What we did:**
+- Added infra wiki workflow plan for deploying LLM Debate Union on Atlas with PocketBase, a cloud LLM gateway, and a Postgres + pgvector memory-vault path.
+- Linked the workflow from the LLM Debate Union project wiki page.
+- Created branch `feat/llm-debate-union-atlas-pocketbase-plan` for infra wiki changes.
+- Verified Atlas identity and service context: Dell PowerEdge R720, Ubuntu 24.04, Tailscale `100.71.165.80`.
+
+**Where we stopped:**
+- Infra wiki changes are local on the feature branch and not committed yet.
+- Postgres + pgvector installation on Atlas is blocked by sudo/Docker permissions.
+
+**Next up:**
+- Commit/push the infra wiki plan after final review.
+- Add service documentation under homelab/infra once Postgres and the LLM gateway are live.
