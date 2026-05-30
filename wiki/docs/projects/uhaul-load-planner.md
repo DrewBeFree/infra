@@ -9,8 +9,8 @@ Interactive overhead floor plan for a 26' U-Haul. Drag-and-drop items to scale, 
 | Field | Value |
 | --- | --- |
 | Type | app |
-| Version | v0.13.1 |
-| Updated | 2026-05-26 |
+| Version | v0.14.1 |
+| Updated | 2026-05-29 |
 | Status | active |
 | Live | https://uhaul.drewbefree.com |
 | Repo | https://github.com/DrewBeFree/uhaul-load-planner |
@@ -36,10 +36,22 @@ If your move requires more than one truck, you can add additional trucks and pla
 
 1. Click **Add Item** to create a new piece of furniture or box
 2. Enter a label (e.g., "Queen Bed Frame"), width, and depth in feet/inches
+   - **Input hints** guide you with examples (e.g., "e.g., 36 inches")
+   - The first empty field auto-focuses when the modal opens
 3. Choose a color to visually group items (e.g., blue for bedroom, green for kitchen)
 4. Click **Place** — the item appears on the canvas
 
 You can also pick from the **Furniture Preset Catalog** (26 common items) to auto-fill dimensions.
+
+### Auto-Pack Feature
+
+Click the **📦 Auto-Pack** button in the Sidebar to automatically arrange all items in the truck using a guillotine-based 3D bin packing algorithm. The algorithm:
+- Sorts items by volume (largest first) for optimal packing
+- Respects item constraints (height, fragility, weight)
+- Places items efficiently along the truck floor
+- Accounts for internal obstacles (wheel wells, pillars)
+
+Auto-pack is a quick starting point — refine the layout manually afterward if needed.
 
 ### 2D View — Arranging the Layout
 
@@ -54,7 +66,8 @@ You can also pick from the **Furniture Preset Catalog** (26 common items) to aut
 The 3D scene renders items as physical boxes in the truck at their actual heights and stacking positions, with dynamically generated proportional models for the entire U-Haul fleet (Cargo Van, 10', 15', 20', 26'):
 - **Drag** items to reposition them on the truck floor
 - **Double-Click** an item to open the Edit Properties modal directly from the 3D view
-- **Re-center Button (⌖)** in the top right instantly smoothly resets the camera to the default orbit position
+- **Re-center Button (⌖)** in the top right instantly smoothly resets the camera to the default orbit position with smooth easing animation
+- **Camera auto-framing** on truck changes — the view automatically frames the new truck with optimal centering
 - Items stack physically — the list order determines which items sit on top, and physics calculations automatically route items around internal truck wheel wells
 - Labels are dynamically wrapped and rendered flush onto the physical sides of each item
 
@@ -65,6 +78,8 @@ When you place an item, the app checks whether it fits through the truck's door 
 ### Weight / Payload Indicator
 
 A color-coded progress bar tracks the total weight of your items against the truck's 9,010 lb payload limit. It turns yellow as you approach the limit and red if you exceed it.
+
+A toast warning appears when your truck exceeds 90% of capacity, giving you a heads-up before hitting the limit.
 
 ### Layout Management
 
@@ -83,12 +98,19 @@ Your layout saves automatically — you can close the tab and return later witho
 | Door opening | 7'9" W × 6'10" H |
 | Max load weight | 9,010 lbs |
 
+### Mobile Installation (iOS)
+
+On **iOS Safari**, the app supports "Add to Home Screen" installation. When you first visit on iOS, you'll see a prompt to install the app as a PWA (Progressive Web App). This gives you a native app icon and full-screen experience without the browser chrome.
+
+To manually add: tap the Share button → "Add to Home Screen" → confirm.
+
 ### Tips
 
 - Plan heavy items (furniture, appliances) first along the sides and front
 - Leave a path to the door for items you'll need to access first
 - Use the color groups to mentally separate rooms — makes unloading faster
 - Use the 3D view to visualize stacking and verify tall items fit under the truck ceiling
+- Use Auto-Pack as a starting point, then refine manually for the final layout
 
 ### Data Model
 

@@ -9,8 +9,8 @@ Full session manager for No-Limit Hold'em cash games. Timer, rounds, buy-ins, re
 | Field | Value |
 | --- | --- |
 | Type | app |
-| Version | v1.5.2 |
-| Updated | 2026-05-10 |
+| Version | v0.7.0 |
+| Updated | 2026-05-29 |
 | Status | active |
 | Live | https://poker.drewbefree.com |
 | Repo | https://github.com/DrewBeFree/poker |

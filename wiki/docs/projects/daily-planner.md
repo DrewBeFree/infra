@@ -18,13 +18,16 @@ Personal daily-driver for tasks, grocery lists, and trip packing lists. Supabase
 
 ## How to Use
 
-Daily Planner is a personal productivity app with three tabs: Tasks, Groceries, and Trips.
+Daily Planner is a personal productivity app with four tabs: Tasks, Groceries, Trips, and Ideas.
 
 ### Tasks Tab
 
 The Tasks tab is your daily to-do list.
 
 - **Add a task** — type in the input box and press Enter or click Add
+  - **Voice input** — click the 🎤 button to dictate a task using your microphone (Web Speech API)
+- **Task categories** — assign a colored badge to organize by type (Personal, Urgent, Work, etc.)
+  - Categories appear as colored chips on each task
 - **Complete a task** — click the checkbox; completed tasks move to the bottom
 - **Archive** — archived tasks are hidden but preserved; use the Archive toggle to review them
 - **Print** — the app auto-prints each morning via Windows Task Scheduler; manually trigger with the Print button
@@ -35,6 +38,7 @@ Manage multiple grocery lists (one per store or trip).
 
 - **Create a list** — click **New List**, enter a store name
 - **Add items** — type an item and press Enter
+  - **Voice input** — click the 🎤 button to dictate grocery items using your microphone
 - **Check off items** — tap/click to mark as purchased; checked items stay visible until you clear them
 - **Clear checked** — removes all checked items from the active list
 - **Switch lists** — use the list selector at the top to jump between stores
@@ -47,6 +51,18 @@ Packing lists for upcoming trips.
 - **Add packing items** — type items you need to pack
 - **Check off as you pack** — mark items done as you add them to your bag
 - **Archive a trip** — once the trip is over, archive it to keep your list clean without losing the history
+
+### Ideas Tab
+
+A free-form capture space for thoughts, projects, and fleeting ideas.
+
+- **Add an idea** — type in the input box and press Enter
+  - **Voice input** — click the 🎤 button to dictate an idea using your microphone
+- **Delete an idea** — click the × button to remove an idea
+- **Timestamps** — each idea is automatically timestamped so you can track when you captured it
+- **Ideas sync to Supabase** — all ideas are saved and synced across devices in real time
+
+Use Ideas for brainstorming, quick notes, or reminders that don't fit into the other structured lists.
 
 ### Data Sync
 
