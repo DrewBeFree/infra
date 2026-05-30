@@ -1,0 +1,1319 @@
+{
+  "schema": "drewbefree.ecosystem.v1",
+  "updatedAt": "2026-05-30",
+  "owner": "DrewBeFree",
+  "canonical": true,
+  "generatedFrom": [
+    "infra/repos.json",
+    "infra/wiki/docs/projects",
+    "infra/wiki/docs/infrastructure/services.md",
+    "homelab/homelab-status-dashboard/README.md",
+    "local GitHub workspace scan"
+  ],
+  "access": {
+    "network": "atlas-tailscale-only",
+    "publicInternet": false,
+    "primaryHost": "atlas",
+    "tailscaleIpv4": "100.71.165.80",
+    "tailscaleIpv6": "fd7a:115c:a1e0::613a:a550",
+    "notes": "Serve the portal only from Atlas over Tailscale. Public projects remain public at their own URLs, but this launcher is internal."
+  },
+  "visibilityLevels": [
+    "public",
+    "private",
+    "sensitive"
+  ],
+  "repositories": [
+    {
+      "name": "adhd-snap",
+      "displayName": "ADHD Snap",
+      "category": "app",
+      "visibility": "public",
+      "summary": "Quick capture app for ADHD-friendly task and idea intake.",
+      "githubUrl": "https://github.com/DrewBeFree/adhd-snap",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\apps\\adhd-snap",
+      "liveUrls": [
+        "https://snap.drewbefree.com"
+      ],
+      "docs": [
+        {
+          "label": "Wiki project page",
+          "url": "http://atlas/wiki/projects/adhd-snap/"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "github-pages",
+          "host": "github",
+          "url": "https://snap.drewbefree.com",
+          "notes": "Static app deployed from repo build output."
+        }
+      ],
+      "publicCommandCenter": false,
+      "statusControl": {
+        "state": "tracked",
+        "checks": [
+          "open",
+          "github",
+          "docs"
+        ],
+        "actions": [
+          "open",
+          "build",
+          "deploy"
+        ]
+      }
+    },
+    {
+      "name": "ai-dog-trainer",
+      "displayName": "AI Dog Trainer",
+      "category": "app",
+      "visibility": "public",
+      "summary": "AI-powered positive-reinforcement dog training coach.",
+      "githubUrl": "https://github.com/DrewBeFree/ai-dog-trainer",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\apps\\ai-dog-trainer",
+      "liveUrls": [],
+      "docs": [
+        {
+          "label": "Wiki project page",
+          "url": "http://atlas/wiki/projects/ai-dog-trainer/"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "python-app",
+          "host": "local",
+          "notes": "Repository has Python app dependencies; no public runtime URL is recorded yet."
+        }
+      ],
+      "publicCommandCenter": true,
+      "version": "v0.1.0",
+      "statusControl": {
+        "state": "tracked",
+        "checks": [
+          "github",
+          "docs"
+        ],
+        "actions": [
+          "open",
+          "run",
+          "deploy"
+        ]
+      }
+    },
+    {
+      "name": "daily-planner",
+      "displayName": "Daily Planner",
+      "category": "app",
+      "visibility": "public",
+      "summary": "Daily-driver tasks, grocery lists, packing lists, and morning print workflow.",
+      "githubUrl": "https://github.com/DrewBeFree/daily-planner",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\apps\\daily-planner",
+      "liveUrls": [
+        "https://tasks.drewbefree.com"
+      ],
+      "docs": [
+        {
+          "label": "Wiki project page",
+          "url": "http://atlas/wiki/projects/daily-planner/"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "github-pages",
+          "host": "github",
+          "url": "https://tasks.drewbefree.com"
+        }
+      ],
+      "publicCommandCenter": true,
+      "version": "v0.9.5",
+      "statusControl": {
+        "state": "live",
+        "checks": [
+          "open",
+          "github",
+          "docs"
+        ],
+        "actions": [
+          "open",
+          "build",
+          "deploy"
+        ]
+      }
+    },
+    {
+      "name": "DrewBeFree",
+      "displayName": "DrewBeFree Profile",
+      "category": "app",
+      "visibility": "public",
+      "summary": "GitHub profile and personal namespace README.",
+      "githubUrl": "https://github.com/DrewBeFree/DrewBeFree",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\apps\\DrewBeFree",
+      "liveUrls": [
+        "https://github.com/DrewBeFree"
+      ],
+      "docs": [
+        {
+          "label": "Wiki project page",
+          "url": "http://atlas/wiki/projects/DrewBeFree/"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "github-profile-readme",
+          "host": "github",
+          "url": "https://github.com/DrewBeFree"
+        }
+      ],
+      "publicCommandCenter": false,
+      "statusControl": {
+        "state": "tracked",
+        "checks": [
+          "github",
+          "docs"
+        ],
+        "actions": [
+          "open",
+          "edit"
+        ]
+      }
+    },
+    {
+      "name": "drewbefree-command-center",
+      "displayName": "Command Center",
+      "category": "app",
+      "visibility": "public",
+      "summary": "Public DrewBeFree launcher for sites and public apps.",
+      "githubUrl": "https://github.com/DrewBeFree/drewbefree-command-center",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\apps\\drewbefree-command-center",
+      "liveUrls": [
+        "https://drewbefree.com"
+      ],
+      "docs": [
+        {
+          "label": "Wiki project page",
+          "url": "http://atlas/wiki/projects/drewbefree-command-center/"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "github-pages",
+          "host": "github",
+          "url": "https://drewbefree.com"
+        }
+      ],
+      "publicCommandCenter": true,
+      "statusControl": {
+        "state": "live",
+        "checks": [
+          "open",
+          "github",
+          "docs"
+        ],
+        "actions": [
+          "open",
+          "build",
+          "deploy"
+        ]
+      }
+    },
+    {
+      "name": "golf",
+      "displayName": "Linksy",
+      "category": "app",
+      "visibility": "public",
+      "summary": "Live wager tracker for casual golf rounds.",
+      "githubUrl": "https://github.com/DrewBeFree/golf",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\apps\\golf",
+      "liveUrls": [
+        "https://linksy.drewbefree.com"
+      ],
+      "docs": [
+        {
+          "label": "Wiki project page",
+          "url": "http://atlas/wiki/projects/golf/"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "github-pages",
+          "host": "github",
+          "url": "https://linksy.drewbefree.com"
+        }
+      ],
+      "publicCommandCenter": true,
+      "version": "v0.2.2",
+      "statusControl": {
+        "state": "live",
+        "checks": [
+          "open",
+          "github",
+          "docs"
+        ],
+        "actions": [
+          "open",
+          "build",
+          "deploy"
+        ]
+      }
+    },
+    {
+      "name": "llm-debate-union",
+      "displayName": "LLM Debate Union",
+      "category": "app",
+      "visibility": "private",
+      "summary": "Local LLM debate and orchestration experiment.",
+      "githubUrl": "https://github.com/DrewBeFree/llm-debate-union",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\apps\\llm-debate-union",
+      "liveUrls": [],
+      "docs": [
+        {
+          "label": "Wiki project page",
+          "url": "http://atlas/wiki/projects/llm-debate-union/"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "local-dev",
+          "host": "alienware",
+          "notes": "Uses local Ollama at http://localhost:11434 by default."
+        }
+      ],
+      "publicCommandCenter": false,
+      "statusControl": {
+        "state": "local-dev",
+        "checks": [
+          "github",
+          "docs",
+          "ollama"
+        ],
+        "actions": [
+          "open",
+          "run",
+          "logs"
+        ]
+      }
+    },
+    {
+      "name": "poker",
+      "displayName": "Poker Night",
+      "category": "app",
+      "visibility": "public",
+      "summary": "No-Limit Hold'em session manager with timers, buy-ins, and payout balancing.",
+      "githubUrl": "https://github.com/DrewBeFree/poker",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\apps\\poker",
+      "liveUrls": [
+        "https://poker.drewbefree.com"
+      ],
+      "docs": [
+        {
+          "label": "Wiki project page",
+          "url": "http://atlas/wiki/projects/poker/"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "github-pages",
+          "host": "github",
+          "url": "https://poker.drewbefree.com"
+        }
+      ],
+      "publicCommandCenter": true,
+      "version": "v0.7.0",
+      "statusControl": {
+        "state": "live",
+        "checks": [
+          "open",
+          "github",
+          "docs"
+        ],
+        "actions": [
+          "open",
+          "build",
+          "deploy"
+        ]
+      }
+    },
+    {
+      "name": "recap-viewer",
+      "displayName": "Recap Viewer",
+      "category": "app",
+      "visibility": "public",
+      "summary": "Viewer for structured meeting summaries generated by recap agents.",
+      "githubUrl": "https://github.com/DrewBeFree/recap-viewer",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\apps\\recap-viewer",
+      "liveUrls": [
+        "https://recap.drewbefree.com"
+      ],
+      "docs": [
+        {
+          "label": "Wiki project page",
+          "url": "http://atlas/wiki/projects/recap-viewer/"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "github-pages",
+          "host": "github",
+          "url": "https://recap.drewbefree.com"
+        }
+      ],
+      "publicCommandCenter": false,
+      "statusControl": {
+        "state": "live",
+        "checks": [
+          "open",
+          "github",
+          "docs"
+        ],
+        "actions": [
+          "open",
+          "build",
+          "deploy"
+        ]
+      }
+    },
+    {
+      "name": "recipes",
+      "displayName": "Recipes",
+      "category": "app",
+      "visibility": "public",
+      "summary": "Searchable family recipe collection with editable data.",
+      "githubUrl": "https://github.com/DrewBeFree/recipes",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\apps\\recipes",
+      "liveUrls": [
+        "https://food.drewbefree.com"
+      ],
+      "docs": [
+        {
+          "label": "Wiki project page",
+          "url": "http://atlas/wiki/projects/recipes/"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "github-pages",
+          "host": "github",
+          "url": "https://food.drewbefree.com"
+        }
+      ],
+      "publicCommandCenter": true,
+      "version": "v1.0.2",
+      "statusControl": {
+        "state": "live",
+        "checks": [
+          "open",
+          "github",
+          "docs"
+        ],
+        "actions": [
+          "open",
+          "build",
+          "deploy"
+        ]
+      }
+    },
+    {
+      "name": "rv-maintenance",
+      "displayName": "RV Maintenance",
+      "category": "app",
+      "visibility": "public",
+      "summary": "RV maintenance dashboard with trip, history, and overdue tracking.",
+      "githubUrl": "https://github.com/DrewBeFree/rv-maintenance",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\apps\\rv-maintenance",
+      "liveUrls": [
+        "https://rv.drewbefree.com"
+      ],
+      "docs": [
+        {
+          "label": "Wiki project page",
+          "url": "http://atlas/wiki/projects/rv-maintenance/"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "github-pages",
+          "host": "github",
+          "url": "https://rv.drewbefree.com"
+        }
+      ],
+      "publicCommandCenter": true,
+      "version": "v0.5.2",
+      "statusControl": {
+        "state": "live",
+        "checks": [
+          "open",
+          "github",
+          "docs"
+        ],
+        "actions": [
+          "open",
+          "build",
+          "deploy"
+        ]
+      }
+    },
+    {
+      "name": "soccer-pickup",
+      "displayName": "Soccer Pickup",
+      "category": "app",
+      "visibility": "public",
+      "summary": "Pickup soccer signup page with game details, weather, and admin editing.",
+      "githubUrl": "https://github.com/DrewBeFree/soccer-pickup",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\apps\\soccer-pickup",
+      "liveUrls": [
+        "https://soccer.drewbefree.com"
+      ],
+      "docs": [
+        {
+          "label": "Wiki project page",
+          "url": "http://atlas/wiki/projects/soccer-pickup/"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "github-pages",
+          "host": "github",
+          "url": "https://soccer.drewbefree.com"
+        }
+      ],
+      "publicCommandCenter": true,
+      "version": "v0.8.8",
+      "statusControl": {
+        "state": "live",
+        "checks": [
+          "open",
+          "github",
+          "docs"
+        ],
+        "actions": [
+          "open",
+          "build",
+          "deploy"
+        ]
+      }
+    },
+    {
+      "name": "uhaul-load-planner",
+      "displayName": "UHaul Planner",
+      "category": "app",
+      "visibility": "sensitive",
+      "summary": "Interactive 26-foot moving truck load planner. Keep out of the public Command Center until IP direction is clear.",
+      "githubUrl": "https://github.com/DrewBeFree/uhaul-load-planner",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\apps\\uhaul-load-planner",
+      "liveUrls": [
+        "https://uhaul.drewbefree.com"
+      ],
+      "docs": [
+        {
+          "label": "Wiki project page",
+          "url": "http://atlas/wiki/projects/uhaul-load-planner/"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "github-pages",
+          "host": "github",
+          "url": "https://uhaul.drewbefree.com",
+          "notes": "Existing public URL remains tracked here, but the public Command Center entry is removed."
+        },
+        {
+          "type": "ip-filter",
+          "host": "edge",
+          "notes": "Add Sensitive / IP filter before re-publicizing launcher access."
+        }
+      ],
+      "publicCommandCenter": false,
+      "version": "v0.14.2",
+      "accessControl": {
+        "ipFilter": true,
+        "reason": "Sensitive / IP filter required for UHaul Planner before any public launcher exposure."
+      },
+      "statusControl": {
+        "state": "sensitive",
+        "checks": [
+          "open",
+          "github",
+          "docs",
+          "ip-filter"
+        ],
+        "actions": [
+          "open",
+          "build",
+          "deploy",
+          "restrict"
+        ]
+      }
+    },
+    {
+      "name": "dwebbsolutions",
+      "displayName": "DW Solutions",
+      "category": "site",
+      "visibility": "public",
+      "summary": "Public IT support site for homes and small businesses.",
+      "githubUrl": "https://github.com/DrewBeFree/dwebbsolutions",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\sites\\dwebbsolutions",
+      "liveUrls": [
+        "https://dwebbsolutions.com"
+      ],
+      "docs": [
+        {
+          "label": "Wiki project page",
+          "url": "http://atlas/wiki/projects/dwebbsolutions/"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "github-pages",
+          "host": "github",
+          "url": "https://dwebbsolutions.com"
+        }
+      ],
+      "publicCommandCenter": true,
+      "statusControl": {
+        "state": "live",
+        "checks": [
+          "open",
+          "github",
+          "docs"
+        ],
+        "actions": [
+          "open",
+          "build",
+          "deploy"
+        ]
+      }
+    },
+    {
+      "name": "kybernet-tech",
+      "displayName": "Kybernet",
+      "category": "site",
+      "visibility": "public",
+      "summary": "Public Ubiquiti UniFi network design and installation site.",
+      "githubUrl": "https://github.com/DrewBeFree/kybernet-tech",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\sites\\kybernet-tech",
+      "liveUrls": [
+        "https://kybernet.tech"
+      ],
+      "docs": [
+        {
+          "label": "Wiki project page",
+          "url": "http://atlas/wiki/projects/kybernet-tech/"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "github-pages",
+          "host": "github",
+          "url": "https://kybernet.tech"
+        }
+      ],
+      "publicCommandCenter": true,
+      "statusControl": {
+        "state": "live",
+        "checks": [
+          "open",
+          "github",
+          "docs"
+        ],
+        "actions": [
+          "open",
+          "build",
+          "deploy"
+        ]
+      }
+    },
+    {
+      "name": "photography",
+      "displayName": "Photography",
+      "category": "site",
+      "visibility": "public",
+      "summary": "Photography portfolio for portraits, dogs, weddings, and street work.",
+      "githubUrl": "https://github.com/DrewBeFree/photography",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\sites\\photography",
+      "liveUrls": [
+        "https://photography.drewbefree.com"
+      ],
+      "docs": [
+        {
+          "label": "Wiki project page",
+          "url": "http://atlas/wiki/projects/photography/"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "github-pages",
+          "host": "github",
+          "url": "https://photography.drewbefree.com"
+        }
+      ],
+      "publicCommandCenter": true,
+      "statusControl": {
+        "state": "in-progress",
+        "checks": [
+          "open",
+          "github",
+          "docs"
+        ],
+        "actions": [
+          "open",
+          "build",
+          "deploy"
+        ]
+      }
+    },
+    {
+      "name": "answering-agent",
+      "displayName": "Answering Agent",
+      "category": "agent",
+      "visibility": "sensitive",
+      "summary": "AI voicemail response system with Twilio, Claude, Supabase, Slack, and human approval.",
+      "githubUrl": "https://github.com/DrewBeFree/answering-agent",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\agents\\answering-agent",
+      "liveUrls": [
+        "https://api.kybernet.tech",
+        "https://answer.kybernet.tech"
+      ],
+      "docs": [
+        {
+          "label": "Agent docs",
+          "url": "http://atlas/wiki/agents-and-skills/agents/#answering-agent"
+        },
+        {
+          "label": "Wiki project page",
+          "url": "http://atlas/wiki/projects/answering-agent/"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "systemd-user-service",
+          "host": "atlas",
+          "service": "answering-api.service",
+          "url": "https://api.kybernet.tech"
+        },
+        {
+          "type": "github-pages",
+          "host": "github",
+          "url": "https://answer.kybernet.tech"
+        }
+      ],
+      "publicCommandCenter": false,
+      "statusControl": {
+        "state": "live",
+        "checks": [
+          "api",
+          "ui",
+          "service",
+          "logs"
+        ],
+        "actions": [
+          "open",
+          "status",
+          "restart",
+          "logs",
+          "deploy"
+        ]
+      }
+    },
+    {
+      "name": "bob",
+      "displayName": "Bob",
+      "category": "agent",
+      "visibility": "private",
+      "summary": "Slack bot backed by a local Atlas LLM via Ollama.",
+      "githubUrl": "https://github.com/DrewBeFree/bob",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\agents\\bob",
+      "liveUrls": [],
+      "docs": [
+        {
+          "label": "Agent docs",
+          "url": "http://atlas/wiki/agents-and-skills/agents/#bob"
+        },
+        {
+          "label": "Wiki project page",
+          "url": "http://atlas/wiki/projects/bob/"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "systemd-user-service",
+          "host": "atlas",
+          "service": "bob.service",
+          "notes": "Slack Socket Mode process."
+        }
+      ],
+      "publicCommandCenter": false,
+      "statusControl": {
+        "state": "live",
+        "checks": [
+          "service",
+          "ollama",
+          "logs"
+        ],
+        "actions": [
+          "status",
+          "restart",
+          "logs",
+          "deploy"
+        ]
+      }
+    },
+    {
+      "name": "interactive-setup",
+      "displayName": "Interactive Setup",
+      "category": "agent",
+      "visibility": "private",
+      "summary": "Architecture and setup documentation for the homelab AI stack.",
+      "githubUrl": "https://github.com/DrewBeFree/interactive-setup",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\agents\\interactive-setup",
+      "liveUrls": [],
+      "docs": [
+        {
+          "label": "Agent docs",
+          "url": "http://atlas/wiki/agents-and-skills/agents/#interactive-setup"
+        },
+        {
+          "label": "Wiki project page",
+          "url": "http://atlas/wiki/projects/interactive-setup/"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "docs",
+          "host": "local",
+          "notes": "No runtime service."
+        }
+      ],
+      "publicCommandCenter": false,
+      "statusControl": {
+        "state": "docs-only",
+        "checks": [
+          "github",
+          "docs"
+        ],
+        "actions": [
+          "open",
+          "edit"
+        ]
+      }
+    },
+    {
+      "name": "recap-agents",
+      "displayName": "Recap Agents",
+      "category": "agent",
+      "visibility": "private",
+      "summary": "Meeting recap pipeline that updates knowledge and dashboard outputs.",
+      "githubUrl": "https://github.com/DrewBeFree/recap-agents",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\agents\\recap-agents",
+      "liveUrls": [
+        "https://drewbefree.github.io/recap-agents/"
+      ],
+      "docs": [
+        {
+          "label": "Agent docs",
+          "url": "http://atlas/wiki/agents-and-skills/agents/#recap-agents"
+        },
+        {
+          "label": "Wiki project page",
+          "url": "http://atlas/wiki/projects/recap-agents/"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "scheduled-pipeline",
+          "host": "atlas",
+          "notes": "Pipeline plus GitHub Pages dashboard."
+        },
+        {
+          "type": "github-pages",
+          "host": "github",
+          "url": "https://drewbefree.github.io/recap-agents/"
+        }
+      ],
+      "publicCommandCenter": false,
+      "statusControl": {
+        "state": "tracked",
+        "checks": [
+          "pipeline",
+          "dashboard",
+          "logs"
+        ],
+        "actions": [
+          "open",
+          "status",
+          "run",
+          "logs",
+          "deploy"
+        ]
+      }
+    },
+    {
+      "name": "homelab",
+      "displayName": "Homelab",
+      "category": "infrastructure",
+      "visibility": "private",
+      "summary": "Atlas, Alienware, service maps, dashboard, and homelab deployment docs.",
+      "githubUrl": "https://github.com/DrewBeFree/homelab",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\homelab",
+      "liveUrls": [
+        "https://homelab.drewbefree.com/infrastructure.html"
+      ],
+      "docs": [
+        {
+          "label": "Infrastructure map",
+          "url": "https://homelab.drewbefree.com/infrastructure.html"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "github-pages",
+          "host": "github",
+          "url": "https://homelab.drewbefree.com/infrastructure.html"
+        },
+        {
+          "type": "atlas-static-dashboard",
+          "host": "atlas",
+          "path": "/opt/homelab-status-dashboard",
+          "url": "http://atlas/"
+        }
+      ],
+      "publicCommandCenter": false,
+      "statusControl": {
+        "state": "live",
+        "checks": [
+          "atlas",
+          "dashboard",
+          "github",
+          "docs"
+        ],
+        "actions": [
+          "open",
+          "status",
+          "deploy",
+          "logs"
+        ]
+      }
+    },
+    {
+      "name": "claude-config",
+      "displayName": "Claude Config",
+      "category": "infrastructure",
+      "visibility": "private",
+      "summary": "Personal Claude/Codex configuration, skills, and workflow automation instructions.",
+      "githubUrl": "https://github.com/DrewBeFree/claude-config",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\claude-config",
+      "liveUrls": [],
+      "docs": [
+        {
+          "label": "Skills wiki",
+          "url": "http://atlas/wiki/agents-and-skills/skills/"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "config-sync",
+          "host": "developer-workstations",
+          "notes": "Repo is listed in infra/repos.json; local checkout is not currently present under the GitHub root."
+        }
+      ],
+      "publicCommandCenter": false,
+      "statusControl": {
+        "state": "missing-local-checkout",
+        "checks": [
+          "github",
+          "local-path",
+          "docs"
+        ],
+        "actions": [
+          "open",
+          "clone",
+          "sync"
+        ]
+      }
+    },
+    {
+      "name": "infra",
+      "displayName": "Infra",
+      "category": "infrastructure",
+      "visibility": "private",
+      "summary": "Workspace infrastructure, repo manifest, wiki, clone tooling, and this ecosystem registry.",
+      "githubUrl": "https://github.com/DrewBeFree/infra",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\infra",
+      "liveUrls": [
+        "http://atlas/wiki/",
+        "http://atlas/ecosystem/"
+      ],
+      "docs": [
+        {
+          "label": "Atlas wiki",
+          "url": "http://atlas/wiki/"
+        },
+        {
+          "label": "Infrastructure services",
+          "url": "http://atlas/wiki/infrastructure/services/"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "mkdocs",
+          "host": "atlas",
+          "path": "/var/www/wiki",
+          "url": "http://atlas/wiki/"
+        },
+        {
+          "type": "nginx-static",
+          "host": "atlas",
+          "path": "/opt/internal-portal",
+          "url": "http://atlas/ecosystem/"
+        }
+      ],
+      "publicCommandCenter": false,
+      "statusControl": {
+        "state": "live",
+        "checks": [
+          "wiki",
+          "registry",
+          "portal"
+        ],
+        "actions": [
+          "open",
+          "build",
+          "deploy",
+          "logs"
+        ]
+      }
+    }
+  ],
+  "services": [
+    {
+      "id": "atlas-ssh",
+      "name": "Atlas SSH",
+      "type": "access",
+      "host": "atlas",
+      "visibility": "private",
+      "liveUrls": [
+        "ssh://drew@10.0.0.105",
+        "ssh://drew@100.71.165.80"
+      ],
+      "ports": [
+        22
+      ],
+      "statusControl": {
+        "state": "live",
+        "actions": [
+          "status",
+          "logs"
+        ]
+      }
+    },
+    {
+      "id": "atlas-wiki",
+      "name": "Atlas Wiki",
+      "type": "docs",
+      "host": "atlas",
+      "visibility": "private",
+      "liveUrls": [
+        "http://atlas/wiki/"
+      ],
+      "ports": [
+        80
+      ],
+      "statusControl": {
+        "state": "live",
+        "actions": [
+          "open",
+          "build",
+          "deploy"
+        ]
+      }
+    },
+    {
+      "id": "homelab-status-dashboard",
+      "name": "Homelab Status Dashboard",
+      "type": "dashboard",
+      "host": "atlas",
+      "visibility": "private",
+      "liveUrls": [
+        "http://atlas/"
+      ],
+      "ports": [
+        80
+      ],
+      "statusControl": {
+        "state": "live",
+        "actions": [
+          "open",
+          "deploy",
+          "logs"
+        ]
+      }
+    },
+    {
+      "id": "portainer",
+      "name": "Portainer",
+      "type": "docker-control",
+      "host": "atlas",
+      "visibility": "sensitive",
+      "liveUrls": [
+        "https://atlas:9443",
+        "https://100.71.165.80:9443"
+      ],
+      "ports": [
+        9443
+      ],
+      "statusControl": {
+        "state": "live",
+        "actions": [
+          "open",
+          "status",
+          "restart",
+          "logs"
+        ]
+      }
+    },
+    {
+      "id": "idrac7",
+      "name": "Atlas iDRAC7",
+      "type": "out-of-band-management",
+      "host": "atlas",
+      "visibility": "sensitive",
+      "liveUrls": [
+        "https://10.0.0.38"
+      ],
+      "ports": [
+        443
+      ],
+      "statusControl": {
+        "state": "available",
+        "actions": [
+          "open"
+        ]
+      }
+    },
+    {
+      "id": "ollama",
+      "name": "Ollama",
+      "type": "llm-api",
+      "host": "alienware",
+      "visibility": "private",
+      "liveUrls": [
+        "http://127.0.0.1:11434"
+      ],
+      "ports": [
+        11434
+      ],
+      "statusControl": {
+        "state": "local",
+        "actions": [
+          "status",
+          "restart",
+          "logs"
+        ]
+      }
+    },
+    {
+      "id": "open-webui",
+      "name": "Open WebUI",
+      "type": "ai-ui",
+      "host": "alienware",
+      "visibility": "private",
+      "liveUrls": [
+        "http://localhost:8080"
+      ],
+      "ports": [
+        8080
+      ],
+      "statusControl": {
+        "state": "local",
+        "actions": [
+          "open",
+          "status",
+          "logs"
+        ]
+      }
+    },
+    {
+      "id": "openclaw",
+      "name": "OpenClaw",
+      "type": "ai-gateway",
+      "host": "alienware",
+      "visibility": "private",
+      "liveUrls": [
+        "http://127.0.0.1:18789"
+      ],
+      "ports": [
+        18789
+      ],
+      "statusControl": {
+        "state": "dev",
+        "actions": [
+          "status",
+          "restart",
+          "logs"
+        ]
+      }
+    }
+  ],
+  "dashboards": [
+    {
+      "id": "internal-ecosystem-portal",
+      "name": "Internal Ecosystem Portal",
+      "visibility": "private",
+      "summary": "Atlas/Tailscale-only launcher and status/control-ready surface for every repo, service, dashboard, doc, and deploy target.",
+      "access": {
+        "network": "atlas-tailscale-only",
+        "publicInternet": false
+      },
+      "liveUrls": [
+        "http://atlas/ecosystem/"
+      ],
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\infra\\internal-portal",
+      "deployTargets": [
+        {
+          "type": "nginx-static",
+          "host": "atlas",
+          "path": "/opt/internal-portal",
+          "url": "http://atlas/ecosystem/"
+        }
+      ],
+      "statusControl": {
+        "state": "ready",
+        "actions": [
+          "open",
+          "status",
+          "restart",
+          "logs",
+          "deploy"
+        ]
+      }
+    },
+    {
+      "id": "public-command-center",
+      "name": "Public Command Center",
+      "visibility": "public",
+      "summary": "Public launcher at drewbefree.com. Sensitive items are not listed.",
+      "liveUrls": [
+        "https://drewbefree.com"
+      ],
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\apps\\drewbefree-command-center",
+      "statusControl": {
+        "state": "live",
+        "actions": [
+          "open",
+          "build",
+          "deploy"
+        ]
+      }
+    },
+    {
+      "id": "atlas-status-dashboard",
+      "name": "Atlas Status Dashboard",
+      "visibility": "private",
+      "summary": "Cross-project session and backlog dashboard served from Atlas.",
+      "liveUrls": [
+        "http://atlas/"
+      ],
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\homelab\\homelab-status-dashboard",
+      "statusControl": {
+        "state": "live",
+        "actions": [
+          "open",
+          "deploy",
+          "logs"
+        ]
+      }
+    },
+    {
+      "id": "recap-agents-dashboard",
+      "name": "Recap Agents Dashboard",
+      "visibility": "private",
+      "summary": "Kybernet meeting recap dashboard generated by recap-agents.",
+      "liveUrls": [
+        "https://drewbefree.github.io/recap-agents/"
+      ],
+      "statusControl": {
+        "state": "tracked",
+        "actions": [
+          "open",
+          "run",
+          "deploy"
+        ]
+      }
+    },
+    {
+      "id": "answering-agent-dashboard",
+      "name": "Answering Agent Dashboard",
+      "visibility": "sensitive",
+      "summary": "Human approval board for voicemail reply drafts.",
+      "liveUrls": [
+        "https://answer.kybernet.tech"
+      ],
+      "statusControl": {
+        "state": "live",
+        "actions": [
+          "open",
+          "status",
+          "logs"
+        ]
+      }
+    },
+    {
+      "id": "ollama-monitoring",
+      "name": "Ollama Monitoring",
+      "visibility": "private",
+      "summary": "Prometheus/Grafana monitoring stack prepared for Atlas deployment.",
+      "liveUrls": [
+        "http://localhost:3000",
+        "http://localhost:9090"
+      ],
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\homelab\\ollama-exporter",
+      "statusControl": {
+        "state": "ready-to-deploy",
+        "actions": [
+          "open",
+          "status",
+          "deploy",
+          "logs"
+        ]
+      }
+    }
+  ],
+  "docs": [
+    {
+      "id": "atlas-wiki",
+      "name": "Atlas Wiki",
+      "visibility": "private",
+      "url": "http://atlas/wiki/",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\infra\\wiki",
+      "deployTarget": "atlas"
+    },
+    {
+      "id": "infrastructure-services",
+      "name": "Infrastructure Services",
+      "visibility": "private",
+      "url": "http://atlas/wiki/infrastructure/services/",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\infra\\wiki\\docs\\infrastructure\\services.md"
+    },
+    {
+      "id": "project-catalog",
+      "name": "Project Catalog",
+      "visibility": "private",
+      "url": "http://atlas/wiki/projects/",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\infra\\wiki\\docs\\projects"
+    },
+    {
+      "id": "agent-catalog",
+      "name": "Agent Catalog",
+      "visibility": "private",
+      "url": "http://atlas/wiki/agents-and-skills/agents/",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\infra\\wiki\\docs\\agents-and-skills\\agents.md"
+    },
+    {
+      "id": "homelab-map",
+      "name": "Homelab Infrastructure Map",
+      "visibility": "public",
+      "url": "https://homelab.drewbefree.com/infrastructure.html",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\homelab"
+    }
+  ]
+}

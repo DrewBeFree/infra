@@ -923,3 +923,66 @@
 - Establish file naming conventions
 - Document project organization strategy
 
+
+## 2026-05-30 - Internal ecosystem portal design handoff
+
+**What we did:**
+- Decided the internal projects page should be an Atlas/Tailscale-only ecosystem portal rather than another public Command Center-style page.
+- Settled on a single source of truth above the repos, wiki, Command Center, homelab, dashboards, agents, and sites.
+- Chose visibility levels: `public`, `private`, and `sensitive`, with UHaul Planner moved behind a Sensitive / IP filter and removed from public Command Center until IP direction is clear.
+- Agreed the portal should become a comprehensive launcher plus status/control surface, starting with launcher/status-ready foundations.
+
+**Where we stopped:**
+- No implementation started yet; we intentionally kept this as design context for a fresh implementation thread.
+- Recommended placement: canonical registry in `infra/ecosystem.json`; internal portal UI/deploy assets under `infra/internal-portal`, served privately from Atlas/Tailscale.
+
+**Next up:**
+- In a fresh desktop Codex session rooted at `C:\Users\drewb\Documents\GitHub\infra`, design and implement the internal ecosystem portal around the canonical registry.
+- Include UHaul Planner public visibility cleanup in the implementation plan.
+
+## 2026-05-30 - Build internal ecosystem portal
+
+**What we did:**
+- Created `feat/internal-ecosystem-portal` in `infra` and built the canonical `ecosystem.json` registry with repos, services, dashboards, docs, deploy targets, GitHub links, local paths, live URLs, visibility levels, and status/control metadata.
+- Added the Atlas/Tailscale-only static portal under `internal-portal/`, including search, visibility/category filters, launcher links, service/dashboard sections, docs links, and control-ready action buttons.
+- Marked UHaul Planner as `sensitive`, added the Sensitive / IP filter requirement, and removed it from the public Command Center on its own matching branch.
+- Added a Node contract test suite for the registry, portal, UHaul sensitivity, and public Command Center cleanup; verified the portal in the in-app browser.
+
+**Where we stopped:**
+- Infra branch `feat/internal-ecosystem-portal` has new uncommitted portal/registry files plus pre-existing uncommitted `SESSION_LOG.md` and `wiki/docs/index.md` changes that were already present at session start.
+- Command Center branch `feat/internal-ecosystem-portal` has the UHaul public card and scan-line entry removed.
+
+**Next up:**
+- Review and commit/push the infra and Command Center branches.
+- Deploy `internal-portal/` plus `ecosystem.json` to Atlas and wire nginx at `http://atlas/ecosystem/`.
+- Implement the actual UHaul edge/IP restriction before exposing it anywhere public again.
+
+## 2026-05-30 - Polish portal preview and link behavior
+
+**What we did:**
+- Reworked the internal portal UI into a darker, sleeker operator-console style.
+- Fixed local-preview link behavior so Atlas wiki/docs links resolve to local markdown files while previewing from `127.0.0.1`.
+- Changed status/control buttons from disabled placeholders into a details drawer that shows the intended command, docs, links, and deploy targets.
+- Added a Node-based `internal-portal/dev-server.mjs` preview server and started it live at `http://127.0.0.1:8765/internal-portal/`.
+
+**Where we stopped:**
+- The local preview server is running as Node process `15280`.
+- HTTP checks for the portal, `ecosystem.json`, and a local wiki project doc all returned `200`.
+- Browser automation transport dropped during the visual refresh, but the in-app browser is already pointed at the live preview URL and can be refreshed manually.
+
+**Next up:**
+- Visually review the redesigned portal in the in-app browser.
+- Commit/push both feature branches when the look and behavior feel right.
+- Deploy the same assets to Atlas under `http://atlas/ecosystem/`.
+
+## 2026-05-30 - Add ecosystem tracking backlog item
+
+**What we did:**
+- Added a dedicated `BACKLOG.md` item for standardizing GitHub Projects + Issues across the ecosystem.
+- Captured the canonical board decision, fields, labels, known unfinished portal/UHaul work, and future sync between `BACKLOG.md`, session logs, GitHub Issues, and the internal portal.
+
+**Where we stopped:**
+- The backlog now has a ready item named `Ecosystem project tracking — standardize GitHub Projects + Issues`.
+
+**Next up:**
+- Inventory existing GitHub Projects, choose the canonical ecosystem board, then seed issues for the known unfinished work.

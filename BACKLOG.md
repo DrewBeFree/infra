@@ -36,6 +36,21 @@ Strategic work to establish consistent structure, standards, and sync across sys
 
 ## Blocked / Ready
 
+- [ ] **Ecosystem project tracking — standardize GitHub Projects + Issues**
+  - Inventory existing GitHub Projects and decide which one is the canonical ecosystem board
+  - Create/standardize fields: Area, Repo, Visibility, Status, Priority, Deploy Target, Next Action
+  - Create matching issue labels across repos: `area/apps`, `area/sites`, `area/agents`, `area/infra`, `visibility/public`, `visibility/private`, `visibility/sensitive`, `deploy/atlas`, `deploy/github-pages`
+  - Seed issues for known unfinished work:
+    - Commit/push `infra` branch `feat/internal-ecosystem-portal`
+    - Commit/push Command Center branch `feat/internal-ecosystem-portal`
+    - Deploy internal portal to Atlas at `http://atlas/ecosystem/`
+    - Implement UHaul Planner edge/IP restriction before any public exposure
+    - Wire portal status/control actions to real commands or documented runbooks
+    - Evaluate Leantime as the preferred future self-hosted ecosystem planner once GitHub Projects is in use
+  - Add project/issue IDs or URLs back into `ecosystem.json` once the canonical board exists
+  - Decide how `BACKLOG.md`, session logs, GitHub Issues, and the internal portal should stay in sync
+  - **Status:** Ready; this is the next coordination layer above the portal registry
+
 - [ ] **Cleanup — Remove hardcoded paths, use environment variables**
   - Replace hardcoded `C:\Users\drewb\Documents\GitHub` with dynamic detection
   - Use `repos.json` baseDirectory or environment variables

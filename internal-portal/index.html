@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DrewBeFree Internal Ecosystem</title>
+  <meta name="theme-color" content="#141412">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#repoGrid" aria-label="Internal Ecosystem home">
+      <span class="brand-mark"></span>
+      <span>DBF Ecosystem</span>
+    </a>
+    <nav aria-label="Portal sections">
+      <a href="#repoGrid">Repos</a>
+      <a href="#opsGrid">Ops</a>
+      <a href="#docsList">Docs</a>
+    </nav>
+    <div class="network-pill"><span></span> Atlas/Tailscale only</div>
+  </header>
+
+  <main class="shell">
+    <section class="hero-panel">
+      <div>
+        <p class="eyebrow">Private operator surface</p>
+        <h1>Internal Ecosystem</h1>
+        <p class="lede">A live launcher for every repo, service, dashboard, doc, deploy target, and next control hook in the DrewBeFree stack.</p>
+      </div>
+      <div class="boundary-card">
+        <span class="status-dot"></span>
+        <div>
+          <strong>Private by default</strong>
+          <span id="runtimeMode">Detecting runtime</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="ops-strip" aria-label="Registry summary">
+      <div>
+        <span id="repoCount">--</span>
+        <label>Repos</label>
+      </div>
+      <div>
+        <span id="serviceCount">--</span>
+        <label>Services</label>
+      </div>
+      <div>
+        <span id="dashboardCount">--</span>
+        <label>Dashboards</label>
+      </div>
+      <div>
+        <span id="sensitiveCount">--</span>
+        <label>Sensitive</label>
+      </div>
+    </section>
+
+    <section class="toolbar" aria-label="Portal filters">
+      <div class="search-wrap">
+        <input id="searchInput" type="search" placeholder="Search ecosystem" autocomplete="off">
+      </div>
+      <div class="segmented" aria-label="Visibility filter">
+        <button class="is-active" data-filter="all" type="button">All</button>
+        <button data-filter="public" type="button">Public</button>
+        <button data-filter="private" type="button">Private</button>
+        <button data-filter="sensitive" type="button">Sensitive</button>
+      </div>
+      <div class="segmented compact" aria-label="Category filter">
+        <button class="is-active" data-category="all" type="button">All</button>
+        <button data-category="app" type="button">Apps</button>
+        <button data-category="site" type="button">Sites</button>
+        <button data-category="agent" type="button">Agents</button>
+        <button data-category="infrastructure" type="button">Infra</button>
+      </div>
+    </section>
+
+    <section class="attention-band" aria-label="Sensitive queue">
+      <div>
+        <p class="eyebrow">Sensitive / IP filter</p>
+        <h2>UHaul Planner is internal-launch only</h2>
+      </div>
+      <a id="uhaulLink" class="quiet-link" href="https://uhaul.drewbefree.com" target="_blank" rel="noreferrer">Open tracked URL</a>
+    </section>
+
+    <section class="section-head">
+      <div>
+        <p class="eyebrow">Launch</p>
+        <h2>Repositories</h2>
+      </div>
+      <span id="resultCount" class="result-count">-- visible</span>
+    </section>
+    <div id="repoGrid" class="resource-grid" aria-live="polite"></div>
+
+    <section class="section-head">
+      <div>
+        <p class="eyebrow">Operate</p>
+        <h2>Services & Dashboards</h2>
+      </div>
+    </section>
+    <div id="opsGrid" class="ops-grid"></div>
+
+    <section class="section-head">
+      <div>
+        <p class="eyebrow">Reference</p>
+        <h2>Docs</h2>
+      </div>
+    </section>
+    <div id="docsList" class="docs-list"></div>
+  </main>
+
+  <template id="resourceTemplate">
+    <article class="resource-card">
+      <div class="card-topline">
+        <span class="badge visibility"></span>
+        <span class="badge category"></span>
+      </div>
+      <h3></h3>
+      <p class="summary"></p>
+      <dl class="meta-list"></dl>
+      <div class="link-row"></div>
+      <div class="control-row"></div>
+    </article>
+  </template>
+
+  <aside id="detailDrawer" class="detail-drawer" aria-hidden="true" aria-label="Resource details">
+    <button id="closeDrawer" class="drawer-close" type="button" aria-label="Close details">Close</button>
+    <div id="drawerContent"></div>
+  </aside>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
