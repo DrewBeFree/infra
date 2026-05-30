@@ -1,5 +1,23 @@
 ﻿# Session Log
 
+## 2026-05-30 - Split homelab into sibling repo
+
+**What we did:**
+- Created a sibling `C:\Users\drewb\Documents\GitHub\homelab` copy of the nested homelab repo because Windows would not move the active Codex working directory.
+- Removed `homelab` as a submodule from the `infra` repo by deleting `.gitmodules` and removing the gitlink from the index.
+- Updated `repos.json` so clone scripts treat `homelab` as its own top-level sibling repo.
+- Updated `STRUCTURE.md` to distinguish `infra` as workspace/wiki/clone tooling and `homelab` as Alienware + Atlas docs/maps/service plans.
+- Added `/homelab/` to `infra/.gitignore` so the old nested folder can sit ignored until it is safe to delete after this session releases its file handle.
+
+**Where we stopped:**
+- `infra` is on branch `fix/separate-homelab-repo` with the sibling-repo cleanup ready to commit/push.
+- `homelab` exists as a sibling repo and remains on branch `feat-lead-gen-agent-v2`.
+- The old nested `infra/homelab` folder still exists physically because Windows reported it was in use.
+
+**Next up:**
+- Push `fix/separate-homelab-repo`.
+- After closing this Codex/browser session, delete the old ignored `infra/homelab` folder if no process is using it.
+
 ## 2026-05-30 02:50 — camera rotation fix, v0.14.2
 
 **What we did:**

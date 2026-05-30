@@ -104,6 +104,12 @@
       "type": "agent"
     },
     {
+      "name": "homelab",
+      "github": "https://github.com/DrewBeFree/homelab.git",
+      "targetDirectory": "homelab",
+      "type": "infrastructure"
+    },
+    {
       "name": "infra",
       "github": "https://github.com/DrewBeFree/infra.git",
       "targetDirectory": "infra",
