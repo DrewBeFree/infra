@@ -10,7 +10,7 @@
 - Added `/homelab/` to `infra/.gitignore` so the old nested folder can sit ignored until it is safe to delete after this session releases its file handle.
 
 **Where we stopped:**
-- `infra` is on branch `fix/separate-homelab-repo` with the sibling-repo cleanup ready to commit/push.
+- `infra` is on pushed branch `fix/separate-homelab-repo` with the sibling-repo cleanup committed.
 - `homelab` exists as a sibling repo and remains on branch `feat-lead-gen-agent-v2`.
 - The old nested `infra/homelab` folder still exists physically because Windows reported it was in use.
 
