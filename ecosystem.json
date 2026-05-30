@@ -716,6 +716,55 @@
       }
     },
     {
+      "name": "lead-gen-agent",
+      "displayName": "Lead Gen Agent",
+      "category": "agent",
+      "visibility": "private",
+      "summary": "Review-gated manual lead inbox for Facebook and monday.com lead signals, with scoring, editable drafts, and fixture calibration.",
+      "githubUrl": "https://github.com/DrewBeFree/lead-gen-agent",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\agents\\lead-gen-agent",
+      "liveUrls": [],
+      "docs": [
+        {
+          "label": "Wiki project page",
+          "url": "http://atlas/wiki/projects/lead-gen-agent/"
+        },
+        {
+          "label": "V2 architecture plan",
+          "url": "https://github.com/DrewBeFree/lead-gen-agent/blob/main/docs/facebook-monday-lead-gen-agent-v2.md"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "fastapi-local",
+          "host": "alienware",
+          "notes": "Phase 1 runs locally with SQLite; Atlas deployment is planned after the manual inbox workflow proves useful."
+        },
+        {
+          "type": "atlas-compose-planned",
+          "host": "atlas",
+          "path": "/opt/homelab/stacks/lead-gen-agent",
+          "notes": "Future always-on deployment target from the V2 plan."
+        }
+      ],
+      "publicCommandCenter": false,
+      "statusControl": {
+        "state": "phase-1-mvp",
+        "checks": [
+          "github",
+          "docs",
+          "tests",
+          "fixture-eval"
+        ],
+        "actions": [
+          "open",
+          "run",
+          "test",
+          "deploy"
+        ]
+      }
+    },
+    {
       "name": "bob",
       "displayName": "Bob",
       "category": "agent",

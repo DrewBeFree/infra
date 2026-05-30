@@ -107,6 +107,43 @@ journalctl --user -u answering-api.service -f
 
 ---
 
+## Lead Gen Agent
+
+A review-gated lead intelligence inbox for Facebook and monday.com signals. It turns manually captured opportunities into scored leads and editable response drafts while keeping publishing human-controlled.
+
+| | |
+|---|---|
+| Repo | [DrewBeFree/lead-gen-agent](https://github.com/DrewBeFree/lead-gen-agent) |
+| Local path | `agents/lead-gen-agent` |
+| Runs on | Local FastAPI for Phase 1; Atlas deployment planned |
+| Project page | [projects/lead-gen-agent](../projects/lead-gen-agent.md) |
+
+### How it works
+
+1. Drew pastes a source URL and captured text into the inbox.
+2. SQLite stores the lead, dedupes by source URL or text hash, and records audit events.
+3. The starter scorer produces transparent score dimensions.
+4. The draft generator creates a soft, helpful reply.
+5. Drew edits and copies the draft manually; the app does not post publicly.
+
+### Current guardrails
+
+- Manual capture only for Facebook.
+- No unattended scraping or public posting.
+- Human review before any outreach.
+- Fixture evaluation keeps starter scoring visible and testable.
+
+### Local commands
+
+```powershell
+$env:PYTHONPATH="src"
+python -m unittest discover -s tests -v
+python -m lead_gen_agent.evaluation
+uvicorn lead_gen_agent.web:app --reload
+```
+
+---
+
 ## Recap Agents
 
 Automated meeting recap pipeline for Undeniable Reliabilly. Pulls transcripts from Google Drive and Motion, updates the knowledge base, and regenerates the Kybernet Dashboard.

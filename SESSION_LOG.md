@@ -940,6 +940,22 @@
 - In a fresh desktop Codex session rooted at `C:\Users\drewb\Documents\GitHub\infra`, design and implement the internal ecosystem portal around the canonical registry.
 - Include UHaul Planner public visibility cleanup in the implementation plan.
 
+## 2026-05-30 - Track lead-gen-agent as a project
+
+**What we did:**
+- Added `lead-gen-agent` to `infra/repos.json` so clone/update tooling treats it as an agent repo.
+- Added `lead-gen-agent` to `ecosystem.json` and the internal portal registry contract.
+- Added an Atlas wiki project page and linked it from the project and agent catalogs.
+- Confirmed `DrewBeFree/lead-gen-agent` now has `main` as its GitHub default branch.
+
+**Where we stopped:**
+- Infra work is on branch `feat-track-lead-gen-agent`.
+- `wiki/docs/index.md` still has a pre-existing timestamp-only edit and was intentionally left separate.
+
+**Next up:**
+- Commit, push, and merge the project registry/wiki update.
+- Deploy the updated wiki/internal portal to Atlas if live docs should reflect the change immediately.
+
 ## 2026-05-30 03:05 EDT - Build internal ecosystem portal
 
 **What we did:**
