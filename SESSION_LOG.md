@@ -1069,3 +1069,20 @@
 **Next up:**
 - Commit/push the infra wiki plan after final review.
 - Add service documentation under homelab/infra once Postgres and the LLM gateway are live.
+
+## 2026-05-30 17:32:00 -04:00 - Atlas Postgres pgvector memory vault
+
+**What we did:**
+- Verified Atlas Docker/Compose, PocketBase, native Postgres, and sudo state from the LLM Debate Union workspace.
+- Confirmed Docker Compose is available and existing Atlas containers are healthy; native Postgres was not installed.
+- Confirmed `sudo -n` still requires a password for `drew`, so provisioned Postgres through Docker without sudo.
+- Created `/home/drew/services/postgres-memory-vault` with `pgvector/pgvector:pg16`, database `ai_memory`, local-only bind `127.0.0.1:5432`, and restart policy `unless-stopped`.
+- Verified `vector` extension, `chat_threads`, `chat_messages`, `chat_embeddings`, a rollback smoke insert, and container health after restart.
+
+**Where we stopped:**
+- Atlas now runs `postgres-memory-vault` as the long-term AI memory/search database alongside PocketBase.
+- The secret `.env` lives only on Atlas at `/home/drew/services/postgres-memory-vault/.env` with `600` permissions.
+
+**Next up:**
+- Document the repeatable schema in the app repo `memory-db/` task.
+- Wire future gateway/ingestion workers to `postgres://ai_memory:<secret>@127.0.0.1:5432/ai_memory` from Atlas-local services only.
