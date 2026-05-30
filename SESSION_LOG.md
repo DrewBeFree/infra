@@ -1,5 +1,28 @@
 ﻿# Session Log
 
+## 2026-05-30 02:50 — camera rotation fix, v0.14.2
+
+**What we did:**
+- Diagnosed camera rotation breaking after centering: root cause was missing interpolated newX/newY/newZ values in animateCamera()
+- Fixed camera.js to restore position interpolation during animation (lines 76-78)
+- Added camera.lookAt() to keep camera aligned with shifting target
+- Explicitly disable controls during animation, re-enable + sync spherical coords at end
+- Added regression test in camera.test.js to verify interpolation
+- Bumped version from v0.14.1 to v0.14.2 (patch for bug fix)
+- Updated Command Center (index.html) and state.html to v0.14.2 · 2026-05-30
+- Updated terminal scan line with new version
+- Regenerated wiki catalog and pushed
+
+**Where we stopped:**
+- All version numbers updated, Command Center synced, wiki catalog pushed
+- Ready for final commit
+
+**Next up:**
+- Commit version + Command Center changes to main
+- Deploy wiki to atlas
+
+---
+
 ## 2026-05-29 18:37 — UHaul Planner v0.14.1 test & fixes
 
 **What we did:**
