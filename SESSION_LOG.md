@@ -1100,3 +1100,16 @@
 
 **Next up:**
 - Continue app-side memory schema/docs and cloud gateway work from `llm-debate-union/main`.
+
+## 2026-05-30 18:29:00 -04:00 - Track LLM Debate Union Atlas testing in GitHub Project
+
+**What we did:**
+- Created five testing issues in `DrewBeFree/llm-debate-union` for PocketBase, Postgres/pgvector, cloud gateway, ingestion, and repeatable testing docs.
+- Added issues #4-#8 to GitHub Project #7, `Infra`.
+- Verified the Infra project now has six items total, including the existing wiki deploy item plus the five LLM Debate Union testing items.
+
+**Where we stopped:**
+- Atlas testing work is represented in the GitHub Project with status `To triage`.
+
+**Next up:**
+- Triage the project items and continue implementation from the LLM Debate Union memory schema/docs and gateway tasks.
