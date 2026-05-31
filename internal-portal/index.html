@@ -10,14 +10,15 @@
 <body>
   <header class="topbar">
     <a class="brand" href="#ecosystemMap" aria-label="Internal Ecosystem home">
-      <span class="brand-mark"></span>
-      <span>DBF Ecosystem</span>
+      <img class="brand-avatar" src="assets/pixelated-drew.png" alt="" width="36" height="36">
+      <span>@DrewBeFree Ecosystem</span>
     </a>
     <nav aria-label="Portal sections">
       <a href="#ecosystemMap">Map</a>
       <a href="#repoGrid">Directory</a>
       <a href="#docsList">Docs</a>
     </nav>
+    <div id="lastUpdated" class="updated-pill">Updated --</div>
     <div class="network-pill"><span></span> Atlas/Tailscale only</div>
   </header>
 
@@ -83,7 +84,7 @@
       </div>
     </section>
 
-    <section class="attention-band" aria-label="Sensitive queue">
+    <section id="uhaulBanner" class="attention-band" aria-label="Sensitive queue">
       <div>
         <p class="eyebrow">Sensitive / IP filter</p>
         <h2>UHaul Planner is internal-launch only</h2>
@@ -115,7 +116,7 @@
         <h2>Services & Dashboards</h2>
       </div>
     </section>
-    <div id="opsGrid" class="ops-grid"></div>
+    <div id="opsGrid" class="ops-list"></div>
 
     <section class="section-head">
       <div>

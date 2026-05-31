@@ -4,8 +4,8 @@ const state = {
   category: "all",
   query: "",
   selected: null,
-  openMapColumns: new Set(["public"]),
-  openSidebarGroups: new Set(["public"])
+  mapExpanded: false,
+  openSidebarGroups: new Set(["apps"])
 };
 
 const registryCandidates = [
@@ -40,10 +40,6 @@ async function loadRegistry() {
   }
 
   throw lastError;
-}
-
-function firstUrl(item) {
-  return item.liveUrls?.[0] || item.githubUrl || item.url || "#";
 }
 
 function isWebUrl(url) {
@@ -181,38 +177,66 @@ function filteredMapItems() {
   return allMapItems().filter((item) => matchesSearch(item) && matchesVisibility(item) && matchesCategory(item));
 }
 
-function ecosystemBranches(items) {
-  return [
-    {
-      id: "public",
-      title: "Public Surface",
-      subtitle: "Sites, apps, public launchers",
-      items: items.filter((item) => item.visibility === "public" && item.mapKind !== "doc")
-    },
-    {
-      id: "private",
-      title: "Private Workbench",
-      subtitle: "Internal repos and planning systems",
-      items: items.filter((item) => item.visibility === "private" && item.mapKind === "repo")
-    },
-    {
-      id: "sensitive",
-      title: "Sensitive / Controlled",
-      subtitle: "IP-filtered or data-bearing surfaces",
-      items: items.filter((item) => item.visibility === "sensitive")
-    },
-    {
-      id: "ops",
-      title: "Atlas Operations",
-      subtitle: "Services, dashboards, deploy surfaces",
-      items: items.filter((item) => ["service", "dashboard"].includes(item.mapKind) && item.visibility !== "sensitive")
-    },
-    {
-      id: "docs",
-      title: "Docs & Planning",
-      subtitle: "Wiki, catalogs, workflow references",
-      items: items.filter((item) => item.mapKind === "doc")
+function itemLabel(item) {
+  return item.displayName || item.name || item.id;
+}
+
+function uniqueItems(items) {
+  const seen = new Set();
+  return items.filter((item) => {
+    const key = itemLabel(item).toLowerCase().replace(/\s+dashboard$/, "");
+
+    if (seen.has(key)) {
+      return false;
     }
+    seen.add(key);
+    return true;
+  });
+}
+
+function normalizedPath(item) {
+  return String(item.localPath || item.deployTargets?.[0]?.path || item.url || "").replace(/\//g, "\\").toLowerCase();
+}
+
+function workspaceBucket(item) {
+  const path = normalizedPath(item);
+  const name = String(item.name || item.id || item.displayName || "").toLowerCase();
+
+  if (path.includes("\\documents\\github\\apps\\") || name.includes("command-center")) {
+    return "apps";
+  }
+  if (path.includes("\\documents\\github\\sites\\")) {
+    return "sites";
+  }
+  if (path.includes("\\documents\\github\\agents\\") || name.includes("answering-agent") || name.includes("recap-agents")) {
+    return "agents";
+  }
+  if (path.includes("\\documents\\github\\homelab") || ["portainer", "idrac7", "ollama", "open-webui", "openclaw", "homelab-status-dashboard", "atlas-status-dashboard"].some((token) => name.includes(token))) {
+    return "homelab";
+  }
+  if (path.includes("\\documents\\github\\infra") || ["atlas", "leantime", "internal-ecosystem-portal"].some((token) => name.includes(token))) {
+    return "infra";
+  }
+  return "notes";
+}
+
+function ecosystemBranches(items) {
+  const branchMeta = [
+    ["agents", "Agents", "Automation, assistants, workers"],
+    ["apps", "Apps", "Product and utility apps"],
+    ["homelab", "Homelab", "Atlas services and machine surfaces"],
+    ["infra", "Infra", "Portal, wiki, planning, operations"],
+    ["notes", "Notes", "Loose docs, config, reference"],
+    ["sites", "Sites", "Public web properties"]
+  ];
+
+  return [
+    ...branchMeta.map(([id, title, subtitle]) => ({
+      id,
+      title,
+      subtitle,
+      items: uniqueItems(items.filter((item) => workspaceBucket(item) === id))
+    }))
   ];
 }
 
@@ -244,7 +268,7 @@ function createSideNavItem(item) {
   }
 
   const name = document.createElement("span");
-  name.textContent = item.displayName || item.name;
+  name.textContent = itemLabel(item);
   const meta = document.createElement("small");
   meta.textContent = item.category || item.type || item.mapKind || "resource";
   label.append(name, meta);
@@ -252,7 +276,7 @@ function createSideNavItem(item) {
 }
 
 function renderSidebar() {
-  const branches = ecosystemBranches(allMapItems());
+  const branches = ecosystemBranches(filteredMapItems());
   const groups = branches.map((branch) => {
     const group = document.createElement("section");
     const isOpen = state.openSidebarGroups.has(branch.id);
@@ -296,10 +320,11 @@ function renderSidebar() {
 function renderSitemap() {
   const items = filteredMapItems();
   const isFocusedView = state.query.trim() || state.visibility !== "all" || state.category !== "all";
+  const expandAll = Boolean(state.mapExpanded || isFocusedView);
   const columns = ecosystemBranches(items);
 
   const rendered = columns.map((column) => {
-    const isOpen = Boolean(isFocusedView ? column.items.length > 0 : state.openMapColumns.has(column.id));
+    const isOpen = expandAll;
     const section = document.createElement("section");
     section.className = "sitemap-column";
     section.classList.toggle("is-open", isOpen);
@@ -319,11 +344,7 @@ function renderSitemap() {
     count.textContent = String(column.items.length);
     header.append(label, count);
     header.addEventListener("click", () => {
-      if (state.openMapColumns.has(column.id)) {
-        state.openMapColumns.delete(column.id);
-      } else {
-        state.openMapColumns.add(column.id);
-      }
+      state.mapExpanded = !state.mapExpanded;
       renderSitemap();
     });
 
@@ -369,6 +390,13 @@ function createControl(item, action) {
   button.title = `${action} for ${item.displayName || item.name}`;
   button.addEventListener("click", () => handleAction(item, action));
   return button;
+}
+
+function createBadge(text, extraClass = "") {
+  const badge = document.createElement("span");
+  badge.className = `badge ${extraClass}`.trim();
+  badge.textContent = text;
+  return badge;
 }
 
 function commandFor(item, action) {
@@ -516,6 +544,51 @@ function renderResource(item) {
   return card;
 }
 
+function renderOpsRow(item) {
+  const row = document.createElement("article");
+  row.className = "ops-row";
+  row.dataset.visibility = item.visibility;
+  row.dataset.category = item.category || item.type || "resource";
+
+  const main = document.createElement("div");
+  main.className = "ops-row-main";
+  const dot = document.createElement("span");
+  dot.className = "status-dot compact-dot";
+  const text = document.createElement("div");
+  const title = document.createElement("h3");
+  title.textContent = itemLabel(item);
+  const summary = document.createElement("p");
+  summary.textContent = item.summary || item.url || "";
+  text.append(title, summary);
+  main.append(dot, text);
+
+  const badges = document.createElement("div");
+  badges.className = "ops-row-badges";
+  badges.append(
+    createBadge(item.visibility, "visibility"),
+    createBadge(item.type || item.category || "resource", "category"),
+    createBadge(item.statusControl?.state || "tracked", "state")
+  );
+
+  const target = document.createElement("div");
+  target.className = "ops-row-target";
+  target.textContent = item.deployTargets?.map((deployTarget) => deployTarget.host || deployTarget.type).filter(Boolean).join(", ") || item.access?.network || "no target";
+
+  const actions = document.createElement("div");
+  actions.className = "ops-row-actions";
+  if (preferredOpenUrl(item) !== "#") {
+    actions.append(createLink("Open", preferredOpenUrl(item)));
+  }
+  for (const action of item.statusControl?.actions || []) {
+    if (action !== "open") {
+      actions.append(createControl(item, action));
+    }
+  }
+
+  row.append(main, badges, target, actions);
+  return row;
+}
+
 function renderRepos() {
   const repos = visibleRepos();
   const grid = $("#repoGrid");
@@ -528,7 +601,13 @@ function renderOps() {
     ...state.registry.services,
     ...state.registry.dashboards
   ];
-  $("#opsGrid").replaceChildren(...items.map(renderResource));
+  $("#opsGrid").replaceChildren(...items.map(renderOpsRow));
+}
+
+function renderAttention() {
+  const banner = $("#uhaulBanner");
+  const uhaulVisible = visibleRepos().some((repo) => repo.name === "uhaul-load-planner");
+  banner.hidden = !uhaulVisible;
 }
 
 function renderDocs() {
@@ -551,28 +630,44 @@ function renderDocs() {
   $("#docsList").replaceChildren(...docs);
 }
 
+function formatTimestamp(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return value || "unknown";
+  }
+
+  const pad = (part) => String(part).padStart(2, "0");
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
 function renderStats() {
   const repos = state.registry.repositories;
+  const updatedAt = formatTimestamp(document.lastModified || state.registry.updatedAt);
   $("#repoCount").textContent = repos.length;
   $("#serviceCount").textContent = state.registry.services.length;
   $("#dashboardCount").textContent = state.registry.dashboards.length;
   $("#sensitiveCount").textContent = repos.filter((repo) => repo.visibility === "sensitive").length;
+  $("#lastUpdated").textContent = `Updated ${updatedAt}`;
   $("#runtimeMode").textContent = isLocalPreview() ? "Local preview with repo-aware links" : "Atlas private network";
 }
 
 function bindControls() {
   $("#searchInput").addEventListener("input", (event) => {
     state.query = event.target.value;
+    renderSidebar();
     renderSitemap();
     renderRepos();
+    renderAttention();
   });
 
   document.querySelectorAll("[data-filter]").forEach((button) => {
     button.addEventListener("click", () => {
       state.visibility = button.dataset.filter;
       document.querySelectorAll("[data-filter]").forEach((item) => item.classList.toggle("is-active", item === button));
+      renderSidebar();
       renderSitemap();
       renderRepos();
+      renderAttention();
     });
   });
 
@@ -580,8 +675,10 @@ function bindControls() {
     button.addEventListener("click", () => {
       state.category = button.dataset.category;
       document.querySelectorAll("[data-category]").forEach((item) => item.classList.toggle("is-active", item === button));
+      renderSidebar();
       renderSitemap();
       renderRepos();
+      renderAttention();
     });
   });
 
@@ -612,6 +709,7 @@ async function init() {
     renderSitemap();
     renderRepos();
     renderOps();
+    renderAttention();
     renderDocs();
   } catch (error) {
     renderError(error);

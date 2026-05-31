@@ -7,6 +7,7 @@ const registryPath = new URL("../ecosystem.json", import.meta.url);
 const indexPath = new URL("./index.html", import.meta.url);
 const appPath = new URL("./app.js", import.meta.url);
 const stylePath = new URL("./style.css", import.meta.url);
+const avatarPath = new URL("./assets/pixelated-drew.png", import.meta.url);
 const commandCenterPath = new URL("../../apps/drewbefree-command-center/index.html", import.meta.url);
 
 const requiredRepos = [
@@ -99,12 +100,16 @@ test("portal static files are present and load the canonical registry", async ()
   assert.ok(existsSync(indexPath), "index.html missing");
   assert.ok(existsSync(appPath), "app.js missing");
   assert.ok(existsSync(stylePath), "style.css missing");
+  assert.ok(existsSync(avatarPath), "pixelated Drew avatar missing");
 
   const index = await readFile(indexPath, "utf8");
   const app = await readFile(appPath, "utf8");
   const style = await readFile(stylePath, "utf8");
 
   assert.match(index, /Atlas\/Tailscale/);
+  assert.match(index, /@DrewBeFree Ecosystem/);
+  assert.match(index, /lastUpdated/);
+  assert.match(index, /pixelated-drew\.png/);
   assert.match(index, /sideNavGroups/);
   assert.match(index, /ecosystemMap/);
   assert.match(index, /mapNodeTemplate/);
@@ -112,9 +117,13 @@ test("portal static files are present and load the canonical registry", async ()
   assert.match(app, /\.\.\/ecosystem\.json/);
   assert.match(app, /renderSidebar/);
   assert.match(app, /renderSitemap/);
-  assert.match(app, /openMapColumns/);
+  assert.match(app, /mapExpanded/);
+  assert.match(app, /workspaceBucket/);
+  assert.match(app, /renderAttention/);
   assert.match(style, /\.side-nav/);
   assert.match(style, /\.sitemap-column\.is-open/);
+  assert.match(style, /\.ops-row/);
+  assert.match(style, /fade-in-up/);
 });
 
 test("local preview serves rendered wiki site pages instead of raw markdown", async () => {
