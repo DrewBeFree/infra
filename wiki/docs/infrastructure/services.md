@@ -8,6 +8,7 @@ What runs where, with ports and addresses.
 | --- | --- | --- |
 | Status Dashboard | [http://atlas/](http://atlas/) | Tailscale-only |
 | Wiki (this site) | [http://atlas/wiki/](http://atlas/wiki/) | Tailscale-only |
+| Leantime | [http://atlas:8095](http://atlas:8095) | Tailscale-only planning cockpit |
 | State page | [https://drewbefree.com/state.html](https://drewbefree.com/state.html) | Public |
 | Recap Viewer | [https://recap.drewbefree.com](https://recap.drewbefree.com) | Public |
 | Infrastructure Diagram | [https://homelab.drewbefree.com/infrastructure.html](https://homelab.drewbefree.com/infrastructure.html) | Public |
@@ -20,6 +21,7 @@ What runs where, with ports and addresses.
 | Wiki (this site) | 80 | `http://atlas/wiki/` | Nginx, Tailscale-only |
 | Status Dashboard | 80 | `http://atlas/` | Nginx root |
 | Portainer | 9443 | `https://atlas:9443` | Docker management UI |
+| Leantime | 8095 | `http://atlas:8095` | Docker Compose planning cockpit, bound to Atlas Tailscale IP |
 | iDRAC7 | 443 | `https://10.0.0.38` | Out-of-band management |
 
 ## Alienware Services

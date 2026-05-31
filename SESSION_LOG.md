@@ -1113,3 +1113,21 @@
 
 **Next up:**
 - Triage the project items and continue implementation from the LLM Debate Union memory schema/docs and gateway tasks.
+
+## 2026-05-31 00:18:00 -04:00 - Install Leantime planning cockpit on Atlas
+
+**What we did:**
+- Installed Leantime 3.8.0 on Atlas as a Docker Compose stack at `/home/drew/services/leantime`.
+- Bound the app to the Atlas Tailscale IP on port `8095` and verified it at `http://atlas:8095`.
+- Completed first-run setup for `drew@atlas.local`; generated admin credentials live only on Atlas in `/home/drew/services/leantime/admin-login.txt`.
+- Seeded Leantime with current projects and tasks from the Infra project, LLM Debate Union testing issues, and infra backlog/current coordination items.
+- Updated `ecosystem.json` and `wiki/docs/infrastructure/services.md` to include Leantime.
+- Verified login redirect, container health after restart, and seeded task counts by project.
+
+**Where we stopped:**
+- Leantime is live as the private planning cockpit.
+- Local infra and app session logs have uncommitted updates from this install.
+
+**Next up:**
+- User should log in and review the first cockpit pass.
+- Decide whether to add a lightweight GitHub-to-Leantime sync script.

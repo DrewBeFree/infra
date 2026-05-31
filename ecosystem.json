@@ -1121,6 +1121,30 @@
       }
     },
     {
+      "id": "leantime",
+      "name": "Leantime",
+      "type": "planning-cockpit",
+      "host": "atlas",
+      "visibility": "private",
+      "summary": "Private planning cockpit for cross-project roadmap, task, and current-state tracking.",
+      "liveUrls": [
+        "http://atlas:8095",
+        "http://100.71.165.80:8095"
+      ],
+      "ports": [
+        8095
+      ],
+      "statusControl": {
+        "state": "live",
+        "actions": [
+          "open",
+          "status",
+          "restart",
+          "logs"
+        ]
+      }
+    },
+    {
       "id": "idrac7",
       "name": "Atlas iDRAC7",
       "type": "out-of-band-management",
@@ -1233,6 +1257,24 @@
           "restart",
           "logs",
           "deploy"
+        ]
+      }
+    },
+    {
+      "id": "leantime",
+      "name": "Leantime",
+      "visibility": "private",
+      "summary": "Atlas-hosted planning cockpit seeded with current infra, app, testing, and ecosystem work.",
+      "liveUrls": [
+        "http://atlas:8095"
+      ],
+      "statusControl": {
+        "state": "live",
+        "actions": [
+          "open",
+          "status",
+          "restart",
+          "logs"
         ]
       }
     },
