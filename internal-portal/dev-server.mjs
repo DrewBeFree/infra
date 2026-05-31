@@ -18,6 +18,14 @@ const mimeTypes = {
 function fileForUrl(url) {
   const parsed = new URL(url, `http://${host}:${port}`);
   const rawPath = decodeURIComponent(parsed.pathname);
+  const wikiDocPath = rawPath.match(/^\/wiki\/docs\/(.+)\.md$/);
+
+  if (wikiDocPath) {
+    const pagePath = wikiDocPath[1] === "index" ? "index.html" : join(wikiDocPath[1], "index.html");
+    const renderedPage = normalize(join(root, "wiki", "site", pagePath));
+    return renderedPage.startsWith(root) ? renderedPage : null;
+  }
+
   const candidate = normalize(join(root, rawPath));
 
   if (!candidate.startsWith(root)) {

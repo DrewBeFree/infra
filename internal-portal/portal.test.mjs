@@ -105,13 +105,23 @@ test("portal static files are present and load the canonical registry", async ()
   const style = await readFile(stylePath, "utf8");
 
   assert.match(index, /Atlas\/Tailscale/);
+  assert.match(index, /sideNavGroups/);
   assert.match(index, /ecosystemMap/);
   assert.match(index, /mapNodeTemplate/);
   assert.match(index, /app\.js/);
   assert.match(app, /\.\.\/ecosystem\.json/);
+  assert.match(app, /renderSidebar/);
   assert.match(app, /renderSitemap/);
   assert.match(app, /openMapColumns/);
-  assert.match(style, /\.sitemap-column\[open\]/);
+  assert.match(style, /\.side-nav/);
+  assert.match(style, /\.sitemap-column\.is-open/);
+});
+
+test("local preview serves rendered wiki site pages instead of raw markdown", async () => {
+  const server = await readFile(new URL("./dev-server.mjs", import.meta.url), "utf8");
+
+  assert.match(server, /wikiDocPath/);
+  assert.match(server, /wiki", "site"/);
 });
 
 test("public Command Center no longer exposes UHaul Planner", async () => {

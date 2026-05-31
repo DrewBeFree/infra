@@ -21,7 +21,15 @@
     <div class="network-pill"><span></span> Atlas/Tailscale only</div>
   </header>
 
-  <main class="shell">
+  <div class="app-layout">
+    <aside class="side-nav" aria-label="Ecosystem navigation">
+      <div class="side-nav-inner">
+        <p class="eyebrow">Navigator</p>
+        <div id="sideNavGroups" class="side-nav-groups"></div>
+      </div>
+    </aside>
+
+    <main class="shell">
     <section class="hero-panel">
       <div>
         <p class="eyebrow">Private ecosystem map</p>
@@ -116,7 +124,8 @@
       </div>
     </section>
     <div id="docsList" class="docs-list"></div>
-  </main>
+    </main>
+  </div>
 
   <template id="resourceTemplate">
     <article class="resource-card">

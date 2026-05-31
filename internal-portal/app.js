@@ -4,7 +4,8 @@ const state = {
   category: "all",
   query: "",
   selected: null,
-  openMapColumns: new Set(["public"])
+  openMapColumns: new Set(["public"]),
+  openSidebarGroups: new Set(["public"])
 };
 
 const registryCandidates = [
@@ -55,11 +56,15 @@ function atlasWikiToLocal(url) {
   }
 
   const mappings = [
-    [/^http:\/\/atlas\/wiki\/projects\/([^/#]+)\/?(#.*)?$/, "/wiki/docs/projects/$1.md$2"],
-    [/^http:\/\/atlas\/wiki\/infrastructure\/([^/#]+)\/?(#.*)?$/, "/wiki/docs/infrastructure/$1.md$2"],
-    [/^http:\/\/atlas\/wiki\/agents-and-skills\/([^/#]+)\/?(#.*)?$/, "/wiki/docs/agents-and-skills/$1.md$2"],
-    [/^http:\/\/atlas\/wiki\/workflows\/([^/#]+)\/?(#.*)?$/, "/wiki/docs/workflows/$1.md$2"],
-    [/^http:\/\/atlas\/wiki\/?$/, "/wiki/docs/index.md"],
+    [/^http:\/\/atlas\/wiki\/projects\/?(#.*)?$/, "/wiki/site/projects/$1"],
+    [/^http:\/\/atlas\/wiki\/infrastructure\/?(#.*)?$/, "/wiki/site/infrastructure/$1"],
+    [/^http:\/\/atlas\/wiki\/agents-and-skills\/?(#.*)?$/, "/wiki/site/agents-and-skills/$1"],
+    [/^http:\/\/atlas\/wiki\/workflows\/?(#.*)?$/, "/wiki/site/workflows/$1"],
+    [/^http:\/\/atlas\/wiki\/projects\/([^/#]+)\/?(#.*)?$/, "/wiki/site/projects/$1/$2"],
+    [/^http:\/\/atlas\/wiki\/infrastructure\/([^/#]+)\/?(#.*)?$/, "/wiki/site/infrastructure/$1/$2"],
+    [/^http:\/\/atlas\/wiki\/agents-and-skills\/([^/#]+)\/?(#.*)?$/, "/wiki/site/agents-and-skills/$1/$2"],
+    [/^http:\/\/atlas\/wiki\/workflows\/([^/#]+)\/?(#.*)?$/, "/wiki/site/workflows/$1/$2"],
+    [/^http:\/\/atlas\/wiki\/?$/, "/wiki/site/"],
     [/^http:\/\/atlas\/ecosystem\/?$/, "/internal-portal/"]
   ];
 
@@ -176,21 +181,8 @@ function filteredMapItems() {
   return allMapItems().filter((item) => matchesSearch(item) && matchesVisibility(item) && matchesCategory(item));
 }
 
-function createMapNode(item) {
-  const template = $("#mapNodeTemplate");
-  const node = template.content.firstElementChild.cloneNode(true);
-  node.dataset.visibility = item.visibility;
-  node.dataset.kind = item.mapKind || item.category || "item";
-  node.querySelector(".node-name").textContent = item.displayName || item.name;
-  node.querySelector(".node-meta").textContent = `${item.visibility} / ${item.category || item.type || item.mapKind}`;
-  node.addEventListener("click", () => openDrawer(item, "open"));
-  return node;
-}
-
-function renderSitemap() {
-  const items = filteredMapItems();
-  const isFocusedView = state.query.trim() || state.visibility !== "all" || state.category !== "all";
-  const columns = [
+function ecosystemBranches(items) {
+  return [
     {
       id: "public",
       title: "Public Surface",
@@ -222,15 +214,101 @@ function renderSitemap() {
       items: items.filter((item) => item.mapKind === "doc")
     }
   ];
+}
+
+function createMapNode(item) {
+  const template = $("#mapNodeTemplate");
+  const node = template.content.firstElementChild.cloneNode(true);
+  node.dataset.visibility = item.visibility;
+  node.dataset.kind = item.mapKind || item.category || "item";
+  node.querySelector(".node-name").textContent = item.displayName || item.name;
+  node.querySelector(".node-meta").textContent = `${item.visibility} / ${item.category || item.type || item.mapKind}`;
+  node.addEventListener("click", () => openDrawer(item, "open"));
+  return node;
+}
+
+function createSideNavItem(item) {
+  const href = preferredOpenUrl(item);
+  const label = document.createElement(href === "#" ? "button" : "a");
+  label.className = "side-nav-item";
+  label.dataset.visibility = item.visibility;
+  label.dataset.kind = item.mapKind || item.category || "item";
+
+  if (href === "#") {
+    label.type = "button";
+    label.addEventListener("click", () => openDrawer(item, "open"));
+  } else {
+    label.href = href;
+    label.target = "_blank";
+    label.rel = "noreferrer";
+  }
+
+  const name = document.createElement("span");
+  name.textContent = item.displayName || item.name;
+  const meta = document.createElement("small");
+  meta.textContent = item.category || item.type || item.mapKind || "resource";
+  label.append(name, meta);
+  return label;
+}
+
+function renderSidebar() {
+  const branches = ecosystemBranches(allMapItems());
+  const groups = branches.map((branch) => {
+    const group = document.createElement("section");
+    const isOpen = state.openSidebarGroups.has(branch.id);
+    group.className = "side-nav-group";
+    group.classList.toggle("is-open", isOpen);
+    group.dataset.group = branch.id;
+
+    const trigger = document.createElement("button");
+    trigger.className = "side-nav-trigger";
+    trigger.type = "button";
+    trigger.setAttribute("aria-expanded", String(isOpen));
+
+    const label = document.createElement("span");
+    label.textContent = branch.title;
+    const count = document.createElement("strong");
+    count.textContent = String(branch.items.length);
+    trigger.append(label, count);
+    trigger.addEventListener("click", () => {
+      if (state.openSidebarGroups.has(branch.id)) {
+        state.openSidebarGroups.delete(branch.id);
+      } else {
+        state.openSidebarGroups.add(branch.id);
+      }
+      renderSidebar();
+    });
+
+    const panel = document.createElement("div");
+    panel.className = "side-nav-panel";
+    const list = document.createElement("div");
+    list.className = "side-nav-list";
+    list.replaceChildren(...branch.items.map(createSideNavItem));
+    panel.append(list);
+
+    group.append(trigger, panel);
+    return group;
+  });
+
+  $("#sideNavGroups").replaceChildren(...groups);
+}
+
+function renderSitemap() {
+  const items = filteredMapItems();
+  const isFocusedView = state.query.trim() || state.visibility !== "all" || state.category !== "all";
+  const columns = ecosystemBranches(items);
 
   const rendered = columns.map((column) => {
-    const section = document.createElement("details");
+    const isOpen = Boolean(isFocusedView ? column.items.length > 0 : state.openMapColumns.has(column.id));
+    const section = document.createElement("section");
     section.className = "sitemap-column";
+    section.classList.toggle("is-open", isOpen);
     section.dataset.column = column.id;
-    section.open = isFocusedView ? column.items.length > 0 : state.openMapColumns.has(column.id);
 
-    const header = document.createElement("summary");
+    const header = document.createElement("button");
     header.className = "column-head";
+    header.type = "button";
+    header.setAttribute("aria-expanded", String(isOpen));
     const label = document.createElement("div");
     const title = document.createElement("h3");
     title.textContent = column.title;
@@ -240,7 +318,17 @@ function renderSitemap() {
     const count = document.createElement("span");
     count.textContent = String(column.items.length);
     header.append(label, count);
+    header.addEventListener("click", () => {
+      if (state.openMapColumns.has(column.id)) {
+        state.openMapColumns.delete(column.id);
+      } else {
+        state.openMapColumns.add(column.id);
+      }
+      renderSitemap();
+    });
 
+    const panel = document.createElement("div");
+    panel.className = "branch-panel";
     const list = document.createElement("div");
     list.className = "node-stack";
     if (column.items.length) {
@@ -251,16 +339,9 @@ function renderSitemap() {
       empty.textContent = "No matching nodes";
       list.append(empty);
     }
+    panel.append(list);
 
-    section.addEventListener("toggle", () => {
-      if (section.open) {
-        state.openMapColumns.add(column.id);
-      } else {
-        state.openMapColumns.delete(column.id);
-      }
-    });
-
-    section.append(header, list);
+    section.append(header, panel);
     return section;
   });
 
@@ -527,6 +608,7 @@ async function init() {
   try {
     state.registry = await loadRegistry();
     renderStats();
+    renderSidebar();
     renderSitemap();
     renderRepos();
     renderOps();
