@@ -1170,3 +1170,27 @@
 **Next up:**
 - Review the sidebar grouping/order in the browser and decide whether sidebar item clicks should open resources directly or focus/open the matching portal detail drawer.
 - Continue future backlog items: UHaul IP/edge restriction, portal control hooks/runbooks, and Leantime/GitHub planning sync.
+
+## 2026-05-31 17:51:10 -04:00 - Structural ecosystem map and catalog density pass
+
+**What we did:**
+- Reworked the portal map columns around local GitHub workspace structure: Agents, Apps, Homelab, Infra, Notes, and Sites.
+- Changed map expansion to a global expand/collapse state so clicking any map header opens or closes all columns together with eased panel motion.
+- Normalized expanded map column heights across wrapped rows with CSS grid row stretching.
+- Dedupe-filtered sidebar/map branch display entries by label so repeated resources like Atlas Wiki do not appear twice in the navigator.
+- Replaced the Services & Dashboards card grid with compact service-catalog rows containing inline state, visibility/type badges, target text, and tight right-side actions.
+- Made the UHaul sensitive banner conditional on UHaul Planner being visible under the active search/filter state.
+- Added the `@DrewBeFree Ecosystem` header identity, bundled `internal-portal/assets/pixelated-drew.png`, and added a served-file last-updated indicator in the header.
+- Added fade-in motion to portal surfaces and dynamic rows/cards.
+- Verified locally in the in-app browser: avatar loads, structural map buckets render, all map columns expand together, heights sync, sidebar duplicates are gone, compact ops rows render, and public filtering hides UHaul Planner plus its banner.
+- Ran `node --test internal-portal/portal.test.mjs`, `node --check internal-portal/app.js`, `node --check internal-portal/dev-server.mjs`, and `git diff --check`.
+- Fast-forward merged `feat/portal-structural-map-density` into `main`, pushed `infra/main`, and deployed to Atlas.
+
+**Where we stopped:**
+- Atlas portal is live at `http://atlas/ecosystem/` with the structural map, compact ops rows, header avatar, fade motion, and conditional UHaul banner.
+- `http://atlas/ecosystem/`, `http://atlas/ecosystem/ecosystem.json`, and `http://atlas/ecosystem/assets/pixelated-drew.png` all return `200`.
+- Local preview server is still running on `127.0.0.1:8765`.
+
+**Next up:**
+- Review the portal visually on Atlas and decide whether sidebar item clicks should open external resources directly or select/focus the matching portal detail drawer first.
+- Consider adding live health data from OpenObserve/Prometheus/Better Stack as a telemetry layer under the existing ecosystem catalog.
