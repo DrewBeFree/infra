@@ -1131,3 +1131,22 @@
 **Next up:**
 - User should log in and review the first cockpit pass.
 - Decide whether to add a lightweight GitHub-to-Leantime sync script.
+
+## 2026-05-31 15:01:20 -04:00 - Accordion ecosystem sitemap
+
+**What we did:**
+- Reworked the internal portal's primary view into a sitemap/org-chart style ecosystem map.
+- Added accordion branches for Public Surface, Private Workbench, Sensitive / Controlled, Atlas Operations, and Docs & Planning.
+- Kept branch counts visible while collapsing detailed nodes by default; search/filter views auto-expand matching branches.
+- Verified the local preview at `http://127.0.0.1:8765/internal-portal/`, including an interaction check where `uhaul` opens only the sensitive UHaul Planner branch.
+- Ran `node --test internal-portal/portal.test.mjs`, `node --check internal-portal/app.js`, `node --check internal-portal/dev-server.mjs`, and `git diff --check`.
+- Fast-forward merged `feat/ecosystem-portal-sitemap` into `main`, pushed `infra/main`, and deployed to Atlas.
+
+**Where we stopped:**
+- Atlas portal is live at `http://atlas/ecosystem/` with the accordion sitemap assets deployed.
+- `http://atlas/ecosystem/` and `http://atlas/ecosystem/ecosystem.json` both return `200`.
+- Local preview server is running on `127.0.0.1:8765` for immediate browser review.
+
+**Next up:**
+- Review the sitemap/accordion feel in the browser and tune branch labels, grouping, or default-open behavior if needed.
+- Continue future backlog items: UHaul IP/edge restriction, portal control hooks/runbooks, and Leantime/GitHub planning sync.
