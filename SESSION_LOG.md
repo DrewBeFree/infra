@@ -1194,3 +1194,23 @@
 **Next up:**
 - Review the portal visually on Atlas and decide whether sidebar item clicks should open external resources directly or select/focus the matching portal detail drawer first.
 - Consider adding live health data from OpenObserve/Prometheus/Better Stack as a telemetry layer under the existing ecosystem catalog.
+
+## 2026-05-31 18:16:12 -04:00 - Portal filter modal pass
+
+**What we did:**
+- Replaced the always-visible visibility and type segmented controls with a single compact `Filters` button in the toolbar.
+- Added a centered filter modal containing the existing Visibility and Type controls.
+- Kept the active filter state visible on the toolbar button as `Visibility / Type`.
+- Wired modal open, close, Escape handling, summary updates, and existing filter behavior without changing the registry contract.
+- Verified locally in the in-app browser that the modal opens, Public/Apps filters update the summary and results, and closing the modal resets `aria-expanded`.
+- Ran `node --test internal-portal/portal.test.mjs`, `node --check internal-portal/app.js`, `node --check internal-portal/dev-server.mjs`, and `git diff --check`.
+- Fast-forward merged `feat/portal-filter-modal` into `main`, pushed `infra/main`, and deployed to Atlas.
+
+**Where we stopped:**
+- Atlas portal is live at `http://atlas/ecosystem/` with search plus a single filter modal button.
+- `http://atlas/ecosystem/` and `http://atlas/ecosystem/ecosystem.json` return `200`; deployed HTML/JS include `filterModal` and `openFilterModal`.
+- Local preview server is still running on `127.0.0.1:8765`.
+
+**Next up:**
+- Review the filter modal on Atlas and decide whether filter changes should auto-close the modal after selection or stay open for multi-step filtering.
+- Continue exploring live health/telemetry integration under the ecosystem catalog.
