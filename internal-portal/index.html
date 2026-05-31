@@ -9,13 +9,13 @@
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="#repoGrid" aria-label="Internal Ecosystem home">
+    <a class="brand" href="#ecosystemMap" aria-label="Internal Ecosystem home">
       <span class="brand-mark"></span>
       <span>DBF Ecosystem</span>
     </a>
     <nav aria-label="Portal sections">
-      <a href="#repoGrid">Repos</a>
-      <a href="#opsGrid">Ops</a>
+      <a href="#ecosystemMap">Map</a>
+      <a href="#repoGrid">Directory</a>
       <a href="#docsList">Docs</a>
     </nav>
     <div class="network-pill"><span></span> Atlas/Tailscale only</div>
@@ -24,9 +24,9 @@
   <main class="shell">
     <section class="hero-panel">
       <div>
-        <p class="eyebrow">Private operator surface</p>
+        <p class="eyebrow">Private ecosystem map</p>
         <h1>Internal Ecosystem</h1>
-        <p class="lede">A live launcher for every repo, service, dashboard, doc, deploy target, and next control hook in the DrewBeFree stack.</p>
+        <p class="lede">A sitemap-style control chart for every repo, service, dashboard, doc, deploy target, and next control hook in the DrewBeFree stack.</p>
       </div>
       <div class="boundary-card">
         <span class="status-dot"></span>
@@ -83,9 +83,18 @@
       <a id="uhaulLink" class="quiet-link" href="https://uhaul.drewbefree.com" target="_blank" rel="noreferrer">Open tracked URL</a>
     </section>
 
+    <section id="ecosystemMap" class="sitemap-board" aria-label="Ecosystem sitemap">
+      <div class="sitemap-root">
+        <span class="root-kicker">Source of truth</span>
+        <strong>DrewBeFree Ecosystem</strong>
+        <small id="mapSummary">Loading registry</small>
+      </div>
+      <div id="sitemapColumns" class="sitemap-columns"></div>
+    </section>
+
     <section class="section-head">
       <div>
-        <p class="eyebrow">Launch</p>
+        <p class="eyebrow">Directory</p>
         <h2>Repositories</h2>
       </div>
       <span id="resultCount" class="result-count">-- visible</span>
@@ -121,6 +130,13 @@
       <div class="link-row"></div>
       <div class="control-row"></div>
     </article>
+  </template>
+
+  <template id="mapNodeTemplate">
+    <button class="map-node" type="button">
+      <span class="node-name"></span>
+      <span class="node-meta"></span>
+    </button>
   </template>
 
   <aside id="detailDrawer" class="detail-drawer" aria-hidden="true" aria-label="Resource details">

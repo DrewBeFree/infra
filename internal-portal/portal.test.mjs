@@ -102,10 +102,16 @@ test("portal static files are present and load the canonical registry", async ()
 
   const index = await readFile(indexPath, "utf8");
   const app = await readFile(appPath, "utf8");
+  const style = await readFile(stylePath, "utf8");
 
   assert.match(index, /Atlas\/Tailscale/);
+  assert.match(index, /ecosystemMap/);
+  assert.match(index, /mapNodeTemplate/);
   assert.match(index, /app\.js/);
   assert.match(app, /\.\.\/ecosystem\.json/);
+  assert.match(app, /renderSitemap/);
+  assert.match(app, /openMapColumns/);
+  assert.match(style, /\.sitemap-column\[open\]/);
 });
 
 test("public Command Center no longer exposes UHaul Planner", async () => {
