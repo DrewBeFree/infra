@@ -16,6 +16,21 @@ const registryCandidates = [
 
 const $ = (selector) => document.querySelector(selector);
 
+const visibilityLabels = {
+  all: "All",
+  public: "Public",
+  private: "Private",
+  sensitive: "Sensitive"
+};
+
+const categoryLabels = {
+  all: "All",
+  app: "Apps",
+  site: "Sites",
+  agent: "Agents",
+  infrastructure: "Infra"
+};
+
 function escapeText(value) {
   return String(value ?? "");
 }
@@ -610,6 +625,20 @@ function renderAttention() {
   banner.hidden = !uhaulVisible;
 }
 
+function updateFilterSummary() {
+  $("#filterSummary").textContent = `${visibilityLabels[state.visibility]} / ${categoryLabels[state.category]}`;
+}
+
+function openFilterModal() {
+  $("#filterModal").hidden = false;
+  $("#filterButton").setAttribute("aria-expanded", "true");
+}
+
+function closeFilterModal() {
+  $("#filterModal").hidden = true;
+  $("#filterButton").setAttribute("aria-expanded", "false");
+}
+
 function renderDocs() {
   const docs = state.registry.docs.map((doc) => {
     const row = document.createElement("a");
@@ -660,10 +689,15 @@ function bindControls() {
     renderAttention();
   });
 
+  $("#filterButton").addEventListener("click", openFilterModal);
+  $("#closeFilters").addEventListener("click", closeFilterModal);
+  $("#filterBackdrop").addEventListener("click", closeFilterModal);
+
   document.querySelectorAll("[data-filter]").forEach((button) => {
     button.addEventListener("click", () => {
       state.visibility = button.dataset.filter;
       document.querySelectorAll("[data-filter]").forEach((item) => item.classList.toggle("is-active", item === button));
+      updateFilterSummary();
       renderSidebar();
       renderSitemap();
       renderRepos();
@@ -675,6 +709,7 @@ function bindControls() {
     button.addEventListener("click", () => {
       state.category = button.dataset.category;
       document.querySelectorAll("[data-category]").forEach((item) => item.classList.toggle("is-active", item === button));
+      updateFilterSummary();
       renderSidebar();
       renderSitemap();
       renderRepos();
@@ -685,6 +720,7 @@ function bindControls() {
   $("#closeDrawer").addEventListener("click", closeDrawer);
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
+      closeFilterModal();
       closeDrawer();
     }
   });
@@ -705,6 +741,7 @@ async function init() {
   try {
     state.registry = await loadRegistry();
     renderStats();
+    updateFilterSummary();
     renderSidebar();
     renderSitemap();
     renderRepos();

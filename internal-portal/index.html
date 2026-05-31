@@ -69,19 +69,10 @@
       <div class="search-wrap">
         <input id="searchInput" type="search" placeholder="Search ecosystem" autocomplete="off">
       </div>
-      <div class="segmented" aria-label="Visibility filter">
-        <button class="is-active" data-filter="all" type="button">All</button>
-        <button data-filter="public" type="button">Public</button>
-        <button data-filter="private" type="button">Private</button>
-        <button data-filter="sensitive" type="button">Sensitive</button>
-      </div>
-      <div class="segmented compact" aria-label="Category filter">
-        <button class="is-active" data-category="all" type="button">All</button>
-        <button data-category="app" type="button">Apps</button>
-        <button data-category="site" type="button">Sites</button>
-        <button data-category="agent" type="button">Agents</button>
-        <button data-category="infrastructure" type="button">Infra</button>
-      </div>
+      <button id="filterButton" class="filter-trigger" type="button" aria-expanded="false" aria-controls="filterModal">
+        <span>Filters</span>
+        <small id="filterSummary">All / All</small>
+      </button>
     </section>
 
     <section id="uhaulBanner" class="attention-band" aria-label="Sensitive queue">
@@ -148,6 +139,38 @@
       <span class="node-meta"></span>
     </button>
   </template>
+
+  <div id="filterModal" class="filter-modal" hidden>
+    <button id="filterBackdrop" class="filter-backdrop" type="button" aria-label="Close filters"></button>
+    <section class="filter-panel" role="dialog" aria-modal="true" aria-labelledby="filterTitle">
+      <div class="filter-panel-head">
+        <div>
+          <p class="eyebrow">View Controls</p>
+          <h2 id="filterTitle">Filters</h2>
+        </div>
+        <button id="closeFilters" class="drawer-close" type="button" aria-label="Close filters">Close</button>
+      </div>
+      <div class="filter-group">
+        <h3>Visibility</h3>
+        <div class="segmented" aria-label="Visibility filter">
+          <button class="is-active" data-filter="all" type="button">All</button>
+          <button data-filter="public" type="button">Public</button>
+          <button data-filter="private" type="button">Private</button>
+          <button data-filter="sensitive" type="button">Sensitive</button>
+        </div>
+      </div>
+      <div class="filter-group">
+        <h3>Type</h3>
+        <div class="segmented compact" aria-label="Category filter">
+          <button class="is-active" data-category="all" type="button">All</button>
+          <button data-category="app" type="button">Apps</button>
+          <button data-category="site" type="button">Sites</button>
+          <button data-category="agent" type="button">Agents</button>
+          <button data-category="infrastructure" type="button">Infra</button>
+        </div>
+      </div>
+    </section>
+  </div>
 
   <aside id="detailDrawer" class="detail-drawer" aria-hidden="true" aria-label="Resource details">
     <button id="closeDrawer" class="drawer-close" type="button" aria-label="Close details">Close</button>

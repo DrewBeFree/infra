@@ -109,6 +109,8 @@ test("portal static files are present and load the canonical registry", async ()
   assert.match(index, /Atlas\/Tailscale/);
   assert.match(index, /@DrewBeFree Ecosystem/);
   assert.match(index, /lastUpdated/);
+  assert.match(index, /filterButton/);
+  assert.match(index, /filterModal/);
   assert.match(index, /pixelated-drew\.png/);
   assert.match(index, /sideNavGroups/);
   assert.match(index, /ecosystemMap/);
@@ -120,7 +122,10 @@ test("portal static files are present and load the canonical registry", async ()
   assert.match(app, /mapExpanded/);
   assert.match(app, /workspaceBucket/);
   assert.match(app, /renderAttention/);
+  assert.match(app, /updateFilterSummary/);
+  assert.match(app, /openFilterModal/);
   assert.match(style, /\.side-nav/);
+  assert.match(style, /\.filter-panel/);
   assert.match(style, /\.sitemap-column\.is-open/);
   assert.match(style, /\.ops-row/);
   assert.match(style, /fade-in-up/);
