@@ -1150,3 +1150,23 @@
 **Next up:**
 - Review the sitemap/accordion feel in the browser and tune branch labels, grouping, or default-open behavior if needed.
 - Continue future backlog items: UHaul IP/edge restriction, portal control hooks/runbooks, and Leantime/GitHub planning sync.
+
+## 2026-05-31 15:36:21 -04:00 - Portal sidebar navigation and rendered wiki links
+
+**What we did:**
+- Added a left sidebar navigator to the internal portal with expandable registry-driven groups matching the sitemap branches.
+- Replaced the sitemap's native details accordions with custom expandable sections so node lists ease in smoothly as branches open.
+- Updated local Atlas wiki URL mapping to use rendered `wiki/site` pages instead of raw `wiki/docs/*.md` Markdown.
+- Added a dev-server rewrite so old local `/wiki/docs/.../*.md` URLs serve the corresponding rendered MkDocs page.
+- Verified local preview at `http://127.0.0.1:8765/internal-portal/`; the sidebar renders, medium-width toolbar no longer overflows, and `/wiki/docs/agents-and-skills/agents.md` returns rendered HTML.
+- Ran `node --test internal-portal/portal.test.mjs`, `node --check internal-portal/app.js`, `node --check internal-portal/dev-server.mjs`, and `git diff --check`.
+- Fast-forward merged `feat/portal-sidebar-wiki-links` into `main`, pushed `infra/main`, and deployed to Atlas.
+
+**Where we stopped:**
+- Atlas portal is live at `http://atlas/ecosystem/` with sidebar navigation and smooth sitemap branch expansion.
+- `http://atlas/ecosystem/`, `http://atlas/ecosystem/ecosystem.json`, and `http://atlas/wiki/agents-and-skills/agents/` return `200` with rendered HTML where applicable.
+- Local preview server is running on `127.0.0.1:8765` with the updated dev-server rewrite active.
+
+**Next up:**
+- Review the sidebar grouping/order in the browser and decide whether sidebar item clicks should open resources directly or focus/open the matching portal detail drawer.
+- Continue future backlog items: UHaul IP/edge restriction, portal control hooks/runbooks, and Leantime/GitHub planning sync.
