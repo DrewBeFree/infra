@@ -1,3 +1,21 @@
+## 2026-06-01 20:30 — Phase A App Factory wrap-up
+
+**What we did:**
+- Cleaned up Phase A E2E test scaffolding (TEST_BASE_BRANCH override, test-only alerts, transcript injection).
+- Added lightweight success toast for GitHub blueprint push (feed was not visible in Verdict state).
+- Merged feat/app-factory-phase-a into main and deleted the feature branch.
+- Confirmed the reliable value is the client-side architecture blueprint push from Engineering Assembly; full remote factory (Action-generated PRs) deprioritized after testing showed no visible results.
+- Noted ongoing WSL networking friction for browser access to local services (PocketBase, etc.).
+
+**Where we stopped:**
+- Phase A changes merged and cleaned. Blueprint push flow is solid.
+- No generated app PRs from the Action after multiple attempts.
+- Test code and feature branch removed.
+
+**Next up:**
+- Add real LLM provider API keys for live hybrid mode.
+- Continue other priorities.
+
 # Session Log
 
 ## 2026-05-30 16:41 — Fixed telemetry report persistence bug
