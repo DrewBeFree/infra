@@ -923,7 +923,7 @@
           "type": "atlas-static-dashboard",
           "host": "atlas",
           "path": "/opt/homelab-status-dashboard",
-          "url": "http://atlas/"
+          "url": "http://atlas/status/"
         }
       ],
       "publicCommandCenter": false,
@@ -1083,7 +1083,7 @@
       "host": "atlas",
       "visibility": "private",
       "liveUrls": [
-        "http://atlas/"
+        "http://atlas/status/"
       ],
       "ports": [
         80
@@ -1238,6 +1238,7 @@
         "publicInternet": false
       },
       "liveUrls": [
+        "http://atlas/",
         "http://atlas/ecosystem/"
       ],
       "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\infra\\internal-portal",
@@ -1247,6 +1248,12 @@
           "host": "atlas",
           "path": "/opt/homelab-status-dashboard/ecosystem",
           "url": "http://atlas/ecosystem/"
+        },
+        {
+          "type": "atlas-home-redirect",
+          "host": "atlas",
+          "path": "/opt/homelab-status-dashboard/index.html",
+          "url": "http://atlas/"
         }
       ],
       "statusControl": {
@@ -1302,7 +1309,7 @@
       "visibility": "private",
       "summary": "Cross-project session and backlog dashboard served from Atlas.",
       "liveUrls": [
-        "http://atlas/"
+        "http://atlas/status/"
       ],
       "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\homelab\\homelab-status-dashboard",
       "statusControl": {

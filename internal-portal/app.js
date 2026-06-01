@@ -76,6 +76,7 @@ function atlasWikiToLocal(url) {
     [/^http:\/\/atlas\/wiki\/agents-and-skills\/([^/#]+)\/?(#.*)?$/, "/wiki/site/agents-and-skills/$1/$2"],
     [/^http:\/\/atlas\/wiki\/workflows\/([^/#]+)\/?(#.*)?$/, "/wiki/site/workflows/$1/$2"],
     [/^http:\/\/atlas\/wiki\/?$/, "/wiki/site/"],
+    [/^http:\/\/atlas\/?$/, "/internal-portal/"],
     [/^http:\/\/atlas\/ecosystem\/?$/, "/internal-portal/"]
   ];
 

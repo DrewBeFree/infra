@@ -7,6 +7,7 @@ const registryPath = new URL("../ecosystem.json", import.meta.url);
 const indexPath = new URL("./index.html", import.meta.url);
 const appPath = new URL("./app.js", import.meta.url);
 const stylePath = new URL("./style.css", import.meta.url);
+const deployPath = new URL("./deploy.sh", import.meta.url);
 const avatarPath = new URL("./assets/pixelated-drew.png", import.meta.url);
 const appIconPath = new URL("./assets/app-icons/daily-planner.png", import.meta.url);
 const dogTrainerIconPath = new URL("./assets/app-icons/ai-dog-trainer.svg", import.meta.url);
@@ -93,9 +94,22 @@ test("portal is status and control ready", async () => {
   assert.ok(portal);
   assert.equal(portal.visibility, "private");
   assert.equal(portal.access.network, "atlas-tailscale-only");
+  assert.ok(portal.liveUrls.includes("http://atlas/"));
   assert.ok(portal.liveUrls.includes("http://atlas/ecosystem/"));
+  assert.ok(portal.deployTargets.some((target) => target.url === "http://atlas/" && target.type === "atlas-home-redirect"));
   assert.ok(portal.deployTargets.some((target) => target.host === "atlas" && target.type === "nginx-static"));
   assert.deepEqual(portal.statusControl.actions, ["open", "status", "restart", "logs", "deploy"]);
+});
+
+test("portal deploy installs Atlas home redirect while preserving the old status dashboard", async () => {
+  const deploy = await readFile(deployPath, "utf8");
+  const registry = await loadRegistry();
+  const statusDashboard = registry.dashboards.find((dashboard) => dashboard.id === "atlas-status-dashboard");
+
+  assert.match(deploy, /INTERNAL_PORTAL_INSTALL_HOME_REDIRECT/);
+  assert.match(deploy, /url=\/ecosystem\//);
+  assert.match(deploy, /STATUS_TARGET/);
+  assert.ok(statusDashboard.liveUrls.includes("http://atlas/status/"));
 });
 
 test("portal static files are present and load the canonical registry", async () => {
