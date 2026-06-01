@@ -1252,3 +1252,21 @@
 **Next up:**
 - Review the icon sizing/visual rhythm on Atlas and decide whether non-app sidebar groups should get their own smaller glyph treatment too.
 - Continue exploring live health/telemetry integration under the existing ecosystem catalog.
+
+## 2026-05-31 20:45:35 -04:00 - Portal sidebar icon gradient polish
+
+**What we did:**
+- Updated the Apps sidebar icon tiles to use a blue-to-gray gradient background with a subtle light border and inset shine.
+- Inset the app image glyphs so the gradient background remains visible behind each app icon.
+- Verified locally in the in-app browser that the Apps sidebar still has 14 rows, 14 icon slots, 0 old subtext labels, and the computed icon background is the new `linear-gradient(145deg, ...)`.
+- Ran `node --check internal-portal/app.js`, `node --check internal-portal/dev-server.mjs`, `node --test internal-portal/portal.test.mjs`, and `git diff --check`.
+- Fast-forward merged `feat/sidebar-icon-gradient` into `main`, pushed `infra/main`, and deployed to Atlas.
+
+**Where we stopped:**
+- Atlas portal is live at `http://atlas/ecosystem/` with blue-to-gray gradient app icon backgrounds.
+- `http://atlas/ecosystem/` returns `200`, and deployed `style.css` includes the icon gradient rule.
+- Latest portal style commit on `main` is `9c672ee` (`style: add sidebar app icon gradients`).
+
+**Next up:**
+- Review the gradient strength on Atlas and tune the inset/padding if the app glyphs feel too small.
+- Continue exploring live health/telemetry integration under the existing ecosystem catalog.
