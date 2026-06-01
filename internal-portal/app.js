@@ -144,24 +144,7 @@ function initialsFor(item) {
 }
 
 function visibleRepos() {
-  const query = state.query.trim().toLowerCase();
-
-  return state.registry.repositories.filter((repo) => {
-    const matchesVisibility = state.visibility === "all" || repo.visibility === state.visibility;
-    const matchesCategory = state.category === "all" || repo.category === state.category;
-    const haystack = [
-      repo.name,
-      repo.displayName,
-      repo.category,
-      repo.visibility,
-      repo.summary,
-      repo.githubUrl,
-      repo.localPath,
-      ...(repo.liveUrls || [])
-    ].join(" ").toLowerCase();
-
-    return matchesVisibility && matchesCategory && (!query || haystack.includes(query));
-  });
+  return state.registry.repositories.filter(matchesItemFilters);
 }
 
 function normalizeDoc(doc) {
@@ -218,14 +201,32 @@ function matchesCategory(item) {
   if (state.category === "all") {
     return true;
   }
-  if (item.mapKind && item.mapKind !== "repo") {
-    return state.category === item.mapKind || item.category === state.category;
+
+  const bucket = workspaceBucket(item);
+  const category = item.category || item.type || item.mapKind;
+
+  if (state.category === "app") {
+    return category === "app" || bucket === "apps";
   }
-  return item.category === state.category;
+  if (state.category === "site") {
+    return category === "site" || bucket === "sites";
+  }
+  if (state.category === "agent") {
+    return category === "agent" || bucket === "agents";
+  }
+  if (state.category === "infrastructure") {
+    return category === "infrastructure" || bucket === "infra" || bucket === "homelab";
+  }
+
+  return category === state.category || bucket === state.category;
+}
+
+function matchesItemFilters(item) {
+  return matchesSearch(item) && matchesVisibility(item) && matchesCategory(item);
 }
 
 function filteredMapItems() {
-  return allMapItems().filter((item) => matchesSearch(item) && matchesVisibility(item) && matchesCategory(item));
+  return allMapItems().filter(matchesItemFilters);
 }
 
 function itemLabel(item) {
@@ -466,6 +467,16 @@ function createControl(item, action) {
   return button;
 }
 
+function createDetailsButton(item) {
+  const button = document.createElement("button");
+  button.className = "control-button";
+  button.type = "button";
+  button.textContent = "Details";
+  button.title = `Details for ${item.displayName || item.name}`;
+  button.addEventListener("click", () => openDrawer(item, "open"));
+  return button;
+}
+
 function createBadge(text, extraClass = "") {
   const badge = document.createElement("span");
   badge.className = `badge ${extraClass}`.trim();
@@ -564,68 +575,23 @@ function handleAction(item, action) {
   openDrawer(item, action);
 }
 
-function renderMeta(item) {
-  const meta = document.createElement("dl");
-  meta.className = "meta-list";
-
-  const pairs = [
-    ["Path", item.localPath],
-    ["State", item.statusControl?.state],
-    ["Deploy", item.deployTargets?.map((target) => target.host || target.type).join(", ")]
-  ].filter(([, value]) => value);
-
-  for (const [term, value] of pairs) {
-    const dt = document.createElement("dt");
-    const dd = document.createElement("dd");
-    dt.textContent = term;
-    dd.textContent = value;
-    meta.append(dt, dd);
-  }
-
-  return meta;
+function itemTargetText(item) {
+  return item.deployTargets?.map((deployTarget) => deployTarget.host || deployTarget.type).filter(Boolean).join(", ")
+    || item.localPath
+    || item.url
+    || item.access?.network
+    || "no target";
 }
 
-function renderResource(item) {
-  const template = $("#resourceTemplate");
-  const card = template.content.firstElementChild.cloneNode(true);
-
-  card.dataset.visibility = item.visibility;
-  card.dataset.category = item.category || item.type || "resource";
-  card.querySelector("h3").textContent = item.displayName || item.name;
-  card.querySelector(".summary").textContent = item.summary || "";
-  card.querySelector(".visibility").textContent = item.visibility;
-  card.querySelector(".category").textContent = item.category || item.type || "resource";
-
-  const oldMeta = card.querySelector(".meta-list");
-  oldMeta.replaceWith(renderMeta(item));
-
-  const links = card.querySelector(".link-row");
-  if (preferredOpenUrl(item) !== "#") {
-    links.append(createLink("Open", preferredOpenUrl(item)));
-  }
-  if (item.githubUrl) {
-    links.append(createLink("GitHub", item.githubUrl, "secondary"));
-  }
-  for (const doc of item.docs?.slice(0, 2) || []) {
-    links.append(createLink(doc.label.replace("Wiki project page", "Docs"), doc.url, "secondary"));
-  }
-
-  const controls = card.querySelector(".control-row");
-  for (const action of item.statusControl?.actions || []) {
-    controls.append(createControl(item, action));
-  }
-
-  return card;
-}
-
-function renderOpsRow(item) {
+function renderCatalogRow(item, variant = "resource") {
   const row = document.createElement("article");
-  row.className = "ops-row";
+  row.className = "catalog-row";
   row.dataset.visibility = item.visibility;
   row.dataset.category = item.category || item.type || "resource";
+  row.dataset.variant = variant;
 
   const main = document.createElement("div");
-  main.className = "ops-row-main";
+  main.className = "catalog-row-main";
   const dot = document.createElement("span");
   dot.className = "status-dot compact-dot";
   const text = document.createElement("div");
@@ -635,9 +601,18 @@ function renderOpsRow(item) {
   summary.textContent = item.summary || item.url || "";
   text.append(title, summary);
   main.append(dot, text);
+  main.setAttribute("role", "button");
+  main.tabIndex = 0;
+  main.addEventListener("click", () => openDrawer(item, "open"));
+  main.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      openDrawer(item, "open");
+    }
+  });
 
   const badges = document.createElement("div");
-  badges.className = "ops-row-badges";
+  badges.className = "catalog-row-badges";
   badges.append(
     createBadge(item.visibility, "visibility"),
     createBadge(item.type || item.category || "resource", "category"),
@@ -645,19 +620,15 @@ function renderOpsRow(item) {
   );
 
   const target = document.createElement("div");
-  target.className = "ops-row-target";
-  target.textContent = item.deployTargets?.map((deployTarget) => deployTarget.host || deployTarget.type).filter(Boolean).join(", ") || item.access?.network || "no target";
+  target.className = "catalog-row-target";
+  target.textContent = itemTargetText(item);
 
   const actions = document.createElement("div");
-  actions.className = "ops-row-actions";
+  actions.className = "catalog-row-actions";
   if (preferredOpenUrl(item) !== "#") {
     actions.append(createLink("Open", preferredOpenUrl(item)));
   }
-  for (const action of item.statusControl?.actions || []) {
-    if (action !== "open") {
-      actions.append(createControl(item, action));
-    }
-  }
+  actions.append(createDetailsButton(item));
 
   row.append(main, badges, target, actions);
   return row;
@@ -666,7 +637,7 @@ function renderOpsRow(item) {
 function renderRepos() {
   const repos = visibleRepos();
   const grid = $("#repoGrid");
-  grid.replaceChildren(...repos.map(renderResource));
+  grid.replaceChildren(...repos.map((item) => renderCatalogRow(item, "repo")));
   $("#resultCount").textContent = `${repos.length} visible`;
 }
 
@@ -674,16 +645,8 @@ function renderOps() {
   const items = [
     ...state.registry.services,
     ...state.registry.dashboards
-  ];
-  $("#opsGrid").replaceChildren(...items.map(renderOpsRow));
-}
-
-function renderAttention() {
-  const banner = $("#uhaulBanner");
-  const uhaulVisible = visibleRepos().some((repo) => repo.name === "uhaul-load-planner");
-  const query = state.query.trim().toLowerCase();
-  const uhaulIntent = state.visibility === "sensitive" || /\bu-?haul\b/.test(query);
-  banner.hidden = !(uhaulVisible && uhaulIntent);
+  ].filter(matchesItemFilters);
+  $("#opsGrid").replaceChildren(...items.map((item) => renderCatalogRow(item, "ops")));
 }
 
 function updateFilterSummary() {
@@ -701,7 +664,7 @@ function closeFilterModal() {
 }
 
 function renderDocs() {
-  const docs = state.registry.docs.map((doc) => {
+  const docs = state.registry.docs.map(normalizeDoc).filter(matchesItemFilters).map((doc) => {
     const row = document.createElement("a");
     const name = document.createElement("span");
     const detail = document.createElement("small");
@@ -710,7 +673,9 @@ function renderDocs() {
     row.href = resolvedUrl(doc.url);
     row.target = "_blank";
     row.rel = "noreferrer";
-    name.textContent = doc.name;
+    row.dataset.visibility = doc.visibility;
+    row.dataset.category = doc.category || "docs";
+    name.textContent = doc.displayName || doc.name;
     detail.textContent = `${doc.visibility} · ${doc.localPath || doc.url}`;
     row.append(name, detail);
 
@@ -747,7 +712,8 @@ function bindControls() {
     renderSidebar();
     renderSitemap();
     renderRepos();
-    renderAttention();
+    renderOps();
+    renderDocs();
   });
 
   $("#filterButton").addEventListener("click", openFilterModal);
@@ -762,7 +728,8 @@ function bindControls() {
       renderSidebar();
       renderSitemap();
       renderRepos();
-      renderAttention();
+      renderOps();
+      renderDocs();
     });
   });
 
@@ -774,7 +741,8 @@ function bindControls() {
       renderSidebar();
       renderSitemap();
       renderRepos();
-      renderAttention();
+      renderOps();
+      renderDocs();
     });
   });
 
@@ -789,9 +757,14 @@ function bindControls() {
 
 function renderError(error) {
   $("#repoGrid").innerHTML = `
-    <article class="resource-card error-card">
-      <h3>Registry unavailable</h3>
-      <p class="summary">${escapeText(error.message)}</p>
+    <article class="catalog-row error-card">
+      <div class="catalog-row-main">
+        <span class="status-dot compact-dot"></span>
+        <div>
+          <h3>Registry unavailable</h3>
+          <p>${escapeText(error.message)}</p>
+        </div>
+      </div>
     </article>
   `;
 }
@@ -807,7 +780,6 @@ async function init() {
     renderSitemap();
     renderRepos();
     renderOps();
-    renderAttention();
     renderDocs();
   } catch (error) {
     renderError(error);
