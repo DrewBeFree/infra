@@ -1290,3 +1290,22 @@
 **Next up:**
 - Review the new homepage flow on Atlas and decide whether `/ecosystem/` should remain visible or whether nginx should serve the portal directly at `/` later.
 - Continue exploring live health/telemetry integration under the existing ecosystem catalog.
+
+## 2026-05-31 21:16:42 -04:00 - UHaul banner default-homepage fix
+
+**What we did:**
+- Diagnosed why the UHaul sensitive banner still appeared on the portal homepage: `renderAttention()` treated the default `All / All` view as an active visible UHaul result.
+- Changed the banner condition so it only appears when UHaul is visible and the user has explicitly surfaced it by searching `uhaul`/`u-haul` or filtering to `Sensitive`.
+- Updated the portal static test contract to assert the new `uhaulIntent` behavior.
+- Verified locally that the default homepage hides `#uhaulBanner`.
+- Ran `node --check internal-portal/app.js`, `node --check internal-portal/dev-server.mjs`, `node --test internal-portal/portal.test.mjs`, `node -e` JSON parse validation for `ecosystem.json`, and `git diff --check`.
+- Fast-forward merged `fix/uhaul-banner-intent` into `main`, pushed `infra/main`, and deployed to Atlas.
+
+**Where we stopped:**
+- Opening `http://atlas/` redirects to `http://atlas/ecosystem/` and the UHaul banner is hidden by default.
+- Deployed `app.js` includes the `uhaulIntent` condition.
+- Latest fix commit on `main` is `ab952ba` (`fix: hide uhaul banner until explicitly surfaced`).
+
+**Next up:**
+- Review whether the UHaul app row itself should remain visible in the default Apps sidebar, or whether sensitive apps should also require an explicit Sensitive filter.
+- Continue exploring live health/telemetry integration under the existing ecosystem catalog.
