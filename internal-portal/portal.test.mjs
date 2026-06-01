@@ -142,6 +142,8 @@ test("portal static files are present and load the canonical registry", async ()
   assert.match(app, /appIconAssets/);
   assert.match(app, /appIconUrl/);
   assert.match(app, /renderAttention/);
+  assert.match(app, /uhaulIntent/);
+  assert.match(app, /state\.visibility === "sensitive"/);
   assert.match(app, /updateFilterSummary/);
   assert.match(app, /openFilterModal/);
   assert.match(style, /\.side-nav/);

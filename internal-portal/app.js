@@ -681,7 +681,9 @@ function renderOps() {
 function renderAttention() {
   const banner = $("#uhaulBanner");
   const uhaulVisible = visibleRepos().some((repo) => repo.name === "uhaul-load-planner");
-  banner.hidden = !uhaulVisible;
+  const query = state.query.trim().toLowerCase();
+  const uhaulIntent = state.visibility === "sensitive" || /\bu-?haul\b/.test(query);
+  banner.hidden = !(uhaulVisible && uhaulIntent);
 }
 
 function updateFilterSummary() {
