@@ -1232,3 +1232,23 @@
 **Next up:**
 - Review the filter modal on Atlas and decide whether filter changes should auto-close the modal after selection or stay open for multi-step filtering.
 - Continue exploring live health/telemetry integration under the ecosystem catalog.
+
+## 2026-05-31 20:28:29 -04:00 - Portal sidebar app icons
+
+**What we did:**
+- Added app icons beside each entry in the Apps sidebar group, using bundled local assets instead of remote favicon guesses.
+- Added a local AI Dog Trainer SVG icon and reused the Drew avatar for the DrewBeFree Profile sidebar row.
+- Included Public Command Center in the Apps icon treatment so every visible Apps sidebar row has an image icon.
+- Removed the redundant descriptive subtext from sidebar entries, keeping the rows compact and launcher-like.
+- Verified locally in the in-app browser that the Apps sidebar has 14 rows, 14 icon slots, 14 image icons, and 0 legacy small subtext labels.
+- Ran `node --check internal-portal/app.js`, `node --check internal-portal/dev-server.mjs`, `node --test internal-portal/portal.test.mjs`, and `git diff --check`.
+- Fast-forward merged `feat/sidebar-app-icons` into `main`, pushed `infra/main`, and deployed to Atlas.
+
+**Where we stopped:**
+- Atlas portal is live at `http://atlas/ecosystem/` with sidebar app icons and compact no-subtext rows.
+- `http://atlas/ecosystem/` and `http://atlas/ecosystem/assets/app-icons/ai-dog-trainer.svg` both return `200`.
+- Latest portal commit on `main` is `8d579ec` (`feat: add portal sidebar app icons`).
+
+**Next up:**
+- Review the icon sizing/visual rhythm on Atlas and decide whether non-app sidebar groups should get their own smaller glyph treatment too.
+- Continue exploring live health/telemetry integration under the existing ecosystem catalog.
