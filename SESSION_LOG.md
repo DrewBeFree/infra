@@ -1270,3 +1270,23 @@
 **Next up:**
 - Review the gradient strength on Atlas and tune the inset/padding if the app glyphs feel too small.
 - Continue exploring live health/telemetry integration under the existing ecosystem catalog.
+
+## 2026-05-31 20:55:31 -04:00 - Portal promoted to Atlas homepage
+
+**What we did:**
+- Updated the internal portal deploy script so `http://atlas/` becomes a lightweight redirect to `/ecosystem/`.
+- Preserved the previous Homelab/Atlas status dashboard under `/status/` on first deploy.
+- Updated `ecosystem.json` so the internal portal owns `http://atlas/`, while the old status dashboard points to `http://atlas/status/`.
+- Updated local preview URL mapping, portal README, and tests for the new Atlas homepage behavior.
+- Ran `node --check internal-portal/app.js`, `node --check internal-portal/dev-server.mjs`, `node --test internal-portal/portal.test.mjs`, `node -e` JSON parse validation for `ecosystem.json`, and `git diff --check`.
+- Fast-forward merged `feat/portal-atlas-home` into `main`, pushed `infra/main`, and deployed to Atlas.
+
+**Where we stopped:**
+- Opening `http://atlas/` in the in-app browser redirects to `http://atlas/ecosystem/` and shows the portal brand.
+- `http://atlas/ecosystem/` returns `200`.
+- `http://atlas/status/` returns `200` and preserves the old status dashboard.
+- Latest homepage commit on `main` is `d56a029` (`feat: make portal the atlas homepage`).
+
+**Next up:**
+- Review the new homepage flow on Atlas and decide whether `/ecosystem/` should remain visible or whether nginx should serve the portal directly at `/` later.
+- Continue exploring live health/telemetry integration under the existing ecosystem catalog.
