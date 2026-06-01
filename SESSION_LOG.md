@@ -1309,3 +1309,25 @@
 **Next up:**
 - Review whether the UHaul app row itself should remain visible in the default Apps sidebar, or whether sensitive apps should also require an explicit Sensitive filter.
 - Continue exploring live health/telemetry integration under the existing ecosystem catalog.
+
+## 2026-05-31 21:38:24 -04:00 - Unified portal filters and compact rows
+
+**What we did:**
+- Removed the dedicated UHaul sensitive banner from the portal entirely.
+- Replaced repository cards with compact catalog rows using inline visibility/type/state badges, target text, and `Open`/`Details` actions.
+- Moved deeper repository/service/dashboard info into the existing detail drawer so rows stay dense while still exposing links, docs, deploy targets, and command hooks.
+- Changed filtering to use one shared `matchesItemFilters()` path across repositories, services, dashboards, docs, map nodes, and sidebar groups.
+- Verified locally that the Sensitive filter leaves only sensitive rows across repo/ops/docs streams, and the Apps filter includes app repos plus app-bucket dashboard entries.
+- Verified locally that rows render at compact medium-width heights with no repository cards and no UHaul banner node.
+- Ran `node --check internal-portal/app.js`, `node --check internal-portal/dev-server.mjs`, `node --test internal-portal/portal.test.mjs`, `node -e` JSON parse validation for `ecosystem.json`, and `git diff --check`.
+- Fast-forward merged `feat/portal-unified-filter-density` into `main`, pushed `infra/main`, and deployed to Atlas.
+
+**Where we stopped:**
+- Opening `http://atlas/` redirects to `http://atlas/ecosystem/`.
+- Atlas portal has no `uhaulBanner`, no repository cards, 24 compact repo rows, 16 ops rows, and 5 docs rows in the default view.
+- Deployed HTML includes `catalog-list`, and the browser check confirmed row actions are `Open` and `Details`.
+- Latest feature commit on `main` is `0dd1ee2` (`feat: unify portal filters and compact directory`).
+
+**Next up:**
+- Do a dedicated mobile viewport review and tune the one-column row stacking, sidebar group behavior, and topbar density.
+- Continue exploring live health/telemetry integration under the existing ecosystem catalog.
