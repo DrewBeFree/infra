@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="AI Dog Trainer">
+  <rect width="64" height="64" rx="14" fill="#15231c"/>
+  <path d="M13 38c0-12.2 8.1-21 19-21s19 8.8 19 21v9H13v-9Z" fill="#f2c16d"/>
+  <path d="M18 30c-5 0-8-4-8-8 0-3.6 2.5-6.5 6.1-6.5 5.9 0 8.9 6.7 8.9 13.5v2.5L18 30Zm28 0c5 0 8-4 8-8 0-3.6-2.5-6.5-6.1-6.5-5.9 0-8.9 6.7-8.9 13.5v2.5L46 30Z" fill="#7b4b27"/>
+  <circle cx="25" cy="34" r="3" fill="#17231d"/>
+  <circle cx="39" cy="34" r="3" fill="#17231d"/>
+  <path d="M30 42h4l-2 3-2-3Z" fill="#17231d"/>
+  <path d="M24 50c4 3.5 12 3.5 16 0" fill="none" stroke="#17231d" stroke-width="3" stroke-linecap="round"/>
+  <path d="M49 11h5v5m-5 0 5-5M10 51h5v5m-5 0 5-5" fill="none" stroke="#62d49f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

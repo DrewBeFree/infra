@@ -8,6 +8,8 @@ const indexPath = new URL("./index.html", import.meta.url);
 const appPath = new URL("./app.js", import.meta.url);
 const stylePath = new URL("./style.css", import.meta.url);
 const avatarPath = new URL("./assets/pixelated-drew.png", import.meta.url);
+const appIconPath = new URL("./assets/app-icons/daily-planner.png", import.meta.url);
+const dogTrainerIconPath = new URL("./assets/app-icons/ai-dog-trainer.svg", import.meta.url);
 const commandCenterPath = new URL("../../apps/drewbefree-command-center/index.html", import.meta.url);
 
 const requiredRepos = [
@@ -101,6 +103,8 @@ test("portal static files are present and load the canonical registry", async ()
   assert.ok(existsSync(appPath), "app.js missing");
   assert.ok(existsSync(stylePath), "style.css missing");
   assert.ok(existsSync(avatarPath), "pixelated Drew avatar missing");
+  assert.ok(existsSync(appIconPath), "app icon asset missing");
+  assert.ok(existsSync(dogTrainerIconPath), "AI Dog Trainer icon asset missing");
 
   const index = await readFile(indexPath, "utf8");
   const app = await readFile(appPath, "utf8");
@@ -121,10 +125,13 @@ test("portal static files are present and load the canonical registry", async ()
   assert.match(app, /renderSitemap/);
   assert.match(app, /mapExpanded/);
   assert.match(app, /workspaceBucket/);
+  assert.match(app, /appIconAssets/);
+  assert.match(app, /appIconUrl/);
   assert.match(app, /renderAttention/);
   assert.match(app, /updateFilterSummary/);
   assert.match(app, /openFilterModal/);
   assert.match(style, /\.side-nav/);
+  assert.match(style, /\.side-nav-icon/);
   assert.match(style, /\.filter-panel/);
   assert.match(style, /\.sitemap-column\.is-open/);
   assert.match(style, /\.ops-row/);

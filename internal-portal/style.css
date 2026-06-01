@@ -207,8 +207,8 @@ a {
   animation: fade-in-up 0.2s ease both;
   min-height: 36px;
   padding: 7px 8px 7px 11px;
-  display: grid;
-  gap: 2px;
+  display: flex;
+  align-items: center;
   color: var(--muted);
   text-align: left;
   text-decoration: none;
@@ -237,24 +237,45 @@ a {
   outline: none;
 }
 
-.side-nav-item span,
-.side-nav-item small {
+.side-nav-label {
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.side-nav-icon {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #071006;
+  background: var(--green);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 6px;
+  font-size: 0.58rem;
+  font-weight: 900;
+  overflow: hidden;
+}
+
+.side-nav-icon img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #101411;
+}
+
+.side-nav-name {
+  font-size: 0.78rem;
+  font-weight: 800;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.side-nav-item span {
-  font-size: 0.78rem;
-  font-weight: 800;
-}
-
-.side-nav-item small {
-  color: var(--dim);
-  font-size: 0.66rem;
-  font-weight: 900;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 
 .topbar {

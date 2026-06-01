@@ -107,6 +107,41 @@ function preferredOpenUrl(item) {
   return resolvedUrl(webUrl || item.githubUrl || "#");
 }
 
+const appIconAssets = {
+  "adhd-snap": "assets/app-icons/adhd-snap.svg",
+  "ai-dog-trainer": "assets/app-icons/ai-dog-trainer.svg",
+  "daily-planner": "assets/app-icons/daily-planner.png",
+  DrewBeFree: "assets/pixelated-drew.png",
+  "drewbefree-command-center": "assets/app-icons/drewbefree-command-center.png",
+  golf: "assets/app-icons/golf.png",
+  "llm-debate-union": "assets/app-icons/llm-debate-union.png",
+  poker: "assets/app-icons/poker.png",
+  "public-command-center": "assets/app-icons/drewbefree-command-center.png",
+  "recap-viewer": "assets/app-icons/recap-viewer.png",
+  recipes: "assets/app-icons/recipes.png",
+  "rv-maintenance": "assets/app-icons/rv-maintenance.png",
+  "soccer-pickup": "assets/app-icons/soccer-pickup.png",
+  "uhaul-load-planner": "assets/app-icons/uhaul-load-planner.png"
+};
+
+function appIconUrl(item) {
+  if (workspaceBucket(item) !== "apps") {
+    return null;
+  }
+
+  return appIconAssets[item.name] || appIconAssets[item.id] || null;
+}
+
+function initialsFor(item) {
+  return itemLabel(item)
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join("")
+    .toUpperCase();
+}
+
 function visibleRepos() {
   const query = state.query.trim().toLowerCase();
 
@@ -269,9 +304,11 @@ function createMapNode(item) {
 function createSideNavItem(item) {
   const href = preferredOpenUrl(item);
   const label = document.createElement(href === "#" ? "button" : "a");
+  const iconUrl = appIconUrl(item);
   label.className = "side-nav-item";
   label.dataset.visibility = item.visibility;
   label.dataset.kind = item.mapKind || item.category || "item";
+  label.dataset.hasIcon = workspaceBucket(item) === "apps" ? "true" : "false";
 
   if (href === "#") {
     label.type = "button";
@@ -282,11 +319,32 @@ function createSideNavItem(item) {
     label.rel = "noreferrer";
   }
 
+  const row = document.createElement("span");
+  row.className = "side-nav-label";
+
+  if (workspaceBucket(item) === "apps") {
+    const icon = document.createElement("span");
+    icon.className = "side-nav-icon";
+    icon.setAttribute("aria-hidden", "true");
+    icon.textContent = initialsFor(item);
+
+    if (iconUrl) {
+      const image = document.createElement("img");
+      image.src = iconUrl;
+      image.alt = "";
+      image.loading = "lazy";
+      image.addEventListener("error", () => image.remove());
+      icon.append(image);
+    }
+
+    row.append(icon);
+  }
+
   const name = document.createElement("span");
+  name.className = "side-nav-name";
   name.textContent = itemLabel(item);
-  const meta = document.createElement("small");
-  meta.textContent = item.category || item.type || item.mapKind || "resource";
-  label.append(name, meta);
+  row.append(name);
+  label.append(row);
   return label;
 }
 
