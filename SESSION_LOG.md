@@ -1353,3 +1353,21 @@
 **Next up:**
 - Do a dedicated mobile viewport pass for the new map and sidebar together.
 - Merge to `main`, push, and deploy to Atlas when approved.
+
+## 2026-06-02 16:59:34 -04:00 - Ollama Monitoring portal links
+
+**What we did:**
+- Traced the missing Grafana/Ollama Monitoring links to thin metadata in `ecosystem.json`.
+- Updated the `Ollama Monitoring` dashboard entry to open the provisioned Grafana dashboard route at `http://localhost:3000/d/ollama-overview/ollama-overview`.
+- Added Prometheus, README, setup, Grafana dashboard JSON, and docker-compose deploy metadata to the dashboard entry.
+- Added `Ollama Monitoring README` and `Ollama Monitoring Setup` to the main portal Docs stream.
+- Added a portal regression test for the Grafana URL, docs, and Alienware docker-compose deploy target.
+- Verified locally that the portal row Open link points to the Grafana dashboard and the Docs section includes the Ollama Monitoring docs.
+
+**Where we stopped:**
+- Work is on branch `fix/ollama-monitoring-links` and ready to merge after commit.
+- Local preview remains available at `http://127.0.0.1:8765/internal-portal/`.
+
+**Next up:**
+- Commit, merge to `main`, and push.
+- Deploy the updated registry/portal to Atlas when ready.

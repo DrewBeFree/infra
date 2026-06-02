@@ -1361,10 +1361,40 @@
       "visibility": "private",
       "summary": "Prometheus/Grafana monitoring stack prepared for Atlas deployment.",
       "liveUrls": [
+        "http://localhost:3000/d/ollama-overview/ollama-overview",
         "http://localhost:3000",
         "http://localhost:9090"
       ],
       "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\homelab\\ollama-exporter",
+      "docs": [
+        {
+          "label": "Ollama exporter README",
+          "url": "https://github.com/DrewBeFree/homelab/blob/main/ollama-exporter/README.md"
+        },
+        {
+          "label": "Ollama monitoring setup",
+          "url": "https://github.com/DrewBeFree/homelab/blob/main/ollama-monitoring-setup.md"
+        },
+        {
+          "label": "Grafana dashboard JSON",
+          "url": "https://github.com/DrewBeFree/homelab/blob/main/ollama-exporter/grafana-provisioning/dashboards/ollama-overview.json"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "docker-compose",
+          "host": "alienware",
+          "path": "C:\\Users\\drewb\\Documents\\GitHub\\homelab\\ollama-exporter",
+          "url": "http://localhost:3000/d/ollama-overview/ollama-overview",
+          "notes": "Run `docker compose up -d` from the ollama-exporter directory. Grafana uses admin/admin by default."
+        },
+        {
+          "type": "prometheus",
+          "host": "alienware",
+          "path": "C:\\Users\\drewb\\Documents\\GitHub\\homelab\\ollama-exporter\\prometheus.yml",
+          "url": "http://localhost:9090"
+        }
+      ],
       "statusControl": {
         "state": "ready-to-deploy",
         "actions": [
@@ -1412,6 +1442,22 @@
       "visibility": "public",
       "url": "https://homelab.drewbefree.com/infrastructure.html",
       "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\homelab"
+    },
+    {
+      "id": "ollama-monitoring-readme",
+      "name": "Ollama Monitoring README",
+      "visibility": "private",
+      "url": "https://github.com/DrewBeFree/homelab/blob/main/ollama-exporter/README.md",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\homelab\\ollama-exporter\\README.md",
+      "deployTarget": "alienware"
+    },
+    {
+      "id": "ollama-monitoring-setup",
+      "name": "Ollama Monitoring Setup",
+      "visibility": "private",
+      "url": "https://github.com/DrewBeFree/homelab/blob/main/ollama-monitoring-setup.md",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\homelab\\ollama-monitoring-setup.md",
+      "deployTarget": "alienware"
     }
   ]
 }

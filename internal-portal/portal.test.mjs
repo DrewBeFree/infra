@@ -101,6 +101,21 @@ test("portal is status and control ready", async () => {
   assert.deepEqual(portal.statusControl.actions, ["open", "status", "restart", "logs", "deploy"]);
 });
 
+test("Ollama Monitoring links to Grafana and exposes docs", async () => {
+  const registry = await loadRegistry();
+  const dashboard = registry.dashboards.find((item) => item.id === "ollama-monitoring");
+  const docs = new Map(registry.docs.map((doc) => [doc.id, doc]));
+
+  assert.ok(dashboard);
+  assert.equal(dashboard.liveUrls[0], "http://localhost:3000/d/ollama-overview/ollama-overview");
+  assert.ok(dashboard.liveUrls.includes("http://localhost:9090"));
+  assert.ok(dashboard.docs.some((doc) => doc.label === "Ollama exporter README"));
+  assert.ok(dashboard.docs.some((doc) => doc.label === "Ollama monitoring setup"));
+  assert.ok(dashboard.deployTargets.some((target) => target.type === "docker-compose" && target.host === "alienware"));
+  assert.ok(docs.has("ollama-monitoring-readme"));
+  assert.ok(docs.has("ollama-monitoring-setup"));
+});
+
 test("portal deploy installs Atlas home redirect while preserving the old status dashboard", async () => {
   const deploy = await readFile(deployPath, "utf8");
   const registry = await loadRegistry();
