@@ -1395,25 +1395,25 @@
       }
     },
     {
-      "id": "ollama-monitoring",
-      "name": "Ollama Monitoring",
+      "id": "atlas-poweredge-monitoring",
+      "name": "Atlas / PowerEdge Monitoring",
       "visibility": "private",
-      "summary": "Prometheus/Grafana monitoring stack running on Atlas.",
+      "summary": "Prometheus/Grafana monitoring for the Atlas PowerEdge host, storage, and local LLM metrics.",
       "liveUrls": [
         "http://atlas:3001/d/atlas-overview/poweredge-dashboard",
         "http://atlas:3001",
         "http://atlas.tail401605.ts.net:3001/d/atlas-overview/poweredge-dashboard",
         "http://atlas:9090"
       ],
-      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\homelab\\ollama-exporter",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\homelab\\docs\\528",
       "docs": [
         {
           "label": "Ollama exporter README",
           "url": "https://github.com/DrewBeFree/homelab/blob/main/ollama-exporter/README.md"
         },
         {
-          "label": "Ollama monitoring setup",
-          "url": "https://github.com/DrewBeFree/homelab/blob/main/ollama-monitoring-setup.md"
+          "label": "Atlas monitoring deployment guide",
+          "url": "https://github.com/DrewBeFree/homelab/blob/main/docs/528/MONITORING_DEPLOYMENT_GUIDE.md"
         },
         {
           "label": "Atlas overview dashboard JSON",
@@ -1424,14 +1424,14 @@
         {
           "type": "docker-compose",
           "host": "atlas",
-          "path": "C:\\Users\\drewb\\Documents\\GitHub\\homelab\\ollama-exporter",
+          "path": "C:\\Users\\drewb\\Documents\\GitHub\\homelab\\docs\\528",
           "url": "http://atlas:3001/d/atlas-overview/poweredge-dashboard",
           "notes": "Atlas-hosted Grafana. Manage the monitoring stack on Atlas; Grafana uses admin/admin by default."
         },
         {
           "type": "prometheus",
           "host": "atlas",
-          "path": "C:\\Users\\drewb\\Documents\\GitHub\\homelab\\ollama-exporter\\prometheus.yml",
+          "path": "C:\\Users\\drewb\\Documents\\GitHub\\homelab\\docs\\528\\prometheus.yml",
           "url": "http://atlas:9090"
         }
       ],

@@ -121,22 +121,23 @@ test("portal is status and control ready", async () => {
   assert.deepEqual(portal.statusControl.actions, ["open", "status", "restart", "logs", "deploy"]);
 });
 
-test("Ollama Monitoring links to Grafana and exposes docs", async () => {
+test("Atlas / PowerEdge Monitoring links to Grafana and exposes docs", async () => {
   const registry = await loadRegistry();
-  const dashboard = registry.dashboards.find((item) => item.id === "ollama-monitoring");
+  const dashboard = registry.dashboards.find((item) => item.id === "atlas-poweredge-monitoring");
   const docs = new Map(registry.docs.map((doc) => [doc.id, doc]));
 
   assert.ok(dashboard);
+  assert.equal(dashboard.name, "Atlas / PowerEdge Monitoring");
   assert.equal(dashboard.liveUrls[0], "http://atlas:3001/d/atlas-overview/poweredge-dashboard");
   assert.ok(dashboard.liveUrls.includes("http://atlas.tail401605.ts.net:3001/d/atlas-overview/poweredge-dashboard"));
   assert.ok(dashboard.liveUrls.includes("http://atlas:9090"));
   assert.ok(dashboard.docs.some((doc) => doc.label === "Ollama exporter README"));
-  assert.ok(dashboard.docs.some((doc) => doc.label === "Ollama monitoring setup"));
+  assert.ok(dashboard.docs.some((doc) => doc.label === "Atlas monitoring deployment guide"));
   assert.ok(dashboard.docs.some((doc) => doc.url.endsWith("/docs/528/atlas-overview.json")));
   assert.ok(dashboard.deployTargets.some((target) => target.type === "docker-compose" && target.host === "atlas"));
   assert.equal(dashboard.statusControl.state, "live");
-  assert.equal(docs.has("ollama-monitoring-readme"), false);
-  assert.equal(docs.has("ollama-monitoring-setup"), false);
+  assert.equal(docs.has("atlas-poweredge-monitoring-ollama-exporter-readme"), false);
+  assert.equal(docs.has("atlas-poweredge-monitoring-atlas-monitoring-deployment-guide"), false);
 });
 
 test("portal deploy installs Atlas home redirect while preserving the old status dashboard", async () => {
