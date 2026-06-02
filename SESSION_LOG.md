@@ -1474,3 +1474,22 @@
 **Next up:**
 - Review `http://atlas/ecosystem/` visually from the browser.
 - Decide whether to stop any Alienware-local Docker monitoring containers started during diagnosis.
+
+## 2026-06-02 18:36:00 -04:00 - PowerEdge Grafana dashboard route
+
+**What we did:**
+- Corrected the Grafana dashboard route from the missing `ollama-overview` path to `http://atlas:3001/d/atlas-overview/poweredge-dashboard`.
+- Updated the full tailnet alternate to `http://atlas.tail401605.ts.net:3001/d/atlas-overview/poweredge-dashboard`.
+- Updated the dashboard JSON doc link to `https://github.com/DrewBeFree/homelab/blob/main/docs/528/atlas-overview.json`.
+- Updated portal regression coverage for the PowerEdge dashboard route and Atlas overview JSON link.
+- Verified the local rendered portal row shows `Grafana` -> `http://atlas:3001/d/atlas-overview/poweredge-dashboard` and `Prometheus` -> `http://atlas:9090/`.
+- Committed `2a24fa9` (`fix: link poweredge grafana dashboard`), merged to `main`, pushed, and deployed to Atlas.
+- Verified Atlas serves `/ecosystem/` with `200`, the PowerEdge Grafana route with `302`, and the deployed registry includes the corrected URLs.
+
+**Where we stopped:**
+- The portal behavior fix is committed, pushed, merged, and deployed at `2a24fa9`.
+- Atlas portal files under `/opt/homelab-status-dashboard/ecosystem` include the corrected PowerEdge Grafana dashboard route.
+
+**Next up:**
+- Review `http://atlas/ecosystem/` visually from the browser and click through the Grafana launcher while authenticated.
+- Consider splitting host dashboards and Ollama-specific metrics into separate portal entries if the current `Ollama Monitoring` label feels too broad.
