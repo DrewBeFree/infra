@@ -1455,3 +1455,22 @@
 **Next up:**
 - Review `http://atlas/ecosystem/` visually from the browser.
 - Decide whether to stop any Alienware-local Docker monitoring containers started during diagnosis.
+
+## 2026-06-02 18:11:57 -04:00 - Atlas Grafana port correction
+
+**What we did:**
+- Corrected the `Ollama Monitoring` Grafana launcher from `http://atlas:3000` to the browser-facing Atlas Grafana port `http://atlas:3001`.
+- Added the full tailnet Grafana URL `http://atlas.tail401605.ts.net:3001/d/ollama-overview/ollama-overview` as an alternate live URL in `ecosystem.json`.
+- Updated the compact portal action renderer so duplicate Grafana URLs do not crowd out the Prometheus action.
+- Updated portal tests to assert the `3001` Grafana dashboard URL and tailnet alternate.
+- Verified locally that the rendered row shows `Grafana` -> `http://atlas:3001/d/ollama-overview/ollama-overview` and `Prometheus` -> `http://atlas:9090/`.
+- Committed `23d2a53` (`fix: use atlas grafana port`), merged to `main`, pushed, and deployed to Atlas.
+- Verified Atlas serves `/ecosystem/` with `200`, Grafana on `3001` with `302`, and Prometheus with `302`.
+
+**Where we stopped:**
+- The portal behavior fix is committed, pushed, merged, and deployed at `23d2a53`.
+- Atlas portal files under `/opt/homelab-status-dashboard/ecosystem` include the corrected `3001` Grafana links.
+
+**Next up:**
+- Review `http://atlas/ecosystem/` visually from the browser.
+- Decide whether to stop any Alienware-local Docker monitoring containers started during diagnosis.
