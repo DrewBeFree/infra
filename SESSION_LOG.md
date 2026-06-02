@@ -1513,3 +1513,24 @@
 **Next up:**
 - Review `http://atlas/ecosystem/` visually from the browser and click through the Grafana launcher while authenticated.
 - Consider a future split between Atlas host monitoring and Ollama-specific metrics if they grow into separate dashboards.
+
+## 2026-06-02 19:18:10 -04:00 - Hermes Atlas ecosystem entry
+
+**What we did:**
+- Confirmed Hermes is installed on Atlas at `/home/drew/.hermes/hermes-agent`, with CLI wrapper `/home/drew/.local/bin/hermes`.
+- Confirmed the install is git-based from `git@github.com:NousResearch/hermes-agent.git` and reports `Hermes Agent v0.15.1`.
+- Added `Hermes Agent` to `ecosystem.json` as a private Atlas `agent-runtime` service.
+- Documented safe dashboard access through an SSH tunnel: start Hermes on Atlas with `/home/drew/.local/bin/hermes dashboard --host 127.0.0.1 --port 9119 --no-open --skip-build`, tunnel with `ssh -L 9119:127.0.0.1:9119 atlas`, then open `http://localhost:9119`.
+- Added Hermes README and web dashboard README links, install/deploy metadata, and `accessCommands`.
+- Updated the portal drawer command rendering to show `accessCommands`, and labeled port `9119` links as `Hermes`.
+- Added regression coverage for the Hermes registry entry and access commands.
+- Committed `39b56d6` (`feat: track hermes atlas install`), merged to `main`, pushed, and deployed to Atlas.
+- Verified Atlas serves `/ecosystem/` with `200`, and the deployed registry includes `hermes-agent`, `Hermes Agent`, `http://localhost:9119`, and `/home/drew/.local/bin/hermes`.
+
+**Where we stopped:**
+- The Hermes portal entry is committed, pushed, merged, and deployed at `39b56d6`.
+- Local `infra/main` is clean and aligned with `origin/main`.
+
+**Next up:**
+- Review `http://atlas/ecosystem/` visually and open the Hermes Details drawer to confirm the access commands are easy to follow.
+- Decide whether to start a persistent Hermes dashboard service later; current recommendation is SSH tunnel only because the dashboard can expose API keys.
