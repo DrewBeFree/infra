@@ -1493,3 +1493,23 @@
 **Next up:**
 - Review `http://atlas/ecosystem/` visually from the browser and click through the Grafana launcher while authenticated.
 - Consider splitting host dashboards and Ollama-specific metrics into separate portal entries if the current `Ollama Monitoring` label feels too broad.
+
+## 2026-06-02 19:05:28 -04:00 - Atlas monitoring entry rename
+
+**What we did:**
+- Renamed the monitoring dashboard entry from `Ollama Monitoring` / `ollama-monitoring` to `Atlas / PowerEdge Monitoring` / `atlas-poweredge-monitoring`.
+- Updated the summary to describe Atlas PowerEdge host, storage, and local LLM metrics instead of implying the whole dashboard is Ollama-only.
+- Pointed the entry `localPath`, docker-compose deploy target, Prometheus config path, and deployment guide at the `homelab/docs/528` monitoring bundle.
+- Kept the Ollama exporter README as a supporting doc link because Ollama remains one metric source.
+- Updated portal tests to assert the new ID, name, docs, and dashboard route.
+- Verified locally that the rendered portal row shows `Atlas / PowerEdge Monitoring` with `Grafana` and `Prometheus` actions, and no `Ollama Monitoring` row.
+- Committed `f254194` (`fix: rename atlas monitoring entry`), merged to `main`, pushed, and deployed to Atlas.
+- Verified Atlas serves `/ecosystem/` with `200`, and the deployed registry contains `atlas-poweredge-monitoring` / `Atlas / PowerEdge Monitoring`.
+
+**Where we stopped:**
+- The portal behavior fix is committed, pushed, merged, and deployed at `f254194`.
+- Atlas portal files under `/opt/homelab-status-dashboard/ecosystem` have the corrected monitoring identity.
+
+**Next up:**
+- Review `http://atlas/ecosystem/` visually from the browser and click through the Grafana launcher while authenticated.
+- Consider a future split between Atlas host monitoring and Ollama-specific metrics if they grow into separate dashboards.
