@@ -121,6 +121,26 @@ test("portal is status and control ready", async () => {
   assert.deepEqual(portal.statusControl.actions, ["open", "status", "restart", "logs", "deploy"]);
 });
 
+test("Hermes Agent is tracked as an Atlas install with access commands", async () => {
+  const registry = await loadRegistry();
+  const hermes = registry.services.find((service) => service.id === "hermes-agent");
+
+  assert.ok(hermes);
+  assert.equal(hermes.name, "Hermes Agent");
+  assert.equal(hermes.type, "agent-runtime");
+  assert.equal(hermes.host, "atlas");
+  assert.equal(hermes.visibility, "private");
+  assert.equal(hermes.githubUrl, "https://github.com/NousResearch/hermes-agent");
+  assert.equal(hermes.localPath, "/home/drew/.hermes/hermes-agent");
+  assert.ok(hermes.liveUrls.includes("http://localhost:9119"));
+  assert.ok(hermes.ports.includes(9119));
+  assert.ok(hermes.accessCommands.some((entry) => entry.command === "/home/drew/.local/bin/hermes status"));
+  assert.ok(hermes.accessCommands.some((entry) => entry.command.includes("ssh -L 9119:127.0.0.1:9119 atlas")));
+  assert.ok(hermes.deployTargets.some((target) => target.type === "git-install" && target.host === "atlas"));
+  assert.ok(hermes.docs.some((doc) => doc.url === "https://github.com/NousResearch/hermes-agent/blob/main/README.md"));
+  assert.equal(hermes.statusControl.state, "installed");
+});
+
 test("Atlas / PowerEdge Monitoring links to Grafana and exposes docs", async () => {
   const registry = await loadRegistry();
   const dashboard = registry.dashboards.find((item) => item.id === "atlas-poweredge-monitoring");
@@ -192,6 +212,7 @@ test("portal static files are present and load the canonical registry", async ()
   assert.match(app, /actionLabelForUrl/);
   assert.match(app, /Grafana/);
   assert.match(app, /Prometheus/);
+  assert.match(app, /Hermes/);
   assert.match(app, /matchesItemFilters/);
   assert.match(app, /renderCatalogRow/);
   assert.match(app, /updateFilterSummary/);

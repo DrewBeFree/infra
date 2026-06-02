@@ -649,6 +649,9 @@ function actionLabelForUrl(url) {
   if (lower.includes(":8095")) {
     return "Leantime";
   }
+  if (lower.includes(":9119")) {
+    return "Hermes";
+  }
   if (lower.includes("/wiki/")) {
     return "Docs";
   }
@@ -685,6 +688,11 @@ function createBadge(text, extraClass = "") {
 
 function commandFor(item, action) {
   const serviceTarget = item.deployTargets?.find((target) => target.service);
+  const accessCommands = item.accessCommands || [];
+
+  if (accessCommands.length) {
+    return accessCommands.map((entry) => `${entry.label}\n${entry.command}`).join("\n\n");
+  }
 
   if (action === "status" && serviceTarget?.service) {
     return `ssh atlas "systemctl --user status ${serviceTarget.service}"`;

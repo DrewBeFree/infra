@@ -1184,6 +1184,75 @@
       }
     },
     {
+      "id": "hermes-agent",
+      "name": "Hermes Agent",
+      "type": "agent-runtime",
+      "host": "atlas",
+      "visibility": "private",
+      "summary": "Atlas-first Hermes Agent CLI/runtime install. Access the dashboard through an SSH tunnel; do not bind it directly to the tailnet because it can expose API keys.",
+      "liveUrls": [
+        "http://localhost:9119"
+      ],
+      "ports": [
+        9119
+      ],
+      "githubUrl": "https://github.com/NousResearch/hermes-agent",
+      "localPath": "/home/drew/.hermes/hermes-agent",
+      "accessCommands": [
+        {
+          "label": "SSH into Atlas",
+          "command": "ssh atlas"
+        },
+        {
+          "label": "Run Hermes CLI",
+          "command": "/home/drew/.local/bin/hermes status"
+        },
+        {
+          "label": "Start safe local dashboard on Atlas",
+          "command": "/home/drew/.local/bin/hermes dashboard --host 127.0.0.1 --port 9119 --no-open --skip-build"
+        },
+        {
+          "label": "Open dashboard from this machine",
+          "command": "ssh -L 9119:127.0.0.1:9119 atlas"
+        }
+      ],
+      "docs": [
+        {
+          "label": "Hermes README",
+          "url": "https://github.com/NousResearch/hermes-agent/blob/main/README.md"
+        },
+        {
+          "label": "Hermes web dashboard README",
+          "url": "https://github.com/NousResearch/hermes-agent/blob/main/web/README.md"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "git-install",
+          "host": "atlas",
+          "path": "/home/drew/.hermes/hermes-agent",
+          "url": "https://github.com/NousResearch/hermes-agent",
+          "notes": "Installed with git; CLI wrapper is /home/drew/.local/bin/hermes. Non-interactive SSH may not include ~/.local/bin on PATH."
+        },
+        {
+          "type": "local-dashboard",
+          "host": "atlas",
+          "path": "127.0.0.1:9119",
+          "url": "http://localhost:9119",
+          "notes": "Start with Hermes bound to 127.0.0.1 and use an SSH tunnel from this machine: ssh -L 9119:127.0.0.1:9119 atlas."
+        }
+      ],
+      "statusControl": {
+        "state": "installed",
+        "actions": [
+          "open",
+          "status",
+          "run",
+          "logs"
+        ]
+      }
+    },
+    {
       "id": "idrac7",
       "name": "Atlas iDRAC7",
       "type": "out-of-band-management",
