@@ -1398,11 +1398,11 @@
       "id": "ollama-monitoring",
       "name": "Ollama Monitoring",
       "visibility": "private",
-      "summary": "Prometheus/Grafana monitoring stack prepared for Atlas deployment.",
+      "summary": "Prometheus/Grafana monitoring stack running on Atlas.",
       "liveUrls": [
-        "http://localhost:3000/d/ollama-overview/ollama-overview",
-        "http://localhost:3000",
-        "http://localhost:9090"
+        "http://atlas:3000/d/ollama-overview/ollama-overview",
+        "http://atlas:3000",
+        "http://atlas:9090"
       ],
       "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\homelab\\ollama-exporter",
       "docs": [
@@ -1422,20 +1422,20 @@
       "deployTargets": [
         {
           "type": "docker-compose",
-          "host": "alienware",
+          "host": "atlas",
           "path": "C:\\Users\\drewb\\Documents\\GitHub\\homelab\\ollama-exporter",
-          "url": "http://localhost:3000/d/ollama-overview/ollama-overview",
-          "notes": "Run `docker compose up -d` from the ollama-exporter directory. Grafana uses admin/admin by default."
+          "url": "http://atlas:3000/d/ollama-overview/ollama-overview",
+          "notes": "Atlas-hosted Grafana. Manage the monitoring stack on Atlas; Grafana uses admin/admin by default."
         },
         {
           "type": "prometheus",
-          "host": "alienware",
+          "host": "atlas",
           "path": "C:\\Users\\drewb\\Documents\\GitHub\\homelab\\ollama-exporter\\prometheus.yml",
-          "url": "http://localhost:9090"
+          "url": "http://atlas:9090"
         }
       ],
       "statusControl": {
-        "state": "ready-to-deploy",
+        "state": "live",
         "actions": [
           "open",
           "status",
