@@ -1371,3 +1371,20 @@
 **Next up:**
 - Commit, merge to `main`, and push.
 - Deploy the updated registry/portal to Atlas when ready.
+
+## 2026-06-02 17:16:17 -04:00 - Atlas portal infographic deployment
+
+**What we did:**
+- Deployed the updated internal portal to Atlas by pulling `infra/main` and running `internal-portal/deploy.sh` on Atlas.
+- Confirmed Atlas pulled through `73dee8c` (`fix: add ollama monitoring links`), including the infographic map work and Ollama Monitoring link/docs metadata.
+- Verified `http://127.0.0.1/`, `http://127.0.0.1/ecosystem/`, and `http://127.0.0.1/status/` return `200` from Atlas.
+- Verified the deployed portal files include the Grafana dashboard route `http://localhost:3000/d/ollama-overview/ollama-overview`, `Ollama Monitoring README`, `Ollama Monitoring Setup`, and the `Alienware Local Compute` map zone.
+
+**Where we stopped:**
+- Atlas portal files are synced to `/opt/homelab-status-dashboard/ecosystem`.
+- Atlas home still redirects to `/ecosystem/`, and the old status dashboard remains preserved at `/status/`.
+- Local repo is on `main`.
+
+**Next up:**
+- Review the deployed portal from the browser at `http://atlas/ecosystem/`.
+- Do a dedicated mobile viewport pass for the new infographic map/sidebar layout.
