@@ -1437,3 +1437,21 @@
 
 **Next up:**
 - Commit, merge to `main`, push, and deploy to Atlas.
+
+## 2026-06-02 18:00:57 -04:00 - Atlas Grafana link correction
+
+**What we did:**
+- Corrected the canonical `Ollama Monitoring` dashboard entry in `ecosystem.json` so Grafana and Prometheus link to Atlas (`http://atlas:3000` and `http://atlas:9090`) instead of Alienware-local `localhost` URLs.
+- Updated the monitoring deploy target host from `alienware` to `atlas` and marked the status as `live`.
+- Updated portal regression coverage to assert the Atlas Grafana/Prometheus URLs and Atlas deploy host.
+- Verified the local rendered portal row shows `Grafana` and `Prometheus` actions pointed at Atlas.
+- Committed `d9cd0fa` (`fix: point monitoring links at atlas`), merged to `main`, pushed, and deployed the portal on Atlas.
+- Verified Atlas serves `/ecosystem/` with `200`, Grafana with `200`, and Prometheus with `302`.
+
+**Where we stopped:**
+- The portal behavior fix is committed, pushed, merged, and deployed at `d9cd0fa`.
+- Atlas portal files under `/opt/homelab-status-dashboard/ecosystem` include the corrected Atlas monitoring links.
+
+**Next up:**
+- Review `http://atlas/ecosystem/` visually from the browser.
+- Decide whether to stop any Alienware-local Docker monitoring containers started during diagnosis.
