@@ -637,7 +637,7 @@ function createLink(label, href, variant = "primary") {
 function actionLabelForUrl(url) {
   const lower = String(url || "").toLowerCase();
 
-  if (lower.includes("3000/d/") || lower.includes("grafana")) {
+  if (lower.includes(":3001") || lower.includes("/d/") || lower.includes("grafana")) {
     return "Grafana";
   }
   if (lower.includes(":9090")) {
@@ -828,10 +828,19 @@ function renderCatalogRow(item, variant = "resource") {
   if (primaryUrl !== "#") {
     actions.append(createLink(actionLabelForUrl(primaryUrl), primaryUrl));
 
-    const secondaryLinks = (item.liveUrls || [])
-      .map(resolvedUrl)
-      .filter((url) => url && url !== primaryUrl && actionLabelForUrl(url) !== "Open")
-      .slice(0, 2);
+    const seenActionLabels = new Set([actionLabelForUrl(primaryUrl)]);
+    const secondaryLinks = [];
+    for (const url of (item.liveUrls || []).map(resolvedUrl)) {
+      const label = actionLabelForUrl(url);
+      if (!url || url === primaryUrl || label === "Open" || seenActionLabels.has(label)) {
+        continue;
+      }
+      seenActionLabels.add(label);
+      secondaryLinks.push(url);
+      if (secondaryLinks.length === 2) {
+        break;
+      }
+    }
 
     secondaryLinks.forEach((url) => {
       actions.append(createLink(actionLabelForUrl(url), url, "secondary"));

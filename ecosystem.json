@@ -1400,8 +1400,9 @@
       "visibility": "private",
       "summary": "Prometheus/Grafana monitoring stack running on Atlas.",
       "liveUrls": [
-        "http://atlas:3000/d/ollama-overview/ollama-overview",
-        "http://atlas:3000",
+        "http://atlas:3001/d/ollama-overview/ollama-overview",
+        "http://atlas:3001",
+        "http://atlas.tail401605.ts.net:3001/d/ollama-overview/ollama-overview",
         "http://atlas:9090"
       ],
       "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\homelab\\ollama-exporter",
@@ -1424,7 +1425,7 @@
           "type": "docker-compose",
           "host": "atlas",
           "path": "C:\\Users\\drewb\\Documents\\GitHub\\homelab\\ollama-exporter",
-          "url": "http://atlas:3000/d/ollama-overview/ollama-overview",
+          "url": "http://atlas:3001/d/ollama-overview/ollama-overview",
           "notes": "Atlas-hosted Grafana. Manage the monitoring stack on Atlas; Grafana uses admin/admin by default."
         },
         {
