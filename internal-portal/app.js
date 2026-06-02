@@ -161,12 +161,56 @@ function normalizeDoc(doc) {
   };
 }
 
+function slugFor(value) {
+  return String(value || "")
+    .toLowerCase()
+    .replace(/https?:\/\//g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 80) || "doc";
+}
+
+function docsForResource(item, sourceKind) {
+  return (item.docs || []).map((doc) => {
+    const sourceId = item.id || item.name || item.displayName || sourceKind;
+    return normalizeDoc({
+      id: `${slugFor(sourceId)}-${slugFor(doc.label || doc.url)}`,
+      name: doc.label || itemLabel(item),
+      visibility: doc.visibility || item.visibility || "private",
+      url: doc.url,
+      localPath: doc.localPath || item.localPath,
+      deployTarget: item.deployTargets?.[0]?.host,
+      sourceName: itemLabel(item),
+      sourceKind
+    });
+  });
+}
+
+function allDocumentItems() {
+  const docs = [
+    ...state.registry.docs.map(normalizeDoc),
+    ...state.registry.repositories.flatMap((item) => docsForResource(item, "repo")),
+    ...state.registry.services.flatMap((item) => docsForResource(item, "service")),
+    ...state.registry.dashboards.flatMap((item) => docsForResource(item, "dashboard"))
+  ];
+  const seen = new Set();
+
+  return docs.filter((doc) => {
+    const key = resolvedUrl(doc.url).toLowerCase();
+    if (seen.has(key)) {
+      return false;
+    }
+    seen.add(key);
+    return true;
+  });
+}
+
 function allMapItems() {
   return [
     ...state.registry.repositories.map((item) => ({ ...item, mapKind: "repo" })),
     ...state.registry.services.map((item) => ({ ...item, mapKind: "service", displayName: item.name, category: item.type })),
     ...state.registry.dashboards.map((item) => ({ ...item, mapKind: "dashboard", displayName: item.name, category: "dashboard" })),
-    ...state.registry.docs.map((item) => ({ ...normalizeDoc(item), mapKind: "doc" }))
+    ...allDocumentItems().map((item) => ({ ...item, mapKind: "doc" }))
   ];
 }
 
@@ -829,7 +873,7 @@ function closeFilterModal() {
 }
 
 function renderDocs() {
-  const docs = state.registry.docs.map(normalizeDoc).filter(matchesItemFilters).map((doc) => {
+  const docs = allDocumentItems().filter(matchesItemFilters).map((doc) => {
     const row = document.createElement("a");
     const name = document.createElement("span");
     const detail = document.createElement("small");
@@ -841,7 +885,7 @@ function renderDocs() {
     row.dataset.visibility = doc.visibility;
     row.dataset.category = doc.category || "docs";
     name.textContent = doc.displayName || doc.name;
-    detail.textContent = `${doc.visibility} · ${doc.localPath || doc.url}`;
+    detail.textContent = `${doc.visibility} · ${doc.sourceName ? `${doc.sourceName} · ` : ""}${doc.localPath || doc.url}`;
     row.append(name, detail);
 
     return row;

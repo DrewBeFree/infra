@@ -1421,3 +1421,19 @@
 
 **Next up:**
 - Review `http://atlas/ecosystem/` visually and do the dedicated mobile pass.
+
+## 2026-06-02 17:41:49 -04:00 - Derived portal docs index
+
+**What we did:**
+- Fixed the portal docs drift where `Docs + Planning` and the lower Docs list only read top-level `registry.docs`, while map/dashboard nodes used nested resource `docs`.
+- Added a derived docs index in `internal-portal/app.js` that combines top-level docs with nested docs from repositories, services, and dashboards.
+- Removed duplicated top-level Ollama Monitoring docs from `ecosystem.json`; those docs now live with the `Ollama Monitoring` dashboard entry and are surfaced automatically.
+- Updated tests to assert the derived docs index exists and that Ollama Monitoring docs are not duplicated into top-level `registry.docs`.
+- Verified locally that `Docs + Planning`, the lower Docs list, and Ollama Monitoring row all show the same Grafana/Prometheus/docs metadata path.
+
+**Where we stopped:**
+- Work is on branch `fix/portal-derived-doc-index`.
+- Verification passes locally, but the fix is not committed, merged, pushed, or deployed yet.
+
+**Next up:**
+- Commit, merge to `main`, push, and deploy to Atlas.

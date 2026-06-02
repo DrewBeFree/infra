@@ -1481,22 +1481,6 @@
       "visibility": "public",
       "url": "https://homelab.drewbefree.com/infrastructure.html",
       "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\homelab"
-    },
-    {
-      "id": "ollama-monitoring-readme",
-      "name": "Ollama Monitoring README",
-      "visibility": "private",
-      "url": "https://github.com/DrewBeFree/homelab/blob/main/ollama-exporter/README.md",
-      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\homelab\\ollama-exporter\\README.md",
-      "deployTarget": "alienware"
-    },
-    {
-      "id": "ollama-monitoring-setup",
-      "name": "Ollama Monitoring Setup",
-      "visibility": "private",
-      "url": "https://github.com/DrewBeFree/homelab/blob/main/ollama-monitoring-setup.md",
-      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\homelab\\ollama-monitoring-setup.md",
-      "deployTarget": "alienware"
     }
   ]
 }

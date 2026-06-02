@@ -132,8 +132,8 @@ test("Ollama Monitoring links to Grafana and exposes docs", async () => {
   assert.ok(dashboard.docs.some((doc) => doc.label === "Ollama exporter README"));
   assert.ok(dashboard.docs.some((doc) => doc.label === "Ollama monitoring setup"));
   assert.ok(dashboard.deployTargets.some((target) => target.type === "docker-compose" && target.host === "alienware"));
-  assert.ok(docs.has("ollama-monitoring-readme"));
-  assert.ok(docs.has("ollama-monitoring-setup"));
+  assert.equal(docs.has("ollama-monitoring-readme"), false);
+  assert.equal(docs.has("ollama-monitoring-setup"), false);
 });
 
 test("portal deploy installs Atlas home redirect while preserving the old status dashboard", async () => {
@@ -179,6 +179,8 @@ test("portal static files are present and load the canonical registry", async ()
   assert.match(app, /itemHosts/);
   assert.match(app, /primaryHost/);
   assert.match(app, /systemMapZones/);
+  assert.match(app, /allDocumentItems/);
+  assert.match(app, /docsForResource/);
   assert.match(app, /Alienware Local Compute/);
   assert.match(app, /!lower\.includes\("github\.com"\)/);
   assert.match(app, /appIconAssets/);
