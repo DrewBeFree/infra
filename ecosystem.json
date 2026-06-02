@@ -1400,9 +1400,9 @@
       "visibility": "private",
       "summary": "Prometheus/Grafana monitoring stack running on Atlas.",
       "liveUrls": [
-        "http://atlas:3001/d/ollama-overview/ollama-overview",
+        "http://atlas:3001/d/atlas-overview/poweredge-dashboard",
         "http://atlas:3001",
-        "http://atlas.tail401605.ts.net:3001/d/ollama-overview/ollama-overview",
+        "http://atlas.tail401605.ts.net:3001/d/atlas-overview/poweredge-dashboard",
         "http://atlas:9090"
       ],
       "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\homelab\\ollama-exporter",
@@ -1416,8 +1416,8 @@
           "url": "https://github.com/DrewBeFree/homelab/blob/main/ollama-monitoring-setup.md"
         },
         {
-          "label": "Grafana dashboard JSON",
-          "url": "https://github.com/DrewBeFree/homelab/blob/main/ollama-exporter/grafana-provisioning/dashboards/ollama-overview.json"
+          "label": "Atlas overview dashboard JSON",
+          "url": "https://github.com/DrewBeFree/homelab/blob/main/docs/528/atlas-overview.json"
         }
       ],
       "deployTargets": [
@@ -1425,7 +1425,7 @@
           "type": "docker-compose",
           "host": "atlas",
           "path": "C:\\Users\\drewb\\Documents\\GitHub\\homelab\\ollama-exporter",
-          "url": "http://atlas:3001/d/ollama-overview/ollama-overview",
+          "url": "http://atlas:3001/d/atlas-overview/poweredge-dashboard",
           "notes": "Atlas-hosted Grafana. Manage the monitoring stack on Atlas; Grafana uses admin/admin by default."
         },
         {

@@ -127,11 +127,12 @@ test("Ollama Monitoring links to Grafana and exposes docs", async () => {
   const docs = new Map(registry.docs.map((doc) => [doc.id, doc]));
 
   assert.ok(dashboard);
-  assert.equal(dashboard.liveUrls[0], "http://atlas:3001/d/ollama-overview/ollama-overview");
-  assert.ok(dashboard.liveUrls.includes("http://atlas.tail401605.ts.net:3001/d/ollama-overview/ollama-overview"));
+  assert.equal(dashboard.liveUrls[0], "http://atlas:3001/d/atlas-overview/poweredge-dashboard");
+  assert.ok(dashboard.liveUrls.includes("http://atlas.tail401605.ts.net:3001/d/atlas-overview/poweredge-dashboard"));
   assert.ok(dashboard.liveUrls.includes("http://atlas:9090"));
   assert.ok(dashboard.docs.some((doc) => doc.label === "Ollama exporter README"));
   assert.ok(dashboard.docs.some((doc) => doc.label === "Ollama monitoring setup"));
+  assert.ok(dashboard.docs.some((doc) => doc.url.endsWith("/docs/528/atlas-overview.json")));
   assert.ok(dashboard.deployTargets.some((target) => target.type === "docker-compose" && target.host === "atlas"));
   assert.equal(dashboard.statusControl.state, "live");
   assert.equal(docs.has("ollama-monitoring-readme"), false);
