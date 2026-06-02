@@ -1405,3 +1405,19 @@
 
 **Next up:**
 - Commit, merge to `main`, push, and deploy to Atlas.
+
+## 2026-06-02 17:27:40 -04:00 - Surf The Webb portal deployment
+
+**What we did:**
+- Committed `5e2b947` (`fix: track surf the webb framer site`) and fast-forward merged it into `main`.
+- Pushed `infra/main` to GitHub.
+- Deployed the updated portal to Atlas by pulling `main` and running `internal-portal/deploy.sh`.
+- Verified Atlas serves `http://127.0.0.1/` and `http://127.0.0.1/ecosystem/` with `200`.
+- Verified deployed files include `Surf The Webb`, `https://surfthewebb.com`, and visible `Grafana` / `Prometheus` action-label logic.
+
+**Where we stopped:**
+- Local repo is clean on `main`.
+- Atlas portal is deployed from `/opt/homelab-status-dashboard/ecosystem`.
+
+**Next up:**
+- Review `http://atlas/ecosystem/` visually and do the dedicated mobile pass.
