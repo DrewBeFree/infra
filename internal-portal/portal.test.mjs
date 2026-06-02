@@ -133,13 +133,19 @@ test("portal static files are present and load the canonical registry", async ()
   assert.match(index, /pixelated-drew\.png/);
   assert.match(index, /sideNavGroups/);
   assert.match(index, /ecosystemMap/);
+  assert.match(index, /systemMap/);
   assert.match(index, /mapNodeTemplate/);
+  assert.match(index, /node-host/);
   assert.match(index, /app\.js/);
   assert.match(app, /\.\.\/ecosystem\.json/);
   assert.match(app, /renderSidebar/);
   assert.match(app, /renderSitemap/);
-  assert.match(app, /mapExpanded/);
   assert.match(app, /workspaceBucket/);
+  assert.match(app, /itemHosts/);
+  assert.match(app, /primaryHost/);
+  assert.match(app, /systemMapZones/);
+  assert.match(app, /Alienware Local Compute/);
+  assert.match(app, /!lower\.includes\("github\.com"\)/);
   assert.match(app, /appIconAssets/);
   assert.match(app, /appIconUrl/);
   assert.match(app, /matchesItemFilters/);
@@ -150,7 +156,9 @@ test("portal static files are present and load the canonical registry", async ()
   assert.match(style, /\.side-nav-icon/);
   assert.match(style, /\.catalog-row/);
   assert.match(style, /\.filter-panel/);
-  assert.match(style, /\.sitemap-column\.is-open/);
+  assert.match(style, /\.system-map/);
+  assert.match(style, /\.map-zone/);
+  assert.match(style, /\.zone-head/);
   assert.match(style, /fade-in-up/);
 });
 

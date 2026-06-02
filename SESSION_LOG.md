@@ -1331,3 +1331,25 @@
 **Next up:**
 - Do a dedicated mobile viewport review and tune the one-column row stacking, sidebar group behavior, and topbar density.
 - Continue exploring live health/telemetry integration under the existing ecosystem catalog.
+
+## 2026-06-02 16:41:52 -04:00 - Portal infographic map prototype
+
+**What we did:**
+- Created a visual mockup for three ecosystem map directions and chose a hybrid metro/topology direction.
+- Documented the approved design and implementation plan under `docs/superpowers/`.
+- Replaced the internal portal accordion sitemap with a clickable infographic-style system map.
+- Added zones for Source + Repos, Atlas Core, Alienware Local Compute, Public Edge, Docs + Planning, and Sensitive Controls.
+- Made Alienware visible as its own local compute/workstation zone with Ollama, Open WebUI, OpenClaw, LLM Debate Union, Lead Gen Agent, and Ollama Monitoring represented from the canonical registry.
+- Preserved shared search/filter behavior and existing detail drawer launch behavior from map nodes.
+- Fixed the map host classifier so GitHub repository URLs do not make private repos appear in Public Edge.
+- Confirmed the `surfthewebb.com` note as a taxonomy guard: custom/public domains should not force items into the `sites` repo bucket; repo family remains based on canonical local path/category.
+- Ran `node --test internal-portal/portal.test.mjs` successfully after rerunning outside the Windows sandbox spawn restriction.
+- Verified locally in the in-app browser at `http://127.0.0.1:8765/internal-portal/` that the map renders, Alienware appears, clicking the Alienware zone opens Ollama details, and filtering narrows the whole portal.
+
+**Where we stopped:**
+- Work is on branch `feat/portal-infographic-map` and ready to merge after review/commit.
+- The local portal preview server is running on `http://127.0.0.1:8765/internal-portal/`.
+
+**Next up:**
+- Do a dedicated mobile viewport pass for the new map and sidebar together.
+- Merge to `main`, push, and deploy to Atlas when approved.

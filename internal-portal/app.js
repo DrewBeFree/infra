@@ -4,7 +4,6 @@ const state = {
   category: "all",
   query: "",
   selected: null,
-  mapExpanded: false,
   openSidebarGroups: new Set(["apps"])
 };
 
@@ -272,6 +271,65 @@ function workspaceBucket(item) {
   return "notes";
 }
 
+function itemHosts(item) {
+  const hosts = new Set();
+  const name = String(item.name || item.id || item.displayName || "").toLowerCase();
+  const path = normalizedPath(item);
+  const urls = [...(item.liveUrls || []), item.url, item.githubUrl].filter(Boolean).map(String);
+
+  if (item.host) {
+    hosts.add(String(item.host).toLowerCase());
+  }
+
+  (item.deployTargets || []).forEach((target) => {
+    if (target.host) {
+      hosts.add(String(target.host).toLowerCase());
+    }
+  });
+
+  urls.forEach((url) => {
+    const lower = url.toLowerCase();
+    if (lower.includes("atlas") || lower.includes("100.71.165.80")) {
+      hosts.add("atlas");
+    }
+    if (lower.includes("localhost") || lower.includes("127.0.0.1")) {
+      hosts.add("alienware");
+    }
+    if (lower.startsWith("https://") && !lower.includes("github.com") && !lower.includes("atlas") && !lower.includes("localhost") && !lower.includes("127.0.0.1")) {
+      hosts.add("public-edge");
+    }
+    if (lower.includes("github.com") || lower.includes("github.io")) {
+      hosts.add("github");
+    }
+  });
+
+  if (path.includes("\\documents\\github\\infra") || ["infra", "internal-ecosystem-portal", "atlas-wiki", "homelab-status-dashboard", "leantime", "portainer", "idrac7", "bob"].some((token) => name.includes(token))) {
+    hosts.add("atlas");
+  }
+  if (["alienware", "ollama", "open-webui", "openclaw", "lead-gen-agent", "llm-debate-union"].some((token) => name.includes(token))) {
+    hosts.add("alienware");
+  }
+
+  return [...hosts];
+}
+
+function primaryHost(item) {
+  const hosts = itemHosts(item);
+  if (hosts.includes("atlas")) {
+    return "atlas";
+  }
+  if (hosts.includes("alienware")) {
+    return "alienware";
+  }
+  if (hosts.includes("public-edge")) {
+    return "public edge";
+  }
+  if (hosts.includes("github")) {
+    return "github";
+  }
+  return workspaceBucket(item);
+}
+
 function ecosystemBranches(items) {
   const branchMeta = [
     ["agents", "Agents", "Automation, assistants, workers"],
@@ -292,6 +350,66 @@ function ecosystemBranches(items) {
   ];
 }
 
+function systemMapZones(items) {
+  const isRepo = (item) => item.mapKind === "repo";
+  const isAtlas = (item) => itemHosts(item).includes("atlas");
+  const isAlienware = (item) => itemHosts(item).includes("alienware");
+  const isPublic = (item) => item.visibility === "public" || itemHosts(item).includes("public-edge");
+  const isDoc = (item) => item.mapKind === "doc" || item.category === "docs" || item.type === "docs" || item.type === "planning-cockpit";
+  const isSensitive = (item) => item.visibility === "sensitive" || item.accessControl?.ipFilter;
+
+  const atlasItems = items.filter((item) => isAtlas(item) && !isSensitive(item));
+  const alienwareItems = items.filter(isAlienware);
+  const publicItems = items.filter((item) => isPublic(item) && !isSensitive(item));
+  const docItems = items.filter(isDoc);
+  const sensitiveItems = items.filter(isSensitive);
+
+  return [
+    {
+      id: "source",
+      title: "Source + Repos",
+      subtitle: "GitHub and local workspace inventory",
+      primary: items.find((item) => item.name === "infra") || items.find(isRepo),
+      items: uniqueItems(items.filter(isRepo))
+    },
+    {
+      id: "atlas",
+      title: "Atlas Core",
+      subtitle: "Private runtime, portal, wiki, planning",
+      primary: atlasItems.find((item) => item.id === "internal-ecosystem-portal") || atlasItems.find((item) => item.name === "infra") || atlasItems[0],
+      items: uniqueItems(atlasItems)
+    },
+    {
+      id: "alienware",
+      title: "Alienware Local Compute",
+      subtitle: "AI workstation, local services, phase-1 agents",
+      primary: alienwareItems.find((item) => item.id === "ollama") || alienwareItems[0],
+      items: uniqueItems(alienwareItems)
+    },
+    {
+      id: "public",
+      title: "Public Edge",
+      subtitle: "External launch surfaces and Pages apps",
+      primary: publicItems.find((item) => item.name === "drewbefree-command-center") || publicItems[0],
+      items: uniqueItems(publicItems)
+    },
+    {
+      id: "docs",
+      title: "Docs + Planning",
+      subtitle: "Wiki, project catalog, Leantime, runbooks",
+      primary: docItems.find((item) => item.id === "atlas-wiki") || docItems[0],
+      items: uniqueItems(docItems)
+    },
+    {
+      id: "sensitive",
+      title: "Sensitive Controls",
+      subtitle: "IP-gated, admin, approval, and restricted surfaces",
+      primary: sensitiveItems.find((item) => item.name === "uhaul-load-planner") || sensitiveItems[0],
+      items: uniqueItems(sensitiveItems)
+    }
+  ];
+}
+
 function createMapNode(item) {
   const template = $("#mapNodeTemplate");
   const node = template.content.firstElementChild.cloneNode(true);
@@ -299,6 +417,7 @@ function createMapNode(item) {
   node.dataset.kind = item.mapKind || item.category || "item";
   node.querySelector(".node-name").textContent = item.displayName || item.name;
   node.querySelector(".node-meta").textContent = `${item.visibility} / ${item.category || item.type || item.mapKind}`;
+  node.querySelector(".node-host").textContent = primaryHost(item);
   node.addEventListener("click", () => openDrawer(item, "open"));
   return node;
 }
@@ -394,54 +513,59 @@ function renderSidebar() {
 
 function renderSitemap() {
   const items = filteredMapItems();
-  const isFocusedView = state.query.trim() || state.visibility !== "all" || state.category !== "all";
-  const expandAll = Boolean(state.mapExpanded || isFocusedView);
-  const columns = ecosystemBranches(items);
+  const zones = systemMapZones(items);
 
-  const rendered = columns.map((column) => {
-    const isOpen = expandAll;
+  const rendered = zones.map((zone) => {
     const section = document.createElement("section");
-    section.className = "sitemap-column";
-    section.classList.toggle("is-open", isOpen);
-    section.dataset.column = column.id;
+    section.className = "map-zone";
+    section.dataset.zone = zone.id;
 
     const header = document.createElement("button");
-    header.className = "column-head";
+    header.className = "zone-head";
     header.type = "button";
-    header.setAttribute("aria-expanded", String(isOpen));
+    header.disabled = !zone.primary;
     const label = document.createElement("div");
     const title = document.createElement("h3");
-    title.textContent = column.title;
+    title.textContent = zone.title;
     const subtitle = document.createElement("p");
-    subtitle.textContent = column.subtitle;
+    subtitle.textContent = zone.subtitle;
     label.append(title, subtitle);
     const count = document.createElement("span");
-    count.textContent = String(column.items.length);
+    count.textContent = String(zone.items.length);
     header.append(label, count);
-    header.addEventListener("click", () => {
-      state.mapExpanded = !state.mapExpanded;
-      renderSitemap();
-    });
+    header.addEventListener("click", () => zone.primary && openDrawer(zone.primary, "open"));
 
-    const panel = document.createElement("div");
-    panel.className = "branch-panel";
+    const rail = document.createElement("div");
+    rail.className = "map-rail";
+    rail.setAttribute("aria-hidden", "true");
+
+    const body = document.createElement("div");
+    body.className = "zone-body";
+
+    if (zone.primary) {
+      const primary = createMapNode(zone.primary);
+      primary.classList.add("zone-primary");
+      body.append(primary);
+    }
+
     const list = document.createElement("div");
-    list.className = "node-stack";
-    if (column.items.length) {
-      list.replaceChildren(...column.items.map(createMapNode));
+    list.className = "zone-node-list";
+    const children = zone.items.filter((item) => item !== zone.primary);
+    if (children.length) {
+      list.replaceChildren(...children.slice(0, 18).map(createMapNode));
     } else {
       const empty = document.createElement("p");
-      empty.className = "empty-branch";
-      empty.textContent = "No matching nodes";
+      empty.className = "empty-zone";
+      empty.textContent = "No matching nodes in this view";
       list.append(empty);
     }
-    panel.append(list);
+    body.append(list);
 
-    section.append(header, panel);
+    section.append(header, rail, body);
     return section;
   });
 
-  $("#sitemapColumns").replaceChildren(...rendered);
+  $("#systemMap").replaceChildren(...rendered);
   $("#mapSummary").textContent = `${items.length} visible nodes / ${allMapItems().length} total`;
 }
 
