@@ -1388,3 +1388,20 @@
 **Next up:**
 - Review the deployed portal from the browser at `http://atlas/ecosystem/`.
 - Do a dedicated mobile viewport pass for the new infographic map/sidebar layout.
+
+## 2026-06-02 17:23:56 -04:00 - Surf The Webb Framer site tracking
+
+**What we did:**
+- Added `Surf The Webb` to `infra/ecosystem.json` as a public `site` managed externally by Framer.
+- Kept Framer as the deployment/source-of-truth surface rather than inventing a GitHub checkout.
+- Updated portal bucketing so explicit `category: "site"` entries appear under Sites even without a local repo folder.
+- Updated launcher action labels so Ollama Monitoring now shows visible `Grafana` and `Prometheus` buttons instead of a generic `Open` button.
+- Added regression coverage for external-managed site entries and Surf The Webb specifically.
+- Verified locally that the Sites navigator shows 4 entries including Surf The Webb, Surf opens `https://surfthewebb.com/`, and Ollama Monitoring actions show `Grafana`, `Prometheus`, and `Details`.
+
+**Where we stopped:**
+- Work is on branch `fix/surf-the-webb-framer-site`.
+- Local verification passes, but the branch is not committed, merged, pushed, or deployed yet.
+
+**Next up:**
+- Commit, merge to `main`, push, and deploy to Atlas.

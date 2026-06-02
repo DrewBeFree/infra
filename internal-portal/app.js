@@ -252,7 +252,17 @@ function normalizedPath(item) {
 function workspaceBucket(item) {
   const path = normalizedPath(item);
   const name = String(item.name || item.id || item.displayName || "").toLowerCase();
+  const category = String(item.category || "").toLowerCase();
 
+  if (category === "site") {
+    return "sites";
+  }
+  if (category === "app") {
+    return "apps";
+  }
+  if (category === "agent") {
+    return "agents";
+  }
   if (path.includes("\\documents\\github\\apps\\") || name.includes("command-center")) {
     return "apps";
   }
@@ -580,6 +590,27 @@ function createLink(label, href, variant = "primary") {
   return link;
 }
 
+function actionLabelForUrl(url) {
+  const lower = String(url || "").toLowerCase();
+
+  if (lower.includes("3000/d/") || lower.includes("grafana")) {
+    return "Grafana";
+  }
+  if (lower.includes(":9090")) {
+    return "Prometheus";
+  }
+  if (lower.includes(":9443")) {
+    return "Portainer";
+  }
+  if (lower.includes(":8095")) {
+    return "Leantime";
+  }
+  if (lower.includes("/wiki/")) {
+    return "Docs";
+  }
+  return "Open";
+}
+
 function createControl(item, action) {
   const button = document.createElement("button");
   button.className = "control-button";
@@ -749,8 +780,18 @@ function renderCatalogRow(item, variant = "resource") {
 
   const actions = document.createElement("div");
   actions.className = "catalog-row-actions";
-  if (preferredOpenUrl(item) !== "#") {
-    actions.append(createLink("Open", preferredOpenUrl(item)));
+  const primaryUrl = preferredOpenUrl(item);
+  if (primaryUrl !== "#") {
+    actions.append(createLink(actionLabelForUrl(primaryUrl), primaryUrl));
+
+    const secondaryLinks = (item.liveUrls || [])
+      .map(resolvedUrl)
+      .filter((url) => url && url !== primaryUrl && actionLabelForUrl(url) !== "Open")
+      .slice(0, 2);
+
+    secondaryLinks.forEach((url) => {
+      actions.append(createLink(actionLabelForUrl(url), url, "secondary"));
+    });
   }
   actions.append(createDetailsButton(item));
 

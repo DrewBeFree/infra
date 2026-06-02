@@ -663,6 +663,45 @@
       }
     },
     {
+      "name": "surfthewebb",
+      "displayName": "Surf The Webb",
+      "category": "site",
+      "visibility": "public",
+      "summary": "Framer-managed business site for monday.com consulting, workflow automation, and systems design.",
+      "sourceControl": "external-managed",
+      "managedBy": "framer",
+      "liveUrls": [
+        "https://surfthewebb.com"
+      ],
+      "docs": [
+        {
+          "label": "Command Center state entry",
+          "url": "https://github.com/DrewBeFree/drewbefree-command-center/blob/main/drewbefree-state.md"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "framer",
+          "host": "framer",
+          "url": "https://surfthewebb.com",
+          "notes": "Framer is the source of truth and deployment surface; GitHub tracks only ecosystem metadata."
+        }
+      ],
+      "publicCommandCenter": true,
+      "statusControl": {
+        "state": "live",
+        "checks": [
+          "open",
+          "framer",
+          "dns"
+        ],
+        "actions": [
+          "open",
+          "deploy"
+        ]
+      }
+    },
+    {
       "name": "answering-agent",
       "displayName": "Answering Agent",
       "category": "agent",

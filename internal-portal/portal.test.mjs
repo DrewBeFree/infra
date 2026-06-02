@@ -37,6 +37,7 @@ const requiredRepos = [
   "recipes",
   "rv-maintenance",
   "soccer-pickup",
+  "surfthewebb",
   "uhaul-load-planner"
 ];
 
@@ -67,13 +68,32 @@ test("registry includes every known repo with launch and deployment metadata", a
 
   for (const repo of registry.repositories) {
     assert.ok(visibilityLevels.has(repo.visibility), `${repo.name} has invalid visibility`);
-    assert.ok(repo.githubUrl?.startsWith("https://github.com/DrewBeFree/"), `${repo.name} needs GitHub link`);
-    assert.ok(repo.localPath?.startsWith("C:\\Users\\drewb\\Documents\\GitHub\\"), `${repo.name} needs local path`);
+    if (repo.sourceControl === "external-managed") {
+      assert.ok(repo.managedBy, `${repo.name} needs external manager`);
+      assert.ok(repo.deployTargets.some((target) => target.host === repo.managedBy || target.type === repo.managedBy), `${repo.name} needs external deploy target`);
+    } else {
+      assert.ok(repo.githubUrl?.startsWith("https://github.com/DrewBeFree/"), `${repo.name} needs GitHub link`);
+      assert.ok(repo.localPath?.startsWith("C:\\Users\\drewb\\Documents\\GitHub\\"), `${repo.name} needs local path`);
+    }
     assert.ok(Array.isArray(repo.liveUrls), `${repo.name} liveUrls must be an array`);
     assert.ok(Array.isArray(repo.docs), `${repo.name} docs must be an array`);
     assert.ok(Array.isArray(repo.deployTargets), `${repo.name} deployTargets must be an array`);
     assert.ok(repo.statusControl?.state, `${repo.name} needs a status/control state`);
   }
+});
+
+test("Surf The Webb is tracked as an external Framer-managed site", async () => {
+  const registry = await loadRegistry();
+  const surf = registry.repositories.find((repo) => repo.name === "surfthewebb");
+
+  assert.ok(surf);
+  assert.equal(surf.category, "site");
+  assert.equal(surf.visibility, "public");
+  assert.equal(surf.sourceControl, "external-managed");
+  assert.equal(surf.managedBy, "framer");
+  assert.ok(surf.liveUrls.includes("https://surfthewebb.com"));
+  assert.ok(surf.deployTargets.some((target) => target.type === "framer" && target.host === "framer"));
+  assert.equal(surf.publicCommandCenter, true);
 });
 
 test("UHaul Planner is sensitive and removed from the public Command Center", async () => {
@@ -163,6 +183,9 @@ test("portal static files are present and load the canonical registry", async ()
   assert.match(app, /!lower\.includes\("github\.com"\)/);
   assert.match(app, /appIconAssets/);
   assert.match(app, /appIconUrl/);
+  assert.match(app, /actionLabelForUrl/);
+  assert.match(app, /Grafana/);
+  assert.match(app, /Prometheus/);
   assert.match(app, /matchesItemFilters/);
   assert.match(app, /renderCatalogRow/);
   assert.match(app, /updateFilterSummary/);
