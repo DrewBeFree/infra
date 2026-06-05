@@ -1,3 +1,27 @@
+## 2026-06-05 00:24 — Atlas backend gateway live for LDU
+
+**What we did:**
+- Built FastAPI backend (`backend/main.py`) with unified `/api/llm` endpoint and `/api/health`
+- Implemented Gemini (gemini-2.5-flash) server-side; OpenAI, Claude, Grok stubbed
+- Added `backend/requirements.txt`, `.env.example`, `start.sh` (auto-venv), `ldu-gateway.service` (systemd)
+- Updated `app-config.js` to point gatewayUrl at Atlas (`10.0.0.145:8001`)
+- Updated `app.js` hybrid mode to route all cloud providers through `callGateway()` — no API keys in browser
+- Resolved merge conflict with app-factory branch, corrected Atlas IP, fixed port conflict (moved to 8001)
+- Restored index.html (overwritten by app-factory branch), added app-config.js script tag
+- Fixed Gemini model name (gemini-2.5-flash), fixed thinkingConfig placement in API payload
+- Added Private Network Access CORS header for browser-to-private-IP requests
+- Installed `ldu-gateway` as a persistent systemd service on Atlas (auto-starts on reboot)
+- Set up SSH key auth on Atlas for GitHub, added `ldu-update` alias for one-command redeploy
+- Bumped version to v0.4.0, updated MANUAL.md with architecture section
+
+**Where we stopped:**
+- Gateway live and confirmed working — Gemini turns hitting Atlas with 200 OK
+- OpenAI, Claude, Grok return stub text — keys not yet added to Atlas .env
+
+**Next up:**
+- Add API keys for OpenAI, Claude, Grok to Atlas `backend/.env` and implement provider functions
+- Consider serving frontend from Atlas instead of WSL start_server.py
+
 ## 2026-06-01 20:30 — Phase A App Factory wrap-up
 
 **What we did:**
@@ -1534,3 +1558,19 @@
 **Next up:**
 - Review `http://atlas/ecosystem/` visually and open the Hermes Details drawer to confirm the access commands are easy to follow.
 - Decide whether to start a persistent Hermes dashboard service later; current recommendation is SSH tunnel only because the dashboard can expose API keys.
+
+## 2026-06-02 19:23:05 -04:00 - Hermes dashboard runtime start
+
+**What we did:**
+- Diagnosed SSH tunnel errors (`channel open failed: connect failed`) as Atlas having no listener on `127.0.0.1:9119`.
+- Confirmed `hermes dashboard --status` reported no running dashboard process.
+- Started Hermes dashboard on Atlas bound to localhost only with `/home/drew/.local/bin/hermes dashboard --host 127.0.0.1 --port 9119 --no-open --skip-build`.
+- Verified Atlas is listening on `127.0.0.1:9119` with Hermes PID `2692293`.
+
+**Where we stopped:**
+- Hermes dashboard is running on Atlas behind localhost-only binding.
+- Alienware should connect with `ssh -L 9119:127.0.0.1:9119 atlas`, then open `http://localhost:9119`.
+
+**Next up:**
+- If the tunnel still shows connection refused, restart the SSH tunnel after the Atlas dashboard process is running.
+- Decide whether Hermes dashboard should remain manual/tunneled or get a user systemd service.
