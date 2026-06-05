@@ -1,3 +1,23 @@
+## 2026-06-05 02:41 — AI Dashboard Activity and Settings views
+
+**What we did:**
+- Added Activity view: 30-day stacked token chart (full-width), summary cards (sessions/messages/API value), daily breakdown table with per-model color badges
+- Added Settings view: editable form for display name, per-subscription monthly costs, API keys (OpenAI/xAI/Gemini with show/hide toggle), Ollama host, GCP project ID
+- Added GET /api/config endpoint to app.py — returns current config.json
+- Added POST /api/config endpoint — merges and saves updates (handles subscriptions list and api_keys dict separately to avoid clobbering unlisted fields)
+- Extracted _send_json() helper in Handler to eliminate duplication
+- Wired nav links (Activity, Settings) with switchView() JS; all three views fully functional
+- Rewrote MANUAL.md to reflect current architecture (generate-stats.py, atlas deployment, all providers, new views)
+- Deployed to atlas; service healthy
+
+**Where we stopped:**
+- All three dashboard views working at http://atlas:7474
+- Settings saves to ~/services/ai-dashboard/config.json on atlas; Overview picks up changes on next Refresh
+
+**Next up:**
+- GCP credits editing in Settings (currently manual config.json edits only)
+- Long-term SQLite history to extend beyond the 30-day session file window
+
 ## 2026-06-05 00:24 — Atlas backend gateway live for LDU
 
 **What we did:**
