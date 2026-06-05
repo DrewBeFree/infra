@@ -1,18 +1,10 @@
-# UHAUL PLANNER
+# uhaul-load-planner
 
-![UHAUL PLANNER](https://uhaul.drewbefree.com/icons/uhaul-192.png)
-
-`uhaul-load-planner`
-
-Interactive overhead floor plan for a 26' U-Haul. Drag-and-drop items to scale, track floor usage in real time, auto-saves layout across visits.
+Interactive overhead floor plan and 3D visualization engine for planning a U-Haul move. Supports the entire U-Haul fleet (Cargo Van, 10', 15', 20', 26').
 
 | Field | Value |
 | --- | --- |
 | Type | app |
-| Version | v0.14.2 |
-| Updated | 2026-05-30 |
-| Status | active |
-| Live | https://uhaul.drewbefree.com |
 | Repo | https://github.com/DrewBeFree/uhaul-load-planner |
 | Local path | `apps/uhaul-load-planner` |
 

@@ -1,6 +1,6 @@
 # llm-debate-union
 
-A stunning, premium multi-agent cognitive arena where different AI models (Antigravity, ChatGPT, Grok, Gemini, Codex, Ollama) debate structured motions using the Oxford-style debate format.
+This app was generated as a clean standalone project (not inside `generated-apps/`).
 
 | Field | Value |
 | --- | --- |
@@ -9,7 +9,31 @@ A stunning, premium multi-agent cognitive arena where different AI models (Antig
 
 # Oxford LLM Debate Union — User Manual
 
-Welcome to the **Oxford LLM Debate Union**, a multi-agent cognitive arena. This application is a client-side Progressive Web App (PWA) that allows you to orchestrate structured debates between various artificial intelligence agents (Antigravity, ChatGPT, Claude, Grok, Gemini, Codex, Ollama).
+**v0.4.0 · June 5, 2026**
+
+Welcome to the **Oxford LLM Debate Union**, a multi-agent cognitive arena. This application is a Progressive Web App (PWA) frontend backed by a persistent FastAPI server running on Atlas (Dell PowerEdge, `10.0.0.145:8001`). It orchestrates structured debates between AI agents (Antigravity, ChatGPT, Claude, Grok, Gemini, Codex, Ollama).
+
+## 🏗️ Architecture
+
+| Component | Location | Purpose |
+|---|---|---|
+| Frontend (PWA) | `index.html` / `app.js` | Debate UI, session history, personas |
+| Config | `app-config.js` | Gateway + PocketBase URLs |
+| Gateway backend | Atlas `10.0.0.145:8001` | Proxies LLM API calls, keys server-side |
+| PocketBase | Atlas `10.0.0.145:8090` | Session persistence |
+| Service | `ldu-gateway.service` (systemd) | Auto-starts gateway on Atlas reboot |
+
+### Deploying backend changes on Atlas
+```bash
+ldu-update   # pulls latest + restarts the systemd service
+```
+
+### Adding a new LLM provider
+1. Add the API key to `~/llm-debate-union/backend/.env` on Atlas
+2. Implement the provider function in `backend/main.py`
+3. Run `ldu-update`
+
+---
 
 ---
 
@@ -109,9 +133,9 @@ Click the **⚙️ API CONFIG** button in the header to select your execution en
 * **How it works**: The app queries your local Ollama tags, detects your installed models (e.g., Llama, Mistral), and prompts them to play all debate or assembly roles dynamically.
 
 ### C. Live Hybrid Mode
-* **Requires**: Direct API Keys for cloud platforms (OpenAI, Gemini, Grok, Anthropic/Claude).
-* **How it works**: Routes active speakers to their respective cloud models using your stored credentials.
-* **Local Security**: API keys are saved strictly within your browser's private `localStorage` and never transmitted to external third-party servers.
+* **Requires**: API keys configured on the Atlas backend (server-side only).
+* **How it works**: Cloud speakers (Gemini, ChatGPT, Claude, Grok) route through the Atlas gateway at `10.0.0.145:8001`. Keys never touch the browser. Local/unknown personas fall back to Ollama, then simulation.
+* **Currently live**: Gemini (gemini-2.5-flash). OpenAI, Claude, Grok are stubbed — add keys to Atlas `.env` to enable.
 
 ---
 
@@ -136,7 +160,3 @@ Click the **🎭 PERSONAS** button in the header to customize the system prompt 
 - **Reset all prompts** — Bulk reset all custom prompts back to defaults
 
 Custom prompts are automatically applied to all debates in your session. This is useful for tuning debate styles, testing different argument approaches, or specializing personas for specific topics.
-
-## Infrastructure Plan
-
-- [Atlas + PocketBase deployment workflow](../workflows/llm-debate-union-atlas-pocketbase.md)
