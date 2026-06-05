@@ -70,6 +70,13 @@ Strategic work to establish consistent structure, standards, and sync across sys
   - Project synchronization approach
   - Symlink/mount strategy
   - Backup/safety considerations
+  - Personal Documents storage architecture:
+    - Atlas is the source of truth for Drew's actual Documents folder, not Google Drive or three separate machine-local copies
+    - Expose from Atlas via SMB as a daily-use share for Alienware and MacBook
+    - Prefer mapped network locations/Finder favorites first; use symlinks/junctions only after testing app compatibility
+    - Add limited offline sync/cache only for a small active-work folder if needed
+    - Back up Atlas Documents to Google Drive with rclone on a scheduled, logged job
+    - Include snapshots/versioning before cloud backup so accidental deletes do not immediately become the only backup state
   - **Deadline:** ~2026-06-02 (PowerEdge arrival)
   - **Status:** Blocked by Task 1; can proceed in parallel with Task 2
 
@@ -95,6 +102,13 @@ Strategic work to establish consistent structure, standards, and sync across sys
   - Explore: tmux + SSH, Fabric/Ansible, or MCP SSH tools for Claude
   - Goal: no more juggling 3 terminal windows
 
+- [ ] **Atlas safety dashboard + Hermes handoff lane**
+  - Build a health-first dashboard section for storage, shares, backup freshness, and key Atlas services
+  - Surface current hazards: offline `/mnt/data4`, PERC/iDRAC access gap, failed WD Reds, stale/missing backups
+  - Link each warning to a runbook before adding any one-click controls
+  - Define Hermes vs Claude/Codex responsibilities: Hermes for briefings/monitoring/reminders, Claude/Codex for code/design/implementation work
+  - Start with a Markdown morning briefing generator, then feed it into Hermes/dashboard once stable
+  - Reference: `docs/atlas-documents-hermes-cheap-handoff.md`
 - [ ] **Finish homelab-status-dashboard redesign**
   - Complete Command Center-inspired single-page design
   - Fix backlog accordion expand/collapse

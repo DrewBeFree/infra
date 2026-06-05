@@ -1,0 +1,431 @@
+{
+  "mode": "apply",
+  "summary": {
+    "create": 30
+  },
+  "actions": [
+    {
+      "action": "create",
+      "stable_id": "task-db49f2ba0483",
+      "title": "Task categories \u2014 category grouping deferred; revisit when core app is stable",
+      "repo_full_name": "DrewBeFree/daily-planner",
+      "issue_number": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-458eb59f7fb9",
+      "title": "PWA install banner \u2014 show iOS Safari tooltip nudging \"Share \u2192 Add to Home Screen\" on first visit; dismiss stored in localStorage",
+      "repo_full_name": "DrewBeFree/daily-planner",
+      "issue_number": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-f0b793c2918f",
+      "title": "Delete archived list \u2014 add a delete button to archived grocery and trip lists to permanently remove them",
+      "repo_full_name": "DrewBeFree/daily-planner",
+      "issue_number": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-4d0663c14cf1",
+      "title": "Migrate host PIN gate to Supabase Auth \u2014 replace JS PIN check with email/password login so RLS DELETE/UPDATE policies can be scoped to authenticated role",
+      "repo_full_name": "DrewBeFree/golf",
+      "issue_number": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-7c9689f6b517",
+      "title": "PWA install banner \u2014 show iOS Safari tooltip nudging \"Share \u2192 Add to Home Screen\" on first visit; dismiss stored in localStorage",
+      "repo_full_name": "DrewBeFree/golf",
+      "issue_number": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-ef954720563c",
+      "title": "Custom System Prompts: Allow the user to input a custom system prompt override for any of the 6 debate personas directly from the UI.",
+      "repo_full_name": "DrewBeFree/llm-debate-union",
+      "issue_number": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-93024d3c3ee7",
+      "title": "Interactive Audience Q&A: Allow the user to type in a custom question as the moderator during Round 3, prompting the active LLMs to respond dynamically.",
+      "repo_full_name": "DrewBeFree/llm-debate-union",
+      "issue_number": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-f2733aa8a6c9",
+      "title": "Voice Synthesis: Integrate the Web Speech API (SpeechSynthesis) to read model responses aloud using browser-configured voices.",
+      "repo_full_name": "DrewBeFree/llm-debate-union",
+      "issue_number": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-63adf70fbc07",
+      "title": "More Pre-programmed Motions: Add simulation databases for \"We are living in a computer simulation\" and \"Open-source AI will outlive proprietary ones\".",
+      "repo_full_name": "DrewBeFree/llm-debate-union",
+      "issue_number": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-a91790a8da23",
+      "title": "Local Storage History: Save completed debate transcripts and final audience swing margins to browser localStorage or a local file for history viewing.",
+      "repo_full_name": "DrewBeFree/llm-debate-union",
+      "issue_number": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-0c7a56c5ef1b",
+      "title": "Migrate host PIN gate to Supabase Auth \u2014 replace JS PIN check with email/password login so RLS DELETE/UPDATE policies can be scoped to authenticated role",
+      "repo_full_name": "DrewBeFree/poker",
+      "issue_number": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-c6a0d5521a05",
+      "title": "PWA install banner \u2014 show iOS Safari tooltip nudging \"Share \u2192 Add to Home Screen\" on first visit; dismiss stored in localStorage",
+      "repo_full_name": "DrewBeFree/poker",
+      "issue_number": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-138123e65db7",
+      "title": "PWA install banner \u2014 show iOS Safari tooltip nudging \"Share \u2192 Add to Home Screen\" on first visit; dismiss stored in localStorage",
+      "repo_full_name": "DrewBeFree/recipes",
+      "issue_number": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-bd0f2cd0b3f3",
+      "title": "PWA install banner \u2014 show iOS Safari tooltip nudging \"Share \u2192 Add to Home Screen\" on first visit; dismiss stored in localStorage",
+      "repo_full_name": "DrewBeFree/rv-maintenance",
+      "issue_number": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-d7eed15e89c7",
+      "title": "PWA install banner \u2014 show iOS Safari tooltip nudging \"Share \u2192 Add to Home Screen\" on first visit; dismiss stored in localStorage",
+      "repo_full_name": "DrewBeFree/soccer-pickup",
+      "issue_number": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-bf08c88cab18",
+      "title": "PWA install banner \u2014 show iOS Safari tooltip nudging \"Share \u2192 Add to Home Screen\" on first visit; dismiss stored in localStorage",
+      "repo_full_name": "DrewBeFree/uhaul-load-planner",
+      "issue_number": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-a7097fe36107",
+      "title": "WSL Setup \u2014 Move infrastructure work to WSL",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-4dab448a4ca0",
+      "title": "Ecosystem project tracking \u2014 standardize GitHub Projects + Issues",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-1ab1fdc791c0",
+      "title": "Cleanup \u2014 Remove hardcoded paths, use environment variables",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-93a299f844c0",
+      "title": "Task 2 \u2014 Create project templates for apps and sites",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-d24877040850",
+      "title": "Task 3 \u2014 Design multi-system sync strategy for .claude memory and projects",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-c8b2fe3ea971",
+      "title": "Task 4 \u2014 Automate recurring tasks: logoff checklist, version management, updates",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-f654d5ed1dc5",
+      "title": "Research project metrics + visualization approach",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-eddf11a260f0",
+      "title": "Unified terminal / cross-machine access",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-f66a7b5928d9",
+      "title": "Atlas safety dashboard + Hermes handoff lane",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-a74885483a3a",
+      "title": "Finish homelab-status-dashboard redesign",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-e47c61ae90e0",
+      "title": "GitHub file structure + multi-machine clone strategy",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-25f0c63a9cc7",
+      "title": "Docker strategy for homelab tools",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-d10ce323599e",
+      "title": "Wiki \u2014 Make all URLs clickable",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-4ff1865e67f0",
+      "title": "Wiki \u2014 Upgrade UI",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": null,
+      "reason": ""
+    }
+  ],
+  "applied": [
+    {
+      "action": "create",
+      "stable_id": "task-db49f2ba0483",
+      "repo_full_name": "DrewBeFree/daily-planner",
+      "issue_number": 1
+    },
+    {
+      "action": "create",
+      "stable_id": "task-458eb59f7fb9",
+      "repo_full_name": "DrewBeFree/daily-planner",
+      "issue_number": 2
+    },
+    {
+      "action": "create",
+      "stable_id": "task-f0b793c2918f",
+      "repo_full_name": "DrewBeFree/daily-planner",
+      "issue_number": 3
+    },
+    {
+      "action": "create",
+      "stable_id": "task-4d0663c14cf1",
+      "repo_full_name": "DrewBeFree/golf",
+      "issue_number": 1
+    },
+    {
+      "action": "create",
+      "stable_id": "task-7c9689f6b517",
+      "repo_full_name": "DrewBeFree/golf",
+      "issue_number": 2
+    },
+    {
+      "action": "create",
+      "stable_id": "task-ef954720563c",
+      "repo_full_name": "DrewBeFree/llm-debate-union",
+      "issue_number": 9
+    },
+    {
+      "action": "create",
+      "stable_id": "task-93024d3c3ee7",
+      "repo_full_name": "DrewBeFree/llm-debate-union",
+      "issue_number": 10
+    },
+    {
+      "action": "create",
+      "stable_id": "task-f2733aa8a6c9",
+      "repo_full_name": "DrewBeFree/llm-debate-union",
+      "issue_number": 11
+    },
+    {
+      "action": "create",
+      "stable_id": "task-63adf70fbc07",
+      "repo_full_name": "DrewBeFree/llm-debate-union",
+      "issue_number": 12
+    },
+    {
+      "action": "create",
+      "stable_id": "task-a91790a8da23",
+      "repo_full_name": "DrewBeFree/llm-debate-union",
+      "issue_number": 13
+    },
+    {
+      "action": "create",
+      "stable_id": "task-0c7a56c5ef1b",
+      "repo_full_name": "DrewBeFree/poker",
+      "issue_number": 3
+    },
+    {
+      "action": "create",
+      "stable_id": "task-c6a0d5521a05",
+      "repo_full_name": "DrewBeFree/poker",
+      "issue_number": 4
+    },
+    {
+      "action": "create",
+      "stable_id": "task-138123e65db7",
+      "repo_full_name": "DrewBeFree/recipes",
+      "issue_number": 1
+    },
+    {
+      "action": "create",
+      "stable_id": "task-bd0f2cd0b3f3",
+      "repo_full_name": "DrewBeFree/rv-maintenance",
+      "issue_number": 1
+    },
+    {
+      "action": "create",
+      "stable_id": "task-d7eed15e89c7",
+      "repo_full_name": "DrewBeFree/soccer-pickup",
+      "issue_number": 1
+    },
+    {
+      "action": "create",
+      "stable_id": "task-bf08c88cab18",
+      "repo_full_name": "DrewBeFree/uhaul-load-planner",
+      "issue_number": 53
+    },
+    {
+      "action": "create",
+      "stable_id": "task-a7097fe36107",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": 6
+    },
+    {
+      "action": "create",
+      "stable_id": "task-4dab448a4ca0",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": 7
+    },
+    {
+      "action": "create",
+      "stable_id": "task-1ab1fdc791c0",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": 8
+    },
+    {
+      "action": "create",
+      "stable_id": "task-93a299f844c0",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": 9
+    },
+    {
+      "action": "create",
+      "stable_id": "task-d24877040850",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": 10
+    },
+    {
+      "action": "create",
+      "stable_id": "task-c8b2fe3ea971",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": 11
+    },
+    {
+      "action": "create",
+      "stable_id": "task-f654d5ed1dc5",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": 12
+    },
+    {
+      "action": "create",
+      "stable_id": "task-eddf11a260f0",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": 13
+    },
+    {
+      "action": "create",
+      "stable_id": "task-f66a7b5928d9",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": 14
+    },
+    {
+      "action": "create",
+      "stable_id": "task-a74885483a3a",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": 15
+    },
+    {
+      "action": "create",
+      "stable_id": "task-e47c61ae90e0",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": 16
+    },
+    {
+      "action": "create",
+      "stable_id": "task-25f0c63a9cc7",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": 17
+    },
+    {
+      "action": "create",
+      "stable_id": "task-d10ce323599e",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": 18
+    },
+    {
+      "action": "create",
+      "stable_id": "task-4ff1865e67f0",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": 19
+    }
+  ],
+  "errors": []
+}

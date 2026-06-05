@@ -7,6 +7,7 @@ const registryPath = new URL("../ecosystem.json", import.meta.url);
 const indexPath = new URL("./index.html", import.meta.url);
 const appPath = new URL("./app.js", import.meta.url);
 const stylePath = new URL("./style.css", import.meta.url);
+const syncLinksPath = new URL("./sync-links.json", import.meta.url);
 const deployPath = new URL("./deploy.sh", import.meta.url);
 const avatarPath = new URL("./assets/pixelated-drew.png", import.meta.url);
 const appIconPath = new URL("./assets/app-icons/daily-planner.png", import.meta.url);
@@ -192,18 +193,33 @@ test("portal static files are present and load the canonical registry", async ()
   assert.match(index, /pixelated-drew\.png/);
   assert.match(index, /sideNavGroups/);
   assert.match(index, /ecosystemMap/);
+  assert.match(index, /data-main-section="map"/);
+  assert.match(index, /data-main-section="directory"/);
+  assert.match(index, /data-main-section="operate"/);
+  assert.match(index, /data-main-section="docs"/);
+  assert.match(index, /section-toggle/);
+  assert.match(index, /section-body-inner/);
   assert.match(index, /systemMap/);
   assert.match(index, /mapNodeTemplate/);
   assert.match(index, /node-host/);
   assert.match(index, /app\.js/);
   assert.match(app, /\.\.\/ecosystem\.json/);
   assert.match(app, /renderSidebar/);
+  assert.match(app, /openSidebarGroups: new Set\(\)/);
+  assert.match(app, /openMainSections: new Set\(\)/);
+  assert.match(app, /bindMainSectionToggles/);
+  assert.match(app, /openMainSection/);
+  assert.doesNotMatch(app, /openSidebarGroups: new Set\(\["apps"\]\)/);
   assert.match(app, /renderSitemap/);
   assert.match(app, /workspaceBucket/);
   assert.match(app, /itemHosts/);
   assert.match(app, /primaryHost/);
   assert.match(app, /systemMapZones/);
   assert.match(app, /allDocumentItems/);
+  assert.match(app, /atlas-wiki/);
+  assert.match(app, /Atlas Wiki/);
+  assert.match(app, /isWikiDoc/);
+  assert.match(app, /nonWikiDocs/);
   assert.match(app, /docsForResource/);
   assert.match(app, /Alienware Local Compute/);
   assert.match(app, /!lower\.includes\("github\.com"\)/);
@@ -218,6 +234,11 @@ test("portal static files are present and load the canonical registry", async ()
   assert.match(app, /updateFilterSummary/);
   assert.match(app, /openFilterModal/);
   assert.match(style, /\.side-nav/);
+  assert.match(style, /--ease-smooth/);
+  assert.match(style, /panel-in/);
+  assert.match(style, /\.collapsible-section/);
+  assert.match(style, /\.section-body/);
+  assert.match(style, /grid-template-rows/);
   assert.match(style, /\.side-nav-icon/);
   assert.match(style, /\.catalog-row/);
   assert.match(style, /\.filter-panel/);
@@ -225,6 +246,17 @@ test("portal static files are present and load the canonical registry", async ()
   assert.match(style, /\.map-zone/);
   assert.match(style, /\.zone-head/);
   assert.match(style, /fade-in-up/);
+});
+
+test("portal sync links include every ecosystem project, not only repos with tasks", async () => {
+  const registry = await loadRegistry();
+  const syncLinks = JSON.parse(await readFile(syncLinksPath, "utf8"));
+  const linkedRepos = Object.values(syncLinks.repos);
+
+  assert.equal(linkedRepos.length, registry.repositories.length);
+  assert.equal(linkedRepos.filter((repo) => repo.leantimeProjectUrl).length, registry.repositories.length);
+  assert.equal(linkedRepos.filter((repo) => repo.githubProjectUrl).length, registry.repositories.length);
+  assert.equal(linkedRepos.filter((repo) => repo.taskCount > 0).length, 9);
 });
 
 test("local preview serves rendered wiki site pages instead of raw markdown", async () => {

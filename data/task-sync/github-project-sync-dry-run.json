@@ -1,0 +1,161 @@
+{
+  "mode": "dry-run",
+  "create": [
+    {
+      "name": "drewbefree-command-center",
+      "display_name": "Command Center",
+      "full_name": "DrewBeFree/drewbefree-command-center",
+      "path": "apps/drewbefree-command-center",
+      "type": "app"
+    },
+    {
+      "name": "interactive-setup",
+      "display_name": "Interactive Setup",
+      "full_name": "DrewBeFree/interactive-setup",
+      "path": "agents/interactive-setup",
+      "type": "agent"
+    },
+    {
+      "name": "uhaul-load-planner",
+      "display_name": "UHaul Planner",
+      "full_name": "DrewBeFree/uhaul-load-planner",
+      "path": "apps/uhaul-load-planner",
+      "type": "app"
+    },
+    {
+      "name": "lead-gen-agent",
+      "display_name": "Lead Gen Agent",
+      "full_name": "DrewBeFree/lead-gen-agent",
+      "path": "agents/lead-gen-agent",
+      "type": "agent"
+    },
+    {
+      "name": "llm-debate-union",
+      "display_name": "LLM Debate Union",
+      "full_name": "DrewBeFree/llm-debate-union",
+      "path": "apps/llm-debate-union",
+      "type": "app"
+    },
+    {
+      "name": "dwebbsolutions",
+      "display_name": "DW Solutions",
+      "full_name": "DrewBeFree/dwebbsolutions",
+      "path": "sites/dwebbsolutions",
+      "type": "site"
+    },
+    {
+      "name": "rv-maintenance",
+      "display_name": "RV Maintenance",
+      "full_name": "DrewBeFree/rv-maintenance",
+      "path": "apps/rv-maintenance",
+      "type": "app"
+    },
+    {
+      "name": "ai-dog-trainer",
+      "display_name": "AI Dog Trainer",
+      "full_name": "DrewBeFree/ai-dog-trainer",
+      "path": "apps/ai-dog-trainer",
+      "type": "app"
+    },
+    {
+      "name": "kybernet-tech",
+      "display_name": "Kybernet",
+      "full_name": "DrewBeFree/kybernet-tech",
+      "path": "sites/kybernet-tech",
+      "type": "site"
+    },
+    {
+      "name": "recap-agents",
+      "display_name": "Recap Agents",
+      "full_name": "DrewBeFree/recap-agents",
+      "path": "agents/recap-agents",
+      "type": "agent"
+    },
+    {
+      "name": "daily-planner",
+      "display_name": "Daily Planner",
+      "full_name": "DrewBeFree/daily-planner",
+      "path": "apps/daily-planner",
+      "type": "app"
+    },
+    {
+      "name": "soccer-pickup",
+      "display_name": "Soccer Pickup",
+      "full_name": "DrewBeFree/soccer-pickup",
+      "path": "apps/soccer-pickup",
+      "type": "app"
+    },
+    {
+      "name": "recap-viewer",
+      "display_name": "Recap Viewer",
+      "full_name": "DrewBeFree/recap-viewer",
+      "path": "apps/recap-viewer",
+      "type": "app"
+    },
+    {
+      "name": "photography",
+      "display_name": "Photography",
+      "full_name": "DrewBeFree/photography",
+      "path": "sites/photography",
+      "type": "site"
+    },
+    {
+      "name": "surfthewebb",
+      "display_name": "Surf The Webb",
+      "full_name": "DrewBeFree/surfthewebb",
+      "path": "sites/surfthewebb",
+      "type": "site"
+    },
+    {
+      "name": "DrewBeFree",
+      "display_name": "DrewBeFree Profile",
+      "full_name": "DrewBeFree/DrewBeFree",
+      "path": "apps/DrewBeFree",
+      "type": "app"
+    },
+    {
+      "name": "claude-config",
+      "display_name": "Claude Config",
+      "full_name": "DrewBeFree/claude-config",
+      "path": "claude-config",
+      "type": "infrastructure"
+    },
+    {
+      "name": "recipes",
+      "display_name": "Recipes",
+      "full_name": "DrewBeFree/recipes",
+      "path": "apps/recipes",
+      "type": "app"
+    },
+    {
+      "name": "poker",
+      "display_name": "Poker Night",
+      "full_name": "DrewBeFree/poker",
+      "path": "apps/poker",
+      "type": "app"
+    },
+    {
+      "name": "bob",
+      "display_name": "Bob",
+      "full_name": "DrewBeFree/bob",
+      "path": "agents/bob",
+      "type": "agent"
+    },
+    {
+      "name": "golf",
+      "display_name": "Linksy",
+      "full_name": "DrewBeFree/golf",
+      "path": "apps/golf",
+      "type": "app"
+    },
+    {
+      "name": "homelab",
+      "display_name": "Homelab",
+      "full_name": "DrewBeFree/homelab",
+      "path": "homelab",
+      "type": "infrastructure"
+    }
+  ],
+  "applied": [],
+  "errors": []
+}
