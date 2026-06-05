@@ -1,0 +1,124 @@
+# Ecosystem Task Sync Export
+
+Generated tasks: 30
+
+- [Backlog] **Task categories — category grouping deferred; revisit when core app is stable** (Daily Planner, Normal)
+  - Repo: `DrewBeFree/daily-planner`
+  - Source: `apps/daily-planner/BACKLOG.md:4`
+  - Stable ID: `task-db49f2ba0483`
+- [Backlog] **PWA install banner — show iOS Safari tooltip nudging "Share → Add to Home Screen" on first visit; dismiss stored in localStorage** (Daily Planner, Normal)
+  - Repo: `DrewBeFree/daily-planner`
+  - Source: `apps/daily-planner/BACKLOG.md:7`
+  - Stable ID: `task-458eb59f7fb9`
+- [Backlog] **Delete archived list — add a delete button to archived grocery and trip lists to permanently remove them** (Daily Planner, Normal)
+  - Repo: `DrewBeFree/daily-planner`
+  - Source: `apps/daily-planner/BACKLOG.md:8`
+  - Stable ID: `task-f0b793c2918f`
+- [Backlog] **Migrate host PIN gate to Supabase Auth — replace JS PIN check with email/password login so RLS DELETE/UPDATE policies can be scoped to authenticated role** (Linksy, Normal)
+  - Repo: `DrewBeFree/golf`
+  - Source: `apps/golf/BACKLOG.md:4`
+  - Stable ID: `task-4d0663c14cf1`
+- [Backlog] **PWA install banner — show iOS Safari tooltip nudging "Share → Add to Home Screen" on first visit; dismiss stored in localStorage** (Linksy, Normal)
+  - Repo: `DrewBeFree/golf`
+  - Source: `apps/golf/BACKLOG.md:7`
+  - Stable ID: `task-7c9689f6b517`
+- [Backlog] **Custom System Prompts: Allow the user to input a custom system prompt override for any of the 6 debate personas directly from the UI.** (LLM Debate Union, Normal)
+  - Repo: `DrewBeFree/llm-debate-union`
+  - Source: `apps/llm-debate-union/BACKLOG.md:4`
+  - Stable ID: `task-ef954720563c`
+- [Backlog] **Interactive Audience Q&A: Allow the user to type in a custom question as the moderator during Round 3, prompting the active LLMs to respond dynamically.** (LLM Debate Union, Normal)
+  - Repo: `DrewBeFree/llm-debate-union`
+  - Source: `apps/llm-debate-union/BACKLOG.md:5`
+  - Stable ID: `task-93024d3c3ee7`
+- [Backlog] **Voice Synthesis: Integrate the Web Speech API (SpeechSynthesis) to read model responses aloud using browser-configured voices.** (LLM Debate Union, Normal)
+  - Repo: `DrewBeFree/llm-debate-union`
+  - Source: `apps/llm-debate-union/BACKLOG.md:6`
+  - Stable ID: `task-f2733aa8a6c9`
+- [Backlog] **More Pre-programmed Motions: Add simulation databases for "We are living in a computer simulation" and "Open-source AI will outlive proprietary ones".** (LLM Debate Union, Normal)
+  - Repo: `DrewBeFree/llm-debate-union`
+  - Source: `apps/llm-debate-union/BACKLOG.md:7`
+  - Stable ID: `task-63adf70fbc07`
+- [Backlog] **Local Storage History: Save completed debate transcripts and final audience swing margins to browser localStorage or a local file for history viewing.** (LLM Debate Union, Normal)
+  - Repo: `DrewBeFree/llm-debate-union`
+  - Source: `apps/llm-debate-union/BACKLOG.md:10`
+  - Stable ID: `task-a91790a8da23`
+- [Backlog] **Migrate host PIN gate to Supabase Auth — replace JS PIN check with email/password login so RLS DELETE/UPDATE policies can be scoped to authenticated role** (Poker Night, Normal)
+  - Repo: `DrewBeFree/poker`
+  - Source: `apps/poker/BACKLOG.md:4`
+  - Stable ID: `task-0c7a56c5ef1b`
+- [Backlog] **PWA install banner — show iOS Safari tooltip nudging "Share → Add to Home Screen" on first visit; dismiss stored in localStorage** (Poker Night, Normal)
+  - Repo: `DrewBeFree/poker`
+  - Source: `apps/poker/BACKLOG.md:7`
+  - Stable ID: `task-c6a0d5521a05`
+- [Backlog] **PWA install banner — show iOS Safari tooltip nudging "Share → Add to Home Screen" on first visit; dismiss stored in localStorage** (Recipes, Normal)
+  - Repo: `DrewBeFree/recipes`
+  - Source: `apps/recipes/BACKLOG.md:4`
+  - Stable ID: `task-138123e65db7`
+- [Backlog] **PWA install banner — show iOS Safari tooltip nudging "Share → Add to Home Screen" on first visit; dismiss stored in localStorage** (RV Maintenance, Normal)
+  - Repo: `DrewBeFree/rv-maintenance`
+  - Source: `apps/rv-maintenance/BACKLOG.md:4`
+  - Stable ID: `task-bd0f2cd0b3f3`
+- [Backlog] **PWA install banner — show iOS Safari tooltip nudging "Share → Add to Home Screen" on first visit; dismiss stored in localStorage** (Soccer Pickup, Normal)
+  - Repo: `DrewBeFree/soccer-pickup`
+  - Source: `apps/soccer-pickup/BACKLOG.md:4`
+  - Stable ID: `task-d7eed15e89c7`
+- [Backlog] **PWA install banner — show iOS Safari tooltip nudging "Share → Add to Home Screen" on first visit; dismiss stored in localStorage** (UHaul Planner, Normal)
+  - Repo: `DrewBeFree/uhaul-load-planner`
+  - Source: `apps/uhaul-load-planner/BACKLOG.md:4`
+  - Stable ID: `task-bf08c88cab18`
+- [In Progress] **WSL Setup — Move infrastructure work to WSL** (Infra, Normal)
+  - Repo: `DrewBeFree/infra`
+  - Source: `infra/BACKLOG.md:30`
+  - Stable ID: `task-a7097fe36107`
+- [Blocked] **Ecosystem project tracking — standardize GitHub Projects + Issues** (Infra, Medium)
+  - Repo: `DrewBeFree/infra`
+  - Source: `infra/BACKLOG.md:39`
+  - Stable ID: `task-4dab448a4ca0`
+- [Blocked] **Cleanup — Remove hardcoded paths, use environment variables** (Infra, Medium)
+  - Repo: `DrewBeFree/infra`
+  - Source: `infra/BACKLOG.md:54`
+  - Stable ID: `task-1ab1fdc791c0`
+- [Blocked] **Task 2 — Create project templates for apps and sites** (Infra, High)
+  - Repo: `DrewBeFree/infra`
+  - Source: `infra/BACKLOG.md:61`
+  - Stable ID: `task-93a299f844c0`
+- [Blocked] **Task 3 — Design multi-system sync strategy for .claude memory and projects** (Infra, High)
+  - Repo: `DrewBeFree/infra`
+  - Source: `infra/BACKLOG.md:67`
+  - Stable ID: `task-d24877040850`
+- [Blocked] **Task 4 — Automate recurring tasks: logoff checklist, version management, updates** (Infra, High)
+  - Repo: `DrewBeFree/infra`
+  - Source: `infra/BACKLOG.md:83`
+  - Stable ID: `task-c8b2fe3ea971`
+- [Blocked] **Research project metrics + visualization approach** (Infra, Medium)
+  - Repo: `DrewBeFree/infra`
+  - Source: `infra/BACKLOG.md:94`
+  - Stable ID: `task-f654d5ed1dc5`
+- [Blocked] **Unified terminal / cross-machine access** (Infra, Normal)
+  - Repo: `DrewBeFree/infra`
+  - Source: `infra/BACKLOG.md:100`
+  - Stable ID: `task-eddf11a260f0`
+- [Blocked] **Atlas safety dashboard + Hermes handoff lane** (Infra, High)
+  - Repo: `DrewBeFree/infra`
+  - Source: `infra/BACKLOG.md:105`
+  - Stable ID: `task-f66a7b5928d9`
+- [Blocked] **Finish homelab-status-dashboard redesign** (Infra, Medium)
+  - Repo: `DrewBeFree/infra`
+  - Source: `infra/BACKLOG.md:112`
+  - Stable ID: `task-a74885483a3a`
+- [Blocked] **GitHub file structure + multi-machine clone strategy** (Infra, Normal)
+  - Repo: `DrewBeFree/infra`
+  - Source: `infra/BACKLOG.md:117`
+  - Stable ID: `task-e47c61ae90e0`
+- [Blocked] **Docker strategy for homelab tools** (Infra, Medium)
+  - Repo: `DrewBeFree/infra`
+  - Source: `infra/BACKLOG.md:122`
+  - Stable ID: `task-25f0c63a9cc7`
+- [Blocked] **Wiki — Make all URLs clickable** (Infra, Normal)
+  - Repo: `DrewBeFree/infra`
+  - Source: `infra/BACKLOG.md:127`
+  - Stable ID: `task-d10ce323599e`
+- [Blocked] **Wiki — Upgrade UI** (Infra, Normal)
+  - Repo: `DrewBeFree/infra`
+  - Source: `infra/BACKLOG.md:131`
+  - Stable ID: `task-4ff1865e67f0`

@@ -1594,3 +1594,25 @@
 **Next up:**
 - If the tunnel still shows connection refused, restart the SSH tunnel after the Atlas dashboard process is running.
 - Decide whether Hermes dashboard should remain manual/tunneled or get a user systemd service.
+
+## 2026-06-05 18:10 EDT - Atlas storage, task sync, portal, and Leantime handoff
+
+**What we did:**
+- Added the Documents-on-Atlas recommendation to `BACKLOG.md`: Atlas as source of truth, SMB/mapped access for Alienware and MacBook, limited offline cache only if needed, snapshots/versioning, and scheduled rclone backup to Google Drive.
+- Added `docs/atlas-documents-hermes-cheap-handoff.md` and a backlog lane for an Atlas safety dashboard plus Hermes handoff/morning briefing work.
+- Built `scripts/task_sync.py` and `scripts/ecosystem_task_sync.py` with tests, generated task-sync reports under `data/task-sync/`, and created `docs/task-sync.md`.
+- Synced the ecosystem planning shape: 25 Leantime projects, 30 marker-managed Leantime tasks, matching GitHub Issues, matching GitHub Projects, and generated `data/task-sync/links.md`.
+- Updated the internal ecosystem portal to load `sync-links.json`, expose per-project GitHub/Leantime/repo/issue links, keep sidebar and main sections collapsed by default, animate accordion opening/closing, and show one Atlas Wiki link plus relevant non-wiki docs.
+- Repaired Leantime live state: Drew assigned to all expected projects, NULL project state/active values fixed, and marker-managed task statuses corrected from false Done to New/In Progress/Blocked.
+- Hotfixed the running Leantime 3.8.0 container templates for milestone creation, list view, and Kanban rendering, then captured those fixes in `scripts/leantime-hotfixes/`.
+- Updated the Atlas Wiki Services page with the planning/sync surfaces and runbook links.
+
+**Where we stopped:**
+- Local verification passes for sync tests and portal tests.
+- The running Leantime container has the latest Kanban template patch applied, but the authenticated browser was at login, so final Kanban visual confirmation still needs Drew after login/refresh.
+- GitHub still has 27 open Projects because `** Project Template **` and `U-Haul Load Planner Roadmap` remain extra boards outside the 25 expected ecosystem projects.
+
+**Next up:**
+- Refresh Leantime Kanban after login; if it still fails, capture the newest stack trace and update `scripts/leantime-hotfixes/`.
+- Decide whether to archive the two extra GitHub Projects.
+- Decide whether to create a dedicated `DrewBeFree/leantime-atlas` repo for durable Leantime overlays/image patches.

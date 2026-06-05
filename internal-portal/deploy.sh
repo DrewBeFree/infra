@@ -10,6 +10,11 @@ INSTALL_HOME_REDIRECT="${INTERNAL_PORTAL_INSTALL_HOME_REDIRECT:-1}"
 mkdir -p "$TARGET"
 rsync -a --delete "$ROOT/internal-portal/" "$TARGET/"
 cp "$ROOT/ecosystem.json" "$TARGET/ecosystem.json"
+if [[ -f "$ROOT/internal-portal/sync-links.json" ]]; then
+  cp "$ROOT/internal-portal/sync-links.json" "$TARGET/sync-links.json"
+fi
+find "$TARGET" -type d -exec chmod 755 {} +
+find "$TARGET" -type f -exec chmod 644 {} +
 
 if [[ "$INSTALL_HOME_REDIRECT" == "1" ]]; then
   if [[ -f "$HOME_ROOT/index.html" && ! -f "$STATUS_TARGET/index.html" ]] && ! grep -q '/ecosystem/' "$HOME_ROOT/index.html"; then

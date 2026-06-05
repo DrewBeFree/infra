@@ -1,0 +1,560 @@
+{
+  "generatedAt": "2026-06-05",
+  "source": "infra/data/task-sync reports",
+  "repos": {
+    "adhd-snap": {
+      "project": "ADHD Snap",
+      "repoFullName": "DrewBeFree/adhd-snap",
+      "githubRepoUrl": "https://github.com/DrewBeFree/adhd-snap",
+      "githubProjectNumber": 8,
+      "githubProjectUrl": "https://github.com/users/DrewBeFree/projects/8",
+      "leantimeProjectId": 7,
+      "leantimeProjectUrl": "http://atlas:8095/projects/showProject/7",
+      "taskCount": 0,
+      "tasks": []
+    },
+    "ai-dog-trainer": {
+      "project": "AI Dog Trainer",
+      "repoFullName": "DrewBeFree/ai-dog-trainer",
+      "githubRepoUrl": "https://github.com/DrewBeFree/ai-dog-trainer",
+      "githubProjectNumber": 16,
+      "githubProjectUrl": "https://github.com/users/DrewBeFree/projects/16",
+      "leantimeProjectId": 18,
+      "leantimeProjectUrl": "http://atlas:8095/projects/showProject/18",
+      "taskCount": 0,
+      "tasks": []
+    },
+    "daily-planner": {
+      "project": "Daily Planner",
+      "repoFullName": "DrewBeFree/daily-planner",
+      "githubRepoUrl": "https://github.com/DrewBeFree/daily-planner",
+      "githubProjectNumber": 19,
+      "githubProjectUrl": "https://github.com/users/DrewBeFree/projects/19",
+      "leantimeProjectId": 19,
+      "leantimeProjectUrl": "http://atlas:8095/projects/showProject/19",
+      "taskCount": 3,
+      "tasks": [
+        {
+          "stableId": "task-db49f2ba0483",
+          "title": "Task categories — category grouping deferred; revisit when core app is stable",
+          "sourceFile": "apps/daily-planner/BACKLOG.md",
+          "sourceLine": 4,
+          "githubIssueNumber": 1,
+          "githubIssueUrl": "https://github.com/DrewBeFree/daily-planner/issues/1",
+          "githubProjectItemSynced": true
+        },
+        {
+          "stableId": "task-458eb59f7fb9",
+          "title": "PWA install banner — show iOS Safari tooltip nudging \"Share → Add to Home Screen\" on first visit; dismiss stored in localStorage",
+          "sourceFile": "apps/daily-planner/BACKLOG.md",
+          "sourceLine": 7,
+          "githubIssueNumber": 2,
+          "githubIssueUrl": "https://github.com/DrewBeFree/daily-planner/issues/2",
+          "githubProjectItemSynced": true
+        },
+        {
+          "stableId": "task-f0b793c2918f",
+          "title": "Delete archived list — add a delete button to archived grocery and trip lists to permanently remove them",
+          "sourceFile": "apps/daily-planner/BACKLOG.md",
+          "sourceLine": 8,
+          "githubIssueNumber": 3,
+          "githubIssueUrl": "https://github.com/DrewBeFree/daily-planner/issues/3",
+          "githubProjectItemSynced": true
+        }
+      ]
+    },
+    "DrewBeFree": {
+      "project": "DrewBeFree Profile",
+      "repoFullName": "DrewBeFree/DrewBeFree",
+      "githubRepoUrl": "https://github.com/DrewBeFree/DrewBeFree",
+      "githubProjectNumber": 24,
+      "githubProjectUrl": "https://github.com/users/DrewBeFree/projects/24",
+      "leantimeProjectId": 24,
+      "leantimeProjectUrl": "http://atlas:8095/projects/showProject/24",
+      "taskCount": 0,
+      "tasks": []
+    },
+    "drewbefree-command-center": {
+      "project": "Command Center",
+      "repoFullName": "DrewBeFree/drewbefree-command-center",
+      "githubRepoUrl": "https://github.com/DrewBeFree/drewbefree-command-center",
+      "githubProjectNumber": 9,
+      "githubProjectUrl": "https://github.com/users/DrewBeFree/projects/9",
+      "leantimeProjectId": 12,
+      "leantimeProjectUrl": "http://atlas:8095/projects/showProject/12",
+      "taskCount": 0,
+      "tasks": []
+    },
+    "golf": {
+      "project": "Linksy",
+      "repoFullName": "DrewBeFree/golf",
+      "githubRepoUrl": "https://github.com/DrewBeFree/golf",
+      "githubProjectNumber": 29,
+      "githubProjectUrl": "https://github.com/users/DrewBeFree/projects/29",
+      "leantimeProjectId": 29,
+      "leantimeProjectUrl": "http://atlas:8095/projects/showProject/29",
+      "taskCount": 2,
+      "tasks": [
+        {
+          "stableId": "task-4d0663c14cf1",
+          "title": "Migrate host PIN gate to Supabase Auth — replace JS PIN check with email/password login so RLS DELETE/UPDATE policies can be scoped to authenticated role",
+          "sourceFile": "apps/golf/BACKLOG.md",
+          "sourceLine": 4,
+          "githubIssueNumber": 1,
+          "githubIssueUrl": "https://github.com/DrewBeFree/golf/issues/1",
+          "githubProjectItemSynced": true
+        },
+        {
+          "stableId": "task-7c9689f6b517",
+          "title": "PWA install banner — show iOS Safari tooltip nudging \"Share → Add to Home Screen\" on first visit; dismiss stored in localStorage",
+          "sourceFile": "apps/golf/BACKLOG.md",
+          "sourceLine": 7,
+          "githubIssueNumber": 2,
+          "githubIssueUrl": "https://github.com/DrewBeFree/golf/issues/2",
+          "githubProjectItemSynced": true
+        }
+      ]
+    },
+    "llm-debate-union": {
+      "project": "LLM Debate Union",
+      "repoFullName": "DrewBeFree/llm-debate-union",
+      "githubRepoUrl": "https://github.com/DrewBeFree/llm-debate-union",
+      "githubProjectNumber": 13,
+      "githubProjectUrl": "https://github.com/users/DrewBeFree/projects/13",
+      "leantimeProjectId": 2,
+      "leantimeProjectUrl": "http://atlas:8095/projects/showProject/2",
+      "taskCount": 5,
+      "tasks": [
+        {
+          "stableId": "task-ef954720563c",
+          "title": "Custom System Prompts: Allow the user to input a custom system prompt override for any of the 6 debate personas directly from the UI.",
+          "sourceFile": "apps/llm-debate-union/BACKLOG.md",
+          "sourceLine": 4,
+          "githubIssueNumber": 9,
+          "githubIssueUrl": "https://github.com/DrewBeFree/llm-debate-union/issues/9",
+          "githubProjectItemSynced": true
+        },
+        {
+          "stableId": "task-93024d3c3ee7",
+          "title": "Interactive Audience Q&A: Allow the user to type in a custom question as the moderator during Round 3, prompting the active LLMs to respond dynamically.",
+          "sourceFile": "apps/llm-debate-union/BACKLOG.md",
+          "sourceLine": 5,
+          "githubIssueNumber": 10,
+          "githubIssueUrl": "https://github.com/DrewBeFree/llm-debate-union/issues/10",
+          "githubProjectItemSynced": true
+        },
+        {
+          "stableId": "task-f2733aa8a6c9",
+          "title": "Voice Synthesis: Integrate the Web Speech API (SpeechSynthesis) to read model responses aloud using browser-configured voices.",
+          "sourceFile": "apps/llm-debate-union/BACKLOG.md",
+          "sourceLine": 6,
+          "githubIssueNumber": 11,
+          "githubIssueUrl": "https://github.com/DrewBeFree/llm-debate-union/issues/11",
+          "githubProjectItemSynced": true
+        },
+        {
+          "stableId": "task-63adf70fbc07",
+          "title": "More Pre-programmed Motions: Add simulation databases for \"We are living in a computer simulation\" and \"Open-source AI will outlive proprietary ones\".",
+          "sourceFile": "apps/llm-debate-union/BACKLOG.md",
+          "sourceLine": 7,
+          "githubIssueNumber": 12,
+          "githubIssueUrl": "https://github.com/DrewBeFree/llm-debate-union/issues/12",
+          "githubProjectItemSynced": true
+        },
+        {
+          "stableId": "task-a91790a8da23",
+          "title": "Local Storage History: Save completed debate transcripts and final audience swing margins to browser localStorage or a local file for history viewing.",
+          "sourceFile": "apps/llm-debate-union/BACKLOG.md",
+          "sourceLine": 10,
+          "githubIssueNumber": 13,
+          "githubIssueUrl": "https://github.com/DrewBeFree/llm-debate-union/issues/13",
+          "githubProjectItemSynced": true
+        }
+      ]
+    },
+    "poker": {
+      "project": "Poker Night",
+      "repoFullName": "DrewBeFree/poker",
+      "githubRepoUrl": "https://github.com/DrewBeFree/poker",
+      "githubProjectNumber": 27,
+      "githubProjectUrl": "https://github.com/users/DrewBeFree/projects/27",
+      "leantimeProjectId": 27,
+      "leantimeProjectUrl": "http://atlas:8095/projects/showProject/27",
+      "taskCount": 2,
+      "tasks": [
+        {
+          "stableId": "task-0c7a56c5ef1b",
+          "title": "Migrate host PIN gate to Supabase Auth — replace JS PIN check with email/password login so RLS DELETE/UPDATE policies can be scoped to authenticated role",
+          "sourceFile": "apps/poker/BACKLOG.md",
+          "sourceLine": 4,
+          "githubIssueNumber": 3,
+          "githubIssueUrl": "https://github.com/DrewBeFree/poker/issues/3",
+          "githubProjectItemSynced": true
+        },
+        {
+          "stableId": "task-c6a0d5521a05",
+          "title": "PWA install banner — show iOS Safari tooltip nudging \"Share → Add to Home Screen\" on first visit; dismiss stored in localStorage",
+          "sourceFile": "apps/poker/BACKLOG.md",
+          "sourceLine": 7,
+          "githubIssueNumber": 4,
+          "githubIssueUrl": "https://github.com/DrewBeFree/poker/issues/4",
+          "githubProjectItemSynced": true
+        }
+      ]
+    },
+    "recap-viewer": {
+      "project": "Recap Viewer",
+      "repoFullName": "DrewBeFree/recap-viewer",
+      "githubRepoUrl": "https://github.com/DrewBeFree/recap-viewer",
+      "githubProjectNumber": 21,
+      "githubProjectUrl": "https://github.com/users/DrewBeFree/projects/21",
+      "leantimeProjectId": 21,
+      "leantimeProjectUrl": "http://atlas:8095/projects/showProject/21",
+      "taskCount": 0,
+      "tasks": []
+    },
+    "recipes": {
+      "project": "Recipes",
+      "repoFullName": "DrewBeFree/recipes",
+      "githubRepoUrl": "https://github.com/DrewBeFree/recipes",
+      "githubProjectNumber": 26,
+      "githubProjectUrl": "https://github.com/users/DrewBeFree/projects/26",
+      "leantimeProjectId": 26,
+      "leantimeProjectUrl": "http://atlas:8095/projects/showProject/26",
+      "taskCount": 1,
+      "tasks": [
+        {
+          "stableId": "task-138123e65db7",
+          "title": "PWA install banner — show iOS Safari tooltip nudging \"Share → Add to Home Screen\" on first visit; dismiss stored in localStorage",
+          "sourceFile": "apps/recipes/BACKLOG.md",
+          "sourceLine": 4,
+          "githubIssueNumber": 1,
+          "githubIssueUrl": "https://github.com/DrewBeFree/recipes/issues/1",
+          "githubProjectItemSynced": true
+        }
+      ]
+    },
+    "rv-maintenance": {
+      "project": "RV Maintenance",
+      "repoFullName": "DrewBeFree/rv-maintenance",
+      "githubRepoUrl": "https://github.com/DrewBeFree/rv-maintenance",
+      "githubProjectNumber": 15,
+      "githubProjectUrl": "https://github.com/users/DrewBeFree/projects/15",
+      "leantimeProjectId": 17,
+      "leantimeProjectUrl": "http://atlas:8095/projects/showProject/17",
+      "taskCount": 1,
+      "tasks": [
+        {
+          "stableId": "task-bd0f2cd0b3f3",
+          "title": "PWA install banner — show iOS Safari tooltip nudging \"Share → Add to Home Screen\" on first visit; dismiss stored in localStorage",
+          "sourceFile": "apps/rv-maintenance/BACKLOG.md",
+          "sourceLine": 4,
+          "githubIssueNumber": 1,
+          "githubIssueUrl": "https://github.com/DrewBeFree/rv-maintenance/issues/1",
+          "githubProjectItemSynced": true
+        }
+      ]
+    },
+    "soccer-pickup": {
+      "project": "Soccer Pickup",
+      "repoFullName": "DrewBeFree/soccer-pickup",
+      "githubRepoUrl": "https://github.com/DrewBeFree/soccer-pickup",
+      "githubProjectNumber": 20,
+      "githubProjectUrl": "https://github.com/users/DrewBeFree/projects/20",
+      "leantimeProjectId": 20,
+      "leantimeProjectUrl": "http://atlas:8095/projects/showProject/20",
+      "taskCount": 1,
+      "tasks": [
+        {
+          "stableId": "task-d7eed15e89c7",
+          "title": "PWA install banner — show iOS Safari tooltip nudging \"Share → Add to Home Screen\" on first visit; dismiss stored in localStorage",
+          "sourceFile": "apps/soccer-pickup/BACKLOG.md",
+          "sourceLine": 4,
+          "githubIssueNumber": 1,
+          "githubIssueUrl": "https://github.com/DrewBeFree/soccer-pickup/issues/1",
+          "githubProjectItemSynced": true
+        }
+      ]
+    },
+    "uhaul-load-planner": {
+      "project": "UHaul Planner",
+      "repoFullName": "DrewBeFree/uhaul-load-planner",
+      "githubRepoUrl": "https://github.com/DrewBeFree/uhaul-load-planner",
+      "githubProjectNumber": 11,
+      "githubProjectUrl": "https://github.com/users/DrewBeFree/projects/11",
+      "leantimeProjectId": 14,
+      "leantimeProjectUrl": "http://atlas:8095/projects/showProject/14",
+      "taskCount": 1,
+      "tasks": [
+        {
+          "stableId": "task-bf08c88cab18",
+          "title": "PWA install banner — show iOS Safari tooltip nudging \"Share → Add to Home Screen\" on first visit; dismiss stored in localStorage",
+          "sourceFile": "apps/uhaul-load-planner/BACKLOG.md",
+          "sourceLine": 4,
+          "githubIssueNumber": 53,
+          "githubIssueUrl": "https://github.com/DrewBeFree/uhaul-load-planner/issues/53",
+          "githubProjectItemSynced": true
+        }
+      ]
+    },
+    "dwebbsolutions": {
+      "project": "DW Solutions",
+      "repoFullName": "DrewBeFree/dwebbsolutions",
+      "githubRepoUrl": "https://github.com/DrewBeFree/dwebbsolutions",
+      "githubProjectNumber": 14,
+      "githubProjectUrl": "https://github.com/users/DrewBeFree/projects/14",
+      "leantimeProjectId": 16,
+      "leantimeProjectUrl": "http://atlas:8095/projects/showProject/16",
+      "taskCount": 0,
+      "tasks": []
+    },
+    "kybernet-tech": {
+      "project": "Kybernet",
+      "repoFullName": "DrewBeFree/kybernet-tech",
+      "githubRepoUrl": "https://github.com/DrewBeFree/kybernet-tech",
+      "githubProjectNumber": 17,
+      "githubProjectUrl": "https://github.com/users/DrewBeFree/projects/17",
+      "leantimeProjectId": 11,
+      "leantimeProjectUrl": "http://atlas:8095/projects/showProject/11",
+      "taskCount": 0,
+      "tasks": []
+    },
+    "photography": {
+      "project": "Photography",
+      "repoFullName": "DrewBeFree/photography",
+      "githubRepoUrl": "https://github.com/DrewBeFree/photography",
+      "githubProjectNumber": 22,
+      "githubProjectUrl": "https://github.com/users/DrewBeFree/projects/22",
+      "leantimeProjectId": 22,
+      "leantimeProjectUrl": "http://atlas:8095/projects/showProject/22",
+      "taskCount": 0,
+      "tasks": []
+    },
+    "surfthewebb": {
+      "project": "Surf The Webb",
+      "repoFullName": null,
+      "githubRepoUrl": null,
+      "githubProjectNumber": 23,
+      "githubProjectUrl": "https://github.com/users/DrewBeFree/projects/23",
+      "leantimeProjectId": 23,
+      "leantimeProjectUrl": "http://atlas:8095/projects/showProject/23",
+      "taskCount": 0,
+      "tasks": []
+    },
+    "answering-agent": {
+      "project": "Answering Agent",
+      "repoFullName": "DrewBeFree/answering-agent",
+      "githubRepoUrl": "https://github.com/DrewBeFree/answering-agent",
+      "githubProjectNumber": 4,
+      "githubProjectUrl": "https://github.com/users/DrewBeFree/projects/4",
+      "leantimeProjectId": 6,
+      "leantimeProjectUrl": "http://atlas:8095/projects/showProject/6",
+      "taskCount": 0,
+      "tasks": []
+    },
+    "lead-gen-agent": {
+      "project": "Lead Gen Agent",
+      "repoFullName": "DrewBeFree/lead-gen-agent",
+      "githubRepoUrl": "https://github.com/DrewBeFree/lead-gen-agent",
+      "githubProjectNumber": 12,
+      "githubProjectUrl": "https://github.com/users/DrewBeFree/projects/12",
+      "leantimeProjectId": 15,
+      "leantimeProjectUrl": "http://atlas:8095/projects/showProject/15",
+      "taskCount": 0,
+      "tasks": []
+    },
+    "bob": {
+      "project": "Bob",
+      "repoFullName": "DrewBeFree/bob",
+      "githubRepoUrl": "https://github.com/DrewBeFree/bob",
+      "githubProjectNumber": 28,
+      "githubProjectUrl": "https://github.com/users/DrewBeFree/projects/28",
+      "leantimeProjectId": 28,
+      "leantimeProjectUrl": "http://atlas:8095/projects/showProject/28",
+      "taskCount": 0,
+      "tasks": []
+    },
+    "interactive-setup": {
+      "project": "Interactive Setup",
+      "repoFullName": "DrewBeFree/interactive-setup",
+      "githubRepoUrl": "https://github.com/DrewBeFree/interactive-setup",
+      "githubProjectNumber": 10,
+      "githubProjectUrl": "https://github.com/users/DrewBeFree/projects/10",
+      "leantimeProjectId": 13,
+      "leantimeProjectUrl": "http://atlas:8095/projects/showProject/13",
+      "taskCount": 0,
+      "tasks": []
+    },
+    "recap-agents": {
+      "project": "Recap Agents",
+      "repoFullName": "DrewBeFree/recap-agents",
+      "githubRepoUrl": "https://github.com/DrewBeFree/recap-agents",
+      "githubProjectNumber": 18,
+      "githubProjectUrl": "https://github.com/users/DrewBeFree/projects/18",
+      "leantimeProjectId": 9,
+      "leantimeProjectUrl": "http://atlas:8095/projects/showProject/9",
+      "taskCount": 0,
+      "tasks": []
+    },
+    "homelab": {
+      "project": "Homelab",
+      "repoFullName": "DrewBeFree/homelab",
+      "githubRepoUrl": "https://github.com/DrewBeFree/homelab",
+      "githubProjectNumber": 30,
+      "githubProjectUrl": "https://github.com/users/DrewBeFree/projects/30",
+      "leantimeProjectId": 30,
+      "leantimeProjectUrl": "http://atlas:8095/projects/showProject/30",
+      "taskCount": 0,
+      "tasks": []
+    },
+    "claude-config": {
+      "project": "Claude Config",
+      "repoFullName": "DrewBeFree/claude-config",
+      "githubRepoUrl": "https://github.com/DrewBeFree/claude-config",
+      "githubProjectNumber": 25,
+      "githubProjectUrl": "https://github.com/users/DrewBeFree/projects/25",
+      "leantimeProjectId": 25,
+      "leantimeProjectUrl": "http://atlas:8095/projects/showProject/25",
+      "taskCount": 0,
+      "tasks": []
+    },
+    "infra": {
+      "project": "Infra",
+      "repoFullName": "DrewBeFree/infra",
+      "githubRepoUrl": "https://github.com/DrewBeFree/infra",
+      "githubProjectNumber": 7,
+      "githubProjectUrl": "https://github.com/users/DrewBeFree/projects/7",
+      "leantimeProjectId": 31,
+      "leantimeProjectUrl": "http://atlas:8095/projects/showProject/31",
+      "taskCount": 14,
+      "tasks": [
+        {
+          "stableId": "task-a7097fe36107",
+          "title": "WSL Setup — Move infrastructure work to WSL",
+          "sourceFile": "infra/BACKLOG.md",
+          "sourceLine": 30,
+          "githubIssueNumber": 6,
+          "githubIssueUrl": "https://github.com/DrewBeFree/infra/issues/6",
+          "githubProjectItemSynced": true
+        },
+        {
+          "stableId": "task-4dab448a4ca0",
+          "title": "Ecosystem project tracking — standardize GitHub Projects + Issues",
+          "sourceFile": "infra/BACKLOG.md",
+          "sourceLine": 39,
+          "githubIssueNumber": 7,
+          "githubIssueUrl": "https://github.com/DrewBeFree/infra/issues/7",
+          "githubProjectItemSynced": true
+        },
+        {
+          "stableId": "task-1ab1fdc791c0",
+          "title": "Cleanup — Remove hardcoded paths, use environment variables",
+          "sourceFile": "infra/BACKLOG.md",
+          "sourceLine": 54,
+          "githubIssueNumber": 8,
+          "githubIssueUrl": "https://github.com/DrewBeFree/infra/issues/8",
+          "githubProjectItemSynced": true
+        },
+        {
+          "stableId": "task-93a299f844c0",
+          "title": "Task 2 — Create project templates for apps and sites",
+          "sourceFile": "infra/BACKLOG.md",
+          "sourceLine": 61,
+          "githubIssueNumber": 9,
+          "githubIssueUrl": "https://github.com/DrewBeFree/infra/issues/9",
+          "githubProjectItemSynced": true
+        },
+        {
+          "stableId": "task-d24877040850",
+          "title": "Task 3 — Design multi-system sync strategy for .claude memory and projects",
+          "sourceFile": "infra/BACKLOG.md",
+          "sourceLine": 67,
+          "githubIssueNumber": 10,
+          "githubIssueUrl": "https://github.com/DrewBeFree/infra/issues/10",
+          "githubProjectItemSynced": true
+        },
+        {
+          "stableId": "task-c8b2fe3ea971",
+          "title": "Task 4 — Automate recurring tasks: logoff checklist, version management, updates",
+          "sourceFile": "infra/BACKLOG.md",
+          "sourceLine": 83,
+          "githubIssueNumber": 11,
+          "githubIssueUrl": "https://github.com/DrewBeFree/infra/issues/11",
+          "githubProjectItemSynced": true
+        },
+        {
+          "stableId": "task-f654d5ed1dc5",
+          "title": "Research project metrics + visualization approach",
+          "sourceFile": "infra/BACKLOG.md",
+          "sourceLine": 94,
+          "githubIssueNumber": 12,
+          "githubIssueUrl": "https://github.com/DrewBeFree/infra/issues/12",
+          "githubProjectItemSynced": true
+        },
+        {
+          "stableId": "task-eddf11a260f0",
+          "title": "Unified terminal / cross-machine access",
+          "sourceFile": "infra/BACKLOG.md",
+          "sourceLine": 100,
+          "githubIssueNumber": 13,
+          "githubIssueUrl": "https://github.com/DrewBeFree/infra/issues/13",
+          "githubProjectItemSynced": true
+        },
+        {
+          "stableId": "task-f66a7b5928d9",
+          "title": "Atlas safety dashboard + Hermes handoff lane",
+          "sourceFile": "infra/BACKLOG.md",
+          "sourceLine": 105,
+          "githubIssueNumber": 14,
+          "githubIssueUrl": "https://github.com/DrewBeFree/infra/issues/14",
+          "githubProjectItemSynced": true
+        },
+        {
+          "stableId": "task-a74885483a3a",
+          "title": "Finish homelab-status-dashboard redesign",
+          "sourceFile": "infra/BACKLOG.md",
+          "sourceLine": 112,
+          "githubIssueNumber": 15,
+          "githubIssueUrl": "https://github.com/DrewBeFree/infra/issues/15",
+          "githubProjectItemSynced": true
+        },
+        {
+          "stableId": "task-e47c61ae90e0",
+          "title": "GitHub file structure + multi-machine clone strategy",
+          "sourceFile": "infra/BACKLOG.md",
+          "sourceLine": 117,
+          "githubIssueNumber": 16,
+          "githubIssueUrl": "https://github.com/DrewBeFree/infra/issues/16",
+          "githubProjectItemSynced": true
+        },
+        {
+          "stableId": "task-25f0c63a9cc7",
+          "title": "Docker strategy for homelab tools",
+          "sourceFile": "infra/BACKLOG.md",
+          "sourceLine": 122,
+          "githubIssueNumber": 17,
+          "githubIssueUrl": "https://github.com/DrewBeFree/infra/issues/17",
+          "githubProjectItemSynced": true
+        },
+        {
+          "stableId": "task-d10ce323599e",
+          "title": "Wiki — Make all URLs clickable",
+          "sourceFile": "infra/BACKLOG.md",
+          "sourceLine": 127,
+          "githubIssueNumber": 18,
+          "githubIssueUrl": "https://github.com/DrewBeFree/infra/issues/18",
+          "githubProjectItemSynced": true
+        },
+        {
+          "stableId": "task-4ff1865e67f0",
+          "title": "Wiki — Upgrade UI",
+          "sourceFile": "infra/BACKLOG.md",
+          "sourceLine": 131,
+          "githubIssueNumber": 19,
+          "githubIssueUrl": "https://github.com/DrewBeFree/infra/issues/19",
+          "githubProjectItemSynced": true
+        }
+      ]
+    }
+  }
+}

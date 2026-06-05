@@ -1,0 +1,102 @@
+{
+  "ADHD Snap": {
+    "id": 7,
+    "name": "ADHD Snap"
+  },
+  "AI Dog Trainer": {
+    "id": 18,
+    "name": "AI Dog Trainer"
+  },
+  "Answering Agent": {
+    "id": 6,
+    "name": "Answering Agent"
+  },
+  "Bob": {
+    "id": 28,
+    "name": "Bob"
+  },
+  "Claude Config": {
+    "id": 25,
+    "name": "Claude Config"
+  },
+  "Command Center": {
+    "id": 12,
+    "name": "Command Center"
+  },
+  "DW Solutions": {
+    "id": 16,
+    "name": "DW Solutions"
+  },
+  "Daily Planner": {
+    "id": 19,
+    "name": "Daily Planner"
+  },
+  "DrewBeFree Profile": {
+    "id": 24,
+    "name": "DrewBeFree Profile"
+  },
+  "Homelab": {
+    "id": 30,
+    "name": "Homelab"
+  },
+  "Infra": {
+    "id": 31,
+    "name": "Infra"
+  },
+  "Interactive Setup": {
+    "id": 13,
+    "name": "Interactive Setup"
+  },
+  "Kybernet": {
+    "id": 11,
+    "name": "Kybernet"
+  },
+  "LLM Debate Union": {
+    "id": 2,
+    "name": "LLM Debate Union"
+  },
+  "Lead Gen Agent": {
+    "id": 15,
+    "name": "Lead Gen Agent"
+  },
+  "Linksy": {
+    "id": 29,
+    "name": "Linksy"
+  },
+  "Photography": {
+    "id": 22,
+    "name": "Photography"
+  },
+  "Poker Night": {
+    "id": 27,
+    "name": "Poker Night"
+  },
+  "RV Maintenance": {
+    "id": 17,
+    "name": "RV Maintenance"
+  },
+  "Recap Agents": {
+    "id": 9,
+    "name": "Recap Agents"
+  },
+  "Recap Viewer": {
+    "id": 21,
+    "name": "Recap Viewer"
+  },
+  "Recipes": {
+    "id": 26,
+    "name": "Recipes"
+  },
+  "Soccer Pickup": {
+    "id": 20,
+    "name": "Soccer Pickup"
+  },
+  "Surf The Webb": {
+    "id": 23,
+    "name": "Surf The Webb"
+  },
+  "UHaul Planner": {
+    "id": 14,
+    "name": "UHaul Planner"
+  }
+}

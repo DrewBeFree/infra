@@ -1,0 +1,280 @@
+{
+  "mode": "dry-run",
+  "summary": {
+    "skip": 30
+  },
+  "actions": [
+    {
+      "action": "skip",
+      "stable_id": "task-db49f2ba0483",
+      "title": "Task categories \u2014 category grouping deferred; revisit when core app is stable",
+      "project": "Daily Planner",
+      "project_id": 19,
+      "ticket_id": 75,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-458eb59f7fb9",
+      "title": "PWA install banner \u2014 show iOS Safari tooltip nudging \"Share \u2192 Add to Home Screen\" on first visit; dismiss stored in localStorage",
+      "project": "Daily Planner",
+      "project_id": 19,
+      "ticket_id": 76,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-f0b793c2918f",
+      "title": "Delete archived list \u2014 add a delete button to archived grocery and trip lists to permanently remove them",
+      "project": "Daily Planner",
+      "project_id": 19,
+      "ticket_id": 77,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-4d0663c14cf1",
+      "title": "Migrate host PIN gate to Supabase Auth \u2014 replace JS PIN check with email/password login so RLS DELETE/UPDATE policies can be scoped to authenticated role",
+      "project": "Linksy",
+      "project_id": 29,
+      "ticket_id": 78,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-7c9689f6b517",
+      "title": "PWA install banner \u2014 show iOS Safari tooltip nudging \"Share \u2192 Add to Home Screen\" on first visit; dismiss stored in localStorage",
+      "project": "Linksy",
+      "project_id": 29,
+      "ticket_id": 79,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-ef954720563c",
+      "title": "Custom System Prompts: Allow the user to input a custom system prompt override for any of the 6 debate personas directly from the UI.",
+      "project": "LLM Debate Union",
+      "project_id": 2,
+      "ticket_id": 80,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-93024d3c3ee7",
+      "title": "Interactive Audience Q&A: Allow the user to type in a custom question as the moderator during Round 3, prompting the active LLMs to respond dynamically.",
+      "project": "LLM Debate Union",
+      "project_id": 2,
+      "ticket_id": 81,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-f2733aa8a6c9",
+      "title": "Voice Synthesis: Integrate the Web Speech API (SpeechSynthesis) to read model responses aloud using browser-configured voices.",
+      "project": "LLM Debate Union",
+      "project_id": 2,
+      "ticket_id": 82,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-63adf70fbc07",
+      "title": "More Pre-programmed Motions: Add simulation databases for \"We are living in a computer simulation\" and \"Open-source AI will outlive proprietary ones\".",
+      "project": "LLM Debate Union",
+      "project_id": 2,
+      "ticket_id": 83,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-a91790a8da23",
+      "title": "Local Storage History: Save completed debate transcripts and final audience swing margins to browser localStorage or a local file for history viewing.",
+      "project": "LLM Debate Union",
+      "project_id": 2,
+      "ticket_id": 84,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-0c7a56c5ef1b",
+      "title": "Migrate host PIN gate to Supabase Auth \u2014 replace JS PIN check with email/password login so RLS DELETE/UPDATE policies can be scoped to authenticated role",
+      "project": "Poker Night",
+      "project_id": 27,
+      "ticket_id": 85,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-c6a0d5521a05",
+      "title": "PWA install banner \u2014 show iOS Safari tooltip nudging \"Share \u2192 Add to Home Screen\" on first visit; dismiss stored in localStorage",
+      "project": "Poker Night",
+      "project_id": 27,
+      "ticket_id": 86,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-138123e65db7",
+      "title": "PWA install banner \u2014 show iOS Safari tooltip nudging \"Share \u2192 Add to Home Screen\" on first visit; dismiss stored in localStorage",
+      "project": "Recipes",
+      "project_id": 26,
+      "ticket_id": 87,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-bd0f2cd0b3f3",
+      "title": "PWA install banner \u2014 show iOS Safari tooltip nudging \"Share \u2192 Add to Home Screen\" on first visit; dismiss stored in localStorage",
+      "project": "RV Maintenance",
+      "project_id": 17,
+      "ticket_id": 88,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-d7eed15e89c7",
+      "title": "PWA install banner \u2014 show iOS Safari tooltip nudging \"Share \u2192 Add to Home Screen\" on first visit; dismiss stored in localStorage",
+      "project": "Soccer Pickup",
+      "project_id": 20,
+      "ticket_id": 89,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-bf08c88cab18",
+      "title": "PWA install banner \u2014 show iOS Safari tooltip nudging \"Share \u2192 Add to Home Screen\" on first visit; dismiss stored in localStorage",
+      "project": "UHaul Planner",
+      "project_id": 14,
+      "ticket_id": 90,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-a7097fe36107",
+      "title": "WSL Setup \u2014 Move infrastructure work to WSL",
+      "project": "Infra",
+      "project_id": 31,
+      "ticket_id": 91,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-4dab448a4ca0",
+      "title": "Ecosystem project tracking \u2014 standardize GitHub Projects + Issues",
+      "project": "Infra",
+      "project_id": 31,
+      "ticket_id": 92,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-1ab1fdc791c0",
+      "title": "Cleanup \u2014 Remove hardcoded paths, use environment variables",
+      "project": "Infra",
+      "project_id": 31,
+      "ticket_id": 93,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-93a299f844c0",
+      "title": "Task 2 \u2014 Create project templates for apps and sites",
+      "project": "Infra",
+      "project_id": 31,
+      "ticket_id": 94,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-d24877040850",
+      "title": "Task 3 \u2014 Design multi-system sync strategy for .claude memory and projects",
+      "project": "Infra",
+      "project_id": 31,
+      "ticket_id": 95,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-c8b2fe3ea971",
+      "title": "Task 4 \u2014 Automate recurring tasks: logoff checklist, version management, updates",
+      "project": "Infra",
+      "project_id": 31,
+      "ticket_id": 96,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-f654d5ed1dc5",
+      "title": "Research project metrics + visualization approach",
+      "project": "Infra",
+      "project_id": 31,
+      "ticket_id": 97,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-eddf11a260f0",
+      "title": "Unified terminal / cross-machine access",
+      "project": "Infra",
+      "project_id": 31,
+      "ticket_id": 98,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-f66a7b5928d9",
+      "title": "Atlas safety dashboard + Hermes handoff lane",
+      "project": "Infra",
+      "project_id": 31,
+      "ticket_id": 99,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-a74885483a3a",
+      "title": "Finish homelab-status-dashboard redesign",
+      "project": "Infra",
+      "project_id": 31,
+      "ticket_id": 100,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-e47c61ae90e0",
+      "title": "GitHub file structure + multi-machine clone strategy",
+      "project": "Infra",
+      "project_id": 31,
+      "ticket_id": 101,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-25f0c63a9cc7",
+      "title": "Docker strategy for homelab tools",
+      "project": "Infra",
+      "project_id": 31,
+      "ticket_id": 102,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-d10ce323599e",
+      "title": "Wiki \u2014 Make all URLs clickable",
+      "project": "Infra",
+      "project_id": 31,
+      "ticket_id": 103,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-4ff1865e67f0",
+      "title": "Wiki \u2014 Upgrade UI",
+      "project": "Infra",
+      "project_id": 31,
+      "ticket_id": 104,
+      "reason": "already current"
+    }
+  ],
+  "applied": [],
+  "errors": []
+}

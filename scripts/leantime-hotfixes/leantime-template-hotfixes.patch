@@ -1,0 +1,83 @@
+--- milestoneDialog.blade.php.orig	2026-06-05 16:53:18.000000000 -0400
++++ milestoneDialog.blade.php	2026-06-05 16:53:18.000000000 -0400
+@@ -1,5 +1,14 @@
+ @php
+-    $currentMilestone = $currentMilestone ?? null;
++    $currentMilestone = $currentMilestone ?? $milestone ?? (object) [];
++    $currentMilestone->id = $currentMilestone->id ?? '';
++    $currentMilestone->headline = $currentMilestone->headline ?? '';
++    $currentMilestone->projectId = $currentMilestone->projectId ?? session('currentProject');
++    $currentMilestone->status = $currentMilestone->status ?? 3;
++    $currentMilestone->milestoneid = $currentMilestone->milestoneid ?? '';
++    $currentMilestone->editorId = $currentMilestone->editorId ?? '';
++    $currentMilestone->tags = $currentMilestone->tags ?? '';
++    $currentMilestone->editFrom = $currentMilestone->editFrom ?? date('Y-m-d');
++    $currentMilestone->editTo = $currentMilestone->editTo ?? date('Y-m-d', strtotime('+1 week'));
+     $milestones = $milestones ?? [];
+     $statusLabels = $statusLabels ?? [];
+ @endphp
+--- showList.blade.php.orig	2026-06-05 17:00:27.000000000 -0400
++++ showList.blade.php	2026-06-05 17:00:27.000000000 -0400
+@@ -10,7 +10,7 @@
+     $efforts = $efforts;
+     $priorities = $priorities;
+     $statusLabels = $allTicketStates;
+-    $groupBy = $groupBy;
++    $groupBy = $groupBy ?? ($searchCriteria['groupBy'] ?? '');
+     $newField = $newField;
+     $numberofColumns = count($allTicketStates) - 1;
+     $size = floor(100 / $numberofColumns);
+--- showKanban.blade.php.orig	2026-06-05 17:04:37.000000000 -0400
++++ showKanban.blade.php	2026-06-05 17:09:30.000000000 -0400
+@@ -94,34 +94,27 @@
+                 $swimlaneBreakdown = $statusBreakdown[$groupIdKey] ?? $statusBreakdown[$group['id']] ?? [];
+                 $statusCounts = $swimlaneBreakdown['statusCounts'] ?? [];
+                 $timeAlert = $swimlaneBreakdown['timeAlert'] ?? null;
++                $groupId = $group['id'];
++                $label = $group['label'];
++                $totalCount = $swimlaneBreakdown['totalCount'] ?? count($group['items']);
++                $statusColumns = $allKanbanColumns;
++                $expanded = $swimlaneExpanded;
++                $moreInfo = $group['more-info'] ?? null;
+                 @endphp
+                 <div class="kanban-swimlane-row" data-expanded="{{ $swimlaneExpanded ? 'true' : 'false' }}" id="swimlane-row-{{ $group['id'] }}">
+                     <div class="kanban-swimlane-sentinel" data-swimlane-id="{{ $group['id'] }}" aria-hidden="true"></div>
+ 
+-                    {!! app('blade.compiler')::render(
+-                        '<x-global::kanban.swimlane-row-header
+-                            :groupBy="$groupBy"
+-                            :groupId="$groupId"
+-                            :label="$label"
+-                            :totalCount="$totalCount"
+-                            :statusCounts="$statusCounts"
+-                            :statusColumns="$statusColumns"
+-                            :expanded="$expanded"
+-                            :moreInfo="$moreInfo"
+-                            :timeAlert="$timeAlert"
+-                        />',
+-                        [
+-                            'groupBy' => $groupBy,
+-                            'groupId' => $group['id'],
+-                            'label' => $group['label'],
+-                            'totalCount' => $swimlaneBreakdown['totalCount'] ?? count($group['items']),
+-                            'statusCounts' => $statusCounts,
+-                            'statusColumns' => $allKanbanColumns,
+-                            'expanded' => $swimlaneExpanded,
+-                            'moreInfo' => $group['more-info'] ?? null,
+-                            'timeAlert' => $group['timeAlert'] ?? null,
+-                        ]
+-                    ) !!}
++                    <x-global::kanban.swimlane-row-header
++                        :groupBy="$groupBy"
++                        :groupId="$groupId"
++                        :label="$label"
++                        :totalCount="$totalCount"
++                        :statusCounts="$statusCounts"
++                        :statusColumns="$statusColumns"
++                        :expanded="$expanded"
++                        :moreInfo="$moreInfo"
++                        :timeAlert="$timeAlert"
++                    />
+ 
+                     <div class="kanban-swimlane-content{{ !$swimlaneExpanded ? ' collapsed' : '' }}" id="swimlane-content-{{ $group['id'] }}">
+             @endif

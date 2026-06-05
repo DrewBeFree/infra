@@ -24,6 +24,23 @@ What runs where, with ports and addresses.
 | Leantime | 8095 | `http://atlas:8095` | Docker Compose planning cockpit, bound to Atlas Tailscale IP |
 | iDRAC7 | 443 | `https://10.0.0.38` | Out-of-band management |
 
+## Planning And Sync
+
+| Surface | Location | Notes |
+| --- | --- | --- |
+| Ecosystem portal | [http://atlas/ecosystem/](http://atlas/ecosystem/) | Front door for repo, project, Leantime, GitHub Project, and synced issue links |
+| Leantime | [http://atlas:8095](http://atlas:8095) | Per-repo/project planning cockpit |
+| Task sync runbook | `docs/task-sync.md` | Markdown backlog to Leantime, GitHub Issues, and GitHub Projects |
+| Sync link index | `data/task-sync/links.md` | Generated human-readable index of GitHub Project, Leantime, repo, and issue links |
+| Leantime hotfix runbook | `scripts/leantime-hotfixes/README.md` | Reapply Atlas Leantime 3.8.0 template fixes after container recreation |
+
+Current expected planning shape:
+
+- Leantime has one project for each ecosystem repo/project in `ecosystem.json`.
+- GitHub has matching per-project boards, with two known extras still open: `** Project Template **` and `U-Haul Load Planner Roadmap`.
+- The sync bridge is append/update-by-marker only. It does not delete Leantime tasks, GitHub Issues, or GitHub Project items.
+- The live Sync Bot secrets stay on Atlas in `/home/drew/services/task-sync/.env` and `/home/drew/services/task-sync/github.env`; do not commit them.
+
 ## Alienware Services
 
 | Service | Port | Address | Notes |

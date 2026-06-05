@@ -1,0 +1,220 @@
+{
+  "mode": "dry-run",
+  "summary": {
+    "skip": 30
+  },
+  "actions": [
+    {
+      "action": "skip",
+      "stable_id": "task-db49f2ba0483",
+      "project": "Daily Planner",
+      "repo_full_name": "DrewBeFree/daily-planner",
+      "issue_number": 1
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-458eb59f7fb9",
+      "project": "Daily Planner",
+      "repo_full_name": "DrewBeFree/daily-planner",
+      "issue_number": 2
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-f0b793c2918f",
+      "project": "Daily Planner",
+      "repo_full_name": "DrewBeFree/daily-planner",
+      "issue_number": 3
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-4d0663c14cf1",
+      "project": "Linksy",
+      "repo_full_name": "DrewBeFree/golf",
+      "issue_number": 1
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-7c9689f6b517",
+      "project": "Linksy",
+      "repo_full_name": "DrewBeFree/golf",
+      "issue_number": 2
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-ef954720563c",
+      "project": "LLM Debate Union",
+      "repo_full_name": "DrewBeFree/llm-debate-union",
+      "issue_number": 9
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-93024d3c3ee7",
+      "project": "LLM Debate Union",
+      "repo_full_name": "DrewBeFree/llm-debate-union",
+      "issue_number": 10
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-f2733aa8a6c9",
+      "project": "LLM Debate Union",
+      "repo_full_name": "DrewBeFree/llm-debate-union",
+      "issue_number": 11
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-63adf70fbc07",
+      "project": "LLM Debate Union",
+      "repo_full_name": "DrewBeFree/llm-debate-union",
+      "issue_number": 12
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-a91790a8da23",
+      "project": "LLM Debate Union",
+      "repo_full_name": "DrewBeFree/llm-debate-union",
+      "issue_number": 13
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-0c7a56c5ef1b",
+      "project": "Poker Night",
+      "repo_full_name": "DrewBeFree/poker",
+      "issue_number": 3
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-c6a0d5521a05",
+      "project": "Poker Night",
+      "repo_full_name": "DrewBeFree/poker",
+      "issue_number": 4
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-138123e65db7",
+      "project": "Recipes",
+      "repo_full_name": "DrewBeFree/recipes",
+      "issue_number": 1
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-bd0f2cd0b3f3",
+      "project": "RV Maintenance",
+      "repo_full_name": "DrewBeFree/rv-maintenance",
+      "issue_number": 1
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-d7eed15e89c7",
+      "project": "Soccer Pickup",
+      "repo_full_name": "DrewBeFree/soccer-pickup",
+      "issue_number": 1
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-bf08c88cab18",
+      "project": "UHaul Planner",
+      "repo_full_name": "DrewBeFree/uhaul-load-planner",
+      "issue_number": 53
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-a7097fe36107",
+      "project": "Infra",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": 6
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-4dab448a4ca0",
+      "project": "Infra",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": 7
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-1ab1fdc791c0",
+      "project": "Infra",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": 8
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-93a299f844c0",
+      "project": "Infra",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": 9
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-d24877040850",
+      "project": "Infra",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": 10
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-c8b2fe3ea971",
+      "project": "Infra",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": 11
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-f654d5ed1dc5",
+      "project": "Infra",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": 12
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-eddf11a260f0",
+      "project": "Infra",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": 13
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-f66a7b5928d9",
+      "project": "Infra",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": 14
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-a74885483a3a",
+      "project": "Infra",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": 15
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-e47c61ae90e0",
+      "project": "Infra",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": 16
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-25f0c63a9cc7",
+      "project": "Infra",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": 17
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-d10ce323599e",
+      "project": "Infra",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": 18
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-4ff1865e67f0",
+      "project": "Infra",
+      "repo_full_name": "DrewBeFree/infra",
+      "issue_number": 19
+    }
+  ],
+  "applied": [],
+  "errors": []
+}

@@ -1,16 +1,24 @@
 const state = {
   registry: null,
+  syncLinks: null,
   visibility: "all",
   category: "all",
   query: "",
   selected: null,
-  openSidebarGroups: new Set(["apps"])
+  openSidebarGroups: new Set(),
+  openMainSections: new Set()
 };
 
 const registryCandidates = [
   "../ecosystem.json",
   "./ecosystem.json",
   "/ecosystem.json"
+];
+
+const syncLinksCandidates = [
+  "./sync-links.json",
+  "../sync-links.json",
+  "/ecosystem/sync-links.json"
 ];
 
 const $ = (selector) => document.querySelector(selector);
@@ -34,6 +42,10 @@ function escapeText(value) {
   return String(value ?? "");
 }
 
+function escapeAttr(value) {
+  return escapeText(value).replace(/"/g, "&quot;");
+}
+
 function isLocalPreview() {
   return ["127.0.0.1", "localhost", "::1"].includes(window.location.hostname);
 }
@@ -54,6 +66,21 @@ async function loadRegistry() {
   }
 
   throw lastError;
+}
+
+async function loadSyncLinks() {
+  for (const path of syncLinksCandidates) {
+    try {
+      const response = await fetch(path, { cache: "no-store" });
+      if (response.ok) {
+        return response.json();
+      }
+    } catch {
+      // Optional data file; the portal remains useful without it.
+    }
+  }
+
+  return { repos: {} };
 }
 
 function isWebUrl(url) {
@@ -186,16 +213,32 @@ function docsForResource(item, sourceKind) {
   });
 }
 
+function isWikiDoc(doc) {
+  return String(doc.url || "").toLowerCase().includes("/wiki/");
+}
+
 function allDocumentItems() {
   const docs = [
+    normalizeDoc({
+      id: "atlas-wiki",
+      name: "Atlas Wiki",
+      visibility: "private",
+      url: "http://atlas/wiki/",
+      localPath: "infra/wiki",
+      deployTarget: "atlas",
+      sourceName: "Reference"
+    })
+  ];
+
+  const nonWikiDocs = [
     ...state.registry.docs.map(normalizeDoc),
     ...state.registry.repositories.flatMap((item) => docsForResource(item, "repo")),
     ...state.registry.services.flatMap((item) => docsForResource(item, "service")),
     ...state.registry.dashboards.flatMap((item) => docsForResource(item, "dashboard"))
-  ];
-  const seen = new Set();
+  ].filter((doc) => !isWikiDoc(doc));
 
-  return docs.filter((doc) => {
+  const seen = new Set();
+  return [...docs, ...nonWikiDocs].filter((doc) => {
     const key = resolvedUrl(doc.url).toLowerCase();
     if (seen.has(key)) {
       return false;
@@ -725,6 +768,56 @@ function commandFor(item, action) {
   return `${action} hook ready; no command is bound yet.`;
 }
 
+function syncRecordFor(item) {
+  const repos = state.syncLinks?.repos || {};
+  const name = item.name || item.id;
+  if (name && repos[name]) {
+    return repos[name];
+  }
+
+  const githubUrl = String(item.githubUrl || "").replace(/\.git$/, "").toLowerCase();
+  return Object.values(repos).find((record) => {
+    return record.repoFullName && githubUrl.endsWith(record.repoFullName.toLowerCase());
+  }) || null;
+}
+
+function syncSectionHtml(item) {
+  const record = syncRecordFor(item);
+  if (!record) {
+    return `
+      <section>
+        <h3>Sync</h3>
+        <span>No synced backlog items</span>
+      </section>
+    `;
+  }
+
+  const links = [
+    record.githubProjectUrl ? `<a href="${escapeAttr(record.githubProjectUrl)}" target="_blank" rel="noreferrer">GitHub Project</a>` : "",
+    record.leantimeProjectUrl ? `<a href="${escapeAttr(record.leantimeProjectUrl)}" target="_blank" rel="noreferrer">Leantime Project</a>` : "",
+    record.githubRepoUrl ? `<a href="${escapeAttr(record.githubRepoUrl)}" target="_blank" rel="noreferrer">GitHub Repo</a>` : ""
+  ].filter(Boolean).join("");
+
+  const tasks = (record.tasks || []).slice(0, 8).map((task) => {
+    const issue = task.githubIssueUrl
+      ? `<a href="${escapeAttr(task.githubIssueUrl)}" target="_blank" rel="noreferrer">#${escapeText(task.githubIssueNumber)} ${escapeText(task.title)}</a>`
+      : `<span>${escapeText(task.title)}</span>`;
+    return `<li>${issue}<small>${escapeText(task.sourceFile)}:${escapeText(task.sourceLine)}</small></li>`;
+  }).join("");
+
+  const remaining = record.taskCount > 8 ? `<span>${record.taskCount - 8} more synced tasks</span>` : "";
+
+  return `
+    <section class="sync-section">
+      <h3>Sync</h3>
+      ${links || "<span>No sync links recorded</span>"}
+      <span>${escapeText(record.taskCount || 0)} synced backlog items</span>
+      ${tasks ? `<ul class="sync-task-list">${tasks}</ul>` : ""}
+      ${remaining}
+    </section>
+  `;
+}
+
 function openDrawer(item, action) {
   const drawer = $("#detailDrawer");
   const content = $("#drawerContent");
@@ -758,6 +851,7 @@ function openDrawer(item, action) {
       <h3>Docs</h3>
       ${docs.length ? docs.map((doc) => `<a href="${resolvedUrl(doc.url)}" target="_blank" rel="noreferrer">${escapeText(doc.label)}</a>`).join("") : "<span>No docs recorded</span>"}
     </section>
+    ${syncSectionHtml(item)}
   `;
 
   content.append(title, summary, command, lists);
@@ -911,6 +1005,57 @@ function renderDocs() {
   $("#docsList").replaceChildren(...docs);
 }
 
+function updateMainSection(section) {
+  const id = section.dataset.mainSection;
+  const isOpen = state.openMainSections.has(id);
+  const trigger = section.querySelector(".section-toggle");
+
+  section.classList.toggle("is-open", isOpen);
+  trigger?.setAttribute("aria-expanded", String(isOpen));
+}
+
+function openMainSection(section) {
+  const id = section?.dataset.mainSection;
+  if (!id) {
+    return;
+  }
+
+  state.openMainSections.add(id);
+  updateMainSection(section);
+}
+
+function bindMainSectionToggles() {
+  document.querySelectorAll("[data-main-section]").forEach((section) => {
+    const id = section.dataset.mainSection;
+    const trigger = section.querySelector(".section-toggle");
+    if (!id || !trigger) {
+      return;
+    }
+
+    trigger.addEventListener("click", () => {
+      if (state.openMainSections.has(id)) {
+        state.openMainSections.delete(id);
+      } else {
+        state.openMainSections.add(id);
+      }
+      updateMainSection(section);
+    });
+    updateMainSection(section);
+  });
+
+  document.querySelectorAll('a[href^="#"]').forEach((link) => {
+    link.addEventListener("click", () => {
+      const target = document.querySelector(link.getAttribute("href"));
+      openMainSection(target?.closest("[data-main-section]"));
+    });
+  });
+
+  if (window.location.hash) {
+    const target = document.querySelector(window.location.hash);
+    openMainSection(target?.closest("[data-main-section]"));
+  }
+}
+
 function formatTimestamp(value) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) {
@@ -933,6 +1078,8 @@ function renderStats() {
 }
 
 function bindControls() {
+  bindMainSectionToggles();
+
   $("#searchInput").addEventListener("input", (event) => {
     state.query = event.target.value;
     renderSidebar();
@@ -999,7 +1146,12 @@ async function init() {
   bindControls();
 
   try {
-    state.registry = await loadRegistry();
+    const [registry, syncLinks] = await Promise.all([
+      loadRegistry(),
+      loadSyncLinks()
+    ]);
+    state.registry = registry;
+    state.syncLinks = syncLinks;
     renderStats();
     updateFilterSummary();
     renderSidebar();

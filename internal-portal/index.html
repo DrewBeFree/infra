@@ -15,8 +15,8 @@
     </a>
     <nav aria-label="Portal sections">
       <a href="#ecosystemMap">Map</a>
-      <a href="#repoGrid">Directory</a>
-      <a href="#docsList">Docs</a>
+      <a href="#directorySection">Directory</a>
+      <a href="#docsSection">Docs</a>
     </nav>
     <div id="lastUpdated" class="updated-pill">Updated --</div>
     <div class="network-pill"><span></span> Atlas/Tailscale only</div>
@@ -75,39 +75,62 @@
       </button>
     </section>
 
-    <section id="ecosystemMap" class="system-map-board" aria-label="Ecosystem infographic map">
-      <div class="sitemap-root">
-        <span class="root-kicker">Source of truth</span>
-        <strong>DrewBeFree Ecosystem</strong>
-        <small id="mapSummary">Loading registry</small>
+    <section id="ecosystemMap" class="collapsible-section" data-main-section="map" aria-label="Ecosystem infographic map">
+      <button class="section-head section-toggle" type="button" aria-expanded="false" aria-controls="ecosystemMapPanel">
+        <div>
+          <p class="eyebrow">Source of truth</p>
+          <h2>Map</h2>
+        </div>
+        <span id="mapSummary" class="result-count">Loading registry</span>
+      </button>
+      <div id="ecosystemMapPanel" class="section-body">
+        <div class="section-body-inner system-map-board">
+          <div class="sitemap-root">
+            <span class="root-kicker">Source of truth</span>
+            <strong>DrewBeFree Ecosystem</strong>
+            <small>Atlas registry</small>
+          </div>
+          <div id="systemMap" class="system-map" aria-live="polite"></div>
+        </div>
       </div>
-      <div id="systemMap" class="system-map" aria-live="polite"></div>
     </section>
 
-    <section class="section-head">
-      <div>
-        <p class="eyebrow">Directory</p>
-        <h2>Repositories</h2>
+    <section id="directorySection" class="collapsible-section" data-main-section="directory">
+      <button class="section-head section-toggle" type="button" aria-expanded="false" aria-controls="directoryPanel">
+        <div>
+          <p class="eyebrow">Directory</p>
+          <h2>Repositories</h2>
+        </div>
+        <span id="resultCount" class="result-count">-- visible</span>
+      </button>
+      <div id="directoryPanel" class="section-body">
+        <div id="repoGrid" class="section-body-inner catalog-list" aria-live="polite"></div>
       </div>
-      <span id="resultCount" class="result-count">-- visible</span>
     </section>
-    <div id="repoGrid" class="catalog-list" aria-live="polite"></div>
 
-    <section class="section-head">
-      <div>
-        <p class="eyebrow">Operate</p>
-        <h2>Services & Dashboards</h2>
+    <section id="opsSection" class="collapsible-section" data-main-section="operate">
+      <button class="section-head section-toggle" type="button" aria-expanded="false" aria-controls="opsPanel">
+        <div>
+          <p class="eyebrow">Operate</p>
+          <h2>Services & Dashboards</h2>
+        </div>
+      </button>
+      <div id="opsPanel" class="section-body">
+        <div id="opsGrid" class="section-body-inner ops-list"></div>
       </div>
     </section>
-    <div id="opsGrid" class="ops-list"></div>
 
-    <section class="section-head">
-      <div>
-        <p class="eyebrow">Reference</p>
-        <h2>Docs</h2>
+    <section id="docsSection" class="collapsible-section" data-main-section="docs">
+      <button class="section-head section-toggle" type="button" aria-expanded="false" aria-controls="docsPanel">
+        <div>
+          <p class="eyebrow">Reference</p>
+          <h2>Docs</h2>
+        </div>
+      </button>
+      <div id="docsPanel" class="section-body">
+        <div id="docsList" class="section-body-inner docs-list"></div>
       </div>
     </section>
-    <div id="docsList" class="docs-list"></div>
     </main>
   </div>
 
