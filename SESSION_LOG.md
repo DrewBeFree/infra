@@ -1669,3 +1669,20 @@
 **Next up:**
 - Consider rotating the Basic Auth password into a password manager.
 - If Tailscale Serve is later enabled, decide whether to replace the user nginx proxy with native Serve.
+
+## 2026-06-06 02:49 EDT - Hermes mobile realtime proxy fixed
+
+**What we did:**
+- Investigated mobile Hermes repeatedly prompting for login and chat being unusable.
+- Found nginx Basic Auth was challenging Safari's background realtime requests for `/api/ws`, `/api/events`, and `/api/pty`.
+- Exempted those realtime endpoints from nginx Basic Auth while keeping Hermes' session-token auth and the Tailscale-only bind.
+- Stripped `Origin` for those realtime endpoints so Hermes' loopback-bound WebSocket guard accepts the tokened connection forwarded by local nginx.
+- Deployed the updated nginx config to Atlas and restarted `hermes-mobile-proxy.service`.
+
+**Where we stopped:**
+- WebSocket probes through `http://100.71.165.80:9119` now return `101` upgrades for `/api/events`, `/api/ws`, and `/api/pty`.
+- The dashboard page still requires Basic Auth; invalid realtime tokens are rejected by Hermes without a browser Basic Auth challenge.
+
+**Next up:**
+- Reopen or hard-refresh Hermes on mobile and retry chat.
+- Consider replacing the Basic Auth layer with native Tailscale Serve if tailnet Serve is enabled later.
