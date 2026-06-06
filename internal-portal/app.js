@@ -695,6 +695,9 @@ function actionLabelForUrl(url) {
   if (lower.includes(":9119")) {
     return "Hermes";
   }
+  if (lower.includes(":3027")) {
+    return "Lead Desk";
+  }
   if (lower.includes("/wiki/")) {
     return "Docs";
   }

@@ -97,6 +97,17 @@ test("Surf The Webb is tracked as an external Framer-managed site", async () => 
   assert.equal(surf.publicCommandCenter, true);
 });
 
+test("Lead Gen Agent exposes the Lead Desk Hub as a live ecosystem link", async () => {
+  const registry = await loadRegistry();
+  const leadGen = registry.repositories.find((repo) => repo.name === "lead-gen-agent");
+
+  assert.ok(leadGen);
+  assert.equal(leadGen.category, "agent");
+  assert.ok(leadGen.liveUrls.includes("http://127.0.0.1:3027"));
+  assert.ok(leadGen.deployTargets.some((target) => target.type === "fastapi-local" && target.url === "http://127.0.0.1:8017"));
+  assert.ok(leadGen.deployTargets.some((target) => target.type === "nextjs-local" && target.url === "http://127.0.0.1:3027"));
+});
+
 test("UHaul Planner is sensitive and removed from the public Command Center", async () => {
   const registry = await loadRegistry();
   const uhaul = registry.repositories.find((repo) => repo.name === "uhaul-load-planner");
@@ -189,6 +200,8 @@ test("portal static files are present and load the canonical registry", async ()
   assert.match(index, /lastUpdated/);
   assert.match(index, /filterButton/);
   assert.match(index, /filterModal/);
+  assert.match(index, /leadDeskCard/);
+  assert.match(index, /http:\/\/127\.0\.0\.1:3027/);
   assert.doesNotMatch(index, /uhaulBanner/);
   assert.match(index, /pixelated-drew\.png/);
   assert.match(index, /sideNavGroups/);
@@ -229,6 +242,7 @@ test("portal static files are present and load the canonical registry", async ()
   assert.match(app, /Grafana/);
   assert.match(app, /Prometheus/);
   assert.match(app, /Hermes/);
+  assert.match(app, /Lead Desk/);
   assert.match(app, /matchesItemFilters/);
   assert.match(app, /renderCatalogRow/);
   assert.match(app, /updateFilterSummary/);
@@ -241,6 +255,7 @@ test("portal static files are present and load the canonical registry", async ()
   assert.match(style, /grid-template-rows/);
   assert.match(style, /\.side-nav-icon/);
   assert.match(style, /\.catalog-row/);
+  assert.match(style, /\.ops-link-card/);
   assert.match(style, /\.filter-panel/);
   assert.match(style, /\.system-map/);
   assert.match(style, /\.map-zone/);

@@ -762,7 +762,9 @@
       "summary": "Review-gated manual lead inbox for Facebook and monday.com lead signals, with scoring, editable drafts, and fixture calibration.",
       "githubUrl": "https://github.com/DrewBeFree/lead-gen-agent",
       "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\agents\\lead-gen-agent",
-      "liveUrls": [],
+      "liveUrls": [
+        "http://127.0.0.1:3027"
+      ],
       "docs": [
         {
           "label": "Wiki project page",
@@ -777,7 +779,14 @@
         {
           "type": "fastapi-local",
           "host": "alienware",
+          "url": "http://127.0.0.1:8017",
           "notes": "Phase 1 runs locally with SQLite; Atlas deployment is planned after the manual inbox workflow proves useful."
+        },
+        {
+          "type": "nextjs-local",
+          "host": "alienware",
+          "url": "http://127.0.0.1:3027",
+          "notes": "Surf the Webb Lead Desk Hub frontend for morning lead review."
         },
         {
           "type": "atlas-compose-planned",
