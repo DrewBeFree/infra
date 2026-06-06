@@ -1631,3 +1631,21 @@
 
 **Next up:**
 - Keep the tile dynamic once the collector/digest worker replaces the seeded review queue.
+
+## 2026-06-06 02:05 EDT - Mobile portal navigator and priority operations links
+
+**What we did:**
+- Created branch `feat/mobile-ops-portal-links`.
+- Added a real off-canvas mobile navigator to the internal ecosystem portal.
+- Added first-viewport priority links for Lead Desk, AI Dashboard/Grafana, Leantime, and Hermes.
+- Changed Lead Desk portal links from `127.0.0.1` to Alienware Tailscale `http://100.117.87.57:3027`.
+- Changed Hermes from a broken direct `localhost:9119` phone link into a priority button that opens the Hermes details drawer and tunnel instructions.
+- Deployed the updated portal files and `ecosystem.json` to Atlas.
+
+**Where we stopped:**
+- `http://atlas/ecosystem/` shows the priority links and mobile navigator.
+- Browser checks confirmed the Lead Desk link points to Tailscale and Hermes opens the details drawer.
+- Portal tests pass.
+
+**Next up:**
+- Keep the priority link list curated as more operator surfaces become always-on.
