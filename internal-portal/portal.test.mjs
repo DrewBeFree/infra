@@ -200,10 +200,14 @@ test("portal static files are present and load the canonical registry", async ()
   assert.match(index, /lastUpdated/);
   assert.match(index, /filterButton/);
   assert.match(index, /filterModal/);
+  assert.match(index, /mobileNavigator/);
   assert.match(index, /leadDeskCard/);
   assert.match(index, /likelyLeadCount/);
   assert.match(index, /Likely Leads/);
   assert.match(index, /http:\/\/127\.0\.0\.1:3027/);
+  assert.match(index, /AI Dashboard/);
+  assert.match(index, /Hermes/);
+  assert.match(index, /Leantime/);
   assert.doesNotMatch(index, /uhaulBanner/);
   assert.match(index, /pixelated-drew\.png/);
   assert.match(index, /sideNavGroups/);
@@ -252,6 +256,9 @@ test("portal static files are present and load the canonical registry", async ()
   assert.match(app, /updateFilterSummary/);
   assert.match(app, /openFilterModal/);
   assert.match(style, /\.side-nav/);
+  assert.match(style, /\.mobile-nav-button/);
+  assert.match(style, /\.priority-links/);
+  assert.match(style, /translateX\(-105%\)/);
   assert.match(style, /--ease-smooth/);
   assert.match(style, /panel-in/);
   assert.match(style, /\.collapsible-section/);

@@ -23,6 +23,13 @@
   </header>
 
   <div class="app-layout">
+    <input class="mobile-nav-check" id="mobileNavigator" type="checkbox" aria-hidden="true">
+    <label class="mobile-nav-button" for="mobileNavigator" aria-label="Open ecosystem navigator">
+      <span></span>
+      <span></span>
+      <span></span>
+    </label>
+    <label class="mobile-nav-backdrop" for="mobileNavigator" aria-label="Close ecosystem navigator"></label>
     <aside class="side-nav" aria-label="Ecosystem navigation">
       <div class="side-nav-inner">
         <p class="eyebrow">Navigator</p>
@@ -66,6 +73,25 @@
       <a class="ops-link-card" id="leadDeskCard" href="http://127.0.0.1:3027" target="_blank" rel="noreferrer" title="3 likely leads / 9 total in Lead Desk">
         <span id="likelyLeadCount">3</span>
         <label>Likely Leads</label>
+      </a>
+    </section>
+
+    <section class="priority-links" aria-label="Priority operations links">
+      <a href="http://127.0.0.1:3027" target="_blank" rel="noreferrer">
+        <span>Lead Desk</span>
+        <strong>Morning leads</strong>
+      </a>
+      <a href="http://atlas:3001/d/atlas-overview/poweredge-dashboard" target="_blank" rel="noreferrer">
+        <span>AI Dashboard</span>
+        <strong>Atlas metrics</strong>
+      </a>
+      <a href="http://atlas:8095" target="_blank" rel="noreferrer">
+        <span>Leantime</span>
+        <strong>Projects</strong>
+      </a>
+      <a href="http://localhost:9119" target="_blank" rel="noreferrer">
+        <span>Hermes</span>
+        <strong>Local tunnel</strong>
       </a>
     </section>
 
