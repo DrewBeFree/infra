@@ -1686,3 +1686,18 @@
 **Next up:**
 - Reopen or hard-refresh Hermes on mobile and retry chat.
 - Consider replacing the Basic Auth layer with native Tailscale Serve if tailnet Serve is enabled later.
+
+## 2026-06-06 02:56 EDT - Hermes proxy Basic Auth password rotated
+
+**What we did:**
+- Rotated the Atlas Hermes mobile proxy Basic Auth password for user `drew`.
+- Restarted `hermes-mobile-proxy.service`.
+- Verified the previous generated password is rejected and the new user-provided password returns the Hermes dashboard.
+- Verified the realtime `/api/events` websocket path still upgrades successfully after the rotation.
+
+**Where we stopped:**
+- Hermes mobile proxy is active at `http://100.71.165.80:9119`.
+- The repo does not store the Basic Auth password or hash.
+
+**Next up:**
+- Use the updated password from the user's password manager or shared context when accessing Hermes from mobile.
