@@ -46,6 +46,7 @@ The first viewport includes priority access tiles for:
 
 - Lead Desk: `http://100.117.87.57:3027`
 - AI Dashboard / Grafana: `http://atlas:3001/d/atlas-overview/poweredge-dashboard`
+- AI Token Dashboard: `http://atlas:7474`
 - Leantime: `http://atlas:8095`
 - Hermes: `http://100.71.165.80:9119`, a Tailscale-only user-level nginx proxy with Basic Auth.
 
