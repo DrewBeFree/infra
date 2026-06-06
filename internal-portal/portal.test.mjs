@@ -103,9 +103,10 @@ test("Lead Gen Agent exposes the Lead Desk Hub as a live ecosystem link", async 
 
   assert.ok(leadGen);
   assert.equal(leadGen.category, "agent");
+  assert.ok(leadGen.liveUrls.includes("http://100.117.87.57:3027"));
   assert.ok(leadGen.liveUrls.includes("http://127.0.0.1:3027"));
-  assert.ok(leadGen.deployTargets.some((target) => target.type === "fastapi-local" && target.url === "http://127.0.0.1:8017"));
-  assert.ok(leadGen.deployTargets.some((target) => target.type === "nextjs-local" && target.url === "http://127.0.0.1:3027"));
+  assert.ok(leadGen.deployTargets.some((target) => target.type === "fastapi-local" && target.url === "http://100.117.87.57:8017"));
+  assert.ok(leadGen.deployTargets.some((target) => target.type === "nextjs-local" && target.url === "http://100.117.87.57:3027"));
 });
 
 test("UHaul Planner is sensitive and removed from the public Command Center", async () => {
@@ -204,9 +205,10 @@ test("portal static files are present and load the canonical registry", async ()
   assert.match(index, /leadDeskCard/);
   assert.match(index, /likelyLeadCount/);
   assert.match(index, /Likely Leads/);
-  assert.match(index, /http:\/\/127\.0\.0\.1:3027/);
+  assert.match(index, /http:\/\/100\.117\.87\.57:3027/);
   assert.match(index, /AI Dashboard/);
   assert.match(index, /Hermes/);
+  assert.match(index, /data-priority-item="hermes-agent"/);
   assert.match(index, /Leantime/);
   assert.doesNotMatch(index, /uhaulBanner/);
   assert.match(index, /pixelated-drew\.png/);
@@ -249,6 +251,7 @@ test("portal static files are present and load the canonical registry", async ()
   assert.match(app, /Prometheus/);
   assert.match(app, /Hermes/);
   assert.match(app, /Lead Desk/);
+  assert.match(app, /bindPriorityLinks/);
   assert.match(app, /127\.0\.0\.1:8017\/api\/dashboard/);
   assert.match(app, /high_fit/);
   assert.match(app, /matchesItemFilters/);

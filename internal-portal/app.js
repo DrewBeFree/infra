@@ -1113,6 +1113,7 @@ async function updateLeadDeskStats() {
 
 function bindControls() {
   bindMainSectionToggles();
+  bindPriorityLinks();
 
   $("#searchInput").addEventListener("input", (event) => {
     state.query = event.target.value;
@@ -1159,6 +1160,22 @@ function bindControls() {
       closeFilterModal();
       closeDrawer();
     }
+  });
+}
+
+function bindPriorityLinks() {
+  document.querySelectorAll("[data-priority-item]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const id = button.dataset.priorityItem;
+      const item = [
+        ...state.registry.repositories,
+        ...state.registry.services,
+        ...state.registry.dashboards
+      ].find((candidate) => candidate.id === id || candidate.name === id);
+      if (item) {
+        openDrawer(item, "open");
+      }
+    });
   });
 }
 

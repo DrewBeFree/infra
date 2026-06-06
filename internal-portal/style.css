@@ -532,13 +532,15 @@ h3 {
   gap: 10px;
 }
 
-.priority-links a {
+.priority-links a,
+.priority-links button {
   min-height: 76px;
   padding: 16px;
   display: grid;
   align-content: space-between;
   color: var(--text);
   text-decoration: none;
+  text-align: left;
   background: rgba(255, 255, 255, 0.075);
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -546,7 +548,8 @@ h3 {
   transition: transform 0.22s var(--ease-smooth), border-color 0.22s var(--ease-smooth), background 0.22s var(--ease-smooth);
 }
 
-.priority-links a:hover {
+.priority-links a:hover,
+.priority-links button:hover {
   transform: translateY(-2px);
   color: var(--green);
   background: rgba(183, 255, 90, 0.1);

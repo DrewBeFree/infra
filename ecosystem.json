@@ -763,6 +763,8 @@
       "githubUrl": "https://github.com/DrewBeFree/lead-gen-agent",
       "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\agents\\lead-gen-agent",
       "liveUrls": [
+        "http://100.117.87.57:3027",
+        "http://10.0.0.91:3027",
         "http://127.0.0.1:3027"
       ],
       "docs": [
@@ -779,13 +781,13 @@
         {
           "type": "fastapi-local",
           "host": "alienware",
-          "url": "http://127.0.0.1:8017",
+          "url": "http://100.117.87.57:8017",
           "notes": "Phase 1 runs locally with SQLite; Atlas deployment is planned after the manual inbox workflow proves useful."
         },
         {
           "type": "nextjs-local",
           "host": "alienware",
-          "url": "http://127.0.0.1:3027",
+          "url": "http://100.117.87.57:3027",
           "notes": "Surf the Webb Lead Desk Hub frontend for morning lead review."
         },
         {
