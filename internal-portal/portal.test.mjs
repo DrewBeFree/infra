@@ -201,6 +201,8 @@ test("portal static files are present and load the canonical registry", async ()
   assert.match(index, /filterButton/);
   assert.match(index, /filterModal/);
   assert.match(index, /leadDeskCard/);
+  assert.match(index, /likelyLeadCount/);
+  assert.match(index, /Likely Leads/);
   assert.match(index, /http:\/\/127\.0\.0\.1:3027/);
   assert.doesNotMatch(index, /uhaulBanner/);
   assert.match(index, /pixelated-drew\.png/);
@@ -243,6 +245,8 @@ test("portal static files are present and load the canonical registry", async ()
   assert.match(app, /Prometheus/);
   assert.match(app, /Hermes/);
   assert.match(app, /Lead Desk/);
+  assert.match(app, /127\.0\.0\.1:8017\/api\/dashboard/);
+  assert.match(app, /high_fit/);
   assert.match(app, /matchesItemFilters/);
   assert.match(app, /renderCatalogRow/);
   assert.match(app, /updateFilterSummary/);

@@ -1616,3 +1616,18 @@
 - Refresh Leantime Kanban after login; if it still fails, capture the newest stack trace and update `scripts/leantime-hotfixes/`.
 - Decide whether to archive the two extra GitHub Projects.
 - Decide whether to create a dedicated `DrewBeFree/leantime-atlas` repo for durable Leantime overlays/image patches.
+
+## 2026-06-06 01:14 EDT - Lead Desk ecosystem priority tile
+
+**What we did:**
+- Added the Lead Gen Agent Lead Desk Hub live URL to `ecosystem.json`.
+- Added a top-strip `Likely Leads` tile in the internal ecosystem portal that links to `http://127.0.0.1:3027`.
+- Wired the tile to read `http://127.0.0.1:8017/api/dashboard` and show the high-fit lead count when the local Lead Desk backend is running.
+- Deployed the updated portal files to Atlas at `/opt/homelab-status-dashboard/ecosystem`.
+
+**Where we stopped:**
+- `http://atlas/ecosystem/` shows `3 Likely Leads` in the top dashboard strip and links to the local Lead Desk.
+- The Lead Desk local backend/frontend are running on ports `8017` and `3027`.
+
+**Next up:**
+- Keep the tile dynamic once the collector/digest worker replaces the seeded review queue.

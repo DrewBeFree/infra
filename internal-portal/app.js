@@ -21,6 +21,8 @@ const syncLinksCandidates = [
   "/ecosystem/sync-links.json"
 ];
 
+const leadDeskDashboardUrl = "http://127.0.0.1:8017/api/dashboard";
+
 const $ = (selector) => document.querySelector(selector);
 
 const visibilityLabels = {
@@ -1080,6 +1082,35 @@ function renderStats() {
   $("#runtimeMode").textContent = isLocalPreview() ? "Local preview with repo-aware links" : "Atlas private network";
 }
 
+async function updateLeadDeskStats() {
+  const count = $("#likelyLeadCount");
+  const card = $("#leadDeskCard");
+
+  if (!count || !card) {
+    return;
+  }
+
+  try {
+    const response = await fetch(leadDeskDashboardUrl, { cache: "no-store" });
+    if (!response.ok) {
+      throw new Error(`Lead Desk API returned ${response.status}`);
+    }
+
+    const dashboard = await response.json();
+    const likelyLeads = dashboard?.metrics?.high_fit ?? dashboard?.metrics?.total_leads ?? "--";
+    const totalLeads = dashboard?.metrics?.total_leads ?? "unknown";
+    count.textContent = String(likelyLeads);
+    card.title = `${likelyLeads} likely leads / ${totalLeads} total in Lead Desk`;
+    card.dataset.state = "live";
+  } catch {
+    if (!count.textContent || count.textContent === "--") {
+      count.textContent = "--";
+    }
+    card.title = `${count.textContent} likely leads in Lead Desk; local dashboard API is not reachable from this browser.`;
+    card.dataset.state = "offline";
+  }
+}
+
 function bindControls() {
   bindMainSectionToggles();
 
@@ -1162,6 +1193,7 @@ async function init() {
     renderRepos();
     renderOps();
     renderDocs();
+    updateLeadDeskStats();
   } catch (error) {
     renderError(error);
   }
