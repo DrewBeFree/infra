@@ -1,0 +1,14 @@
+[Unit]
+Description=Hermes dashboard Tailscale-only authenticated proxy
+After=default.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/hermes-mobile-proxy
+ExecStart=/usr/sbin/nginx -p %h/hermes-mobile-proxy -c nginx.conf
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

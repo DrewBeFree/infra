@@ -146,10 +146,12 @@ test("Hermes Agent is tracked as an Atlas install with access commands", async (
   assert.equal(hermes.githubUrl, "https://github.com/NousResearch/hermes-agent");
   assert.equal(hermes.localPath, "/home/drew/.hermes/hermes-agent");
   assert.ok(hermes.liveUrls.includes("http://localhost:9119"));
+  assert.ok(hermes.liveUrls.includes("http://100.71.165.80:9119"));
   assert.ok(hermes.ports.includes(9119));
   assert.ok(hermes.accessCommands.some((entry) => entry.command === "/home/drew/.local/bin/hermes status"));
   assert.ok(hermes.accessCommands.some((entry) => entry.command.includes("ssh -L 9119:127.0.0.1:9119 atlas")));
   assert.ok(hermes.deployTargets.some((target) => target.type === "git-install" && target.host === "atlas"));
+  assert.ok(hermes.deployTargets.some((target) => target.type === "tailscale-auth-proxy" && target.url === "http://100.71.165.80:9119"));
   assert.ok(hermes.docs.some((doc) => doc.url === "https://github.com/NousResearch/hermes-agent/blob/main/README.md"));
   assert.equal(hermes.statusControl.state, "installed");
 });
@@ -208,7 +210,7 @@ test("portal static files are present and load the canonical registry", async ()
   assert.match(index, /http:\/\/100\.117\.87\.57:3027/);
   assert.match(index, /AI Dashboard/);
   assert.match(index, /Hermes/);
-  assert.match(index, /data-priority-item="hermes-agent"/);
+  assert.match(index, /http:\/\/100\.71\.165\.80:9119/);
   assert.match(index, /Leantime/);
   assert.doesNotMatch(index, /uhaulBanner/);
   assert.match(index, /pixelated-drew\.png/);

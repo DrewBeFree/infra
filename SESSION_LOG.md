@@ -1649,3 +1649,23 @@
 
 **Next up:**
 - Keep the priority link list curated as more operator surfaces become always-on.
+
+## 2026-06-06 02:35 EDT - Hermes mobile Tailscale proxy
+
+**What we did:**
+- Created branch `feat/hermes-mobile-proxy`.
+- Set up a user-level nginx proxy on Atlas at `http://100.71.165.80:9119`.
+- Kept Hermes itself bound to `127.0.0.1:9119` and forwarded to it locally.
+- Added Basic Auth on the proxy and verified unauthenticated requests return `401`.
+- Enabled `hermes-mobile-proxy.service` as a user systemd service; `linger=yes` is active for Drew so it can survive login sessions.
+- Updated `ecosystem.json`, the internal portal Hermes priority link, and added `scripts/hermes-mobile-proxy/` runbook/templates.
+- Deployed the updated internal portal files and registry to Atlas.
+
+**Where we stopped:**
+- `http://100.71.165.80:9119` returns the Hermes dashboard after Basic Auth.
+- `http://atlas/ecosystem/` links Hermes directly to the Tailscale proxy.
+- Tailscale Serve remains disabled at the tailnet level, so this uses user nginx instead.
+
+**Next up:**
+- Consider rotating the Basic Auth password into a password manager.
+- If Tailscale Serve is later enabled, decide whether to replace the user nginx proxy with native Serve.

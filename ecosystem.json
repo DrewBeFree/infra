@@ -1202,6 +1202,7 @@
       "visibility": "private",
       "summary": "Atlas-first Hermes Agent CLI/runtime install. Access the dashboard through an SSH tunnel; do not bind it directly to the tailnet because it can expose API keys.",
       "liveUrls": [
+        "http://100.71.165.80:9119",
         "http://localhost:9119"
       ],
       "ports": [
@@ -1251,6 +1252,13 @@
           "path": "127.0.0.1:9119",
           "url": "http://localhost:9119",
           "notes": "Start with Hermes bound to 127.0.0.1 and use an SSH tunnel from this machine: ssh -L 9119:127.0.0.1:9119 atlas."
+        },
+        {
+          "type": "tailscale-auth-proxy",
+          "host": "atlas",
+          "path": "/home/drew/hermes-mobile-proxy",
+          "url": "http://100.71.165.80:9119",
+          "notes": "User-level nginx proxy bound only to Atlas's Tailscale IP with Basic Auth; forwards to Hermes on 127.0.0.1:9119."
         }
       ],
       "statusControl": {
