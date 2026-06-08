@@ -1,3 +1,24 @@
+## 2026-06-08 17:56 — Fix raw issue import 404 for experimental
+
+**What we did:**
+- Root cause: receive-task-sync.yml used ${{ secrets.GITHUB_TOKEN }} (infra-repo scoped only) for the inline "Import ALL GitHub issues" python and the dispatch/scheduled sync steps; github_request to /repos/DrewBeFree/trading-scanner-experimental/... (and fetch_issues etc.) returned 404.
+- Updated receive-task-sync.yml: all GITHUB_TOKEN envs now ${{ secrets.DISPATCH_PAT || secrets.GITHUB_TOKEN }}; dispatch + scheduled run blocks now write /tmp/task-sync/github.env + leantime.env from the 1P-loaded values + PAT at runtime, then pass --env to the sync-* and project-items commands (so they consume fresh runtime creds instead of ~/services/task-sync/ host files on atlas).
+- Committed + pushed the receiver fix to DrewBeFree/infra@main (5ec48e4).
+- Also synced trading-scanner-experimental's .github/workflows/trigger-task-sync.yml to the canonical template (was hardcoding short "trading-scanner-experimental" in source_repo payload + missing backlog.md path; now uses ${{ github.repository }} and matches the good version in trading-scanner).
+- Expanded the rollout comment in the receiver yml to document the infra-side DISPATCH_PAT requirement for cross-repo reads.
+
+**Where we stopped:**
+- Fix is live on main. The next repository_dispatch (or workflow_dispatch / schedule) will run the updated receiver on atlas; the import step should now get 200 on the first github_request and create/update Leantime tickets carrying the "task-sync-id: gh-issue:DrewBeFree/trading-scanner-experimental#N" marker + GitHub link in description.
+- The "Run ecosystem task sync..." steps in dispatch will also feed correct Leantime creds (previously may have been using stale or missing host .env).
+- trading-scanner-experimental trigger change is only local (in /home/drew/GitHub/apps/trading-scanner-experimental clone); not yet pushed.
+- Any pre-existing blank/duplicate Leantime ticket without a gh-issue: marker in its desc will remain (import only dedupes on marker presence).
+
+**Next up:**
+- Trigger a test: edit or comment on an open issue in DrewBeFree/trading-scanner-experimental (or manually `gh api ... repository-dispatch`), then check Leantime for the new/updated ticket under the correct project.
+- In GitHub: confirm DrewBeFree/infra has a secret "DISPATCH_PAT" whose value is a PAT with repo read access (or the "Github All Repo" one).
+- (If desired) cd /home/drew/GitHub/apps/trading-scanner-experimental && git add .github/workflows/trigger-task-sync.yml && git commit -m "ci: use canonical task-sync trigger (full repo in payload)" && git push
+- Optional follow-up: hoist the per-issue getAllTickets out of the loop in the import heredoc (N full scans today).
+
 ## 2026-06-05 02:41 — AI Dashboard Activity and Settings views
 
 **What we did:**
