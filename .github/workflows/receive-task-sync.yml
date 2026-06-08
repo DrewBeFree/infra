@@ -7,7 +7,7 @@ on:
     # Full ecosystem sync every 4 hours as a safety net (catches everything even if individual dispatches are missed).
     - cron: '17 */4 * * *'
   workflow_dispatch:
-    # Allow manual trigger from the Actions tab for testing / one-off full syncs.
+    # Allow manual trigger from the Actions tab for testing / one-off full syncs. (re-registered after syntax fix)
 
 jobs:
   run-sync:
