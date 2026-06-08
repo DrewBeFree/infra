@@ -1,0 +1,215 @@
+name: Receive Task Sync Request (from app repos)
+
+on:
+  repository_dispatch:
+    types: [task-sync-request]
+  schedule:
+    # Full ecosystem sync every 4 hours as a safety net (catches everything even if individual dispatches are missed).
+    - cron: '17 */4 * * *'
+  workflow_dispatch:
+    # Allow manual trigger from the Actions tab for testing / one-off full syncs.
+
+jobs:
+  run-sync:
+    # Only run the per-repo dispatch handler on actual dispatches
+    if: github.event_name == 'repository_dispatch' || github.event_name == 'workflow_dispatch'
+    runs-on: [self-hosted, atlas]
+    # Self-hosted on Atlas so it can reach internal Leantime at http://atlas:8095/
+    steps:
+      - name: Checkout infra
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Load Leantime credentials from 1Password
+        # This uses a 1Password Service Account (recommended, no desktop app needed in CI).
+        # See 1Password setup instructions below.
+        uses: 1password/load-secrets-action@v2
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          # Convention: create a 1Password item called "Leantime" in vault "Homelab" (or "Infra")
+          # with fields: base-url and api-key
+          LEANTIME_BASE_URL: "op://Homelab/Leantime/base-url"
+          LEANTIME_API_KEY: "op://Homelab/Leantime/api-key"
+
+      - name: Run ecosystem task sync for the triggering repo
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # LEANTIME_* come from the 1Password step above
+        run: |
+          echo "Sync requested for: ${{ github.event.client_payload.source_repo }}"
+          echo "Event: ${{ github.event.client_payload.event }}"
+
+          # Collect / plan (safe, produces reports)
+          python3 scripts/ecosystem_task_sync.py collect --report data/task-sync/dispatch-collect-report.json || true
+
+          # Sync GitHub issues side (idempotent with --apply)
+          python3 scripts/ecosystem_task_sync.py sync-github-issues --apply --report data/task-sync/dispatch-github-issues-report.json || true
+
+          # Sync Leantime side (this is what populates Leantime from BACKLOG + marked issues)
+          python3 scripts/ecosystem_task_sync.py sync-leantime --apply --report data/task-sync/dispatch-leantime-report.json || true
+
+          # Also handle GitHub Projects items if the source repo uses them
+          python3 scripts/ecosystem_task_sync.py sync-github-project-items --apply --report data/task-sync/dispatch-project-items-report.json || true
+
+          echo "Sync steps completed for ${{ github.event.client_payload.source_repo }}"
+
+      - name: Import ALL GitHub issues from this repo into Leantime (raw issue sync)
+        if: github.event_name == 'repository_dispatch'
+        # This ensures *every* GitHub issue (not just BACKLOG-driven ones) gets a corresponding Leantime ticket.
+        # Uses gh-issue:owner/repo#123 as the stable task-sync-id marker.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LEANTIME_BASE_URL: ${{ env.LEANTIME_BASE_URL }}
+          LEANTIME_API_KEY: ${{ env.LEANTIME_API_KEY }}
+        run: |
+          REPO="${{ github.event.client_payload.source_repo }}"
+          echo "Importing all open issues from $REPO into Leantime..."
+
+          python3 - << 'PYTHON'
+          import os, sys, json, time, urllib.request, hashlib, re
+          sys.path.insert(0, ".")
+          from scripts.ecosystem_task_sync import (
+              github_request, leantime_rpc, require_result,
+              fetch_leantime_projects, project_map_from, leantime_status_for,
+              render_leantime_description
+          )
+
+          token = os.environ["GITHUB_TOKEN"]
+          base = os.environ["LEANTIME_BASE_URL"]
+          key = os.environ["LEANTIME_API_KEY"]
+          repo_full = "${{ github.event.client_payload.source_repo }}"
+          owner, repo = repo_full.split("/", 1)
+
+          # Fetch all issues (open + closed for completeness, but we'll focus on open)
+          issues = []
+          page = 1
+          while True:
+              batch = github_request(token, "GET", f"/repos/{repo_full}/issues?state=all&per_page=100&page={page}")
+              if not batch: break
+              issues.extend([i for i in batch if "pull_request" not in i])
+              if len(batch) < 100: break
+              page += 1
+
+          print(f"Fetched {len(issues)} issues from {repo_full}")
+
+          # Get or ensure Leantime project for this repo (use displayName logic)
+          projects = fetch_leantime_projects(base, key)
+          by_name = {p.get("name"): p for p in projects}
+          display = repo.replace("-", " ").title()
+          proj = by_name.get(display) or by_name.get(repo) or next((p for p in projects if display.lower() in p.get("name","").lower()), None)
+          if not proj:
+              # Create a project if missing
+              result = require_result(
+                  leantime_rpc(base, key, "leantime.rpc.projects.addProject", {
+                      "values": {"name": display, "details": f"Auto-synced from GitHub {repo_full}", "state": 1}
+                  }),
+                  "create project"
+              )
+              proj = {"id": result.get("id"), "name": display}
+              print(f"Created Leantime project {display}")
+
+          proj_id = int(proj["id"])
+
+          created = updated = skipped = 0
+          for issue in issues:
+              num = issue["number"]
+              marker = f"gh-issue:{repo_full}#{num}"
+              title = issue.get("title", f"Issue #{num}")
+              body = issue.get("body") or ""
+              state = "open" if issue.get("state") == "open" else "closed"
+              link = issue.get("html_url", f"https://github.com/{repo_full}/issues/{num}")
+
+              desc = f"{body}\n\n---\nSynced from GitHub: {link}\ntask-sync-id: {marker}"
+
+              # Check if ticket with this marker already exists
+              existing_tickets = require_result(
+                  leantime_rpc(base, key, "leantime.rpc.tickets.getAll", {"limit": 10000}),
+                  "get tickets"
+              )
+              existing = next((t for t in existing_tickets if marker in (t.get("description","") or "")), None)
+
+              values = {
+                  "headline": title,
+                  "description": desc,
+                  "projectId": proj_id,
+                  "status": 3 if state == "closed" else 1,  # 1=open, 3=closed in Leantime
+              }
+
+              if existing:
+                  tid = existing["id"]
+                  # Only update if title or state changed (lightweight)
+                  if existing.get("headline") != title or (existing.get("status") == 3) != (state == "closed"):
+                      require_result(leantime_rpc(base, key, "leantime.rpc.tickets.updateTicket", {"values": {**values, "id": tid}}), "update ticket")
+                      updated += 1
+                  else:
+                      skipped += 1
+              else:
+                  require_result(leantime_rpc(base, key, "leantime.rpc.tickets.addTicket", {"values": values}), "create ticket")
+                  created += 1
+                  time.sleep(0.3)
+
+          print(f"Issue import complete for {repo_full}: created={created}, updated={updated}, skipped={skipped}")
+          PYTHON
+          echo "All GitHub issues imported to Leantime for this repo."
+
+  scheduled-full-sync:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: [self-hosted, atlas]
+    # Self-hosted on Atlas so it can reach internal Leantime at http://atlas:8095/
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: 1password/load-secrets-action@v2
+        with:
+          export-env: true
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+          LEANTIME_BASE_URL: "op://Homelab/Leantime/base-url"
+          LEANTIME_API_KEY: "op://Homelab/Leantime/api-key"
+      - name: Full scheduled sync (all repos in ecosystem)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Running scheduled full ecosystem sync"
+          python3 scripts/ecosystem_task_sync.py collect --report data/task-sync/scheduled-collect.json || true
+          python3 scripts/ecosystem_task_sync.py sync-leantime --apply --report data/task-sync/scheduled-leantime.json || true
+          python3 scripts/ecosystem_task_sync.py sync-github-issues --apply --report data/task-sync/scheduled-issues.json || true
+          echo "Scheduled full sync complete"
+
+# =============================================================================
+# 1Password Setup (for Leantime credentials)
+# =============================================================================
+#
+# 1. In 1Password, create a **Service Account** (under Integrations or Developer).
+#    - Give it access to the vault that contains your Leantime item (e.g. "Homelab" or "Infra").
+#    - Copy the service account token.
+#
+# 2. In the DrewBeFree/infra GitHub repository:
+#    - Settings → Secrets and variables → Actions
+#    - Add secret: OP_SERVICE_ACCOUNT_TOKEN = <the token from step 1>
+#
+# 3. Create a 1Password item:
+#    - Vault: Homelab (or Infra)
+#    - Item name: Leantime
+#    - Fields:
+#        - base-url   →  https://leantime.yourdomain.com  (or whatever your instance uses)
+#        - api-key    →  the Leantime API key (you can generate one in Leantime admin)
+#
+# 4. The workflow above will load them at runtime using the official 1Password action.
+#    No Leantime secrets ever live as static GitHub secrets.
+#
+# Rollout to other repos:
+# - Copy infra/templates/trigger-task-sync.yml into .github/workflows/ in the target repo.
+# - Make sure the repo is listed in ecosystem.json (with correct githubUrl and localPath).
+# - (Recommended) Add task-sync-id markers to its BACKLOG.md and/or important GitHub issues.
+# - Add a DISPATCH_PAT secret in that repo if you want reliable cross-repo dispatch.
+#
+# This gives you near real-time + periodic sync of BACKLOG-driven tasks + marked GitHub issues into Leantime.
