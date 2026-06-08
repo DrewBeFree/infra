@@ -124,7 +124,7 @@ jobs:
               # Create a project if missing
               result = require_result(
                   leantime_rpc(base, key, "leantime.rpc.projects.addProject", {
-                      "values": {"name": display, "details": f"Auto-synced from GitHub {repo_full}", "state": 1}
+                      "values": {"name": display, "details": f"Auto-synced from GitHub {repo_full}", "clientId": None, "state": 1, "type": "project"}
                   }),
                   "create project"
               )
