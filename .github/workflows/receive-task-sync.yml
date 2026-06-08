@@ -100,7 +100,7 @@ jobs:
           token = os.environ["GITHUB_TOKEN"]
           base = os.environ["LEANTIME_BASE_URL"]
           key = os.environ["LEANTIME_API_KEY"]
-          repo_full = "${{ github.event.client_payload.source_repo }}"
+          repo_full = "${{ github.event.client_payload.source_repo || 'DrewBeFree/trading-scanner-experimental' }}"
           owner, repo = repo_full.split("/", 1)
 
           # Fetch all issues (open + closed for completeness, but we'll focus on open)
