@@ -39,23 +39,39 @@ jobs:
 
       - name: Run ecosystem task sync for the triggering repo
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # LEANTIME_* come from the 1Password step above
+          # Use broad DISPATCH_PAT (stored in infra repo secrets) so cross-repo GitHub API calls
+          # (fetch_issues etc for other repos like trading-scanner-experimental) succeed.
+          # Falls back to GITHUB_TOKEN (limited to infra repo only).
+          GITHUB_TOKEN: ${{ secrets.DISPATCH_PAT || secrets.GITHUB_TOKEN }}
+          LEANTIME_BASE_URL: ${{ env.LEANTIME_BASE_URL }}
+          LEANTIME_API_KEY: ${{ env.LEANTIME_API_KEY }}
         run: |
           echo "Sync requested for: ${{ github.event.client_payload.source_repo }}"
           echo "Event: ${{ github.event.client_payload.event }}"
+
+          # Write temp env files from runtime secrets (1P + DISPATCH_PAT) so the python
+          # commands use fresh creds instead of (possibly stale) files on the runner host.
+          mkdir -p /tmp/task-sync
+          cat > /tmp/task-sync/github.env << 'EENV'
+GITHUB_TOKEN=${{ secrets.DISPATCH_PAT || secrets.GITHUB_TOKEN }}
+GITHUB_OWNER=DrewBeFree
+EENV
+          cat > /tmp/task-sync/leantime.env << 'EENV'
+LEANTIME_BASE_URL=${{ env.LEANTIME_BASE_URL }}
+LEANTIME_API_KEY=${{ env.LEANTIME_API_KEY }}
+EENV
 
           # Collect / plan (safe, produces reports)
           python3 scripts/ecosystem_task_sync.py collect --report data/task-sync/dispatch-collect-report.json || true
 
           # Sync GitHub issues side (idempotent with --apply)
-          python3 scripts/ecosystem_task_sync.py sync-github-issues --apply --report data/task-sync/dispatch-github-issues-report.json || true
+          python3 scripts/ecosystem_task_sync.py sync-github-issues --env /tmp/task-sync/github.env --apply --report data/task-sync/dispatch-github-issues-report.json || true
 
           # Sync Leantime side (this is what populates Leantime from BACKLOG + marked issues)
-          python3 scripts/ecosystem_task_sync.py sync-leantime --apply --report data/task-sync/dispatch-leantime-report.json || true
+          python3 scripts/ecosystem_task_sync.py sync-leantime --env /tmp/task-sync/leantime.env --apply --report data/task-sync/dispatch-leantime-report.json || true
 
           # Also handle GitHub Projects items if the source repo uses them
-          python3 scripts/ecosystem_task_sync.py sync-github-project-items --apply --report data/task-sync/dispatch-project-items-report.json || true
+          python3 scripts/ecosystem_task_sync.py sync-github-project-items --env /tmp/task-sync/github.env --apply --report data/task-sync/dispatch-project-items-report.json || true
 
           echo "Sync steps completed for ${{ github.event.client_payload.source_repo }}"
 
@@ -64,7 +80,8 @@ jobs:
         # This ensures *every* GitHub issue (not just BACKLOG-driven ones) gets a corresponding Leantime ticket.
         # Uses gh-issue:owner/repo#123 as the stable task-sync-id marker.
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Broad token required for cross-repo issue fetch (GITHUB_TOKEN only sees current repo).
+          GITHUB_TOKEN: ${{ secrets.DISPATCH_PAT || secrets.GITHUB_TOKEN }}
           LEANTIME_BASE_URL: ${{ env.LEANTIME_BASE_URL }}
           LEANTIME_API_KEY: ${{ env.LEANTIME_API_KEY }}
         run: |
@@ -176,12 +193,27 @@ jobs:
           LEANTIME_API_KEY: "op://Homelab/Leantime/api-key"
       - name: Full scheduled sync (all repos in ecosystem)
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Broad token for cross-repo GitHub reads during full syncs.
+          GITHUB_TOKEN: ${{ secrets.DISPATCH_PAT || secrets.GITHUB_TOKEN }}
+          LEANTIME_BASE_URL: ${{ env.LEANTIME_BASE_URL }}
+          LEANTIME_API_KEY: ${{ env.LEANTIME_API_KEY }}
         run: |
           echo "Running scheduled full ecosystem sync"
+
+          # Write temp env files from runtime secrets so scripts don't rely on host files.
+          mkdir -p /tmp/task-sync
+          cat > /tmp/task-sync/github.env << 'EENV'
+GITHUB_TOKEN=${{ secrets.DISPATCH_PAT || secrets.GITHUB_TOKEN }}
+GITHUB_OWNER=DrewBeFree
+EENV
+          cat > /tmp/task-sync/leantime.env << 'EENV'
+LEANTIME_BASE_URL=${{ env.LEANTIME_BASE_URL }}
+LEANTIME_API_KEY=${{ env.LEANTIME_API_KEY }}
+EENV
+
           python3 scripts/ecosystem_task_sync.py collect --report data/task-sync/scheduled-collect.json || true
-          python3 scripts/ecosystem_task_sync.py sync-leantime --apply --report data/task-sync/scheduled-leantime.json || true
-          python3 scripts/ecosystem_task_sync.py sync-github-issues --apply --report data/task-sync/scheduled-issues.json || true
+          python3 scripts/ecosystem_task_sync.py sync-leantime --env /tmp/task-sync/leantime.env --apply --report data/task-sync/scheduled-leantime.json || true
+          python3 scripts/ecosystem_task_sync.py sync-github-issues --env /tmp/task-sync/github.env --apply --report data/task-sync/scheduled-issues.json || true
           echo "Scheduled full sync complete"
 
 # =============================================================================
@@ -210,6 +242,12 @@ jobs:
 # - Copy infra/templates/trigger-task-sync.yml into .github/workflows/ in the target repo.
 # - Make sure the repo is listed in ecosystem.json (with correct githubUrl and localPath).
 # - (Recommended) Add task-sync-id markers to its BACKLOG.md and/or important GitHub issues.
-# - Add a DISPATCH_PAT secret in that repo if you want reliable cross-repo dispatch.
+# - Add a DISPATCH_PAT secret in that repo (the source) for the trigger to dispatch reliably to infra.
+#
+# For the central receiver (this workflow in DrewBeFree/infra):
+# - Also add a DISPATCH_PAT secret *to the infra repo* (broad PAT with repo read access, or
+#   "repo" + "workflow" scopes). This is used for cross-repo GitHub API calls in the import step
+#   and sync-github-* steps (to read issues from trading-scanner, trading-scanner-experimental, etc.).
+#   The default GITHUB_TOKEN only has permissions within the infra repo itself (hence 404s on /repos/OTHER/...).
 #
 # This gives you near real-time + periodic sync of BACKLOG-driven tasks + marked GitHub issues into Leantime.
