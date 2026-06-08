@@ -203,13 +203,13 @@ jobs:
           # Write temp env files from runtime secrets so scripts don't rely on host files.
           mkdir -p /tmp/task-sync
           cat > /tmp/task-sync/github.env << 'EENV'
-GITHUB_TOKEN=${{ secrets.DISPATCH_PAT || secrets.GITHUB_TOKEN }}
-GITHUB_OWNER=DrewBeFree
-EENV
+          GITHUB_TOKEN=${{ secrets.DISPATCH_PAT || secrets.GITHUB_TOKEN }}
+          GITHUB_OWNER=DrewBeFree
+          EENV
           cat > /tmp/task-sync/leantime.env << 'EENV'
-LEANTIME_BASE_URL=${{ env.LEANTIME_BASE_URL }}
-LEANTIME_API_KEY=${{ env.LEANTIME_API_KEY }}
-EENV
+          LEANTIME_BASE_URL=${{ env.LEANTIME_BASE_URL }}
+          LEANTIME_API_KEY=${{ env.LEANTIME_API_KEY }}
+          EENV
 
           python3 scripts/ecosystem_task_sync.py collect --report data/task-sync/scheduled-collect.json || true
           python3 scripts/ecosystem_task_sync.py sync-leantime --env /tmp/task-sync/leantime.env --apply --report data/task-sync/scheduled-leantime.json || true
