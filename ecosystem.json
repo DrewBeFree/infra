@@ -1,6 +1,6 @@
 {
   "schema": "drewbefree.ecosystem.v1",
-  "updatedAt": "2026-05-30",
+  "updatedAt": "2026-06-08",
   "owner": "DrewBeFree",
   "canonical": true,
   "generatedFrom": [
@@ -1079,6 +1079,55 @@
           "build",
           "deploy",
           "logs"
+        ]
+      }
+    },
+    {
+      "name": "trading-scanner-experimental",
+      "displayName": "Trading Scanner Experimental",
+      "category": "app",
+      "visibility": "public",
+      "summary": "Experimental fork of the volatility-controlled market scanner focused on crypto paper trading (same Alpaca account) and extended dashboard development.",
+      "githubUrl": "https://github.com/DrewBeFree/trading-scanner-experimental",
+      "localPath": "/home/drew/GitHub/apps/trading-scanner-experimental",
+      "docs": [
+        {
+          "label": "BACKLOG.md",
+          "url": "https://github.com/DrewBeFree/trading-scanner-experimental/blob/dev/BACKLOG.md"
+        },
+        {
+          "label": "GitHub Project",
+          "url": "https://github.com/users/DrewBeFree/projects/32"
+        }
+      ],
+      "statusControl": {
+        "state": "tracked",
+        "checks": [
+          "github",
+          "docs"
+        ],
+        "actions": [
+          "open",
+          "run"
+        ]
+      }
+    },
+    {
+      "name": "trading-scanner",
+      "displayName": "Trading Scanner",
+      "category": "app",
+      "visibility": "public",
+      "summary": "Trading Scanner (auto-added for task sync).",
+      "githubUrl": "https://github.com/DrewBeFree/trading-scanner",
+      "localPath": "/home/drew/GitHub/apps/trading-scanner",
+      "statusControl": {
+        "state": "tracked",
+        "checks": [
+          "github",
+          "docs"
+        ],
+        "actions": [
+          "open"
         ]
       }
     }

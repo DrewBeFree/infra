@@ -2,6 +2,12 @@
   "baseDirectory": "C:\\Users\\drewb\\Documents\\GitHub",
   "repositories": [
     {
+      "name": "adhd-snap",
+      "github": "https://github.com/DrewBeFree/adhd-snap.git",
+      "targetDirectory": "apps/adhd-snap",
+      "type": "app"
+    },
+    {
       "name": "daily-planner",
       "github": "https://github.com/DrewBeFree/daily-planner.git",
       "targetDirectory": "apps/daily-planner",
@@ -44,9 +50,21 @@
       "type": "app"
     },
     {
+      "name": "DrewBeFree",
+      "github": "https://github.com/DrewBeFree/DrewBeFree.git",
+      "targetDirectory": "apps/DrewBeFree",
+      "type": "app"
+    },
+    {
       "name": "drewbefree-command-center",
       "github": "https://github.com/DrewBeFree/drewbefree-command-center.git",
       "targetDirectory": "apps/drewbefree-command-center",
+      "type": "app"
+    },
+    {
+      "name": "llm-debate-union",
+      "github": "https://github.com/DrewBeFree/llm-debate-union.git",
+      "targetDirectory": "apps/llm-debate-union",
       "type": "app"
     },
     {
@@ -83,12 +101,6 @@
       "name": "recap-agents",
       "github": "https://github.com/DrewBeFree/recap-agents.git",
       "targetDirectory": "agents/recap-agents",
-      "type": "agent"
-    },
-    {
-      "name": "interactive-setup",
-      "github": "https://github.com/DrewBeFree/interactive-setup.git",
-      "targetDirectory": "agents/interactive-setup",
       "type": "agent"
     },
     {
