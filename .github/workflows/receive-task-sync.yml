@@ -53,13 +53,13 @@ jobs:
           # commands use fresh creds instead of (possibly stale) files on the runner host.
           mkdir -p /tmp/task-sync
           cat > /tmp/task-sync/github.env << 'EENV'
-GITHUB_TOKEN=${{ secrets.DISPATCH_PAT || secrets.GITHUB_TOKEN }}
-GITHUB_OWNER=DrewBeFree
-EENV
+          GITHUB_TOKEN=${{ secrets.DISPATCH_PAT || secrets.GITHUB_TOKEN }}
+          GITHUB_OWNER=DrewBeFree
+          EENV
           cat > /tmp/task-sync/leantime.env << 'EENV'
-LEANTIME_BASE_URL=${{ env.LEANTIME_BASE_URL }}
-LEANTIME_API_KEY=${{ env.LEANTIME_API_KEY }}
-EENV
+          LEANTIME_BASE_URL=${{ env.LEANTIME_BASE_URL }}
+          LEANTIME_API_KEY=${{ env.LEANTIME_API_KEY }}
+          EENV
 
           # Collect / plan (safe, produces reports)
           python3 scripts/ecosystem_task_sync.py collect --report data/task-sync/dispatch-collect-report.json || true
