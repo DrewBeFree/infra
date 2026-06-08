@@ -76,7 +76,7 @@ EENV
           echo "Sync steps completed for ${{ github.event.client_payload.source_repo }}"
 
       - name: Import ALL GitHub issues from this repo into Leantime (raw issue sync)
-        if: github.event_name == 'repository_dispatch' || github.event_name == 'workflow_dispatch'
+        if: github.event_name == 'repository_dispatch'
         # This ensures *every* GitHub issue (not just BACKLOG-driven ones) gets a corresponding Leantime ticket.
         # Uses gh-issue:owner/repo#123 as the stable task-sync-id marker.
         env:
@@ -85,7 +85,7 @@ EENV
           LEANTIME_BASE_URL: ${{ env.LEANTIME_BASE_URL }}
           LEANTIME_API_KEY: ${{ env.LEANTIME_API_KEY }}
         run: |
-          REPO="${{ github.event.client_payload.source_repo || 'DrewBeFree/trading-scanner-experimental' }}"
+          REPO="${{ github.event.client_payload.source_repo }}"
           echo "Importing all open issues from $REPO into Leantime..."
 
           python3 - << 'PYTHON'
