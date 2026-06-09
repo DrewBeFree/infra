@@ -1722,3 +1722,25 @@
 
 **Next up:**
 - Use the updated password from the user's password manager or shared context when accessing Hermes from mobile.
+
+
+## 2026-06-08 - Leantime sync receiver tracking and project visibility root cause
+
+**What we did:**
+- Confirmed Atlas has `gh` installed at `/home/drew/.local/bin/gh`; the earlier failure was a noninteractive PATH issue.
+- Added a Hookify warning in the active workspace to avoid repeating PowerShell-vs-SSH syntax bugs with `ssh atlas` commands that include pipes, redirects, heredocs, shell variables, or inline `bash -lc`.
+- Reviewed the Grok-built task sync receiver and created infra issue #21 for hardening the raw GitHub issue importer.
+- Investigated Leantime project visibility on Atlas: Drew is role `50`, Leantime has 33 projects, Drew has 32 project memberships, and `Trading Scanner Experimental` lacks a Drew relation.
+- Found root cause for the menu behavior: `Leantime\Domain\Projects\Services\Projects::getProjectHierarchyAssignedToUser()` hardcodes `accessStatus: 'assigned'`, and the menu calls that method directly.
+- Created infra issue #22 for making admin/owner project lists independent from assignment rows and deciding fork vs overlay.
+- Added both items to `BACKLOG.md`, pushed them to `main`, collected task-sync exports, and applied Leantime sync. The sync created 13 Infra tasks, including the two new followups.
+
+**Where we stopped:**
+- No live Leantime container source patch was applied.
+- Recommended path is to stop ad hoc container edits and carry Leantime behavior changes through a fork or documented `leantime-atlas` overlay.
+- Remote `main` includes the backlog and task-sync export updates through `9d6df97`.
+
+**Next up:**
+- Decide whether to create a public fork of `Leantime/leantime` or a private `leantime-atlas` overlay repo.
+- Implement the admin/owner menu visibility patch in that chosen source path, then apply it to Atlas from the documented script.
+- Harden the raw issue importer in `scripts/ecosystem_task_sync.py` and add duplicate-prevention tests before broad rollout.
