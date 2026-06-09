@@ -18,10 +18,16 @@ The CSP/htmx hotfix was added on 2026-06-08 for:
 - `/projects/showMy` favorite/unfavorite htmx actions failing with `EvalError` because nginx added a second CSP header without `script-src`.
 - The app-level CSP already allows `script-src 'unsafe-eval'`; this aligns the nginx header so browsers do not block htmx's JavaScript evaluation path.
 
+The htmx View Transitions hotfix was added on 2026-06-08 for:
+
+- `/projects/showMy` favorite/unfavorite htmx actions logging `AbortError: Transition was skipped`.
+- Leantime 3.8.0 enables `window.htmx.config.globalViewTransitions`; this disables the global setting while preserving normal htmx swaps.
+
 Apply after recreating the `leantime` container:
 
 ```sh
 bash scripts/leantime-hotfixes/apply.sh
 bash scripts/leantime-hotfixes/apply-project-visibility.sh
 bash scripts/leantime-hotfixes/apply-csp-header.sh
+bash scripts/leantime-hotfixes/apply-disable-htmx-view-transitions.sh
 ```
