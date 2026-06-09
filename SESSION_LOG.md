@@ -1744,3 +1744,29 @@
 - Decide whether to create a public fork of `Leantime/leantime` or a private `leantime-atlas` overlay repo.
 - Implement the admin/owner menu visibility patch in that chosen source path, then apply it to Atlas from the documented script.
 - Harden the raw issue importer in `scripts/ecosystem_task_sync.py` and add duplicate-prevention tests before broad rollout.
+
+
+## 2026-06-08 - Apply Leantime owner project visibility hotfix
+
+**What we did:**
+- Confirmed Drew's Leantime numeric role is `50`, which maps to `owner`; the profile "Employee Information" fields are metadata, not the app permission role.
+- Confirmed the visibility bug lives in `Projects::getProjectHierarchyAssignedToUser()`, which hardcoded `accessStatus: 'assigned'` for the menu project hierarchy.
+- Created infra branch `fix/leantime-owner-project-visibility`.
+- Added a durable Atlas overlay under `scripts/leantime-hotfixes/`:
+  - `leantime-project-visibility.patch`
+  - `apply-project-visibility.sh`
+  - README documentation
+- Pushed the overlay to `DrewBeFree/infra` and fast-forwarded `main`.
+- Applied the overlay to the live Atlas `leantime` container.
+- Restarted the container, verified `Projects.php` passes `php -l`, verified the patch is present, and verified Leantime responds with the expected login redirect.
+- Added a status comment to infra issue #22.
+
+**Where we stopped:**
+- Owner/admin project menu visibility is patched live on Atlas.
+- Regular users still keep assignment-only menu behavior.
+- Issue #22 remains open for follow-up decisions around fork vs overlay and synced/API project defaults.
+
+**Next up:**
+- Verify visually in Leantime after login that `Trading Scanner Experimental` appears for Drew without assigning Drew to the project.
+- Decide whether to keep this as an infra overlay or create a dedicated Leantime fork/upstream PR.
+- Harden API-created project defaults so future sync-created projects get complete `state`/`active` values.
