@@ -6,6 +6,7 @@ WORK_DIR="$(mktemp -d)"
 BACKUP_SUFFIX="$(date +%Y%m%d%H%M%S)"
 
 FILES=(
+  "/var/www/html/app/Views/Templates/sections/header.blade.php"
   "/var/www/html/public/assets/js/app/htmx.js"
   "/var/www/html/public/dist/js/compiled-htmx.3.8.0.min.js"
 )
@@ -33,6 +34,10 @@ import sys
 work_dir = Path(sys.argv[1])
 
 replacements = {
+    "header.blade.php": (
+        '<script src="{!! BASE_URL !!}/dist/js/compiled-htmx.{!! $version !!}.min.js"></script>',
+        '<script src="{!! BASE_URL !!}/dist/js/compiled-htmx.{!! $version !!}.min.js?atlas=disable-vt-20260608"></script>',
+    ),
     "htmx.js": (
         "window.htmx.config.globalViewTransitions = true;",
         "window.htmx.config.globalViewTransitions = false;",
