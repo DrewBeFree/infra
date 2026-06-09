@@ -13,9 +13,15 @@ The project visibility hotfix was added on 2026-06-08 for:
 - `Projects::getProjectHierarchyAssignedToUser()`: owners/admins should see all globally accessible projects in the menu even when they do not have a row in `zp_relationuserproject`.
 - Regular users keep the default assignment-based menu behavior.
 
+The CSP/htmx hotfix was added on 2026-06-08 for:
+
+- `/projects/showMy` favorite/unfavorite htmx actions failing with `EvalError` because nginx added a second CSP header without `script-src`.
+- The app-level CSP already allows `script-src 'unsafe-eval'`; this aligns the nginx header so browsers do not block htmx's JavaScript evaluation path.
+
 Apply after recreating the `leantime` container:
 
 ```sh
 bash scripts/leantime-hotfixes/apply.sh
 bash scripts/leantime-hotfixes/apply-project-visibility.sh
+bash scripts/leantime-hotfixes/apply-csp-header.sh
 ```
