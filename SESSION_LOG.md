@@ -1836,3 +1836,19 @@
 **Next up:**
 - Reload `http://atlas:8095/projects/showMy`, favorite/unfavorite a project, and confirm the `AbortError: Transition was skipped` console error is gone.
 - If any favorite/unfavorite error remains, inspect the network response and console with the now-loaded `globalViewTransitions=false` bundle.
+
+
+
+## 2026-06-08 - Confirm Leantime hotfixes merged before fork discussion
+
+**What we did:**
+- Confirmed Atlas infra checkout is clean on `main` and matches `origin/main`.
+- Confirmed the recent Leantime hotfix commits are on `main`, including CSP, htmx View Transitions, and session log commits.
+- Confirmed there is no active unmerged work left before discussing whether to fork Leantime.
+
+**Where we stopped:**
+- `DrewBeFree/infra` was clean on `main` at `8dff02c` before this checkpoint log commit.
+- Hotfix branches still exist as branch references, but their commits are merged into `main`.
+
+**Next up:**
+- Decide whether to keep Leantime changes as infra overlays, create a private operational fork, or prepare a public fork/upstream PR path.
