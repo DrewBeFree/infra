@@ -1812,3 +1812,27 @@
 - While logged into `http://atlas:8095/projects/showMy`, favorite and unfavorite a project and confirm the CSP/htmx `EvalError` is gone.
 - If `AbortError: Transition was skipped` still appears and blocks behavior, debug it separately from Leantime project visibility and CSP.
 - Consider reducing duplicate CSP headers later by moving CSP ownership to one layer instead of keeping both app and nginx headers.
+
+
+
+## 2026-06-08 - Leantime htmx View Transitions hotfix
+
+**What we did:**
+- Investigated the remaining `/projects/showMy` console error after the CSP fix: `AbortError: Transition was skipped` from htmx.
+- Found Leantime 3.8.0 explicitly enables global htmx View Transitions in both `public/assets/js/app/htmx.js` and `public/dist/js/compiled-htmx.3.8.0.min.js`.
+- Added `scripts/leantime-hotfixes/apply-disable-htmx-view-transitions.sh` and README documentation to the infra repo.
+- Pushed `aec09e3` to disable global htmx View Transitions and `afe957d` to add a cache-busted htmx script URL because the bundle is served with a one-week cache TTL.
+- Applied the hotfix live on Atlas.
+- Verified the live source asset now has `window.htmx.config.globalViewTransitions = false;`.
+- Verified the served compiled bundle now has `window.htmx.config.globalViewTransitions=!1`.
+- Verified rendered Leantime HTML references `compiled-htmx.3.8.0.min.js?atlas=disable-vt-20260608`.
+- Added the follow-up validation note to infra issue #22: https://github.com/DrewBeFree/infra/issues/22#issuecomment-4655442607
+
+**Where we stopped:**
+- Atlas Leantime has the View Transitions hotfix applied live.
+- `DrewBeFree/infra` `main` contains the durable hotfix overlay.
+- The browser should fetch the patched htmx bundle after a normal reload because the script URL now has a cache-busting query string.
+
+**Next up:**
+- Reload `http://atlas:8095/projects/showMy`, favorite/unfavorite a project, and confirm the `AbortError: Transition was skipped` console error is gone.
+- If any favorite/unfavorite error remains, inspect the network response and console with the now-loaded `globalViewTransitions=false` bundle.
