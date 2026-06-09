@@ -58,6 +58,24 @@ Strategic work to establish consistent structure, standards, and sync across sys
   - Applied to: clone-all scripts, session log updater, and future utilities
   - **Status:** Ready; can be done in parallel
 
+- [ ] **Task sync receiver — harden raw GitHub issue import before broad rollout**
+  - Move the inline raw GitHub issue importer out of `.github/workflows/receive-task-sync.yml` and into `scripts/ecosystem_task_sync.py`.
+  - Add tests for `gh-issue:` marker handling, `task-*` marker coexistence, duplicate prevention, and failure reporting.
+  - Remove blanket `|| true` from receiver steps so failures are visible.
+  - Keep the existing dry-run/report-first contract before `--apply`, especially for Leantime and GitHub Projects writes.
+  - Ensure raw issue import does not duplicate BACKLOG-derived tasks that already have `task-*` markers.
+  - GitHub issue: https://github.com/DrewBeFree/infra/issues/21
+  - **Status:** Ready; created after reviewing the Grok-built Atlas receiver.
+
+- [ ] **Leantime visibility — make admin project lists independent from assignment rows**
+  - Root cause: the Leantime menu calls `getProjectHierarchyAssignedToUser()`, which hardcodes `accessStatus: 'assigned'`.
+  - Decide whether to maintain a `DrewBeFree/leantime` fork, an upstream PR, or a private `leantime-atlas` overlay repo for source-level patches.
+  - Patch admins/owners to use `accessStatus: 'all'` for the menu project hierarchy while preserving assignment-only behavior for regular users.
+  - Add/record a durable hotfix script under `scripts/leantime-hotfixes/` if using an overlay instead of a fork.
+  - Repair synced project defaults so new API-created projects have `state=1`, `active=1`, and do not require assigning Drew just to be visible.
+  - GitHub issue: https://github.com/DrewBeFree/infra/issues/22
+  - **Status:** Ready; do not patch the live container ad hoc.
+
 - [ ] **Task 2 — Create project templates for apps and sites**
   - Build reusable templates for new app projects (structure, boilerplate, config files)
   - Build reusable templates for new site projects (structure, boilerplate, config files)
