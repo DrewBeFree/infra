@@ -4,6 +4,7 @@ set -euo pipefail
 CONTAINER="${LEANTIME_CONTAINER:-leantime}"
 NGINX_CONF="/etc/nginx/nginx.conf"
 WORK_DIR="$(mktemp -d)"
+BACKUP_SUFFIX="$(date +%Y%m%d%H%M%S)"
 
 cleanup() {
   rm -rf "$WORK_DIR"
@@ -40,15 +41,15 @@ if cmp -s "$WORK_DIR/nginx.conf" "$WORK_DIR/nginx.conf.original"; then
   exit 0
 fi
 
-docker exec "$CONTAINER" sh -c "cp '$NGINX_CONF' '$NGINX_CONF.bak-csp-htmx-\$(date +%Y%m%d%H%M%S)'"
+docker exec -u 0 "$CONTAINER" sh -c "cp '$NGINX_CONF' '$NGINX_CONF.bak-csp-htmx-$BACKUP_SUFFIX'"
 docker cp "$WORK_DIR/nginx.conf" "$CONTAINER:$NGINX_CONF"
 
-if ! docker exec "$CONTAINER" nginx -t; then
+if ! docker exec -u 0 "$CONTAINER" nginx -t; then
   echo "Patched nginx.conf failed nginx -t; restoring backup" >&2
   docker cp "$WORK_DIR/nginx.conf.original" "$CONTAINER:$NGINX_CONF"
   exit 1
 fi
 
-docker exec "$CONTAINER" nginx -s reload
+docker exec -u 0 "$CONTAINER" nginx -s reload
 
 echo "Applied Leantime nginx CSP hotfix to $CONTAINER"
