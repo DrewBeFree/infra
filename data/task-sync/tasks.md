@@ -1,6 +1,6 @@
 # Ecosystem Task Sync Export
 
-Generated tasks: 30
+Generated tasks: 54
 
 - [Backlog] **Task categories — category grouping deferred; revisit when core app is stable** (Daily Planner, Normal)
   - Repo: `DrewBeFree/daily-planner`
@@ -50,10 +50,6 @@ Generated tasks: 30
   - Repo: `DrewBeFree/poker`
   - Source: `apps/poker/BACKLOG.md:7`
   - Stable ID: `task-c6a0d5521a05`
-- [Backlog] **PWA install banner — show iOS Safari tooltip nudging "Share → Add to Home Screen" on first visit; dismiss stored in localStorage** (Recipes, Normal)
-  - Repo: `DrewBeFree/recipes`
-  - Source: `apps/recipes/BACKLOG.md:4`
-  - Stable ID: `task-138123e65db7`
 - [Backlog] **PWA install banner — show iOS Safari tooltip nudging "Share → Add to Home Screen" on first visit; dismiss stored in localStorage** (RV Maintenance, Normal)
   - Repo: `DrewBeFree/rv-maintenance`
   - Source: `apps/rv-maintenance/BACKLOG.md:4`
@@ -62,6 +58,98 @@ Generated tasks: 30
   - Repo: `DrewBeFree/soccer-pickup`
   - Source: `apps/soccer-pickup/BACKLOG.md:4`
   - Stable ID: `task-d7eed15e89c7`
+- [Backlog] **Add full Alpaca crypto historical + latest bar ingestion (CryptoHistoricalDataClient for BTC/USD, ETH/USD and expandables)** (Trading Scanner Experimental, Medium)
+  - Repo: `DrewBeFree/trading-scanner-experimental`
+  - Source: `apps/trading-scanner-experimental/BACKLOG.md:9`
+  - Stable ID: `task-269fde714f57`
+- [Backlog] **Extend DuckDB with crypto_bars table + upsert/fetch helpers (parallel to stock_bars)** (Trading Scanner Experimental, Medium)
+  - Repo: `DrewBeFree/trading-scanner-experimental`
+  - Source: `apps/trading-scanner-experimental/BACKLOG.md:11`
+  - Stable ID: `task-dbdee4e0a42b`
+- [Backlog] **Update main scanner loop and seed logic to run crypto_universe 24/7 alongside (or instead of) equity scans during market hours** (Trading Scanner Experimental, Medium)
+  - Repo: `DrewBeFree/trading-scanner-experimental`
+  - Source: `apps/trading-scanner-experimental/BACKLOG.md:13`
+  - Stable ID: `task-7456fc0fe298`
+- [Backlog] **Make confluence robust for crypto: relax or replace VARS-vs-SPY logic, keep prefilters (min_crypto_adv_usd), EMA, RSI, squeeze** (Trading Scanner Experimental, Medium)
+  - Repo: `DrewBeFree/trading-scanner-experimental`
+  - Source: `apps/trading-scanner-experimental/BACKLOG.md:15`
+  - Stable ID: `task-bf5caefad983`
+- [Backlog] **Ensure PaperExecutor + order submission works cleanly for crypto symbols (fractional qty, DVOL psi, no equity lag blocking crypto)** (Trading Scanner Experimental, Medium)
+  - Repo: `DrewBeFree/trading-scanner-experimental`
+  - Source: `apps/trading-scanner-experimental/BACKLOG.md:17`
+  - Stable ID: `task-210479fd3f3c`
+- [Backlog] **Handle 24/7 market context: adjust sleep, lag guards, "market open" flags, and cycle notes for crypto-only periods** (Trading Scanner Experimental, Medium)
+  - Repo: `DrewBeFree/trading-scanner-experimental`
+  - Source: `apps/trading-scanner-experimental/BACKLOG.md:19`
+  - Stable ID: `task-ba74632ecfd4`
+- [Backlog] **Add basic crypto-specific risk / sizing tests and off-hours test cycle support** (Trading Scanner Experimental, Medium)
+  - Repo: `DrewBeFree/trading-scanner-experimental`
+  - Source: `apps/trading-scanner-experimental/BACKLOG.md:21`
+  - Stable ID: `task-1f044d337ecf`
+- [Backlog] **Surface crypto signals, ranked setups, and trades in main views (signals list, movers, history)** (Trading Scanner Experimental, Medium)
+  - Repo: `DrewBeFree/trading-scanner-experimental`
+  - Source: `apps/trading-scanner-experimental/BACKLOG.md:26`
+  - Stable ID: `task-70537aa60a17`
+- [Backlog] **Add or improve crypto regime awareness (DVOL cards, crypto psi sizing, separate or tagged sparklines)** (Trading Scanner Experimental, Medium)
+  - Repo: `DrewBeFree/trading-scanner-experimental`
+  - Source: `apps/trading-scanner-experimental/BACKLOG.md:28`
+  - Stable ID: `task-439b01a4b68a`
+- [Backlog] **Update Next Move recommendations and time-sensitive alerts to handle crypto 24/7 vs equity session context** (Trading Scanner Experimental, Medium)
+  - Repo: `DrewBeFree/trading-scanner-experimental`
+  - Source: `apps/trading-scanner-experimental/BACKLOG.md:30`
+  - Stable ID: `task-f2dfe96ef060`
+- [Backlog] **Make /api/bars and chart components work seamlessly for crypto symbols (BTC/USD etc.)** (Trading Scanner Experimental, Medium)
+  - Repo: `DrewBeFree/trading-scanner-experimental`
+  - Source: `apps/trading-scanner-experimental/BACKLOG.md:32`
+  - Stable ID: `task-fcc94df3e0ed`
+- [Backlog] **Enhance status/config and data summary to clearly report crypto universe size and bar counts** (Trading Scanner Experimental, Medium)
+  - Repo: `DrewBeFree/trading-scanner-experimental`
+  - Source: `apps/trading-scanner-experimental/BACKLOG.md:34`
+  - Stable ID: `task-36146698bb7e`
+- [Backlog] **(Stretch) Live paper positions + recent fills from Alpaca trading client for crypto visibility** (Trading Scanner Experimental, Medium)
+  - Repo: `DrewBeFree/trading-scanner-experimental`
+  - Source: `apps/trading-scanner-experimental/BACKLOG.md:36`
+  - Stable ID: `task-bdfd8d67908f`
+- [Backlog] **Update README with crypto paper trading quickstart, same-account notes, risks, and how to run experimental side-by-side (port 8788)** (Trading Scanner Experimental, Medium)
+  - Repo: `DrewBeFree/trading-scanner-experimental`
+  - Source: `apps/trading-scanner-experimental/BACKLOG.md:41`
+  - Stable ID: `task-47983c41920e`
+- [Backlog] **Update SESSION_LOG and add this BACKLOG.md so infra sync can push items to Leantime ("Apps Portfolio" or dedicated project)** (Trading Scanner Experimental, Medium)
+  - Repo: `DrewBeFree/trading-scanner-experimental`
+  - Source: `apps/trading-scanner-experimental/BACKLOG.md:43`
+  - Stable ID: `task-35ee46b1e5d3`
+- [Backlog] **Create GitHub issues (and sub-issues if needed) for the above so GitHub side of task sync also feeds Leantime** (Trading Scanner Experimental, Medium)
+  - Repo: `DrewBeFree/trading-scanner-experimental`
+  - Source: `apps/trading-scanner-experimental/BACKLOG.md:45`
+  - Stable ID: `task-f4feccaf3ff0`
+- [Backlog] **Add or expand unit/integration tests for new crypto paths (ingestion, db, confluence with is_crypto=True, executor)** (Trading Scanner Experimental, Medium)
+  - Repo: `DrewBeFree/trading-scanner-experimental`
+  - Source: `apps/trading-scanner-experimental/BACKLOG.md:47`
+  - Stable ID: `task-e0216ae0cb64`
+- [Backlog] **Keep experimental container naming, volumes, and dashboard port isolated from the reference scanner** (Trading Scanner Experimental, Medium)
+  - Repo: `DrewBeFree/trading-scanner-experimental`
+  - Source: `apps/trading-scanner-experimental/BACKLOG.md:49`
+  - Stable ID: `task-b56b530f7f82`
+- [Backlog] **Crypto-native signals (e.g. BTC-relative strength for alts, funding rate awareness, or Deribit options data)** (Trading Scanner Experimental, Medium)
+  - Repo: `DrewBeFree/trading-scanner-experimental`
+  - Source: `apps/trading-scanner-experimental/BACKLOG.md:54`
+  - Stable ID: `task-569229a22485`
+- [Backlog] **Config-driven dual mode (equity-only, crypto-primary, mixed)** (Trading Scanner Experimental, Medium)
+  - Repo: `DrewBeFree/trading-scanner-experimental`
+  - Source: `apps/trading-scanner-experimental/BACKLOG.md:56`
+  - Stable ID: `task-6c19469396f0`
+- [Backlog] **Bracket / stop orders for crypto paper trades** (Trading Scanner Experimental, Medium)
+  - Repo: `DrewBeFree/trading-scanner-experimental`
+  - Source: `apps/trading-scanner-experimental/BACKLOG.md:58`
+  - Stable ID: `task-444fd5e966cd`
+- [Backlog] **Simple equity curve + DD tracking that works for mixed stock/crypto paper book** (Trading Scanner Experimental, Medium)
+  - Repo: `DrewBeFree/trading-scanner-experimental`
+  - Source: `apps/trading-scanner-experimental/BACKLOG.md:60`
+  - Stable ID: `task-8942264db7a4`
+- [Backlog] **Walk-forward / gap stress testing that includes crypto symbols** (Trading Scanner Experimental, Medium)
+  - Repo: `DrewBeFree/trading-scanner-experimental`
+  - Source: `apps/trading-scanner-experimental/BACKLOG.md:62`
+  - Stable ID: `task-e1afa7a6c30e`
 - [Backlog] **PWA install banner — show iOS Safari tooltip nudging "Share → Add to Home Screen" on first visit; dismiss stored in localStorage** (UHaul Planner, Normal)
   - Repo: `DrewBeFree/uhaul-load-planner`
   - Source: `apps/uhaul-load-planner/BACKLOG.md:4`
@@ -78,47 +166,55 @@ Generated tasks: 30
   - Repo: `DrewBeFree/infra`
   - Source: `infra/BACKLOG.md:54`
   - Stable ID: `task-1ab1fdc791c0`
-- [Blocked] **Task 2 — Create project templates for apps and sites** (Infra, High)
+- [Blocked] **Task sync receiver — harden raw GitHub issue import before broad rollout** (Infra, Medium)
   - Repo: `DrewBeFree/infra`
   - Source: `infra/BACKLOG.md:61`
-  - Stable ID: `task-93a299f844c0`
+  - Stable ID: `task-2b4a42ea8c0a`
+- [Blocked] **Leantime visibility — make admin project lists independent from assignment rows** (Infra, High)
+  - Repo: `DrewBeFree/infra`
+  - Source: `infra/BACKLOG.md:70`
+  - Stable ID: `task-33acb829018d`
+- [Blocked] **Task 2 — Create project templates for apps and sites** (Infra, High)
+  - Repo: `DrewBeFree/infra`
+  - Source: `infra/BACKLOG.md:79`
+  - Stable ID: `task-81350c791d18`
 - [Blocked] **Task 3 — Design multi-system sync strategy for .claude memory and projects** (Infra, High)
   - Repo: `DrewBeFree/infra`
-  - Source: `infra/BACKLOG.md:67`
-  - Stable ID: `task-d24877040850`
+  - Source: `infra/BACKLOG.md:85`
+  - Stable ID: `task-13fd3bb73e55`
 - [Blocked] **Task 4 — Automate recurring tasks: logoff checklist, version management, updates** (Infra, High)
   - Repo: `DrewBeFree/infra`
-  - Source: `infra/BACKLOG.md:83`
-  - Stable ID: `task-c8b2fe3ea971`
+  - Source: `infra/BACKLOG.md:101`
+  - Stable ID: `task-fa473b6af7b8`
 - [Blocked] **Research project metrics + visualization approach** (Infra, Medium)
   - Repo: `DrewBeFree/infra`
-  - Source: `infra/BACKLOG.md:94`
-  - Stable ID: `task-f654d5ed1dc5`
+  - Source: `infra/BACKLOG.md:112`
+  - Stable ID: `task-5339ec1be7d0`
 - [Blocked] **Unified terminal / cross-machine access** (Infra, Normal)
   - Repo: `DrewBeFree/infra`
-  - Source: `infra/BACKLOG.md:100`
-  - Stable ID: `task-eddf11a260f0`
+  - Source: `infra/BACKLOG.md:118`
+  - Stable ID: `task-26f6772238a1`
 - [Blocked] **Atlas safety dashboard + Hermes handoff lane** (Infra, High)
   - Repo: `DrewBeFree/infra`
-  - Source: `infra/BACKLOG.md:105`
-  - Stable ID: `task-f66a7b5928d9`
+  - Source: `infra/BACKLOG.md:123`
+  - Stable ID: `task-803af3d87c05`
 - [Blocked] **Finish homelab-status-dashboard redesign** (Infra, Medium)
   - Repo: `DrewBeFree/infra`
-  - Source: `infra/BACKLOG.md:112`
-  - Stable ID: `task-a74885483a3a`
+  - Source: `infra/BACKLOG.md:130`
+  - Stable ID: `task-ff37c3e6afc8`
 - [Blocked] **GitHub file structure + multi-machine clone strategy** (Infra, Normal)
   - Repo: `DrewBeFree/infra`
-  - Source: `infra/BACKLOG.md:117`
-  - Stable ID: `task-e47c61ae90e0`
+  - Source: `infra/BACKLOG.md:135`
+  - Stable ID: `task-a0761f22a6e7`
 - [Blocked] **Docker strategy for homelab tools** (Infra, Medium)
   - Repo: `DrewBeFree/infra`
-  - Source: `infra/BACKLOG.md:122`
-  - Stable ID: `task-25f0c63a9cc7`
+  - Source: `infra/BACKLOG.md:140`
+  - Stable ID: `task-4c2825afeb4d`
 - [Blocked] **Wiki — Make all URLs clickable** (Infra, Normal)
   - Repo: `DrewBeFree/infra`
-  - Source: `infra/BACKLOG.md:127`
-  - Stable ID: `task-d10ce323599e`
+  - Source: `infra/BACKLOG.md:145`
+  - Stable ID: `task-5bbde9ed090d`
 - [Blocked] **Wiki — Upgrade UI** (Infra, Normal)
   - Repo: `DrewBeFree/infra`
-  - Source: `infra/BACKLOG.md:131`
-  - Stable ID: `task-4ff1865e67f0`
+  - Source: `infra/BACKLOG.md:149`
+  - Stable ID: `task-5fcde29aacc3`

@@ -1,0 +1,564 @@
+{
+  "mode": "apply",
+  "summary": {
+    "skip": 18,
+    "missing-project": 23,
+    "create": 13
+  },
+  "actions": [
+    {
+      "action": "skip",
+      "stable_id": "task-db49f2ba0483",
+      "title": "Task categories \u2014 category grouping deferred; revisit when core app is stable",
+      "project": "Daily Planner",
+      "project_id": 19,
+      "ticket_id": 75,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-458eb59f7fb9",
+      "title": "PWA install banner \u2014 show iOS Safari tooltip nudging \"Share \u2192 Add to Home Screen\" on first visit; dismiss stored in localStorage",
+      "project": "Daily Planner",
+      "project_id": 19,
+      "ticket_id": 76,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-f0b793c2918f",
+      "title": "Delete archived list \u2014 add a delete button to archived grocery and trip lists to permanently remove them",
+      "project": "Daily Planner",
+      "project_id": 19,
+      "ticket_id": 77,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-4d0663c14cf1",
+      "title": "Migrate host PIN gate to Supabase Auth \u2014 replace JS PIN check with email/password login so RLS DELETE/UPDATE policies can be scoped to authenticated role",
+      "project": "Linksy",
+      "project_id": 29,
+      "ticket_id": 78,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-7c9689f6b517",
+      "title": "PWA install banner \u2014 show iOS Safari tooltip nudging \"Share \u2192 Add to Home Screen\" on first visit; dismiss stored in localStorage",
+      "project": "Linksy",
+      "project_id": 29,
+      "ticket_id": 79,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-ef954720563c",
+      "title": "Custom System Prompts: Allow the user to input a custom system prompt override for any of the 6 debate personas directly from the UI.",
+      "project": "LLM Debate Union",
+      "project_id": 2,
+      "ticket_id": 80,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-93024d3c3ee7",
+      "title": "Interactive Audience Q&A: Allow the user to type in a custom question as the moderator during Round 3, prompting the active LLMs to respond dynamically.",
+      "project": "LLM Debate Union",
+      "project_id": 2,
+      "ticket_id": 81,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-f2733aa8a6c9",
+      "title": "Voice Synthesis: Integrate the Web Speech API (SpeechSynthesis) to read model responses aloud using browser-configured voices.",
+      "project": "LLM Debate Union",
+      "project_id": 2,
+      "ticket_id": 82,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-63adf70fbc07",
+      "title": "More Pre-programmed Motions: Add simulation databases for \"We are living in a computer simulation\" and \"Open-source AI will outlive proprietary ones\".",
+      "project": "LLM Debate Union",
+      "project_id": 2,
+      "ticket_id": 83,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-a91790a8da23",
+      "title": "Local Storage History: Save completed debate transcripts and final audience swing margins to browser localStorage or a local file for history viewing.",
+      "project": "LLM Debate Union",
+      "project_id": 2,
+      "ticket_id": 84,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-0c7a56c5ef1b",
+      "title": "Migrate host PIN gate to Supabase Auth \u2014 replace JS PIN check with email/password login so RLS DELETE/UPDATE policies can be scoped to authenticated role",
+      "project": "Poker Night",
+      "project_id": 27,
+      "ticket_id": 85,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-c6a0d5521a05",
+      "title": "PWA install banner \u2014 show iOS Safari tooltip nudging \"Share \u2192 Add to Home Screen\" on first visit; dismiss stored in localStorage",
+      "project": "Poker Night",
+      "project_id": 27,
+      "ticket_id": 86,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-bd0f2cd0b3f3",
+      "title": "PWA install banner \u2014 show iOS Safari tooltip nudging \"Share \u2192 Add to Home Screen\" on first visit; dismiss stored in localStorage",
+      "project": "RV Maintenance",
+      "project_id": 17,
+      "ticket_id": 88,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-d7eed15e89c7",
+      "title": "PWA install banner \u2014 show iOS Safari tooltip nudging \"Share \u2192 Add to Home Screen\" on first visit; dismiss stored in localStorage",
+      "project": "Soccer Pickup",
+      "project_id": 20,
+      "ticket_id": 89,
+      "reason": "already current"
+    },
+    {
+      "action": "missing-project",
+      "stable_id": "task-269fde714f57",
+      "title": "Add full Alpaca crypto historical + latest bar ingestion (CryptoHistoricalDataClient for BTC/USD, ETH/USD and expandables)",
+      "project": "Trading Scanner Experimental",
+      "project_id": null,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "missing-project",
+      "stable_id": "task-dbdee4e0a42b",
+      "title": "Extend DuckDB with crypto_bars table + upsert/fetch helpers (parallel to stock_bars)",
+      "project": "Trading Scanner Experimental",
+      "project_id": null,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "missing-project",
+      "stable_id": "task-7456fc0fe298",
+      "title": "Update main scanner loop and seed logic to run crypto_universe 24/7 alongside (or instead of) equity scans during market hours",
+      "project": "Trading Scanner Experimental",
+      "project_id": null,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "missing-project",
+      "stable_id": "task-bf5caefad983",
+      "title": "Make confluence robust for crypto: relax or replace VARS-vs-SPY logic, keep prefilters (min_crypto_adv_usd), EMA, RSI, squeeze",
+      "project": "Trading Scanner Experimental",
+      "project_id": null,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "missing-project",
+      "stable_id": "task-210479fd3f3c",
+      "title": "Ensure PaperExecutor + order submission works cleanly for crypto symbols (fractional qty, DVOL psi, no equity lag blocking crypto)",
+      "project": "Trading Scanner Experimental",
+      "project_id": null,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "missing-project",
+      "stable_id": "task-ba74632ecfd4",
+      "title": "Handle 24/7 market context: adjust sleep, lag guards, \"market open\" flags, and cycle notes for crypto-only periods",
+      "project": "Trading Scanner Experimental",
+      "project_id": null,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "missing-project",
+      "stable_id": "task-1f044d337ecf",
+      "title": "Add basic crypto-specific risk / sizing tests and off-hours test cycle support",
+      "project": "Trading Scanner Experimental",
+      "project_id": null,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "missing-project",
+      "stable_id": "task-70537aa60a17",
+      "title": "Surface crypto signals, ranked setups, and trades in main views (signals list, movers, history)",
+      "project": "Trading Scanner Experimental",
+      "project_id": null,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "missing-project",
+      "stable_id": "task-439b01a4b68a",
+      "title": "Add or improve crypto regime awareness (DVOL cards, crypto psi sizing, separate or tagged sparklines)",
+      "project": "Trading Scanner Experimental",
+      "project_id": null,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "missing-project",
+      "stable_id": "task-f2dfe96ef060",
+      "title": "Update Next Move recommendations and time-sensitive alerts to handle crypto 24/7 vs equity session context",
+      "project": "Trading Scanner Experimental",
+      "project_id": null,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "missing-project",
+      "stable_id": "task-fcc94df3e0ed",
+      "title": "Make /api/bars and chart components work seamlessly for crypto symbols (BTC/USD etc.)",
+      "project": "Trading Scanner Experimental",
+      "project_id": null,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "missing-project",
+      "stable_id": "task-36146698bb7e",
+      "title": "Enhance status/config and data summary to clearly report crypto universe size and bar counts",
+      "project": "Trading Scanner Experimental",
+      "project_id": null,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "missing-project",
+      "stable_id": "task-bdfd8d67908f",
+      "title": "(Stretch) Live paper positions + recent fills from Alpaca trading client for crypto visibility",
+      "project": "Trading Scanner Experimental",
+      "project_id": null,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "missing-project",
+      "stable_id": "task-47983c41920e",
+      "title": "Update README with crypto paper trading quickstart, same-account notes, risks, and how to run experimental side-by-side (port 8788)",
+      "project": "Trading Scanner Experimental",
+      "project_id": null,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "missing-project",
+      "stable_id": "task-35ee46b1e5d3",
+      "title": "Update SESSION_LOG and add this BACKLOG.md so infra sync can push items to Leantime (\"Apps Portfolio\" or dedicated project)",
+      "project": "Trading Scanner Experimental",
+      "project_id": null,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "missing-project",
+      "stable_id": "task-f4feccaf3ff0",
+      "title": "Create GitHub issues (and sub-issues if needed) for the above so GitHub side of task sync also feeds Leantime",
+      "project": "Trading Scanner Experimental",
+      "project_id": null,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "missing-project",
+      "stable_id": "task-e0216ae0cb64",
+      "title": "Add or expand unit/integration tests for new crypto paths (ingestion, db, confluence with is_crypto=True, executor)",
+      "project": "Trading Scanner Experimental",
+      "project_id": null,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "missing-project",
+      "stable_id": "task-b56b530f7f82",
+      "title": "Keep experimental container naming, volumes, and dashboard port isolated from the reference scanner",
+      "project": "Trading Scanner Experimental",
+      "project_id": null,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "missing-project",
+      "stable_id": "task-569229a22485",
+      "title": "Crypto-native signals (e.g. BTC-relative strength for alts, funding rate awareness, or Deribit options data)",
+      "project": "Trading Scanner Experimental",
+      "project_id": null,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "missing-project",
+      "stable_id": "task-6c19469396f0",
+      "title": "Config-driven dual mode (equity-only, crypto-primary, mixed)",
+      "project": "Trading Scanner Experimental",
+      "project_id": null,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "missing-project",
+      "stable_id": "task-444fd5e966cd",
+      "title": "Bracket / stop orders for crypto paper trades",
+      "project": "Trading Scanner Experimental",
+      "project_id": null,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "missing-project",
+      "stable_id": "task-8942264db7a4",
+      "title": "Simple equity curve + DD tracking that works for mixed stock/crypto paper book",
+      "project": "Trading Scanner Experimental",
+      "project_id": null,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "missing-project",
+      "stable_id": "task-e1afa7a6c30e",
+      "title": "Walk-forward / gap stress testing that includes crypto symbols",
+      "project": "Trading Scanner Experimental",
+      "project_id": null,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-bf08c88cab18",
+      "title": "PWA install banner \u2014 show iOS Safari tooltip nudging \"Share \u2192 Add to Home Screen\" on first visit; dismiss stored in localStorage",
+      "project": "UHaul Planner",
+      "project_id": 14,
+      "ticket_id": 90,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-a7097fe36107",
+      "title": "WSL Setup \u2014 Move infrastructure work to WSL",
+      "project": "Infra",
+      "project_id": 31,
+      "ticket_id": 91,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-4dab448a4ca0",
+      "title": "Ecosystem project tracking \u2014 standardize GitHub Projects + Issues",
+      "project": "Infra",
+      "project_id": 31,
+      "ticket_id": 92,
+      "reason": "already current"
+    },
+    {
+      "action": "skip",
+      "stable_id": "task-1ab1fdc791c0",
+      "title": "Cleanup \u2014 Remove hardcoded paths, use environment variables",
+      "project": "Infra",
+      "project_id": 31,
+      "ticket_id": 93,
+      "reason": "already current"
+    },
+    {
+      "action": "create",
+      "stable_id": "task-2b4a42ea8c0a",
+      "title": "Task sync receiver \u2014 harden raw GitHub issue import before broad rollout",
+      "project": "Infra",
+      "project_id": 31,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-33acb829018d",
+      "title": "Leantime visibility \u2014 make admin project lists independent from assignment rows",
+      "project": "Infra",
+      "project_id": 31,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-81350c791d18",
+      "title": "Task 2 \u2014 Create project templates for apps and sites",
+      "project": "Infra",
+      "project_id": 31,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-13fd3bb73e55",
+      "title": "Task 3 \u2014 Design multi-system sync strategy for .claude memory and projects",
+      "project": "Infra",
+      "project_id": 31,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-fa473b6af7b8",
+      "title": "Task 4 \u2014 Automate recurring tasks: logoff checklist, version management, updates",
+      "project": "Infra",
+      "project_id": 31,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-5339ec1be7d0",
+      "title": "Research project metrics + visualization approach",
+      "project": "Infra",
+      "project_id": 31,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-26f6772238a1",
+      "title": "Unified terminal / cross-machine access",
+      "project": "Infra",
+      "project_id": 31,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-803af3d87c05",
+      "title": "Atlas safety dashboard + Hermes handoff lane",
+      "project": "Infra",
+      "project_id": 31,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-ff37c3e6afc8",
+      "title": "Finish homelab-status-dashboard redesign",
+      "project": "Infra",
+      "project_id": 31,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-a0761f22a6e7",
+      "title": "GitHub file structure + multi-machine clone strategy",
+      "project": "Infra",
+      "project_id": 31,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-4c2825afeb4d",
+      "title": "Docker strategy for homelab tools",
+      "project": "Infra",
+      "project_id": 31,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-5bbde9ed090d",
+      "title": "Wiki \u2014 Make all URLs clickable",
+      "project": "Infra",
+      "project_id": 31,
+      "ticket_id": null,
+      "reason": ""
+    },
+    {
+      "action": "create",
+      "stable_id": "task-5fcde29aacc3",
+      "title": "Wiki \u2014 Upgrade UI",
+      "project": "Infra",
+      "project_id": 31,
+      "ticket_id": null,
+      "reason": ""
+    }
+  ],
+  "applied": [
+    {
+      "action": "create",
+      "stable_id": "task-2b4a42ea8c0a",
+      "ticket_id": 130
+    },
+    {
+      "action": "create",
+      "stable_id": "task-33acb829018d",
+      "ticket_id": 131
+    },
+    {
+      "action": "create",
+      "stable_id": "task-81350c791d18",
+      "ticket_id": 132
+    },
+    {
+      "action": "create",
+      "stable_id": "task-13fd3bb73e55",
+      "ticket_id": 133
+    },
+    {
+      "action": "create",
+      "stable_id": "task-fa473b6af7b8",
+      "ticket_id": 134
+    },
+    {
+      "action": "create",
+      "stable_id": "task-5339ec1be7d0",
+      "ticket_id": 135
+    },
+    {
+      "action": "create",
+      "stable_id": "task-26f6772238a1",
+      "ticket_id": 136
+    },
+    {
+      "action": "create",
+      "stable_id": "task-803af3d87c05",
+      "ticket_id": 137
+    },
+    {
+      "action": "create",
+      "stable_id": "task-ff37c3e6afc8",
+      "ticket_id": 138
+    },
+    {
+      "action": "create",
+      "stable_id": "task-a0761f22a6e7",
+      "ticket_id": 139
+    },
+    {
+      "action": "create",
+      "stable_id": "task-4c2825afeb4d",
+      "ticket_id": 140
+    },
+    {
+      "action": "create",
+      "stable_id": "task-5bbde9ed090d",
+      "ticket_id": 141
+    },
+    {
+      "action": "create",
+      "stable_id": "task-5fcde29aacc3",
+      "ticket_id": 142
+    }
+  ],
+  "errors": []
+}
