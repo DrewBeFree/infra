@@ -1,0 +1,24 @@
+--- Projects.php
++++ Projects.php
+@@ -789,13 +789,19 @@
+     public function getProjectHierarchyAssignedToUser($userId, string $projectStatus = 'open', $clientId = null): array
+     {
+ 
+-        // Load all projects user is assigned to
++        // Owners/admins can manage every project they have global access to.
++        // Regular users keep the existing assigned-only menu behavior.
++        $accessStatus = Auth::userIsAtLeast(Roles::$admin, true)
++            ? 'all'
++            : 'assigned';
++
++        // Load projects for the user's menu hierarchy
+         $projects = $this->projectRepository->getUserProjects(
+             userId: $userId,
+             projectStatus: $projectStatus,
+             clientId: (int) $clientId,
+-            accessStatus: 'assigned'
++            accessStatus: $accessStatus
+         );
+         $projects = self::dispatch_filter('afterLoadingProjects', $projects);
+ 
+         // Build project hierarchy
