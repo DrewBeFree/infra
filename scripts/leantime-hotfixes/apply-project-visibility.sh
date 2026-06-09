@@ -18,11 +18,6 @@ if ! docker ps --format '{{.Names}}' | grep -qx "$CONTAINER"; then
   exit 1
 fi
 
-if docker exec "$CONTAINER" grep -q 'accessStatus: $accessStatus' "$SERVICE_FILE"; then
-  echo "Leantime project visibility hotfix already applied to $CONTAINER"
-  exit 0
-fi
-
 docker cp "$CONTAINER:$SERVICE_FILE" "$WORK_DIR/Projects.php"
 cp "$WORK_DIR/Projects.php" "$WORK_DIR/Projects.php.original"
 
@@ -32,7 +27,23 @@ import sys
 
 path = Path(sys.argv[1])
 text = path.read_text(encoding="utf-8")
-old = """        // Load all projects user is assigned to
+changed = False
+
+assigned_list_old = """        $projects = $this->projectRepository->getUserProjects(userId: $userId, projectStatus: $projectStatus, clientId: $clientId, projectTypes: $projectTypes);
+"""
+assigned_list_new = """        // Owners/admins should see all globally accessible projects on project list pages.
+        // Regular users keep assigned-only project page behavior.
+        $accessStatus = Auth::userIsAtLeast(Roles::$admin, true)
+            ? 'all'
+            : 'assigned';
+
+        $projects = $this->projectRepository->getUserProjects(
+            userId: $userId, projectStatus: $projectStatus, clientId: $clientId,
+            accessStatus: $accessStatus, projectTypes: $projectTypes
+        );
+"""
+
+menu_old = """        // Load all projects user is assigned to
         $projects = $this->projectRepository->getUserProjects(
             userId: $userId,
             projectStatus: $projectStatus,
@@ -40,7 +51,7 @@ old = """        // Load all projects user is assigned to
             accessStatus: 'assigned'
         );
 """
-new = """        // Owners/admins can manage every project they have global access to.
+menu_new = """        // Owners/admins can manage every project they have global access to.
         // Regular users keep the existing assigned-only menu behavior.
         $accessStatus = Auth::userIsAtLeast(Roles::$admin, true)
             ? 'all'
@@ -54,9 +65,23 @@ new = """        // Owners/admins can manage every project they have global acce
             accessStatus: $accessStatus
         );
 """
-if old not in text:
-    raise SystemExit("Expected Projects.php snippet was not found; refusing to patch")
-path.write_text(text.replace(old, new, 1), encoding="utf-8")
+
+if assigned_list_old in text:
+    text = text.replace(assigned_list_old, assigned_list_new, 1)
+    changed = True
+elif "Regular users keep assigned-only project page behavior." not in text:
+    raise SystemExit("Expected getProjectsAssignedToUser snippet was not found; refusing to patch")
+
+if menu_old in text:
+    text = text.replace(menu_old, menu_new, 1)
+    changed = True
+elif "Regular users keep the existing assigned-only menu behavior." not in text:
+    raise SystemExit("Expected getProjectHierarchyAssignedToUser snippet was not found; refusing to patch")
+
+if not changed:
+    print("Leantime project visibility hotfix already applied")
+else:
+    path.write_text(text, encoding="utf-8")
 PY
 
 docker exec "$CONTAINER" sh -c "cd '$SERVICE_DIR' && cp Projects.php Projects.php.bak-project-visibility-\$(date +%Y%m%d%H%M%S)"

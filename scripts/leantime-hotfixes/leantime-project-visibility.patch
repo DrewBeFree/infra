@@ -1,6 +1,24 @@
 --- Projects.php
 +++ Projects.php
-@@ -789,13 +789,19 @@
+@@ -704,7 +704,16 @@
+      */
+     public function getProjectsAssignedToUser($userId, string $projectStatus = 'open', $clientId = null, string $projectTypes = 'all'): array
+     {
+-        $projects = $this->projectRepository->getUserProjects(userId: $userId, projectStatus: $projectStatus, clientId: $clientId, projectTypes: $projectTypes);
++        // Owners/admins should see all globally accessible projects on project list pages.
++        // Regular users keep assigned-only project page behavior.
++        $accessStatus = Auth::userIsAtLeast(Roles::$admin, true)
++            ? 'all'
++            : 'assigned';
++
++        $projects = $this->projectRepository->getUserProjects(
++            userId: $userId, projectStatus: $projectStatus, clientId: $clientId,
++            accessStatus: $accessStatus, projectTypes: $projectTypes
++        );
+ 
+         if ($projects) {
+             return $projects;
+@@ -789,13 +798,19 @@
      public function getProjectHierarchyAssignedToUser($userId, string $projectStatus = 'open', $clientId = null): array
      {
  
