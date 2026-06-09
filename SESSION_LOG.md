@@ -1790,3 +1790,25 @@
 **Next up:**
 - Drew should hard-refresh or reload `http://atlas:8095/projects/showMy` while logged in and confirm `Trading Scanner Experimental` appears.
 - If it still does not show, inspect authenticated rendered HTML/API payload rather than the unauthenticated curl path.
+
+## 2026-06-08 - Leantime CSP htmx favorite hotfix
+
+**What we did:**
+- Investigated Drew's `/projects/showMy` console errors after the Leantime owner visibility fix.
+- Confirmed the favorite/unfavorite failure was a CSP problem: Leantime sent an app CSP that allowed `script-src 'unsafe-eval'`, but nginx added a second CSP header without `script-src`, so browsers fell back to `default-src` and blocked htmx JavaScript evaluation.
+- Added `scripts/leantime-hotfixes/apply-csp-header.sh` to the infra repo and documented it in `scripts/leantime-hotfixes/README.md`.
+- Fixed the script after the first live apply attempt showed container permission/backup-path issues; the final version backs up and validates nginx config as container root.
+- Pushed commits `1e501d4` and `9a14ecb` to `DrewBeFree/infra` `main`.
+- Applied the hotfix live on Atlas and verified nginx config passes.
+- Verified `curl -sI http://127.0.0.1:8095/projects/showMy` now shows the nginx CSP includes `script-src 'self' 'unsafe-inline' 'unsafe-eval' unpkg.com`.
+- Added the follow-up validation note to infra issue #22: https://github.com/DrewBeFree/infra/issues/22#issuecomment-4655051511
+
+**Where we stopped:**
+- Atlas Leantime has the live CSP hotfix applied.
+- `DrewBeFree/infra` `main` contains the documented CSP hotfix overlay.
+- The htmx `EvalError` should be fixed; the `AbortError: Transition was skipped` message may still appear as separate frontend transition noise if actions succeed.
+
+**Next up:**
+- While logged into `http://atlas:8095/projects/showMy`, favorite and unfavorite a project and confirm the CSP/htmx `EvalError` is gone.
+- If `AbortError: Transition was skipped` still appears and blocks behavior, debug it separately from Leantime project visibility and CSP.
+- Consider reducing duplicate CSP headers later by moving CSP ownership to one layer instead of keeping both app and nginx headers.
