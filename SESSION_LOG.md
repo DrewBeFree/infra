@@ -1770,3 +1770,23 @@
 - Verify visually in Leantime after login that `Trading Scanner Experimental` appears for Drew without assigning Drew to the project.
 - Decide whether to keep this as an infra overlay or create a dedicated Leantime fork/upstream PR.
 - Harden API-created project defaults so future sync-created projects get complete `state`/`active` values.
+
+
+## 2026-06-08 - Extend Leantime visibility hotfix to projects/showMy
+
+**What we did:**
+- Drew tested `http://atlas:8095/projects/showMy` and still could not see the new sync-created project.
+- Found the first hotfix only covered the menu hierarchy. The `projects/showMy` route uses `Projects::getProjectsAssignedToUser()`, which still queried assigned-only projects.
+- Updated the Atlas infra overlay so `getProjectsAssignedToUser()` uses `accessStatus: all` for global admin/owner roles and preserves assigned-only behavior for regular users.
+- Pushed the follow-up overlay commit `0d4bc74` to `DrewBeFree/infra` and fast-forwarded `main`.
+- Applied the revised overlay to the live Atlas `leantime` container, restarted Leantime, and verified both patched accessStatus code paths are present.
+- Verified `/projects/showMy` returns the expected login redirect when unauthenticated.
+- Added a follow-up comment to infra issue #22.
+
+**Where we stopped:**
+- Atlas Leantime now has both the menu visibility and `showMy` visibility patches applied.
+- DevTools `AbortError: Transition was skipped` appears to be a frontend transition/navigation warning, not the project visibility root cause.
+
+**Next up:**
+- Drew should hard-refresh or reload `http://atlas:8095/projects/showMy` while logged in and confirm `Trading Scanner Experimental` appears.
+- If it still does not show, inspect authenticated rendered HTML/API payload rather than the unauthenticated curl path.
