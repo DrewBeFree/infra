@@ -34,6 +34,7 @@ nav:
       - Versioning: workflows/versioning.md
       - Logoff: workflows/logoff.md
       - Claude Setup: workflows/claude-setup.md
+  - Benchmarks: benchmarks/index.md
 
 not_in_nav: |
   /projects/*.md
