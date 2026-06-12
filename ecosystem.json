@@ -1581,6 +1581,39 @@
           "logs"
         ]
       }
+    },
+    {
+      "id": "ai-token-dashboard",
+      "name": "AI Token Dashboard",
+      "visibility": "sensitive",
+      "summary": "Atlas dashboard for AI token usage, API value, provider settings, subscription costs, and local Ollama configuration.",
+      "liveUrls": [
+        "http://atlas:7474"
+      ],
+      "localPath": "~/services/ai-dashboard",
+      "docs": [
+        {
+          "label": "AI Dashboard session log",
+          "url": "https://github.com/DrewBeFree/infra/blob/main/SESSION_LOG.md"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "systemd-service",
+          "host": "atlas",
+          "path": "~/services/ai-dashboard",
+          "url": "http://atlas:7474",
+          "notes": "Atlas-hosted token and API usage dashboard. Settings save to ~/services/ai-dashboard/config.json."
+        }
+      ],
+      "statusControl": {
+        "state": "live",
+        "actions": [
+          "open",
+          "status",
+          "logs"
+        ]
+      }
     }
   ],
   "docs": [
