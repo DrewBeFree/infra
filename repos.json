@@ -1,143 +1,167 @@
 {
-  "baseDirectory": "C:\\Users\\drewb\\Documents\\GitHub",
-  "repositories": [
-    {
-      "name": "adhd-snap",
-      "github": "https://github.com/DrewBeFree/adhd-snap.git",
-      "targetDirectory": "apps/adhd-snap",
-      "type": "app"
-    },
-    {
-      "name": "daily-planner",
-      "github": "https://github.com/DrewBeFree/daily-planner.git",
-      "targetDirectory": "apps/daily-planner",
-      "type": "app"
-    },
-    {
-      "name": "golf",
-      "github": "https://github.com/DrewBeFree/golf.git",
-      "targetDirectory": "apps/golf",
-      "type": "app"
-    },
-    {
-      "name": "poker",
-      "github": "https://github.com/DrewBeFree/poker.git",
-      "targetDirectory": "apps/poker",
-      "type": "app"
-    },
-    {
-      "name": "recipes",
-      "github": "https://github.com/DrewBeFree/recipes.git",
-      "targetDirectory": "apps/recipes",
-      "type": "app"
-    },
-    {
-      "name": "soccer-pickup",
-      "github": "https://github.com/DrewBeFree/soccer-pickup.git",
-      "targetDirectory": "apps/soccer-pickup",
-      "type": "app"
-    },
-    {
-      "name": "rv-maintenance",
-      "github": "https://github.com/DrewBeFree/rv-maintenance.git",
-      "targetDirectory": "apps/rv-maintenance",
-      "type": "app"
-    },
-    {
-      "name": "uhaul-load-planner",
-      "github": "https://github.com/DrewBeFree/uhaul-load-planner.git",
-      "targetDirectory": "apps/uhaul-load-planner",
-      "type": "app"
-    },
-    {
-      "name": "DrewBeFree",
-      "github": "https://github.com/DrewBeFree/DrewBeFree.git",
-      "targetDirectory": "apps/DrewBeFree",
-      "type": "app"
-    },
-    {
-      "name": "drewbefree-command-center",
-      "github": "https://github.com/DrewBeFree/drewbefree-command-center.git",
-      "targetDirectory": "apps/drewbefree-command-center",
-      "type": "app"
-    },
-    {
-      "name": "llm-debate-union",
-      "github": "https://github.com/DrewBeFree/llm-debate-union.git",
-      "targetDirectory": "apps/llm-debate-union",
-      "type": "app"
-    },
-    {
-      "name": "recap-viewer",
-      "github": "https://github.com/DrewBeFree/recap-viewer.git",
-      "targetDirectory": "apps/recap-viewer",
-      "type": "app"
-    },
-    {
-      "name": "ai-dog-trainer",
-      "github": "https://github.com/DrewBeFree/ai-dog-trainer.git",
-      "targetDirectory": "apps/ai-dog-trainer",
-      "type": "app"
-    },
-    {
-      "name": "dwebbsolutions",
-      "github": "https://github.com/DrewBeFree/dwebbsolutions.git",
-      "targetDirectory": "sites/dwebbsolutions",
-      "type": "site"
-    },
-    {
-      "name": "kybernet-tech",
-      "github": "https://github.com/DrewBeFree/kybernet-tech.git",
-      "targetDirectory": "sites/kybernet-tech",
-      "type": "site"
-    },
-    {
-      "name": "photography",
-      "github": "https://github.com/DrewBeFree/photography.git",
-      "targetDirectory": "sites/photography",
-      "type": "site"
-    },
-    {
-      "name": "recap-agents",
-      "github": "https://github.com/DrewBeFree/recap-agents.git",
-      "targetDirectory": "agents/recap-agents",
-      "type": "agent"
-    },
-    {
-      "name": "answering-agent",
-      "github": "https://github.com/DrewBeFree/answering-agent.git",
-      "targetDirectory": "agents/answering-agent",
-      "type": "agent"
-    },
-    {
-      "name": "lead-gen-agent",
-      "github": "https://github.com/DrewBeFree/lead-gen-agent.git",
-      "targetDirectory": "agents/lead-gen-agent",
-      "type": "agent"
-    },
-    {
-      "name": "bob",
-      "github": "https://github.com/DrewBeFree/bob.git",
-      "targetDirectory": "agents/bob",
-      "type": "agent"
-    },
-    {
-      "name": "homelab",
-      "github": "https://github.com/DrewBeFree/homelab.git",
-      "targetDirectory": "homelab",
-      "type": "infrastructure"
-    },
-    {
-      "name": "infra",
-      "github": "https://github.com/DrewBeFree/infra.git",
-      "targetDirectory": "infra",
-      "type": "infrastructure"
-    },
-    {
-      "name": "claude-config",
-      "github": "https://github.com/DrewBeFree/claude-config.git",
-      "targetDirectory": "claude-config",
-      "type": "infrastructure"
-    }
-  ]
+    "baseDirectory":  "/home/drew/GitHub",
+    "repositories":  [
+                         {
+                             "name":  "adhd-snap",
+                             "targetDirectory":  "apps/adhd-snap",
+                             "type":  "app",
+                             "github":  "https://github.com/DrewBeFree/adhd-snap.git"
+                         },
+                         {
+                             "name":  "daily-planner",
+                             "targetDirectory":  "apps/daily-planner",
+                             "type":  "app",
+                             "github":  "https://github.com/DrewBeFree/daily-planner.git"
+                         },
+                         {
+                             "name":  "golf",
+                             "targetDirectory":  "apps/golf",
+                             "type":  "app",
+                             "github":  "https://github.com/DrewBeFree/golf.git"
+                         },
+                         {
+                             "name":  "poker",
+                             "targetDirectory":  "apps/poker",
+                             "type":  "app",
+                             "github":  "https://github.com/DrewBeFree/poker.git"
+                         },
+                         {
+                             "name":  "recipes",
+                             "targetDirectory":  "apps/recipes",
+                             "type":  "app",
+                             "github":  "https://github.com/DrewBeFree/recipes.git"
+                         },
+                         {
+                             "name":  "soccer-pickup",
+                             "targetDirectory":  "apps/soccer-pickup",
+                             "type":  "app",
+                             "github":  "https://github.com/DrewBeFree/soccer-pickup.git"
+                         },
+                         {
+                             "name":  "rv-maintenance",
+                             "targetDirectory":  "apps/rv-maintenance",
+                             "type":  "app",
+                             "github":  "https://github.com/DrewBeFree/rv-maintenance.git"
+                         },
+                         {
+                             "name":  "uhaul-load-planner",
+                             "targetDirectory":  "apps/uhaul-load-planner",
+                             "type":  "app",
+                             "github":  "https://github.com/DrewBeFree/uhaul-load-planner.git"
+                         },
+                         {
+                             "name":  "DrewBeFree",
+                             "targetDirectory":  "apps/DrewBeFree",
+                             "type":  "app",
+                             "github":  "https://github.com/DrewBeFree/DrewBeFree.git"
+                         },
+                         {
+                             "name":  "drewbefree-command-center",
+                             "targetDirectory":  "apps/drewbefree-command-center",
+                             "type":  "app",
+                             "github":  "https://github.com/DrewBeFree/drewbefree-command-center.git"
+                         },
+                         {
+                             "name":  "llm-debate-union",
+                             "targetDirectory":  "apps/llm-debate-union",
+                             "type":  "app",
+                             "github":  "https://github.com/DrewBeFree/llm-debate-union.git"
+                         },
+                         {
+                             "name":  "recap-viewer",
+                             "targetDirectory":  "apps/recap-viewer",
+                             "type":  "app",
+                             "github":  "https://github.com/DrewBeFree/recap-viewer.git"
+                         },
+                         {
+                             "name":  "ai-dog-trainer",
+                             "targetDirectory":  "apps/ai-dog-trainer",
+                             "type":  "app",
+                             "github":  "https://github.com/DrewBeFree/ai-dog-trainer.git"
+                         },
+                         {
+                             "name":  "yes",
+                             "targetDirectory":  "apps/yes",
+                             "type":  "app",
+                             "github":  "https://github.com/DrewBeFree/yes-app.git"
+                         },
+                         {
+                             "name":  "trading-scanner",
+                             "targetDirectory":  "apps/trading-scanner",
+                             "type":  "app",
+                             "github":  "https://github.com/DrewBeFree/trading-scanner.git"
+                         },
+                         {
+                             "name":  "trading-scanner-experimental",
+                             "targetDirectory":  "apps/trading-scanner-experimental",
+                             "type":  "app",
+                             "github":  "https://github.com/DrewBeFree/trading-scanner-experimental.git"
+                         },
+                         {
+                             "name":  "dwebbsolutions",
+                             "targetDirectory":  "sites/dwebbsolutions",
+                             "type":  "site",
+                             "github":  "https://github.com/DrewBeFree/dwebbsolutions.git"
+                         },
+                         {
+                             "name":  "kybernet-tech",
+                             "targetDirectory":  "sites/kybernet-tech",
+                             "type":  "site",
+                             "github":  "https://github.com/DrewBeFree/kybernet-tech.git"
+                         },
+                         {
+                             "name":  "photography",
+                             "targetDirectory":  "sites/photography",
+                             "type":  "site",
+                             "github":  "https://github.com/DrewBeFree/photography.git"
+                         },
+                         {
+                             "name":  "luke-codex-guide",
+                             "targetDirectory":  "sites/luke-codex-guide",
+                             "type":  "site",
+                             "github":  "https://github.com/DrewBeFree/luke-codex-guide.git"
+                         },
+                         {
+                             "name":  "recap-agents",
+                             "targetDirectory":  "agents/recap-agents",
+                             "type":  "agent",
+                             "github":  "https://github.com/DrewBeFree/recap-agents.git"
+                         },
+                         {
+                             "name":  "answering-agent",
+                             "targetDirectory":  "agents/answering-agent",
+                             "type":  "agent",
+                             "github":  "https://github.com/DrewBeFree/answering-agent.git"
+                         },
+                         {
+                             "name":  "lead-gen-agent",
+                             "targetDirectory":  "agents/lead-gen-agent",
+                             "type":  "agent",
+                             "github":  "https://github.com/DrewBeFree/lead-gen-agent.git"
+                         },
+                         {
+                             "name":  "bob",
+                             "targetDirectory":  "agents/bob",
+                             "type":  "agent",
+                             "github":  "https://github.com/DrewBeFree/bob.git"
+                         },
+                         {
+                             "name":  "homelab",
+                             "targetDirectory":  "homelab",
+                             "type":  "infrastructure",
+                             "github":  "https://github.com/DrewBeFree/homelab.git"
+                         },
+                         {
+                             "name":  "infra",
+                             "targetDirectory":  "infra",
+                             "type":  "infrastructure",
+                             "github":  "https://github.com/DrewBeFree/infra.git"
+                         },
+                         {
+                             "name":  "claude-config",
+                             "targetDirectory":  "claude-config",
+                             "type":  "infrastructure",
+                             "github":  "https://github.com/DrewBeFree/claude-config.git"
+                         }
+                     ]
 }

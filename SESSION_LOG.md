@@ -1852,3 +1852,16 @@
 
 **Next up:**
 - Decide whether to keep Leantime changes as infra overlays, create a private operational fork, or prepare a public fork/upstream PR path.
+## 2026-06-17 - Merge Atlas workspace manifest branch
+
+**What we did:**
+- Merged the Atlas canonical workspace branch into `main` from a clean temporary clone because the active Alienware and Atlas infra checkouts both had dirty local work.
+- Resolved `repos.json` as the union of existing repos plus `yes`, `trading-scanner`, `trading-scanner-experimental`, and `luke-codex-guide`, with `/home/drew/GitHub` as the default base directory.
+- Kept current `main` session history and preserved the Atlas workspace documentation and clone-manifest script from the feature branch.
+
+**Where we stopped:**
+- The merge is ready to validate and push from the temporary clone.
+- `G:` is the live Alienware mapping to `\\atlas\GitHub`; `H:` cannot be mapped until Atlas exposes a home share such as `\\atlas\drew`.
+
+**Next up:**
+- Push the merge to `main`, then fast-forward the dirty local/Atlas infra checkouts later when their uncommitted work is reviewed or archived.
