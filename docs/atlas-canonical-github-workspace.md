@@ -18,6 +18,24 @@ Repos are cloned under the same top-level groups on Atlas and any temporary loca
 - `infra`
 - `claude-config`
 
+## Alienware GUI Access
+
+Alienware can run GUI tools while editing the Atlas working tree.
+
+- Atlas path: `/home/drew/GitHub`
+- Windows UNC path: `\\atlas\GitHub`
+- Windows mapped drive: `G:\`
+
+Open Codex, OpenAI desktop tools, VS Code, and file pickers against `G:\` or `\\atlas\GitHub`, not `C:\Users\drewb\Documents\GitHub`, when the work should happen on Atlas.
+
+The persistent drive mapping is:
+
+```powershell
+net use G: \\atlas\GitHub /persistent:yes
+```
+
+If `G:` disappears after a Windows/network reset, rerun that command after confirming `\\atlas\GitHub` is reachable.
+
 Run this from Atlas to clone missing repos and fast-forward clean existing repos:
 
 ```bash
