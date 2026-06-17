@@ -1852,6 +1852,25 @@
 
 **Next up:**
 - Decide whether to keep Leantime changes as infra overlays, create a private operational fork, or prepare a public fork/upstream PR path.
+## 2026-06-17 - Push ahead repos and align Atlas workspace
+
+**What we did:**
+- Pushed the one-commit-ahead app repos from Alienware to GitHub: `ai-dog-trainer`, `recap-viewer`, `recipes`, `rv-maintenance`, and `soccer-pickup`.
+- Confirmed Command Center `dev`, `main`, and `origin/main` were already the same commit, then pushed `origin/dev` forward to match.
+- Fast-forwarded Atlas checkouts for the pushed app repos and fast-forwarded `recipes/dev` to `main`, then pushed `origin/dev`.
+- Added a scoped Git safe-directory rule for `\\atlas\GitHub` so Alienware GUI Git tools can work against `G:\`.
+- Updated active Alienware Codex/Claude config references to prefer `G:\` for repo work while leaving app state under local user config directories.
+- Merged `infra/feat/morning-repo-sync-brief` into `infra/main` from a clean temporary clone, resolved the manifest/log conflicts, pushed `main`, and fast-forwarded Atlas `G:\infra`.
+
+**Where we stopped:**
+- `G:` is mapped persistently to `\\atlas\GitHub`; `H:` cannot be mapped yet because Atlas does not expose `\\atlas\drew`.
+- Atlas `infra/main` is at `c16ee7f`, matching `origin/main`, with existing uncommitted Leantime/task-sync work still untouched.
+- `trading-scanner-experimental` on Atlas still has dirty local work and a duplicate empty CI-trigger commit divergence, so it was intentionally left alone.
+
+**Next up:**
+- Enable a Samba home share on Atlas for `/home/drew` if we want `H:` -> `\\atlas\drew`.
+- Review the remaining dirty repos on Atlas, especially `trading-scanner-experimental` and `infra` task-sync files, before pruning more Alienware copies.
+
 ## 2026-06-17 - Merge Atlas workspace manifest branch
 
 **What we did:**
