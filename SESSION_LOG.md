@@ -1,3 +1,27 @@
+## 2026-06-17 - Atlas canonical repo migration pass
+
+**What we did:**
+- Confirmed the intended model: GitHub is source of truth, Atlas owns the canonical development checkout at `/home/drew/GitHub`, and Alienware should not hold authoritative repo state.
+- Added `yes`, `trading-scanner`, `trading-scanner-experimental`, and `luke-codex-guide` to `infra/repos.json` so they fit the existing `apps/`, `sites/`, `agents/`, `homelab`, `infra`, `claude-config` structure.
+- Upgraded `scripts/clone_manifest.py` from clone-only to clone-or-sync: it clones missing repos, fetches existing repos, fast-forwards clean behind repos with `--pull`, and skips dirty/ahead repos.
+- Added `docs/atlas-canonical-github-workspace.md` documenting the Atlas/GitHub/Alienware model and pruning rule.
+- Copied the updated manifest and sync script to Atlas.
+- Ran the sync on Atlas; it cloned `/home/drew/GitHub/apps/yes` and `/home/drew/GitHub/sites/luke-codex-guide`.
+- Pushed infra branch `feat/morning-repo-sync-brief` to GitHub at `963d2a0`.
+- Archived clean Alienware-only active checkouts `apps/yes` and `sites/luke-codex-guide` to `C:\Users\drewb\Documents\GitHub-archive\alienware-pruned-2026-06-17\`.
+- Left dirty/ahead Alienware repos in place rather than deleting local-only work.
+- Verified Hermes still returns `200` at `http://atlas:9119/command-center`.
+
+**Where we stopped:**
+- Atlas has the canonical 27-repo manifest shape.
+- Alienware active tree no longer contains the clean extra `yes` or `luke-codex-guide` checkouts.
+- Remaining Alienware checkouts still include dirty/ahead work that needs commit/push or explicit discard before pruning.
+- Atlas also has dirty repos, mostly `.github/` task-sync files plus real work in `llm-debate-union`, `lead-gen-agent`, and both trading scanner repos.
+
+**Next up:**
+- Review and commit/push the remaining dirty Atlas repos in batches, then rerun `clone_manifest.py --pull` and archive the matching Alienware checkouts once each repo is clean and represented on GitHub.
+- Decide whether `agents/interactive-setup` should get a GitHub repo or be archived/discarded; `DrewBeFree/interactive-setup` does not currently exist.
+
 ## 2026-06-17 - Restore Hermes dashboard on Atlas
 
 **What we did:**
