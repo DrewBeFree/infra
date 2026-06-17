@@ -1,3 +1,89 @@
+## 2026-06-17 - Restore Hermes dashboard on Atlas
+
+**What we did:**
+- Reproduced `http://atlas:9119/` and `/command-center` returning `500 Internal Server Error`.
+- Traced the live Hermes dashboard failure to `FileNotFoundError` for `/home/drew/.hermes/hermes-agent/hermes_cli/web_dist/index.html`.
+- Found Hermes had moved to `/home/drew/.hermes/hermes-agent.full`, while the service unit and CLI wrapper still referenced `/home/drew/.hermes/hermes-agent`.
+- Restored `/home/drew/.hermes/hermes-agent` as a symlink to `/home/drew/.hermes/hermes-agent.full`.
+- Restarted `hermes-dashboard.service` and `hermes-gateway.service`; Hermes rebuilt the web UI and reported `HERMES_DASHBOARD_READY port=9119`.
+- Verified `/`, `/command-center`, `/favicon.ico`, and `/api/status` return `200` through `http://atlas:9119`.
+- Verified the in-app browser loads `Hermes Agent - Dashboard` at `/command-center` with no captured console errors.
+
+**Where we stopped:**
+- Hermes dashboard and Command Center are back up through the Atlas Tailscale nginx proxy.
+- `hermes-gateway.service` still logs a Linear MCP OAuth authorization requirement, but that was not the dashboard 500 root cause.
+
+**Next up:**
+- If Hermes breaks after a future update, check whether `/home/drew/.hermes/hermes-agent` still points at the active checkout before debugging nginx or browser headers.
+
+## 2026-06-07 - Lead Desk Hub reachable from Alienware
+
+**What we did:**
+- Confirmed Alienware could not connect to Atlas ports `3027` or `8017`.
+- Confirmed Atlas Tailscale IP is `100.71.165.80`.
+- Started persistent user services on Atlas:
+  - `lead-gen-api.service` bound to `100.71.165.80:8017`
+  - `lead-desk-hub.service` bound to `100.71.165.80:3027`
+- Kept the services on the Tailscale IP instead of binding to all interfaces.
+- Verified from Alienware that `http://atlas:3027` returns `200` with title `Surf the Webb Lead Desk`.
+- Verified from Alienware that `http://atlas:8017/api/dashboard` returns dashboard JSON.
+
+**Where we stopped:**
+- The ecosystem portal link `http://atlas:3027` now resolves to the actual Lead Desk Hub from Alienware.
+- The backend API is reachable at `http://atlas:8017`.
+
+**Next up:**
+- Decide whether to add a cleaner nginx route such as `http://atlas/lead-desk/` later, or keep direct Tailscale ports.
+
+## 2026-06-07 - Correct Lead Desk Hub target
+
+**What we did:**
+- Corrected the previous wiki fallback: Lead Gen Agent portal links now point to the actual Atlas Desk Hub target, `http://atlas:3027`.
+- Updated the portal lead-count API target to `http://atlas:8017/api/dashboard`.
+- Updated `ecosystem.json`, `internal-portal/index.html`, `internal-portal/app.js`, `internal-portal/README.md`, and `internal-portal/portal.test.mjs`.
+- Installed/build dependencies for the Lead Gen Agent checkout on Atlas under `/home/drew/GitHub/agents/lead-gen-agent`.
+- Deployed the corrected portal files to `/opt/homelab-status-dashboard/ecosystem/`.
+- Verified live Atlas HTML links to `http://atlas:3027`, live registry includes `http://atlas:3027` and `http://atlas:8017`, and live JS fetches `http://atlas:8017/api/dashboard`.
+
+**Where we stopped:**
+- The ecosystem portal now targets the Desk Hub instead of the wiki.
+- The Desk Hub service is still not running on Atlas; the attempt to create persistent user services bound to `0.0.0.0:3027` and `0.0.0.0:8017` was blocked pending explicit approval because it is a lasting network exposure change.
+
+**Next up:**
+- Explicitly approve starting persistent Atlas services for `lead-gen-api.service` and `lead-desk-hub.service`, or choose a narrower binding/proxy plan.
+
+## 2026-06-07 - Lead Agent Atlas link fix
+
+**What we did:**
+- Reproduced the broken Lead Gen Agent ecosystem links: `127.0.0.1:3027` and `100.117.87.57:3027` are not listening.
+- Confirmed Atlas currently has the Lead Gen Agent wiki/project page, but no deployed Lead Desk service on `3027` or `8017`.
+- Updated `ecosystem.json`, the ecosystem portal priority card/link, `app.js`, `README.md`, and the portal contract test so Lead Gen Agent points to `http://atlas/wiki/projects/lead-gen-agent/` instead of dead Alienware/local dev URLs.
+- Deployed the updated portal files to Atlas at `/opt/homelab-status-dashboard/ecosystem/`.
+- Verified live Atlas HTML, registry JSON, and app JS no longer advertise the stale `:3027` links.
+
+**Where we stopped:**
+- The live ecosystem portal now routes Lead Agent links to the Atlas-hosted project page.
+- The always-on Lead Desk app itself is still not deployed on Atlas.
+
+**Next up:**
+- Stand up the Lead Desk service on Atlas under `/opt/homelab/stacks/lead-gen-agent`, then change the portal from the project-page link to the real Atlas service URL.
+
+## 2026-06-06 09:42 - AI Token Dashboard added to ecosystem portal
+
+**What we did:**
+- Added `AI Token Dashboard` as a top-level priority link in `internal-portal/index.html`.
+- Added `ai-token-dashboard` to `ecosystem.json` with live URL `http://atlas:7474`.
+- Updated `internal-portal/README.md` priority links.
+- Deployed the updated portal files directly to Atlas under `/opt/homelab-status-dashboard/ecosystem/`.
+- Verified `http://atlas/ecosystem/` serves the tile and `http://atlas/ecosystem/ecosystem.json` includes the registry item.
+
+**Where we stopped:**
+- Source commit `14ba289` is pushed on branch `feat/morning-repo-sync-brief`.
+- Portal validation passed: `python -m json.tool ecosystem.json` and `node internal-portal/portal.test.mjs`.
+
+**Next up:**
+- Open/merge the infra branch when the broader morning repo-sync work is ready.
+
 ## 2026-06-05 02:41 — AI Dashboard Activity and Settings views
 
 **What we did:**
@@ -1579,6 +1665,31 @@
 - Review `http://atlas/ecosystem/` visually and open the Hermes Details drawer to confirm the access commands are easy to follow.
 - Decide whether to start a persistent Hermes dashboard service later; current recommendation is SSH tunnel only because the dashboard can expose API keys.
 
+## 2026-06-06 07:14:54 -04:00 - Morning repo freshness and Atlas workspace
+
+**What we did:**
+- Created branch `feat/morning-repo-sync-brief`.
+- Added `scripts/repo_freshness.py` to fetch repos, fast-forward clean behind repos, and write JSON/Markdown morning-brief reports.
+- Added `scripts/compare_repo_freshness.py` to compare Alienware and Atlas reports and produce `repo-drift.md`.
+- Added `scripts/clone_manifest.py` for cloning every repo in `repos.json` to a target workspace.
+- Added `scripts/install_repo_freshness_windows.ps1` plus Atlas user systemd service/timer files.
+- Updated `repos.json` to include `adhd-snap`, `DrewBeFree`, and `llm-debate-union`, and removed stale `interactive-setup`.
+- Created canonical Atlas workspace `/home/drew/GitHub` and cloned the manifest repo set there.
+- Installed Atlas user timer `repo-freshness-atlas.timer` for 6:45 AM daily.
+- Installed Windows scheduled task `Morning Repo Freshness` for 6:45 AM daily.
+- Verified Atlas timer job completes successfully and writes `/home/drew/infra/data/morning-brief/atlas-repo-freshness.*`.
+- Verified Windows scheduled task completes successfully and writes `data/morning-brief/alienware-repo-freshness.*`.
+- Generated a current drift report showing Atlas canonical workspace clean/current and Alienware with 17 repos needing attention.
+
+**Where we stopped:**
+- The morning freshness workflow is installed on both machines and generating ignored report artifacts under `data/morning-brief/`.
+- The infra changes are uncommitted on branch `feat/morning-repo-sync-brief`.
+- Current drift report flags real local work/branch differences, including `llm-debate-union`, `infra`, `homelab`, `DrewBeFree`, and several app repos.
+
+**Next up:**
+- Wire `data/morning-brief/repo-drift.md` into the future Hermes/dashboard morning brief renderer.
+- Decide which Alienware dirty/ahead repos should be committed, pushed, or intentionally left local.
+
 ## 2026-06-02 19:23:05 -04:00 - Hermes dashboard runtime start
 
 **What we did:**
@@ -1701,3 +1812,922 @@
 
 **Next up:**
 - Use the updated password from the user's password manager or shared context when accessing Hermes from mobile.
+## 2026-06-07 - Restore Lead Desk leads on Atlas
+
+**What we did:**
+- Investigated the missing 9 leads after moving the Desk Hub to Atlas.
+- Found the Atlas service had initialized a fresh empty SQLite DB, while Alienware still had the 9-lead DB.
+- Backed up the empty Atlas DB and restored the Alienware DB onto Atlas.
+- Restarted the Atlas Lead Desk services.
+- Verified `http://atlas:8017/api/dashboard` reports 9 total leads, 3 high-fit leads, and 9 draft-ready leads.
+
+**Where we stopped:**
+- The Atlas Desk Hub now has the expected 9 leads.
+
+**Next up:**
+- Decide whether Atlas is now the sole source of truth for Lead Desk data, or add a backup/sync workflow.
+
+## 2026-06-08 - Review Grok Leantime sync workflow
+
+**What we did:**
+- Confirmed the new Leantime sync work is infra-related, not yes-app related.
+- Found the Grok-built central receiver at `/home/drew/infra/.github/workflows/receive-task-sync.yml` and the app trigger at `/home/drew/GitHub/apps/trading-scanner-experimental/.github/workflows/trigger-task-sync.yml`.
+- Confirmed the trigger dispatches `task-sync-request` to `DrewBeFree/infra` with full `source_repo` payload.
+- Confirmed the receiver runs existing `ecosystem_task_sync.py` paths, then adds a raw issue importer that creates Leantime tickets with `task-sync-id: gh-issue:DrewBeFree/trading-scanner-experimental#N` markers.
+- Noted conflict risk: raw issue import can duplicate BACKLOG-derived tasks that already use `task-*` markers, because it dedupes only on the `gh-issue:` marker.
+
+**Where we stopped:**
+- The trigger side is structurally compatible with infra.
+- The receiver side is useful but should be tightened before broad rollout: remove `|| true`, do dry-run/report gating, unify marker/dedupe behavior, and avoid creating duplicate Leantime tickets for issues already mapped from BACKLOG tasks.
+
+**Next up:**
+- Decide whether raw GitHub issue import should be a separate mode or folded into `ecosystem_task_sync.py` with tests.
+- Add tests for `gh-issue:` mapping and duplicate prevention before enabling this across more repos.
+
+## 2026-06-09 - Sync LLM benchmark Grafana source of truth
+
+**What we did:**
+- Updated the `atlas-poweredge-monitoring` entry in `ecosystem.json` from the stale `atlas-overview/poweredge-dashboard` Grafana route to the actual LLM benchmark dashboard route: `http://atlas:3001/d/llm-benchmarks/llm-inference-benchmarks?orgId=1&from=now-6h&to=now&timezone=browser&refresh=5m`.
+- Updated the tailnet Grafana URL, dashboard JSON doc label, dashboard JSON link, and Grafana deploy target note.
+- The source for this sync now lives in `infra/llm-bench-dashboard/config/source-of-truth.json`; run `npm run sync-source` from that nested repo after dashboard metadata changes.
+
+**Where we stopped:**
+- `ecosystem.json` parses successfully and no longer contains the stale `atlas-overview/poweredge-dashboard` route.
+- Parent `infra` repo still has unrelated pre-existing dirty changes, so this registry/session-log change was not committed there.
+
+**Next up:**
+- Export the live Grafana dashboard JSON for UID `llm-benchmarks` and save it under `infra/llm-bench-dashboard/grafana/atlas-poweredge-llm-benchmark.json`.
+
+## 2026-06-09 - Atlas AI operating system plan
+
+**What we did:**
+- Created `docs/atlas-ai-operating-system-plan.md` to define Atlas as the durable shared source of truth for Codex, ChatGPT, Claude, Gemini, Grok, local Ollama models, and future agents.
+- Captured the distinction that proprietary models do not need to literally live on Atlas; they need to query the same Atlas-hosted knowledge, repos, logs, decisions, configs, dashboards, and runbooks.
+- Defined layers for access, Git workspace, knowledge vault, search/memory index, model access, agent/tooling, observability, and backup/recovery.
+- Added a concrete P40 readiness plan for tomorrow, June 10, 2026.
+- Added first build targets for a Markdown knowledge vault, `atlas-context`, and memory indexing.
+
+**Where we stopped:**
+- The plan doc is created but not committed in the parent `infra` repo because the parent branch already has several unrelated dirty changes.
+- The failed screenshot/deploy chase was intentionally dropped; the focus is now Atlas as the shared AI operating system.
+
+**Next up:**
+- Use the plan to build Phase 0 before the P40 install: NoMachine/SSH reliability, central Git workspace, knowledge vault skeleton, baseline benchmarks, and first decision/runbook files.
+
+## 2026-06-09 - Create Atlas AI OS Leantime project
+
+**What we did:**
+- Added `data/task-sync/atlas-ai-operating-system-leantime.json` with a Leantime project spec and ten tasks from `docs/atlas-ai-operating-system-plan.md`.
+- Added `scripts/create_leantime_project_from_plan.mjs`, a marker-based Leantime project/task sync helper for this plan.
+- Ran a dry-run against Atlas Leantime: create 1 project and 10 tickets.
+- Applied the project and tickets to Leantime. The first apply hit the Leantime rate limit after creating the project and four tickets; after cooldown, the remaining six tickets were created with a slower write delay.
+- Final postcheck reports `skip-ticket=10`, meaning all planned tasks are current in Leantime.
+
+**Where we stopped:**
+- Leantime project: `Atlas AI Operating System`, project ID `34`, URL `http://atlas:8095/projects/showProject/34`.
+- Reports copied back into `data/task-sync/`:
+  - `atlas-ai-operating-system-leantime-after-cooldown.json`
+  - `atlas-ai-operating-system-leantime-apply-final.json`
+  - `atlas-ai-operating-system-leantime-postcheck.json`
+
+**Next up:**
+- Open `http://atlas:8095/projects/showProject/34` and use it as the working board for Phase 0 before the P40 install.
+
+## 2026-06-09 - Add Atlas AI OS Leantime milestones
+
+**What we did:**
+- Added five milestones to `data/task-sync/atlas-ai-operating-system-leantime.json`:
+  - Foundation already completed
+  - P40 readiness and benchmark proof
+  - Knowledge vault and searchable memory
+  - Multi-model Atlas access layer
+  - GitHub and Leantime source-of-truth sync
+- Added completed foundation tickets and marked them `Done`: plan doc, Leantime project, benchmark dashboard repo/site, canonical Grafana route, benchmark source-of-truth config, and Atlas helper automation.
+- Updated `scripts/create_leantime_project_from_plan.mjs` to sync native Leantime milestone tickets, map `Done` to Leantime status `0`, attach tasks to milestones, and normalize Leantime's empty dependency/date fields during postchecks.
+- Applied the milestone/task updates to Atlas Leantime project `34`. The first apply hit the Leantime rate limit; after cooldown the resume apply completed 22 writes.
+- Final postcheck reports `skip-milestone=5` and `skip-ticket=17`, meaning Leantime matches the repo-backed spec.
+- Updated `docs/atlas-ai-operating-system-plan.md` with the milestone list, completed foundation work, and the source-of-truth rule: repo spec -> Leantime; GitHub issue mirroring is not automatic yet.
+
+**Where we stopped:**
+- Leantime project `Atlas AI Operating System` now has milestones and completed work marked Done.
+- Reports copied back into `data/task-sync/`:
+  - `atlas-ai-operating-system-leantime-milestones-after-429-dry-run.json`
+  - `atlas-ai-operating-system-leantime-milestones-apply-resume.json`
+  - `atlas-ai-operating-system-leantime-milestones-diffcheck.json`
+  - `atlas-ai-operating-system-leantime-milestones-postcheck-final.json`
+- Parent `infra` repo remains dirty with pre-existing unrelated changes plus the new Atlas AI OS/task-sync artifacts; nothing was committed.
+
+**Next up:**
+- Decide whether GitHub Issues should mirror the same stable-id spec, then wire that intentionally through the existing GitHub task-sync path instead of relying on Leantime to sync back.
+- Use the P40 readiness milestone as the working board for pre-install access checks and the controlled before benchmark.
+
+## 2026-06-09 - Scaffold repo-wide Leantime milestones
+
+**What we did:**
+- Added `scripts/generate_repo_milestone_spec.mjs` to generate a repo-wide milestone/task spec from `repos.json`, `ecosystem.json`, `data/task-sync/tasks.json`, and `data/task-sync/leantime-project-map.json`.
+- Generated `data/task-sync/repo-milestones.json` covering 25 registered repo projects.
+- Added `scripts/sync_repo_milestones_to_leantime.mjs`, an idempotent Leantime sync for repo-wide milestones and completed foundation tickets using `repo-sync-id: ...` markers.
+- Added read/write delay and batching controls so large Leantime runs can survive rate limits:
+  - `--read-delay`
+  - `--write-delay`
+  - `--project`
+  - `--limit-actions`
+- Updated `docs/task-sync.md` with generation, dry-run, batch apply, and single-project apply commands.
+- Ran a live Leantime dry-run from Atlas. It found 25 repos, 100 milestones to create, and 84 completed foundation tickets to create.
+
+**Where we stopped:**
+- No repo-wide live Leantime writes were applied yet. The current report is dry-run only: `data/task-sync/repo-milestones-leantime-dry-run.json`.
+- The repo-wide rollout is ready to apply in batches because a full apply is roughly 184 writes and Leantime rate-limits both reads and writes.
+
+**Next up:**
+- Apply repo-wide milestones in batches with `--limit-actions 25`, or apply one repo at a time with `--project "Project Name"`.
+- After all batches are applied, run a final dry-run and expect `skip-milestone=100` and `skip-ticket=84`.
+
+## 2026-06-09 - Partially apply repo-wide Leantime milestones
+
+**What we did:**
+- Started applying the repo-wide Leantime milestone rollout from `data/task-sync/repo-milestones.json`.
+- Applied six controlled batches with `--limit-actions 25`, `--read-delay 12000`, and `--write-delay 12000`.
+- Batch reports on Atlas:
+  - `data/task-sync/repo-milestones-leantime-apply-batch-01.json`
+  - `data/task-sync/repo-milestones-leantime-apply-batch-02.json`
+  - `data/task-sync/repo-milestones-leantime-apply-batch-03.json`
+  - `data/task-sync/repo-milestones-leantime-apply-batch-04.json`
+  - `data/task-sync/repo-milestones-leantime-apply-batch-05.json`
+  - `data/task-sync/repo-milestones-leantime-apply-batch-06.json`
+- Confirmed each of the first six batches applied 25 records, for 150 repo-wide milestone/foundation records applied total.
+- Answered the benchmark-context aside: the canonical initial local suite is `poweredge-p40-local-llm-control-suite` v1.0 with `temperature=0`, `seed=42`, `num_ctx=4096`, `num_predict=768`, and five homelab operations prompts.
+
+**Where we stopped:**
+- Batch 7 could not be launched because Atlas SSH stopped returning through this Codex tool session; even `ssh atlas "echo atlas-ok"` timed out.
+- Expected remaining creates after six successful batches: 34 records.
+- Final postcheck has not been run yet.
+
+**Next up:**
+- Resume from Atlas or a fresh Codex session with:
+  `cd /home/drew/GitHub/infra && node scripts/sync_repo_milestones_to_leantime.mjs --apply --read-delay 12000 --write-delay 12000 --limit-actions 25 --env /home/drew/services/task-sync/.env --spec data/task-sync/repo-milestones.json --report data/task-sync/repo-milestones-leantime-apply-batch-07.json`
+- Then run one final apply batch if needed and a dry-run postcheck expecting `skip-milestone=100` and `skip-ticket=84`.
+
+## 2026-06-09 - Create P40 prep day checklist
+
+**What we did:**
+- Created `docs/p40-prep-2026-06-09-checklist.md` as a step-by-step operating checklist for today.
+- Focused the checklist on getting Atlas visible, recording firmware state, updating BIOS safely, optionally updating iDRAC, running the pre-P40 benchmark, and saving evidence.
+- Included known Atlas facts: PowerEdge R720xd, iDRAC7 at `https://10.0.0.38`, virtual console confirmed working, and the canonical Grafana benchmark dashboard URL.
+- Added explicit stop conditions so technical work does not turn into guesswork.
+
+**Where we stopped:**
+- The checklist exists locally in the infra repo and is ready to open on the Atlas monitor.
+- BIOS update has not been performed in this session.
+- Pre-P40 benchmark has not been run in this session.
+
+**Next up:**
+- Put Atlas on a monitor or iDRAC virtual console, then work through `docs/p40-prep-2026-06-09-checklist.md` in order.
+
+## 2026-06-09 - Audit workspace branch cleanup
+
+**What we did:**
+- Audited Git repositories under `C:\Users\drewb\Documents\GitHub`.
+- Saved the audit report to `data/git-cleanup/branch-cleanup-audit-2026-06-09.json`.
+- Found 28 Git repos, 17 dirty repos, and 68 safe local branch-delete candidates.
+- Added `scripts/cleanup_merged_branches.ps1`, which reads the saved audit and deletes only listed local branches with `git branch -d`.
+- Dry-ran the cleanup script and confirmed it plans 68 deletions, with no deletes performed in dry-run.
+- The largest target is `infra`: 27 safe merged local branches. The script does not touch dirty files, `main`, `master`, `dev`, current branches, or unmerged branches.
+
+**Where we stopped:**
+- Actual branch deletion did not run because the approval system timed out twice before executing the destructive command.
+- No branch deletion was confirmed from this cleanup step.
+
+**Next up:**
+- Run the cleanup apply when approval is available:
+  `powershell -ExecutionPolicy Bypass -File C:\Users\drewb\Documents\GitHub\infra\scripts\cleanup_merged_branches.ps1 -AuditPath C:\Users\drewb\Documents\GitHub\infra\data\git-cleanup\branch-cleanup-audit-2026-06-09.json -ReportPath C:\Users\drewb\Documents\GitHub\infra\data\git-cleanup\branch-cleanup-apply-2026-06-09.json -Apply`
+- After deletion, rerun the branch audit and then handle dirty worktrees separately repo by repo.
+
+## 2026-06-09 - Patch Leantime milestone date issue
+
+**What we did:**
+- Investigated Chrome console errors showing Leantime Gantt failures: negative SVG `<rect>` widths in `compiled-gantt-component.3.8.0.min.js`.
+- Identified the likely root cause: our JSON-RPC milestone sync bypassed Leantime's normal milestone form defaults and allowed blank `editFrom` / `editTo` values.
+- Patched `scripts/generate_repo_milestone_spec.mjs` so repo-wide milestones include explicit `start_date` / `due_date` values.
+- Regenerated `data/task-sync/repo-milestones.json` with valid milestone date ranges.
+- Patched `scripts/sync_repo_milestones_to_leantime.mjs` and `scripts/create_leantime_project_from_plan.mjs` so missing milestone dates default to `2026-06-09` instead of blank strings.
+- Added `start_date` values to `data/task-sync/atlas-ai-operating-system-leantime.json`.
+- Added `docs/leantime-milestone-500-repair.md` with the exact Atlas repair commands and log collection steps if the 500 persists.
+
+**Where we stopped:**
+- The repo-side fix is prepared.
+- The live Leantime repair has not been applied yet because Atlas SSH/API access still needs to be run from Atlas or a working session.
+- The `/api/users?profileImage=` 500 may be separate and needs Docker logs if it continues after milestone date repair.
+
+**Next up:**
+- On Atlas, run the repair commands in `docs/leantime-milestone-500-repair.md`.
+- After repair, reload the Leantime milestone page and confirm the Gantt negative-width errors stop.
+- If `/api/users?profileImage=` still returns 500, capture `docker logs leantime --tail 120`.
+
+## 2026-06-11 - Identify P40 checklist DOCX origin
+
+**What we did:**
+- Inspected `C:\Users\drewb\Documents\00-inbox\Atlas_R720xd_Tesla_P40_Install_Checklist.docx`.
+- Read filesystem metadata and DOCX core properties.
+- Found the file owner is `Drew-AlienWare\drewb`.
+- Found DOCX creator metadata is `python-docx`.
+- Found the Windows `Zone.Identifier` alternate data stream points to a ChatGPT download/referrer URL.
+
+**Where we stopped:**
+- The file appears to have been generated programmatically with `python-docx` and downloaded from ChatGPT on June 5, 2026 around 7:49 PM.
+
+**Next up:**
+- If exact conversation authorship matters, open the ChatGPT referrer conversation from the `Zone.Identifier` metadata.
+
+## 2026-06-10 - Triage checkout block before LLM Debate Union feedback
+
+**What we did:**
+- Read infra project memory and repo session logs before touching the workspace.
+- Confirmed `infra` is on `feat/morning-repo-sync-brief` with tracked and untracked local changes, so Git is correctly blocking branch checkout to avoid overwriting work.
+- Confirmed `apps/llm-debate-union` is also dirty on `fix-api-key-stored-indicators`, with implementation, README, session-log, test, script, docs, and output changes.
+- Identified `llm-debate-union` in the infra registry and existing task-sync data, so new user feedback can be captured as backlog items once provided.
+
+**Where we stopped:**
+- No stash, commit, checkout, or file cleanup was performed.
+- The immediate guidance is to park dirty work before branch switching, preferably with named stashes if the goal is only to record backlog feedback.
+
+**Next up:**
+- Capture Drew's LLM Debate Union feedback and convert it into backlog items.
+- If branch switching is needed first, stash dirty work in `infra` and/or `apps/llm-debate-union` with clear messages, then checkout the target branch.
+
+## 2026-06-10 - Clean merged local infra branches
+
+**What we did:**
+- Audited local infra branches against `main`.
+- Deleted 26 local branches that were already merged into `main` using `git branch -d`.
+- Verified the remaining local branches are `main`, `dev`, `feat/morning-repo-sync-brief`, `docs-log-lead-gen-project-deploy`, and `feat-track-lead-gen-agent`.
+
+**Where we stopped:**
+- The infra local branch list is cleaned up.
+- The worktree is still dirty on `feat/morning-repo-sync-brief`; no working-tree changes were stashed, committed, or removed.
+- The two non-current topic branches left are not merged into `main`, so they were preserved.
+
+**Next up:**
+- Decide whether to keep or separately inspect `docs-log-lead-gen-project-deploy` and `feat-track-lead-gen-agent`.
+- Park or commit the dirty `feat/morning-repo-sync-brief` work before switching branches.
+
+## 2026-06-10 - Add cross-repo branch cleanup issue to Infra project
+
+**What we did:**
+- Turned the cross-repo merged-branch cleanup idea into GitHub issue `DrewBeFree/infra#36`.
+- Added the issue to GitHub Project `Infra` with status `To triage`.
+- Confirmed the issue tracks auditing all repos under `C:\Users\drewb\Documents\GitHub`, deleting only safely merged local branches, preserving dirty/current/unmerged branches, and avoiding remote branch deletion unless separately approved.
+
+**Where we stopped:**
+- The branch cleanup is now captured as backlog instead of interrupting Atlas monitor/P40 prep work.
+
+**Next up:**
+- Return focus to getting Atlas visible on the monitor.
+- Later, use issue #36 to run a repo-by-repo branch cleanup with a report and cautious deletion rules.
+
+## 2026-06-10 - Park GitHub/Leantime sync concern and stage NoMachine install
+
+**What we did:**
+- Created GitHub issue `DrewBeFree/infra#37` to verify whether GitHub issue/project items are syncing into Leantime after a GitHub browser CSP warning.
+- Added issue #37 to the GitHub Project `Infra` with status `To triage`.
+- Checked Atlas NoMachine state over SSH: `nxserver` was not installed, no `nxserver.service` existed, and port `4000` was not listening.
+- Confirmed Atlas is `x86_64` Ubuntu 24.04.4 LTS with `dpkg`, `apt-get`, desktop sessions, and `graphical.target`.
+- Verified the current official NoMachine Linux amd64 DEB from NoMachine's download page is version `9.6.3_1`, with MD5 `34d5882d1a1d20bbe9d5f7b3e2f35f12`.
+- Downloaded the DEB on Windows, verified the MD5 locally, copied it to Atlas at `/tmp/nomachine_9.6.3_1_amd64.deb`, and verified the MD5 on Atlas.
+
+**Where we stopped:**
+- NoMachine installation is blocked on Atlas sudo password entry; `sudo dpkg -i /tmp/nomachine_9.6.3_1_amd64.deb` requires an interactive password prompt.
+- Atlas package staging is complete; install itself has not run.
+
+**Next up:**
+- In an interactive terminal, run `ssh atlas` then `sudo dpkg -i /tmp/nomachine_9.6.3_1_amd64.deb`.
+- After install, verify `/usr/NX/bin/nxserver --status`, `systemctl status nxserver`, and port `4000`.
+
+## 2026-06-10 - Verify NoMachine server on Atlas
+
+**What we did:**
+- Verified the NoMachine install completed on Atlas.
+- Confirmed `/usr/NX/bin/nxserver --status` reports new connections enabled and `nxserver`, `nxnode`, and `nxd` enabled.
+- Confirmed `nxserver.service` is enabled and active/running.
+- Confirmed Atlas is listening on port `4000` for IPv4 and IPv6.
+- Confirmed Windows can reach `atlas:4000`, resolving to Tailscale address `100.71.165.80`.
+
+**Where we stopped:**
+- Atlas NoMachine server is ready for client connection.
+- The client-side visual login/test has not been confirmed yet.
+
+**Next up:**
+- Open NoMachine on Windows and connect to `atlas` or `100.71.165.80` using port `4000`.
+- Confirm the Atlas desktop appears and can be used as the monitor/visual console for P40 prep.
+
+## 2026-06-10 - Diagnose Atlas Ethernet internet issue
+
+**What we did:**
+- Confirmed Drew successfully connected to Atlas from Alienware using NoMachine.
+- Investigated Atlas network state after the desktop showed no normal internet access.
+- Found `eno1` has carrier at 1 Gbps and is the plugged-in Ethernet port.
+- Found the active NetworkManager profile `eno1` has `ipv4.method: disabled`, so Atlas has no IPv4 address and no IPv4 default route.
+- Found Atlas does have IPv6 internet connectivity through `eno1`; IPv6 ping and HTTPS to Cloudflare succeeded.
+- Found DNS is also incomplete for normal public names: only Tailscale DNS is configured, and public names like `github.com` do not resolve.
+
+**Where we stopped:**
+- Root cause is likely the active `eno1` profile disabling IPv4 DHCP, plus no public DNS resolver on the physical interface.
+- Attempting to modify the active NetworkManager profile over SSH failed with `Insufficient privileges`, so the fix needs to be run interactively on Atlas with sudo.
+
+**Next up:**
+- In the NoMachine terminal on Atlas, run `sudo nmcli connection modify eno1 ipv4.method auto ipv6.method auto connection.autoconnect yes` then `sudo nmcli connection up eno1`.
+- Verify `ip -br addr show eno1`, `ip route`, `resolvectl query github.com`, and `ping -c 2 1.1.1.1`.
+
+## 2026-06-10 - Restore Atlas IPv4/DNS internet
+
+**What we did:**
+- Drew ran the NetworkManager fix interactively on Atlas through NoMachine.
+- Confirmed `eno1` now has IPv4 address `10.0.0.145/24`.
+- Confirmed default IPv4 route exists: `default via 10.0.0.1 dev eno1`.
+- Confirmed DNS resolves `github.com` through `eno1`.
+- Verified from SSH that `ping -c 2 1.1.1.1` succeeds with 0% packet loss.
+- Verified from SSH that `curl -I https://github.com` returns HTTP `200`.
+- Confirmed the active `eno1` profile is now `ipv4.method auto`, `ipv6.method auto`, and `connection.autoconnect yes`.
+
+**Where we stopped:**
+- Atlas internet access is restored over Ethernet port 1.
+- NoMachine remains usable as the visual console from Alienware.
+
+**Next up:**
+- Continue the P40 prep checklist: keep Atlas visible, record BIOS/iDRAC state, and proceed to firmware/pre-P40 benchmark steps only after confirming console access remains reliable.
+
+## 2026-06-10 - Add Ubuntu Pro enablement backlog item
+
+**What we did:**
+- Discussed whether to enable Ubuntu Pro on Atlas.
+- Decided it is useful but should wait until Atlas visibility, internet, Software Updater, firmware state, and P40 prep are stable.
+- Created GitHub issue `DrewBeFree/infra#38` titled `Enable Ubuntu Pro on Atlas after P40 prep stabilizes`.
+- Added issue #38 to the GitHub Project `Infra` with status `To triage`.
+
+**Where we stopped:**
+- Drew is running Software Updater on Atlas through NoMachine.
+- Ubuntu Pro enablement is parked as backlog instead of interrupting the current update/P40 prep flow.
+
+**Next up:**
+- Let Software Updater finish, note whether a reboot is required, then continue the P40 prep checklist.
+- Later, use issue #38 to attach Atlas to Ubuntu Pro and document enabled services.
+
+## 2026-06-10 - Locate pre-P40 benchmark evidence
+
+**What we did:**
+- Searched local infra and Atlas for the already-run pre-P40 benchmark evidence.
+- Confirmed the local `infra/llm-bench-dashboard/data/benchmarks.sqlite` contains only synthetic sample rows, not the real baseline.
+- Found the real Atlas benchmark result files on Atlas at `/home/drew/benchmarks/results/`.
+- Identified the full pre-P40 Atlas baseline as `/home/drew/benchmarks/results/benchmark_atlas_20260609_093237.json`.
+- Copied the benchmark JSON files to `C:\tmp\` for inspection.
+- Confirmed the full Atlas baseline timestamp is `2026-06-09T09:32:37.653281`, host `http://localhost:11434`, models `qwen2.5:14b` and `llama3.2:3b`, context lengths `512, 1024, 2048, 4096, 8192`, and `runs_per_model` 2.
+
+**Where we stopped:**
+- The pre-P40 baseline has been found and does not need to be rerun before BIOS/P40 work unless we decide the prior benchmark methodology is insufficient.
+
+**Next up:**
+- Use `/home/drew/benchmarks/results/benchmark_atlas_20260609_093237.json` as the before-P40 comparison baseline.
+- Consider copying or committing a summarized benchmark evidence note later so the result is not only on Atlas.
+
+## 2026-06-10 - Confirm Atlas post-reboot health and firmware identity
+
+**What we did:**
+- Reviewed Drew's post-reboot Atlas checks from NoMachine.
+- Confirmed Atlas booted cleanly, `eno1` retained `10.0.0.145/24`, and IPv4 internet works with 0% packet loss to `1.1.1.1`.
+- Confirmed `curl -I https://github.com` returns HTTP `200`.
+- Confirmed `systemctl --user --failed` reports `0 loaded units listed`.
+- Confirmed expected Docker services are running after reboot, including `ollama`, `open-webui`, `atlas-grafana`, `benchmark-exporter`, `leantime`, and monitoring containers.
+- Recorded firmware identity from `dmidecode`: product `PowerEdge R720`, service tag `8J8BBZ1`, BIOS `2.0.19`, BIOS date `08/29/2013`.
+- Noted correction: prior docs/checklist said R720xd, but the machine itself reports R720; use service tag `8J8BBZ1` for Dell firmware downloads.
+
+**Where we stopped:**
+- Atlas is healthy enough to proceed toward BIOS update prep.
+- Drew attempted `https://10.0.0.38` in the shell; that URL needs to be opened in a browser, not executed as a command.
+
+**Next up:**
+- Open `https://10.0.0.38` in a browser and confirm iDRAC login plus virtual console before any BIOS update.
+- Download the BIOS package from Dell using service tag `8J8BBZ1` and update BIOS only first.
+
+## 2026-06-10 - Check physical monitor no-signal state
+
+**What we did:**
+- Drew connected a keyboard, mouse, and monitor directly to Atlas, with the monitor connected to the front video port.
+- The monitor showed no signal.
+- Verified over SSH that Atlas is up, with uptime around 31 minutes after the update reboot.
+- Verified GDM/display-manager is active/running, though `systemctl is-system-running` reports `degraded`.
+
+**Where we stopped:**
+- Atlas OS is alive, so the no-signal problem is likely the physical display path, monitor input, VGA cable/adapter direction, or front-vs-rear VGA behavior.
+
+**Next up:**
+- Check monitor input and cable/adapter path.
+- Try rear VGA if available.
+- Avoid moving the only Ethernet cable from port 1 to iDRAC unless a second cable or physical console recovery path is available.
+
+## 2026-06-10 - Start Atlas BIOS 2.9.0 update
+
+**What we did:**
+- Downloaded Dell BIOS package `BIOS_8P8WX_LN_2.9.0.BIN` for PowerEdge R720/R720-xd.
+- Copied it to Atlas at `/tmp/BIOS_8P8WX_LN_2.9.0.BIN`.
+- Verified SHA256 matched Dell's published checksum: `0fc8f43ddc93e71857a51ee8867521701a8396ef31feb97a637639c22376204d`.
+- Ran the updater on Atlas; validation reported `Server BIOS 12G`, package version `2.9.0`, installed version `2.0.19`.
+- Confirmed the updater loaded the BIOS image and asked to reboot.
+- Atlas began rebooting for the BIOS update.
+
+**Where we stopped:**
+- Atlas has not yet returned on SSH after the BIOS update reboot.
+- Polling for about 12 minutes showed no SSH over `atlas`; LAN `10.0.0.145:22` and Tailscale `100.71.165.80:22` were also unreachable.
+- This may still be normal during BIOS flash/reboot; do not power-cycle while the update may be in progress.
+
+**Next up:**
+- Continue waiting and observe the physical server front panel/fans/activity.
+- When Atlas returns, verify BIOS with `sudo dmidecode -s bios-version` and post-reboot health checks.
+
+## 2026-06-10 - Confirm Atlas BIOS 2.9.0 update
+
+**What we did:**
+- Confirmed Atlas returned after the BIOS update reboot.
+- Verified LAN SSH on `10.0.0.145:22` and Tailscale SSH on `100.71.165.80:22`.
+- Verified `eno1` retained `10.0.0.145/24` and default route via `10.0.0.1`.
+- Verified internet with `ping 1.1.1.1` and `curl -I https://github.com` returning HTTP `200`.
+- Verified `systemctl --user --failed` reports `0 loaded units listed`.
+- Verified expected Docker services are running, including `ollama`, `open-webui`, `atlas-grafana`, `benchmark-exporter`, and `leantime`.
+- Drew confirmed `sudo dmidecode -s bios-version` is now `2.9.0` and `sudo dmidecode -s bios-release-date` is `12/06/2019`.
+
+**Where we stopped:**
+- Atlas BIOS update is complete and confirmed.
+- Atlas is healthy after the BIOS update.
+
+**Next up:**
+- Proceed to P40 install prep when the card arrives.
+- After installing the P40, verify with `lspci | grep -i -E "nvidia|tesla|3d|vga"` before driver work.
+
+## 2026-06-10 - Save P40 install runbook and update task spec
+
+**What we did:**
+- Added `docs/p40-install-2026-06-10-runbook.md` with simple arrival-day steps for shutdown, physical P40 install, first boot, driver check, Ollama/GPU validation, after-P40 benchmarks, and evidence capture.
+- Updated `data/task-sync/atlas-ai-operating-system-leantime.json` so completed prep work is reflected in the repo-backed Leantime source:
+  - `Phase 0 - Verify Atlas access layer` -> `Done`
+  - `Phase 0 - Run pre-P40 LLM benchmark baseline` -> `Done`
+  - `P40 install day - Validate hardware and driver` -> `Ready`
+  - `P40 install day - Run same-model and larger-model benchmarks` -> `Ready`
+- Validated the JSON spec after editing.
+
+**Where we stopped:**
+- Live Leantime has not yet been synced from the updated repo spec.
+- No GitHub issue was closed for BIOS/P40 prep because the tracked P40 items are primarily in the Atlas AI OS Leantime spec.
+
+**Next up:**
+- When ready, run the Atlas Leantime sync for `data/task-sync/atlas-ai-operating-system-leantime.json`.
+- Use `docs/p40-install-2026-06-10-runbook.md` when the P40 arrives.
+
+## 2026-06-11 - Answer pre-P40 benchmark evidence lookup
+
+**What we did:**
+- Checked infra and LLM benchmark session logs for the June 10 pre-P40 benchmark evidence.
+- Confirmed the real Atlas baseline was previously located at `/home/drew/benchmarks/results/benchmark_atlas_20260609_093237.json`.
+- Confirmed local inspection copies exist at `C:\tmp\benchmark_atlas_20260609_085941.json` and `C:\tmp\benchmark_atlas_20260609_093237.json`.
+- Summarized the full baseline file: models `qwen2.5:14b` and `llama3.2:3b`, context lengths `512, 1024, 2048, 4096, 8192`, two runs per model/context.
+
+**Where we stopped:**
+- The pre-P40 baseline information is visible and does not need to be rerun just to establish before-state evidence.
+- The committed repo dashboard SQLite still only contains synthetic sample rows; the real baseline evidence is on Atlas plus copied JSON in `C:\tmp`.
+
+**Next up:**
+- After P40 install, run the same-model and larger-model after-P40 benchmarks from `docs/p40-install-2026-06-10-runbook.md`.
+- Consider copying or committing a summarized evidence note so the real baseline is not only in Atlas/C:\tmp.
+
+## 2026-06-11 - Reconfirm pre-P40 LLM benchmark evidence
+
+**What we did:**
+- Re-read the infra and llm-bench-dashboard session logs for the P40 prep benchmark context.
+- Confirmed the local dashboard SQLite/results data is synthetic sample data, not the real baseline.
+- Confirmed the real pre-P40 Atlas baseline JSON is still copied at `C:\tmp\benchmark_atlas_20260609_093237.json` and recorded on Atlas as `/home/drew/benchmarks/results/benchmark_atlas_20260609_093237.json`.
+- Summarized the baseline: timestamp `2026-06-09T09:32:37.653281`, host `http://localhost:11434`, models `qwen2.5:14b` and `llama3.2:3b`, contexts `512, 1024, 2048, 4096, 8192`, `runs_per_model` 2.
+
+**Where we stopped:**
+- The pre-P40 evidence is visible locally and in the infra logs; no after-P40 benchmark was checked in this turn.
+
+**Next up:**
+- Use `/home/drew/benchmarks/results/benchmark_atlas_20260609_093237.json` as the before-P40 comparison file when running the post-install same-model and larger-model benchmarks.
+
+## 2026-06-11 - Evaluate final local model downloads before P40 install
+
+**What we did:**
+- Checked Atlas disk, memory, and installed Ollama models before the P40 install.
+- Confirmed Atlas has about 314 GB free on `/` and 251 GiB RAM available, so model storage is not the limiting factor.
+- Confirmed installed local Ollama models: `llama3.2:1b`, `llama3.2:3b`, `qwen2.5:14b`, `gemma4:latest`, `nomic-embed-text:latest`, and `llama3.1:70b`.
+- Recommended a small final pre-P40 local-only expansion instead of downloading many overlapping models.
+
+**Where we stopped:**
+- No new models were downloaded in this turn.
+- Recommended candidates for a final pre-P40 spectrum are a 7/8B general model, a 7B code model, and a 32B model likely to show the P40's practical value.
+
+**Next up:**
+- If approved, pull the selected models on Atlas and run a bounded pre-P40 local benchmark before physically installing the P40.
+
+## 2026-06-11 - Run final local pre-P40 benchmark spectrum
+
+**What we did:**
+- Added `docs/pre-p40-final-local-llm-spectrum-benchmark.md` with exact local-only pre/post P40 reproduction steps.
+- Updated `docs/p40-install-2026-06-10-runbook.md` to point at the final spectrum runbook for the post-install repeat.
+- Pulled three additional local Ollama models on Atlas: `llama3.1:8b`, `qwen2.5-coder:7b`, and `qwen2.5:32b`.
+- Confirmed all benchmark traffic was local Ollama at `http://localhost:11434`; no paid cloud API credits were used.
+- Started a broad 7-model, 5-context, 2-run sweep, then stopped it after about 39 minutes because `gemma4:latest` was consuming too much install-day time.
+- Replaced that with a tiered repeatable test:
+  - Core spectrum: `llama3.2:1b`, `llama3.2:3b`, `llama3.1:8b`, `qwen2.5-coder:7b`, `qwen2.5:14b` at contexts `512, 2048, 4096`, one run each.
+  - Large smoke: `gemma4:latest`, `qwen2.5:32b`, `llama3.1:70b` at context `512`, one run each.
+- Saved and validated Atlas JSON results:
+  - `/home/drew/benchmarks/results/benchmark_atlas_pre_p40_core_spectrum_20260611.json`
+  - `/home/drew/benchmarks/results/benchmark_atlas_pre_p40_large_smoke_20260611.json`
+- Copied both JSON files to `C:\tmp\`.
+- Key CPU baseline results:
+  - `llama3.2:1b`: about `23-25 tok/s`.
+  - `llama3.2:3b`: about `11-13 tok/s`.
+  - `llama3.1:8b`: about `5-6 tok/s`.
+  - `qwen2.5-coder:7b`: about `5.5-6.4 tok/s`.
+  - `qwen2.5:14b`: about `3.0-3.6 tok/s`.
+  - `gemma4:latest` smoke: `5.77 tok/s`.
+  - `qwen2.5:32b` smoke: `1.79 tok/s`.
+  - `llama3.1:70b` smoke: timed out, recorded as `0` successful runs.
+
+**Where we stopped:**
+- Final local pre-P40 benchmark evidence exists on Atlas and in `C:\tmp`.
+- The documented post-P40 repeat commands are ready.
+
+**Next up:**
+- Install the P40.
+- After driver/Ollama GPU validation, rerun the post-P40 commands from `docs/pre-p40-final-local-llm-spectrum-benchmark.md` with the post-P40 output filenames.
+
+## 2026-06-11 - Add pre-P40 benchmark results HTML
+
+**What we did:**
+- Added `docs/pre-p40-final-local-llm-results.html` as a standalone local report page for the final pre-P40 local Ollama benchmark results.
+- The page presents both completed benchmark tests:
+  - Core spectrum from `benchmark_atlas_pre_p40_core_spectrum_20260611.json`.
+  - Large smoke from `benchmark_atlas_pre_p40_large_smoke_20260611.json`.
+- Included KPI tiles, horizontal throughput bars, result tables, file paths, and the replication contract for post-P40 comparison.
+- Confirmed the inline JavaScript parses with `node --check`.
+- Attempted a Playwright/browser render, but the Windows sandbox could not start the browser process.
+
+**Where we stopped:**
+- HTML report exists at `docs/pre-p40-final-local-llm-results.html`.
+- Visual browser verification was not completed because the browser runtime failed in the sandbox.
+
+**Next up:**
+- Open `docs/pre-p40-final-local-llm-results.html` in a normal browser for a quick visual check.
+- After the P40 install, add the post-P40 results to the same report or create a paired post-P40 comparison page.
+
+## 2026-06-11 - Correct benchmark report run counts and graphs
+
+**What we did:**
+- Rebuilt `docs/pre-p40-final-local-llm-results.html` after noticing the first version only showed the final pre-install run and therefore made every row look like `runs = 1`.
+- Added the June 9 two-run Atlas baseline from `benchmark_atlas_20260609_093237.json`.
+- Kept the final core spectrum and large smoke tests as separate sections so run counts remain per source JSON, not merged silently.
+- Added graph panels:
+  - June 9 baseline throughput curves.
+  - Final core spectrum throughput bars.
+  - Overlap check for models/contexts present in both benchmark passes.
+  - Large smoke throughput bars with the 70B timeout preserved.
+- Added an explicit “Why Some Runs Are 1” explanation.
+- Confirmed the inline JavaScript parses with `node --check`.
+
+**Where we stopped:**
+- The report file is updated and should show the corrected structure after browser refresh.
+
+**Next up:**
+- Refresh the in-app browser tab currently open to `file:///C:/Users/drewb/Documents/GitHub/infra/docs/pre-p40-final-local-llm-results.html`.
+
+## 2026-06-11 - Add graph axis labels and final core curves
+
+**What we did:**
+- Updated `docs/pre-p40-final-local-llm-results.html` so graph panels have explicit X/Y labels.
+- Added a `Final Core Curves` line chart showing all five final core models across context lengths.
+- Kept `June 9 Baseline Curves` and `Overlap Check` as limited-scope two-model views because only `llama3.2:3b` and `qwen2.5:14b` exist in both the June 9 baseline and final core data.
+- Confirmed the old benchmark HTML pages still exist:
+  - `infra/llm-bench-dashboard/dashboard/index.html`
+  - `infra/llm-bench-dashboard/site/index.html`
+- Confirmed the updated inline JavaScript parses with `node --check`.
+
+**Where we stopped:**
+- The current report should show axis labels and a five-model final core curve after browser refresh.
+
+**Next up:**
+- If we want the old dashboard look with real data, export/convert the Atlas JSON files into the old dashboard's `window.LLM_BENCH_DATA` format.
+
+## 2026-06-11 - Locate Grafana-style LLM benchmark dashboard
+
+**What we did:**
+- Confirmed the dark two-panel dashboard screenshot is the live Grafana benchmark dashboard, not the beige static pre-P40 HTML report.
+- Found the canonical Grafana routes and metadata in `llm-bench-dashboard/config/source-of-truth.json`.
+- Confirmed supporting docs in `llm-bench-dashboard/docs/grafana-dashboard.md`.
+- Confirmed the local static dashboard files still exist at `llm-bench-dashboard/dashboard/index.html` and `llm-bench-dashboard/site/index.html`.
+
+**Where we stopped:**
+- The Grafana dashboard URL is `http://atlas:3001/d/llm-benchmarks/llm-inference-benchmarks?orgId=1&from=now-6h&to=now&timezone=browser&refresh=5m`.
+- The tailnet URL is `http://atlas.tail401605.ts.net:3001/d/llm-benchmarks/llm-inference-benchmarks?orgId=1&from=now-6h&to=now&timezone=browser&refresh=5m`.
+
+**Next up:**
+- Decide whether to keep using live Grafana for that view or restyle the current pre-P40 static HTML report to match the Grafana dashboard look.
+
+## 2026-06-11 - Restore live Grafana benchmark data
+
+**What we did:**
+- Diagnosed the empty Grafana benchmark dashboard by checking Grafana, Prometheus, Docker services, scrape targets, and the benchmark exporter.
+- Found Grafana was healthy, but `atlas-prometheus` had been cleanly stopped at about `2026-06-10 04:12 EDT` and was still exited.
+- Restarted `atlas-prometheus`; verified Prometheus became healthy and all scrape targets were up, including `benchmarks` at `host.docker.internal:9700`.
+- Confirmed live Prometheus now returns benchmark data:
+  - `benchmark_tokens_per_sec`: 50 series.
+  - `benchmark_prompt_latency_ms`: 50 series.
+  - `benchmark_total_latency_ms`: 50 series.
+  - `benchmark_last_run_timestamp`: 5 series.
+- Confirmed Grafana datasource `Prometheus` points to `http://prometheus:9090` and the `llm-benchmarks` dashboard references the live `benchmark_*` metric names.
+- Added `docs/llm-benchmark-data-inventory.md` documenting all known benchmark data locations, live telemetry paths, and the Prometheus monitoring gap.
+- Corrected `llm-bench-dashboard/config/source-of-truth.json` and `llm-bench-dashboard/site/source-of-truth.js` to use the actual live metric names.
+
+**Where we stopped:**
+- Live Grafana should have benchmark data again after refresh.
+- Prometheus/Grafana time-series history is missing for roughly `2026-06-10 04:12 EDT` through `2026-06-11 01:30 EDT`; raw benchmark JSON evidence was not lost.
+
+**Next up:**
+- After the P40 install, save post-P40 benchmark JSON files beside the existing Atlas results, copy them to `C:\tmp`, and then merge the post-P40 data into the static report and/or Grafana dashboard export.
+
+## 2026-06-11 - Check Atlas disk visibility
+
+**What we did:**
+- Checked Atlas disk visibility while investigating why fewer disks appear in Ubuntu than the physical drive count in the PowerEdge.
+- Confirmed Linux sees disks presented by `DELL PERC H710P`, not raw physical drive models.
+- Confirmed the PCI storage controller is `Broadcom / LSI MegaRAID SAS 2208`, matching the PERC H710P family.
+- `lsblk` shows six PERC-presented logical disks: `sda` through `sdf`; four are mounted as data volumes, one is the boot/root disk, and one appears unmounted.
+
+**Where we stopped:**
+- The most likely explanation is hardware RAID/virtual disk presentation by the PERC controller.
+- Exact physical-slot-to-virtual-disk mapping still needs PERC/iDRAC/BIOS inventory or RAID CLI tooling such as `perccli`, `storcli`, or Dell OpenManage.
+
+**Next up:**
+- Before changing disk layout, inspect the PERC virtual disk and physical disk config from iDRAC/System Setup or install/use a read-only RAID CLI.
+
+## 2026-06-11 - Reframe P40 install risk
+
+**What we did:**
+- Updated `docs/p40-install-2026-06-10-runbook.md` to frame the Tesla P40 as a reasonable low-cost homelab GPU experiment, not a guaranteed supported Dell configuration.
+- Added checks for exact chassis variant, riser/slot layout, dual 750W PSU awareness, passive P40 airflow, and iDRAC/PSU/PCIe warnings.
+- Added evidence items for chassis variant, PSU wattage/warnings, and idle/first-load GPU temperature.
+- Commented on `DrewBeFree/infra#42` with the corrected install framing.
+
+**Where we stopped:**
+- The install plan now matches the current view: the P40 is not a bad purchase, but Atlas should be treated as an R720/R720xd-family controlled install with power/fit/firmware/cooling stop points.
+
+**Next up:**
+- If installing tonight, do only the physical install, boot/driver/Ollama validation, and post-P40 benchmark. Do not combine with RAID/storage changes.
+
+## 2026-06-11 - Assess pre-P40 benchmark sufficiency
+
+**What we did:**
+- Reviewed the saved Atlas benchmark artifacts in `C:\tmp` and the infra benchmark docs.
+- Confirmed the local Atlas evidence includes:
+  - June 9 single-context two-run baseline: 4 successful runs.
+  - June 9 context sweep two-run baseline: 20 successful runs.
+  - June 10 final core spectrum: 15 successful runs.
+  - June 10 large smoke: 2 successful runs plus one recorded 70B timeout.
+- Compared overlapping CPU baseline points between the June 9 context sweep and June 10 final spectrum:
+  - `llama3.2:3b`: about `+3%` to `+9%`.
+  - `qwen2.5:14b`: about `-2%` to `-5%`.
+
+**Where we stopped:**
+- The pre-P40 data is sufficient for an install-day before/after comparison. It is not publication-grade statistical benchmarking, but it is enough to detect the expected GPU step-change.
+
+**Next up:**
+- Proceed with the P40 install only as a controlled hardware experiment, then run the documented post-P40 benchmark immediately after GPU validation.
+
+## 2026-06-12 - Add P40 install snapshot capture
+
+**What we did:**
+- Added `scripts/atlas-p40-snapshot.sh` to capture timestamped P40 install/load evidence.
+- Copied the script to Atlas at `/home/drew/benchmarks/atlas-p40-snapshot.sh`.
+- Took the first snapshot after confirming Ollama had loaded `llama3.2:3b` onto the Tesla P40.
+- Snapshot directory:
+  - `/home/drew/benchmarks/results/p40-install-snapshots/20260612_011936_post-ollama-gpu-first-load`
+- Captured `nvidia-smi`, GPU query CSV, Docker/Ollama state, Ollama tags, Prometheus health/queries, Grafana health, and Ollama VRAM metrics.
+
+**Where we stopped:**
+- User-level snapshot data is working. `dmesg` capture needs sudo if kernel logs are required.
+- Latest snapshot symlink points to `/home/drew/benchmarks/results/p40-install-snapshots/latest`.
+
+**Next up:**
+- Run the snapshot script before and after each post-P40 benchmark phase, plus after any thermal/load concern.
+
+## 2026-06-12 - Update P40 benchmark HTML reports
+
+**What we did:**
+- Updated `docs/pre-p40-final-local-llm-results.html` so it now presents both the pre-P40 baselines and the first post-P40 core spectrum run.
+- Added post-P40 core graphs, a pre/post speedup graph, a post-P40 results table, updated KPIs, and a note that the large-model post smoke test is still pending.
+- Added `scripts/build-llm-dashboard-results.js` to regenerate the static dashboard data from the saved JSON benchmark files in `C:\tmp`.
+- Regenerated `llm-bench-dashboard/dashboard/results.js` with real aggregate data for four benchmark files and 43 result rows, replacing the synthetic sample export.
+- Updated `docs/llm-benchmark-data-inventory.md` with the post-P40 JSON/log files, snapshot directories, dashboard data generator, and Ollama VRAM metric names.
+
+**Where we stopped:**
+- The static HTML report and both dashboard HTML files now have access to the post-P40 core benchmark data.
+- Syntax checks passed for the report inline script, dashboard scripts, generated results export, and generator script.
+- In-app browser verification was attempted but the browser runtime failed to start under the current sandbox.
+
+**Next up:**
+- Run the post-P40 large smoke test tomorrow, copy the raw JSON to `C:\tmp`, rerun `node scripts/build-llm-dashboard-results.js`, and add the post-large section to the static report.
+
+## 2026-06-12 - Add benchmark interpretation and Hermes guidance
+
+**What we did:**
+- Added a plain-English per-test recap section to `docs/pre-p40-final-local-llm-results.html`.
+- Added model color badges and compact model labels throughout the recap cards and benchmark tables.
+- Added model-use recommendations for Hermes monitoring, routing, coding help, general chat, heavier synthesis, and large-model experiments.
+- Added a Hermes utilization/monitoring section explaining current Grafana/Prometheus coverage, Ollama VRAM metrics, Hermes proxy access, and remaining GPU telemetry work.
+
+**Where we stopped:**
+- The report now explains what each benchmark means, which models to use when, and how Hermes should consume the results operationally.
+- Script parse and DOM-stub render checks passed for the new recap, recommendation, and Hermes sections.
+- In-app browser automation still fails under the sandbox, so visual verification should be done by refreshing the open file tab.
+
+**Next up:**
+- After the post-P40 large smoke test, update the recommendation cards with 32B/70B post-P40 results and decide whether either belongs in Hermes as a default profile.
+
+## 2026-06-12 - Version and visualize P40 report for Grafana
+
+**What we did:**
+- Saved a pre-redesign version copy at `docs/versions/pre-p40-final-local-llm-results.2026-06-12-before-visual-grafana-redesign.html`.
+- Updated `docs/pre-p40-final-local-llm-results.html` with a new quick-read visual board: P40 verdict, pre/post lift bars, status lights, and three model decision cards.
+- Added `scripts/build-grafana-p40-summary.js`.
+- Generated Grafana import files:
+  - `llm-bench-dashboard/grafana/atlas-p40-benchmark-summary.json`
+  - `llm-bench-dashboard/grafana/atlas-p40-benchmark-summary-api-payload.json`
+- Updated Grafana docs to describe UI import, API import, Prometheus datasource mapping, and the current auth status.
+
+**Where we stopped:**
+- HTML and Grafana JSON validation passed.
+- Atlas Grafana health is reachable and reports database `ok`.
+- Live Grafana import was attempted, but `admin:admin` is not valid anymore, so importing the dashboard requires the current Grafana admin password or an API token.
+
+**Next up:**
+- Import `atlas-p40-benchmark-summary.json` through `http://atlas:3001/dashboard/import`, selecting the `Prometheus` datasource, or POST the API payload with valid Grafana credentials.
+
+## 2026-06-12 - Import Atlas P40 summary Grafana dashboard
+
+**What we did:**
+- Incorporated the dashboard critique into the Grafana P40 summary direction: a phone-friendly Atlas Capacity row, AI Ops panels, storage/network rows, and explicit missing-metric callouts.
+- Updated `scripts/build-grafana-p40-summary.js` to generate a 20-panel dashboard with:
+  - Atlas Capacity, Ollama Health, Loaded Models, VRAM Used, RAM Used, Hotspot Temp, Power Draw, and Root Disk.
+  - Compute saturation, benchmark throughput, prompt latency, VRAM by model, disk IO, and network throughput.
+  - Text panels for missing GPU/request metrics and Hermes operating rules.
+- Regenerated:
+  - `llm-bench-dashboard/grafana/atlas-p40-benchmark-summary.json`
+  - `llm-bench-dashboard/grafana/atlas-p40-benchmark-summary-api-payload.json`
+- Imported the dashboard into live Atlas Grafana with UID `atlas-p40-summary`.
+- Verified live Grafana API reports title `Atlas P40 Benchmark Summary`, 20 panels, and URL `/d/atlas-p40-summary/atlas-p40-benchmark-summary`.
+- Checked the new Prometheus expressions against Atlas; all tested expressions returned successfully.
+
+**Where we stopped:**
+- Live P40 summary dashboard is available at `http://atlas:3001/d/atlas-p40-summary/atlas-p40-benchmark-summary`.
+- GPU compute utilization, NVIDIA GPU temperature, NVIDIA GPU power, requests/min, queue depth, and average response time are still missing because the corresponding exporters/metrics are not wired yet.
+
+**Next up:**
+- Add a DCGM or `nvidia-smi` exporter for P40 GPU temp/util/power, then add Ollama request-flow metrics so the AI Ops row can show requests/min, queue depth, and response time.
+
+## 2026-06-12 - Define missing AI Ops exporter path
+
+**What we did:**
+- Reviewed the P40 summary dashboard gap around missing AI Ops metrics.
+- Confirmed the static infra repo currently has the Grafana dashboard/report artifacts, but not the live Atlas Docker compose or Prometheus scrape config.
+- Identified the clean implementation split:
+  - Add NVIDIA/P40 telemetry first via a host-side `nvidia-smi` exporter or DCGM exporter.
+  - Add request-flow metrics second through an Ollama-facing proxy or caller instrumentation.
+
+**Where we stopped:**
+- Grafana can show these panels once Prometheus has the metrics, but Prometheus still needs GPU telemetry and request-flow scrape targets.
+
+**Next up:**
+- Deploy the GPU exporter on Atlas, add the Prometheus scrape job, update the Grafana dashboard panels, then decide whether Hermes/Open WebUI/benchmarks should route through an instrumented Ollama proxy for requests/min, queue depth, and response time.
+
+## 2026-06-12 - Prepare P40 follow-up for tomorrow
+
+**What we did:**
+- Updated `docs/llm-benchmark-data-inventory.md` with the live P40 summary dashboard URL, missing AI Ops metrics, candidate metric names, implementation order, and tomorrow morning checklist.
+- Updated `llm-bench-dashboard/docs/grafana-dashboard.md` with the two-pass plan for P40 GPU telemetry first and Hermes/Ollama request-flow metrics second.
+- Added `docs/p40-next-morning-checklist-2026-06-13.md` as the dedicated morning run sheet.
+- Updated `docs/p40-install-2026-06-10-runbook.md` so it reflects the actual post-install state: P40 installed, driver working, Ollama GPU access working, and core post-P40 benchmark complete.
+- Scheduled a one-time thread wake-up for 2026-06-13 at 8:00 AM local time with the morning kickoff list.
+
+**Where we stopped:**
+- Atlas is ready for the next work block, but continuous NVIDIA GPU telemetry is not in Prometheus/Grafana yet and the post-P40 large-model smoke test is still pending.
+
+**Next up:**
+- Tomorrow morning, open `docs/p40-next-morning-checklist-2026-06-13.md`, verify services, take a `morning-prep` snapshot, add the NVIDIA exporter, update Grafana GPU panels, then run the large smoke test after telemetry is visible.
+
+## 2026-06-12 - Compare Atlas and Alienware CPUs
+
+**What we did:**
+- Queried Atlas with `lscpu` and confirmed it has dual Intel Xeon E5-2643 v2 CPUs: 2 sockets, 6 cores per socket, 12 total cores, 24 threads, 3.50 GHz base, 3.80 GHz max.
+- Queried Alienware from Windows and confirmed it has an Intel Core i9-14900F: 24 cores, 32 logical processors.
+- Checked saved LLM benchmark JSON files in `C:\tmp` and confirmed Alienware CPU inference was roughly 4x faster than Atlas CPU inference on `qwen2.5:14b`, while Atlas with the P40 is now faster than Alienware CPU for the tested local LLM workloads.
+
+**Where we stopped:**
+- CPU-wise, Alienware is clearly faster. Atlas wins for local LLM serving only when the Tesla P40 is used.
+
+**Next up:**
+- Treat Atlas CPU as service/server capacity and the P40 as the AI accelerator; do not expect Atlas CPU-only workloads to outperform Alienware.
+
+## 2026-06-12 - Add CPU comparison to P40 report and wiki
+
+**What we did:**
+- Saved a report version snapshot at `docs/versions/pre-p40-final-local-llm-results.2026-06-12-before-cpu-comparison.html`.
+- Added a `CPU Reality Check` section to `docs/pre-p40-final-local-llm-results.html` explaining that Alienware has the faster CPU, while Atlas wins for local LLM serving because of the Tesla P40.
+- Added a dedicated wiki page at `wiki/docs/infrastructure/atlas-p40-cpu-comparison.md`.
+- Linked the new page from `wiki/mkdocs.yml`, `wiki/docs/infrastructure/index.md`, and `wiki/docs/infrastructure/machines.md`.
+- Updated `wiki/docs/infrastructure/machines.md` and `alienware-vs-poweredge.md` so they no longer claim Atlas has no GPU or that inference stays on Alienware.
+
+**Where we stopped:**
+- HTML inline JavaScript parses successfully.
+- MkDocs build could not run in this sandbox because neither PATH Python nor bundled Python has `mkdocs` installed.
+- Structural checks confirmed the new wiki page exists, the MkDocs nav references it, and stale P40-absent wording was removed from the touched docs.
+
+**Next up:**
+- When back on Atlas or a dev shell with the wiki venv, run `mkdocs build --strict` from `infra/wiki`, then deploy the wiki so `http://atlas/wiki/` shows the new comparison page.
+
+## 2026-06-12 - Re-orient on homelab next steps
+
+**What we did:**
+- Reviewed the homelab memory log and parent infra session log to locate the active Atlas/P40 workstream.
+
+**Where we stopped:**
+- The freshest steps are in the parent infra repo: P40 is installed and working, the core benchmark is recorded, but continuous NVIDIA GPU telemetry and the post-P40 large-model smoke test are still pending.
+
+**Next up:**
+- Continue from `docs/p40-next-morning-checklist-2026-06-13.md`: verify services, take a `morning-prep` snapshot, add NVIDIA GPU telemetry to Prometheus/Grafana, run the large smoke test, then update the reports and wiki.
+
+## 2026-06-12 - Summarize Atlas P40 completion status
+
+**What we did:**
+- Re-read the P40 next-morning checklist, P40 install runbook, and latest infra session entries to summarize the current completion state.
+
+**Where we stopped:**
+- P40 physical install, NVIDIA driver validation, Ollama GPU access, live P40 summary dashboard import, and the core post-P40 benchmark are complete.
+- The remaining gap is to add continuous NVIDIA GPU telemetry to Prometheus/Grafana before the next heavy benchmark, then run and publish the post-P40 large-model smoke test.
+
+**Next up:**
+- Verify services, take a `morning-prep` snapshot, add the NVIDIA exporter and Prometheus scrape job, update Grafana GPU panels, run the large smoke test, regenerate dashboard/report data, and deploy the wiki update.
+
+## 2026-06-12 - Re-scope P40 follow-up requirements
+
+**What we did:**
+- Clarified that the remaining P40 follow-up items are mostly optional once NVIDIA and Ollama GPU acceleration are already working.
+
+**Where we stopped:**
+- The P40 is operational. Continuous GPU telemetry remains useful for monitoring and safe long-running workloads, but the large-model smoke test, JSON copy, dashboard/report regeneration, wiki deploy, and request-flow metrics are not required for basic success.
+
+**Next up:**
+- Prioritize telemetry if Atlas will run sustained local LLM workloads. Defer the benchmark/report/wiki/request-metrics work unless a stronger evidence trail or polished documentation is needed.
+
+## 2026-06-12 - Add optional P40 follow-ups to GitHub backlog
+
+**What we did:**
+- Created GitHub backlog issues in `DrewBeFree/infra` for the remaining optional Atlas/P40 follow-ups:
+  - `infra#46` - Add Atlas P40 GPU telemetry to Prometheus and Grafana.
+  - `infra#47` - Run optional post-P40 large-model smoke test and update report.
+  - `infra#49` - Build and deploy Atlas P40 CPU comparison wiki update.
+  - `infra#48` - Add Hermes and Ollama request-flow metrics.
+
+**Where we stopped:**
+- The P40 install itself remains considered successful. Remaining work is now parked as explicit GitHub backlog instead of being treated as required completion work.
+
+**Next up:**
+- Prioritize `infra#46` when ready to harden Atlas monitoring; leave the benchmark/report/wiki/request-metrics issues until there is a reason to polish or extend observability.
+## 2026-06-14 - Recall Grafana VRAM follow-up
+
+**What we did:**
+- Re-read the infra memory and repo session logs around the Atlas P40/Grafana work.
+- Confirmed the remembered Grafana add-on was the NVIDIA/P40 telemetry exporter work, not a separate VRAM-only panel.
+
+**Where we stopped:**
+- The P40 summary dashboard already has Ollama VRAM metrics/panels; the remaining Grafana gap is continuous GPU telemetry from a host-side `nvidia-smi` exporter or DCGM exporter.
+
+**Next up:**
+- If continuing the work, deploy the GPU exporter on Atlas, add the Prometheus scrape job, update Grafana panels, then run the large-model smoke test once telemetry is visible.
+## 2026-06-14 - Add Atlas P40 GPU telemetry to Grafana
+
+**What we did:**
+- Added `scripts/atlas-nvidia-smi-exporter.py`, a small Prometheus exporter for `nvidia-smi` P40 metrics.
+- Added `scripts/atlas-nvidia-smi-exporter.service` and deployed it on Atlas as the enabled/active user service `atlas-nvidia-smi-exporter.service`.
+- Updated Atlas Prometheus at `/home/drew/monitoring/prometheus.yml` with scrape job `nvidia_gpu` targeting `host.docker.internal:9701`, then restarted `atlas-prometheus`.
+- Verified Prometheus returns `nvidia_gpu_scrape_success`, GPU utilization, NVIDIA temperature, power draw, memory used/total, and memory-utilization metrics.
+- Updated `scripts/build-grafana-p40-summary.js`, regenerated the P40 Grafana JSON/API payload, and imported the live dashboard at `http://atlas:3001/d/atlas-p40-summary/atlas-p40-benchmark-summary`.
+- Verified live Grafana API reports 25 panels and includes the new P40 VRAM, GPU utilization, GPU temperature, GPU power, and P40 telemetry panels.
+- Updated the P40 docs and snapshot script; deployed the snapshot script to Atlas.
+- Captured a post-telemetry snapshot at `/home/drew/benchmarks/results/p40-install-snapshots/20260613_224306_post-gpu-telemetry`.
+
+**Where we stopped:**
+- Continuous NVIDIA/P40 telemetry is live in Prometheus and Grafana.
+- The exporter is enabled and active under user systemd, and `drew` has `Linger=yes` so the service can return after reboot.
+- The only snapshot warning was the known non-sudo `dmesg` permission failure.
+- Local validation passed for the Grafana generator, JSON parsing, and Python exporter compile.
+
+**Next up:**
+- Run the post-P40 large-model smoke test now that GPU telemetry is visible.
+- Optionally add Hermes/Ollama request-flow metrics for requests/minute, queue depth, and response time.

@@ -2,6 +2,12 @@
   "baseDirectory": "C:\\Users\\drewb\\Documents\\GitHub",
   "repositories": [
     {
+      "name": "adhd-snap",
+      "github": "https://github.com/DrewBeFree/adhd-snap.git",
+      "targetDirectory": "apps/adhd-snap",
+      "type": "app"
+    },
+    {
       "name": "daily-planner",
       "github": "https://github.com/DrewBeFree/daily-planner.git",
       "targetDirectory": "apps/daily-planner",
@@ -44,9 +50,21 @@
       "type": "app"
     },
     {
+      "name": "DrewBeFree",
+      "github": "https://github.com/DrewBeFree/DrewBeFree.git",
+      "targetDirectory": "apps/DrewBeFree",
+      "type": "app"
+    },
+    {
       "name": "drewbefree-command-center",
       "github": "https://github.com/DrewBeFree/drewbefree-command-center.git",
       "targetDirectory": "apps/drewbefree-command-center",
+      "type": "app"
+    },
+    {
+      "name": "llm-debate-union",
+      "github": "https://github.com/DrewBeFree/llm-debate-union.git",
+      "targetDirectory": "apps/llm-debate-union",
       "type": "app"
     },
     {
@@ -59,6 +77,24 @@
       "name": "ai-dog-trainer",
       "github": "https://github.com/DrewBeFree/ai-dog-trainer.git",
       "targetDirectory": "apps/ai-dog-trainer",
+      "type": "app"
+    },
+    {
+      "name": "yes",
+      "github": "https://github.com/DrewBeFree/yes-app.git",
+      "targetDirectory": "apps/yes",
+      "type": "app"
+    },
+    {
+      "name": "trading-scanner",
+      "github": "https://github.com/DrewBeFree/trading-scanner.git",
+      "targetDirectory": "apps/trading-scanner",
+      "type": "app"
+    },
+    {
+      "name": "trading-scanner-experimental",
+      "github": "https://github.com/DrewBeFree/trading-scanner-experimental.git",
+      "targetDirectory": "apps/trading-scanner-experimental",
       "type": "app"
     },
     {
@@ -80,15 +116,15 @@
       "type": "site"
     },
     {
+      "name": "luke-codex-guide",
+      "github": "https://github.com/DrewBeFree/luke-codex-guide.git",
+      "targetDirectory": "sites/luke-codex-guide",
+      "type": "site"
+    },
+    {
       "name": "recap-agents",
       "github": "https://github.com/DrewBeFree/recap-agents.git",
       "targetDirectory": "agents/recap-agents",
-      "type": "agent"
-    },
-    {
-      "name": "interactive-setup",
-      "github": "https://github.com/DrewBeFree/interactive-setup.git",
-      "targetDirectory": "agents/interactive-setup",
       "type": "agent"
     },
     {
