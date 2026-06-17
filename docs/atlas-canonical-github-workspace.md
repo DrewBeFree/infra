@@ -44,13 +44,34 @@ git config --global --add safe.directory '%(prefix)///atlas/GitHub/*'
 
 ## Atlas Home Drive
 
-Use `H:` for Atlas home once Samba exposes the home share. The target should be `\\atlas\drew`, backed by `/home/drew`.
+Use `H:` for Atlas home. The target is `\\atlas\drew`, backed by `/home/drew`.
 
 ```powershell
 net use H: \\atlas\drew /persistent:yes
 ```
 
-As of 2026-06-17, Atlas exposes `GitHub`, `Documents`, `Storage`, and `Easystore`; `\\atlas\drew` is not exposed yet. Enabling it requires a sudo edit on Atlas, either by uncommenting the standard `[homes]` block in `/etc/samba/smb.conf` with write access and `valid users = %S`, or by adding an explicit `[drew]` share for `/home/drew`, then running `testparm` and restarting Samba.
+As of 2026-06-17, Atlas exposes `GitHub`, `Documents`, `drew`, `Storage`, and `Easystore`.
+
+## Documents
+
+The organized documents library lives on the Atlas data disk:
+
+- Atlas storage path: `/mnt/data/Documents`
+- Windows share path: `\\atlas\Documents`
+- Windows mapped drive: `I:\`
+
+```powershell
+net use I: \\atlas\Documents /persistent:yes
+```
+
+For Linux tools on Atlas, `/home/drew/Documents` is a symlink to `/mnt/data/Documents`, so normal home-relative paths work.
+
+The old `/home/drew/Documents` contents were preserved in both places:
+
+- `/home/drew/Documents.local-before-atlas-link-2026-06-17-home-documents`
+- `/mnt/data/Documents/_migration/2026-06-17-home-documents`
+
+Note: Samba does not currently show `H:\Documents` reliably because the home share hides symlinks that point outside `/home/drew`. Use `I:\` or `\\atlas\Documents` from Windows. To make `H:\Documents` work as a real directory, replace the symlink with a sudo bind mount from `/mnt/data/Documents` to `/home/drew/Documents` and add it to `/etc/fstab`.
 
 Run this from Atlas to clone missing repos and fast-forward clean existing repos:
 

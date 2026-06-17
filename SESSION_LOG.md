@@ -1852,6 +1852,21 @@
 
 **Next up:**
 - Decide whether to keep Leantime changes as infra overlays, create a private operational fork, or prepare a public fork/upstream PR path.
+## 2026-06-17 - Align Atlas Documents paths
+
+**What we did:**
+- Confirmed the organized documents structure lives at `/mnt/data/Documents` and is exposed to Windows as `\\atlas\Documents`.
+- Preserved the small original `/home/drew/Documents` contents under `/home/drew/Documents.local-before-atlas-link-2026-06-17-home-documents` and copied them into `/mnt/data/Documents/_migration/2026-06-17-home-documents`.
+- Replaced `/home/drew/Documents` on Atlas with a symlink to `/mnt/data/Documents` so Linux tools can use a normal home-relative Documents path.
+- Mapped `I:` on Alienware to `\\atlas\Documents`.
+
+**Where we stopped:**
+- Windows should use `I:\` or `\\atlas\Documents` for the organized document library.
+- `H:\Documents` does not show the symlink reliably through Samba because it points outside the home share.
+
+**Next up:**
+- If `H:\Documents` must work directly, replace the symlink with a sudo bind mount and persist it in `/etc/fstab`.
+
 ## 2026-06-17 - Push ahead repos and align Atlas workspace
 
 **What we did:**
