@@ -1852,6 +1852,23 @@
 
 **Next up:**
 - Decide whether to keep Leantime changes as infra overlays, create a private operational fork, or prepare a public fork/upstream PR path.
+## 2026-06-17 - Share Codex and agent memory through Atlas
+
+**What we did:**
+- Confirmed Atlas should be the canonical source for shared agent memory/config while Alienware keeps only local GUI/runtime state.
+- Seeded Atlas from the current Alienware portable Codex/agent folders: `.codex/projects`, `.codex/memories`, `.codex/rules`, `.codex/skills`, `.codex/agents`, `.codex/shared-config`, and `.agents`.
+- Created an Atlas backup at `/home/drew/.codex/_pre-shared-config-backup-20260617-1938` before seeding.
+- Added Syncthing folders on both machines for `codex-projects`, `codex-memories`, `codex-rules`, `codex-skills`, `codex-agents`, `codex-shared-config`, and `dot-agents`.
+- Verified all seven new shared folders are idle/in-sync with zero needed items on both Alienware and Atlas.
+
+**Where we stopped:**
+- `.claude` remains synced as `claude-mem`.
+- The whole `.codex` folder is intentionally not synced because it contains auth, SQLite runtime state, logs, caches, plugins, attachments, and machine-specific state.
+
+**Next up:**
+- Use `/home/drew/.codex/shared-config` as the canonical place for portable config copies, with `common/`, `windows/`, and `atlas/` variants.
+- If a future tool supports config includes or explicit config-home overrides, point it directly at the Atlas-backed shared config.
+
 ## 2026-06-17 - Align Atlas Documents paths
 
 **What we did:**

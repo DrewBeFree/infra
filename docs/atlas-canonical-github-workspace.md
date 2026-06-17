@@ -73,6 +73,31 @@ The old `/home/drew/Documents` contents were preserved in both places:
 
 Note: Samba does not currently show `H:\Documents` reliably because the home share hides symlinks that point outside `/home/drew`. Use `I:\` or `\\atlas\Documents` from Windows. To make `H:\Documents` work as a real directory, replace the symlink with a sudo bind mount from `/mnt/data/Documents` to `/home/drew/Documents` and add it to `/etc/fstab`.
 
+## Agent Config And Memory
+
+Atlas is the canonical source for shared agent memory and portable config. Alienware keeps local runtime state for GUI apps, auth, caches, logs, plugin binaries, and machine-specific paths.
+
+Syncthing keeps these folders in sync between Alienware and Atlas:
+
+| Folder ID | Alienware path | Atlas path | Purpose |
+|---|---|---|---|
+| `claude-mem` | `C:\Users\drewb\.claude` | `/home/drew/.claude` | Claude memory/config already shared |
+| `codex-projects` | `C:\Users\drewb\.codex\projects` | `/home/drew/.codex/projects` | Codex project memory |
+| `codex-memories` | `C:\Users\drewb\.codex\memories` | `/home/drew/.codex/memories` | Codex memory files |
+| `codex-rules` | `C:\Users\drewb\.codex\rules` | `/home/drew/.codex/rules` | Codex rules |
+| `codex-skills` | `C:\Users\drewb\.codex\skills` | `/home/drew/.codex/skills` | User-installed Codex skills |
+| `codex-agents` | `C:\Users\drewb\.codex\agents` | `/home/drew/.codex/agents` | Codex agent definitions |
+| `codex-shared-config` | `C:\Users\drewb\.codex\shared-config` | `/home/drew/.codex/shared-config` | Canonical portable configs, with `common/`, `windows/`, and `atlas/` variants |
+| `dot-agents` | `C:\Users\drewb\.agents` | `/home/drew/.agents` | Shared agent skills |
+
+Do not sync the whole `.codex` directory. Keep these local-only unless there is a deliberate platform-specific reason to copy them: `auth.json`, runtime SQLite databases, logs, cache, plugins, attachments, sandbox files, shell snapshots, browser/computer-use state, and generated runtime temp folders.
+
+Atlas seed backup for the shared Codex/agent folders:
+
+```text
+/home/drew/.codex/_pre-shared-config-backup-20260617-1938
+```
+
 Run this from Atlas to clone missing repos and fast-forward clean existing repos:
 
 ```bash
