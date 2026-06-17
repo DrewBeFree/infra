@@ -1,3 +1,19 @@
+## 2026-06-17 - Clean Alienware GitHub workspace shell
+
+**What we did:**
+- Archived non-repo workspace/tool config out of `C:\Users\drewb\Documents\GitHub`: `.claude`, `.obsidian`, `.superpowers`, `.vscode`, and `_worktrees`.
+- Archived old/clean local items to `C:\Users\drewb\Documents\GitHub-archive\alienware-cleanup-2026-06-17\`: `homelab-merge-main`, `agents\bob`, `agents\interactive-setup`, `apps\golf`, `claude-config`, `sites\dwebbsolutions`, and `sites\kybernet-tech`.
+- Removed the stray reserved-name `NUL` artifact from the old local GitHub folder.
+- Added `README-USE-ATLAS.md` to the old local GitHub folder pointing GUI work to `G:\` / `\\atlas\GitHub`.
+- Verified `G:` still maps to `\\atlas\GitHub` and `G:\apps` / `G:\infra` are reachable.
+
+**Where we stopped:**
+- `C:\Users\drewb\Documents\GitHub` now contains only migration-leftover repos with dirty/ahead/local work, `notes`, and the Atlas pointer README.
+- Remaining local repos are intentionally not pruned until their local work is pushed to GitHub/Atlas or explicitly discarded.
+
+**Next up:**
+- Triage remaining dirty local repos in batches, moving useful work to Atlas/GitHub and then archiving each local checkout.
+
 ## 2026-06-17 - Alienware GUI access to Atlas workspace
 
 **What we did:**
