@@ -1,3 +1,20 @@
+## 2026-06-17 - Alienware GUI access to Atlas workspace
+
+**What we did:**
+- Confirmed Windows can read the Atlas SMB share at `\\atlas\GitHub`.
+- Created a persistent Windows drive mapping: `G:` -> `\\atlas\GitHub`.
+- Verified `G:\apps` is reachable and `G:\` shows the Atlas repo structure.
+- Updated `docs/atlas-canonical-github-workspace.md` to document GUI access from Alienware.
+- Pushed infra branch `feat/morning-repo-sync-brief` with commit `3bd3692`.
+
+**Where we stopped:**
+- Alienware GUI tools can open the Atlas working tree through `G:\` or `\\atlas\GitHub`.
+- Local `C:\Users\drewb\Documents\GitHub` still contains old/dirty checkouts until they are pushed, archived, or discarded.
+
+**Next up:**
+- Point Codex/OpenAI/VS Code-style GUI workspace pickers at `G:\` for Atlas-owned development.
+- Continue pruning local Alienware checkouts once each repo is clean and represented on Atlas/GitHub.
+
 ## 2026-06-17 - Atlas canonical repo migration pass
 
 **What we did:**
