@@ -296,6 +296,19 @@ test("portal deploy installs Atlas home redirect while preserving the old status
   assert.ok(statusDashboard.liveUrls.includes("http://atlas/status/"));
 });
 
+test("Cloudflare Access runbook documents protected hosted portal setup", async () => {
+  const readme = await readFile(new URL("./README.md", import.meta.url), "utf8");
+  const runbook = await readFile(new URL("../docs/runbooks/cloudflare-protected-internal-portal.md", import.meta.url), "utf8");
+
+  assert.match(readme, /Cloudflare Access/);
+  assert.match(readme, /https:\/\/portal\.drewbefree\.com\/ecosystem\//);
+  assert.match(runbook, /cloudflared/);
+  assert.match(runbook, /Access policy/);
+  assert.match(runbook, /leads\.drewbefree\.com/);
+  assert.match(runbook, /wiki\.drewbefree\.com/);
+  assert.match(runbook, /No secrets belong in this repo/);
+});
+
 test("portal static files are present and load the canonical registry", async () => {
   assert.ok(existsSync(indexPath), "index.html missing");
   assert.ok(existsSync(appPath), "app.js missing");

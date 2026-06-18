@@ -51,3 +51,13 @@ The first viewport includes priority access tiles for:
 - Hermes: `http://100.71.165.80:9119`, a Tailscale-only user-level nginx proxy with Basic Auth.
 
 On mobile, the navigator is an off-canvas sidebar opened by the fixed menu button. Priority links remain visible above filters so operational surfaces are not buried in the directory.
+
+## Cloudflare Access hosted route
+
+The portal can also be reached through Cloudflare Access at:
+
+- `https://portal.drewbefree.com/ecosystem/`
+
+When opened from a protected `*.drewbefree.com` hostname, priority links prefer HTTPS Cloudflare Access aliases for Lead Desk, the Atlas wiki, Grafana, AI Token Dashboard, Leantime, and Hermes. Atlas/Tailscale HTTP links remain the fallback and source-of-truth origins.
+
+Setup and validation steps live in `../docs/runbooks/cloudflare-protected-internal-portal.md`.
