@@ -1916,3 +1916,17 @@
 
 **Next up:**
 - Push the merge to `main`, then fast-forward the dirty local/Atlas infra checkouts later when their uncommitted work is reviewed or archived.
+## 2026-06-18 (archive stale trading scanner experimental)
+
+**What we did:**
+- Removed `trading-scanner-experimental` from the active repo catalog in `repos.json`.
+- Committed the catalog cleanup as `7ae8e8a` and merged it to `main` as `b69d51e`.
+- Pushed infra `main` to GitHub.
+
+**Where we stopped:**
+- `DrewBeFree/infra` main is pushed at `b69d51e`.
+- `trading-scanner-experimental` remains archived on GitHub and is no longer in active infra inventory.
+- Other pre-existing dirty infra files were left untouched.
+
+**Next up:**
+- No immediate infra action for the archived scanner unless you want historical references cleaned from logs/docs.
