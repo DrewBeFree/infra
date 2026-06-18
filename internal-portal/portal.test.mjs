@@ -156,6 +156,33 @@ test("portal is status and control ready", async () => {
   assert.deepEqual(portal.statusControl.actions, ["open", "status", "restart", "logs", "deploy"]);
 });
 
+test("protected Access routes cover the local operator surfaces", async () => {
+  const registry = await loadRegistry();
+  const routes = new Map(registry.protectedAccess.routes.map((route) => [route.id, route]));
+
+  assert.equal(registry.protectedAccess.provider, "cloudflare-access");
+  assert.equal(registry.protectedAccess.defaultPolicy, "drew-only");
+
+  const expectedRoutes = [
+    ["portal", "https://portal.drewbefree.com/ecosystem/", "http://127.0.0.1/ecosystem/", "http://atlas/ecosystem/"],
+    ["wiki", "https://wiki.drewbefree.com/wiki/", "http://127.0.0.1/wiki/", "http://atlas/wiki/"],
+    ["lead-desk", "https://leads.drewbefree.com/", "http://127.0.0.1:3027", "http://atlas:3027/"],
+    ["grafana", "https://grafana.drewbefree.com/", "http://127.0.0.1:3001", "http://atlas:3001/"],
+    ["ai-token-dashboard", "https://tokens.drewbefree.com/", "http://127.0.0.1:7474", "http://atlas:7474/"],
+    ["leantime", "https://planning.drewbefree.com/", "http://127.0.0.1:8095", "http://atlas:8095/"],
+    ["hermes", "https://hermes.drewbefree.com/", "http://127.0.0.1:9119", "http://100.71.165.80:9119/"]
+  ];
+
+  for (const [id, publicUrl, origin, fallbackUrl] of expectedRoutes) {
+    const route = routes.get(id);
+    assert.ok(route, `missing protected route: ${id}`);
+    assert.equal(route.publicUrl, publicUrl);
+    assert.equal(route.origin, origin);
+    assert.equal(route.fallbackUrl, fallbackUrl);
+    assert.equal(route.access, "cloudflare-access");
+  }
+});
+
 test("Hermes Agent is tracked as an Atlas install with access commands", async () => {
   const registry = await loadRegistry();
   const hermes = registry.services.find((service) => service.id === "hermes-agent");

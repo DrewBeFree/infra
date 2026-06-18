@@ -18,6 +18,69 @@
     "tailscaleIpv6": "fd7a:115c:a1e0::613a:a550",
     "notes": "Serve the portal only from Atlas over Tailscale. Public projects remain public at their own URLs, but this launcher is internal."
   },
+  "protectedAccess": {
+    "provider": "cloudflare-access",
+    "defaultPolicy": "drew-only",
+    "notes": "Browser-facing routes are HTTPS Cloudflare Access hostnames. Origins stay private on Atlas behind cloudflared.",
+    "routes": [
+      {
+        "id": "portal",
+        "label": "Internal Ecosystem",
+        "publicUrl": "https://portal.drewbefree.com/ecosystem/",
+        "origin": "http://127.0.0.1/ecosystem/",
+        "fallbackUrl": "http://atlas/ecosystem/",
+        "access": "cloudflare-access"
+      },
+      {
+        "id": "wiki",
+        "label": "Atlas Wiki",
+        "publicUrl": "https://wiki.drewbefree.com/wiki/",
+        "origin": "http://127.0.0.1/wiki/",
+        "fallbackUrl": "http://atlas/wiki/",
+        "access": "cloudflare-access"
+      },
+      {
+        "id": "lead-desk",
+        "label": "Lead Desk",
+        "publicUrl": "https://leads.drewbefree.com/",
+        "origin": "http://127.0.0.1:3027",
+        "fallbackUrl": "http://atlas:3027/",
+        "access": "cloudflare-access"
+      },
+      {
+        "id": "grafana",
+        "label": "Grafana",
+        "publicUrl": "https://grafana.drewbefree.com/",
+        "origin": "http://127.0.0.1:3001",
+        "fallbackUrl": "http://atlas:3001/",
+        "access": "cloudflare-access"
+      },
+      {
+        "id": "ai-token-dashboard",
+        "label": "AI Token Dashboard",
+        "publicUrl": "https://tokens.drewbefree.com/",
+        "origin": "http://127.0.0.1:7474",
+        "fallbackUrl": "http://atlas:7474/",
+        "access": "cloudflare-access"
+      },
+      {
+        "id": "leantime",
+        "label": "Leantime",
+        "publicUrl": "https://planning.drewbefree.com/",
+        "origin": "http://127.0.0.1:8095",
+        "fallbackUrl": "http://atlas:8095/",
+        "access": "cloudflare-access"
+      },
+      {
+        "id": "hermes",
+        "label": "Hermes",
+        "publicUrl": "https://hermes.drewbefree.com/",
+        "origin": "http://127.0.0.1:9119",
+        "fallbackUrl": "http://100.71.165.80:9119/",
+        "access": "cloudflare-access"
+      }
+    ]
+  },
   "visibilityLevels": [
     "public",
     "private",
