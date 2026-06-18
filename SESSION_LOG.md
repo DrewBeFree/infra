@@ -2098,12 +2098,29 @@
 - Mencius, Carson, Kepler, Fermat: fixed Task 2 protected URL resolver, aliases, sync drawer links, path preservation, and Prometheus routing.
 - Lovelace: implemented Task 3 Cloudflare Access runbook and README notes.
 - Godel: reviewed Task 3 and approved it.
+- Herschel: performed the final whole-branch review and found the portal self-link and Prometheus quick-action issues.
+- Beauvoir: fixed final-review findings for portal self-links and Prometheus action labels.
 
 **Where we stopped:**
-- Branch `feat/cloudflare-protected-portal` contains the implementation and docs through commit `e5d8455` plus this final session-log entry.
+- Branch `feat/cloudflare-protected-portal` contains the implementation and docs through commit `2c70021` plus this final session-log entry.
 - The Cloudflare config itself has not been created in the Cloudflare dashboard or installed on Atlas yet.
 - Existing unrelated dirty infra files were left untouched.
 
 **Next up:**
 - Create the Cloudflare Tunnel and Access policies from `docs/runbooks/cloudflare-protected-internal-portal.md`.
 - Deploy/refresh the internal portal on Atlas, then verify unauthenticated hosted access shows Cloudflare Access and authenticated access reaches the portal/services.
+
+## 2026-06-18 (final protected portal branch review)
+
+**What we did:**
+- Reviewed `.git/sdd/review-884450a..8c9f248-final.diff` and the live branch diff for `feat/cloudflare-protected-portal`.
+- Checked protected route metadata, hosted-mode URL rewriting, Cloudflare runbook notes, trading scanner registry state, and secret exposure risk.
+- Confirmed one Important hosted-mode portal link gap and one Minor Prometheus quick-link labeling issue.
+
+**Where we stopped:**
+- Final review findings are ready to report.
+- Existing unrelated dirty infra files were left untouched except this required session-log entry.
+
+**Next up:**
+- Add the Atlas root portal alias or prefer `/ecosystem/` for generated portal links.
+- Preserve the Prometheus quick action label after protected URL rewriting.
