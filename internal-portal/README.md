@@ -5,7 +5,8 @@ Atlas/Tailscale-only launcher and status/control-ready surface for the DrewBeFre
 ## Source of truth
 
 - Registry: `../ecosystem.json`
-- UI: `index.html`, `style.css`, `app.js`
+- Private Command Center launcher: `launcher.html`
+- Ecosystem UI: `index.html`, `style.css`, `app.js`
 - Test contract: `portal.test.mjs`
 
 ## Atlas deployment
@@ -56,7 +57,14 @@ On mobile, the navigator is an off-canvas sidebar opened by the fixed menu butto
 
 The portal can also be reached through Cloudflare Access at:
 
+- `https://portal.drewbefree.com/`
 - `https://portal.drewbefree.com/ecosystem/`
+
+The private Command Center-style launcher lives at `launcher.html` and should be
+the daily front door once Cloudflare is configured:
+
+- Hosted launcher: `https://portal.drewbefree.com/` -> `http://127.0.0.1/ecosystem/launcher.html`
+- Atlas/Tailscale fallback: `http://atlas/ecosystem/launcher.html`
 
 When opened from a protected `*.drewbefree.com` hostname, priority links prefer HTTPS Cloudflare Access aliases for Lead Desk, the Atlas wiki, Grafana, AI Token Dashboard, Leantime, and Hermes. Atlas/Tailscale HTTP links remain the fallback and source-of-truth origins.
 

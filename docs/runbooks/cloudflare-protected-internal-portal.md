@@ -8,14 +8,17 @@ Expose the Atlas internal ecosystem portal and high-use local operator surfaces 
 
 | Public URL | Atlas origin | Fallback |
 | --- | --- | --- |
+| `https://portal.drewbefree.com/` | `http://127.0.0.1/ecosystem/launcher.html` | `http://atlas/ecosystem/launcher.html` |
 | `https://portal.drewbefree.com/ecosystem/` | `http://127.0.0.1/ecosystem/` | `http://atlas/ecosystem/` |
 | `https://wiki.drewbefree.com/wiki/` | `http://127.0.0.1/wiki/` | `http://atlas/wiki/` |
 | `https://leads.drewbefree.com/` | `http://127.0.0.1:3027` | `http://atlas:3027/` |
 | `https://grafana.drewbefree.com/` | `http://127.0.0.1:3001` | `http://atlas:3001/` |
 | `https://prometheus.drewbefree.com/` | `http://127.0.0.1:9090` | `http://atlas:9090/` |
+| `https://scanner.drewbefree.com/` | `http://127.0.0.1:8787` | `http://atlas:8787/` |
 | `https://tokens.drewbefree.com/` | `http://127.0.0.1:7474` | `http://atlas:7474/` |
 | `https://planning.drewbefree.com/` | `http://127.0.0.1:8095` | `http://atlas:8095/` |
 | `https://hermes.drewbefree.com/` | `http://127.0.0.1:9119` | `http://100.71.165.80:9119/` |
+| `https://portal.drewbefree.com/status/` | `http://127.0.0.1/status/` | `http://atlas/status/` |
 
 ## Cloudflare Setup
 
@@ -47,6 +50,7 @@ git diff --check
 
 After Cloudflare setup:
 
+- `https://portal.drewbefree.com/` requires Cloudflare Access before showing the private Command Center launcher.
 - `https://portal.drewbefree.com/ecosystem/` requires Cloudflare Access before showing the portal.
 - `https://wiki.drewbefree.com/wiki/` requires Cloudflare Access before showing the wiki.
 - `https://leads.drewbefree.com/` requires Cloudflare Access before showing Lead Desk.

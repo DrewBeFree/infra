@@ -6,6 +6,7 @@ import test from "node:test";
 
 const registryPath = new URL("../ecosystem.json", import.meta.url);
 const indexPath = new URL("./index.html", import.meta.url);
+const launcherPath = new URL("./launcher.html", import.meta.url);
 const appPath = new URL("./app.js", import.meta.url);
 const stylePath = new URL("./style.css", import.meta.url);
 const syncLinksPath = new URL("./sync-links.json", import.meta.url);
@@ -302,8 +303,11 @@ test("Cloudflare Access runbook documents protected hosted portal setup", async 
 
   assert.match(readme, /Cloudflare Access/);
   assert.match(readme, /https:\/\/portal\.drewbefree\.com\/ecosystem\//);
+  assert.match(readme, /launcher\.html/);
   assert.match(runbook, /cloudflared/);
   assert.match(runbook, /Access policy/);
+  assert.match(runbook, /https:\/\/portal\.drewbefree\.com\//);
+  assert.match(runbook, /\/ecosystem\/launcher\.html/);
   assert.match(runbook, /leads\.drewbefree\.com/);
   assert.match(runbook, /wiki\.drewbefree\.com/);
   assert.match(runbook, /No secrets belong in this repo/);
@@ -323,6 +327,7 @@ test("portal static files are present and load the canonical registry", async ()
 
   assert.match(index, /Atlas\/Tailscale/);
   assert.match(index, /@DrewBeFree Ecosystem/);
+  assert.match(index, /href="launcher\.html"/);
   assert.match(index, /lastUpdated/);
   assert.match(index, /filterButton/);
   assert.match(index, /filterModal/);
@@ -415,6 +420,76 @@ test("portal static files are present and load the canonical registry", async ()
   assert.match(style, /\.map-zone/);
   assert.match(style, /\.zone-head/);
   assert.match(style, /fade-in-up/);
+});
+
+test("private Command Center launcher makes Atlas local tools first-class", async () => {
+  assert.ok(existsSync(launcherPath), "launcher.html missing");
+
+  const launcher = await readFile(launcherPath, "utf8");
+
+  assert.match(launcher, /DrewBeFree \/\/ Private Command Center/);
+  assert.match(launcher, /ATLAS LOCAL FIRST/);
+  assert.match(launcher, /LOCAL APPS & ATLAS TOOLS/);
+  assert.match(launcher, /href="http:\/\/atlas:3027\/"/);
+  assert.match(launcher, /data-protected-href="https:\/\/leads\.drewbefree\.com\/"/);
+  assert.match(launcher, /href="http:\/\/atlas\/wiki\/"/);
+  assert.match(launcher, /data-protected-href="https:\/\/wiki\.drewbefree\.com\/wiki\/"/);
+  assert.match(launcher, /href="http:\/\/atlas\/ecosystem\/"/);
+  assert.match(launcher, /data-protected-href="https:\/\/portal\.drewbefree\.com\/ecosystem\/"/);
+  assert.match(launcher, /href="http:\/\/atlas:3001\/d\/atlas-overview\/poweredge-dashboard"/);
+  assert.match(launcher, /data-protected-href="https:\/\/grafana\.drewbefree\.com\/d\/atlas-overview\/poweredge-dashboard"/);
+  assert.match(launcher, /href="http:\/\/atlas:9090"/);
+  assert.match(launcher, /data-protected-href="https:\/\/prometheus\.drewbefree\.com\/"/);
+  assert.match(launcher, /href="http:\/\/atlas:7474"/);
+  assert.match(launcher, /data-protected-href="https:\/\/tokens\.drewbefree\.com\/"/);
+  assert.match(launcher, /href="http:\/\/atlas:8095"/);
+  assert.match(launcher, /data-protected-href="https:\/\/planning\.drewbefree\.com\/"/);
+  assert.match(launcher, /href="http:\/\/100\.71\.165\.80:9119"/);
+  assert.match(launcher, /data-protected-href="https:\/\/hermes\.drewbefree\.com\/"/);
+  assert.match(launcher, /href="http:\/\/atlas:8787"/);
+  assert.match(launcher, /data-protected-href="https:\/\/scanner\.drewbefree\.com\/"/);
+  assert.match(launcher, /href="http:\/\/atlas\/status\/"/);
+  assert.match(launcher, /data-protected-href="https:\/\/portal\.drewbefree\.com\/status\/"/);
+  assert.match(launcher, /function isProtectedHostedMode/);
+  assert.match(launcher, /querySelectorAll\("\[data-protected-href\]"\)/);
+});
+
+test("private launcher rewrites Atlas-only links in protected hosted mode", async () => {
+  const launcher = await readFile(launcherPath, "utf8");
+  const scriptMatch = launcher.match(/<script>([\s\S]*?)<\/script>/);
+  assert.ok(scriptMatch, "launcher inline script missing");
+
+  const links = [...launcher.matchAll(/<a\b([^>]*)>/g)].map((match) => {
+    const attrs = match[1];
+    const href = attrs.match(/\bhref="([^"]+)"/)?.[1] ?? "";
+    const protectedHref = attrs.match(/\bdata-protected-href="([^"]+)"/)?.[1] ?? "";
+    return {
+      dataset: protectedHref ? { protectedHref } : {},
+      getAttribute: (name) => (name === "href" ? href : null),
+      href
+    };
+  });
+
+  const sandbox = {
+    document: {
+      getElementById: (id) => ({ textContent: id }),
+      querySelectorAll: (selector) => (selector === "[data-protected-href]" ? links.filter((link) => link.dataset.protectedHref) : [])
+    },
+    window: {
+      location: {
+        protocol: "https:",
+        hostname: "portal.drewbefree.com"
+      }
+    }
+  };
+
+  sandbox.window.window = sandbox.window;
+  vm.runInNewContext(scriptMatch[1], sandbox, { filename: "internal-portal/launcher.html" });
+
+  const clickableAtlasLinks = links.filter((link) => /^http:\/\/(atlas|100\.)/i.test(link.href));
+  assert.deepEqual(clickableAtlasLinks.map((link) => link.href), []);
+  assert.ok(links.some((link) => link.href === "https://scanner.drewbefree.com/"));
+  assert.ok(links.some((link) => link.href === "https://portal.drewbefree.com/status/"));
 });
 
 test("protected hosted links preserve route suffixes and normalize slash variants", async () => {

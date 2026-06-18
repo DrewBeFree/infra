@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DrewBeFree // Private Command Center</title>
+<meta name="theme-color" content="#071015">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050a0e;
+    --bg2: #081117;
+    --panel: #0a151d;
+    --panel2: #0d1b25;
+    --border: #143143;
+    --accent: #00d4ff;
+    --accent2: #00ff88;
+    --accent3: #f59e0b;
+    --danger: #ff6b35;
+    --text: #d7f4fa;
+    --text-mid: #7fb3c5;
+    --text-dim: #426d7c;
+    --glow: rgba(0, 212, 255, 0.16);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { min-height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Share Tech Mono", monospace;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.12) 2px, rgba(0,0,0,0.12) 4px),
+      linear-gradient(rgba(0,212,255,0.022) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.022) 1px, transparent 1px);
+    background-size: auto, 42px 42px, 42px 42px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .wrap { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; padding: 34px 20px 72px; }
+  header { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 20px; align-items: start; border-bottom: 1px solid var(--border); padding-bottom: 26px; margin-bottom: 24px; }
+  .eyebrow { color: var(--accent); font-size: 0.68rem; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 8px; }
+  .logo { font-family: "Orbitron", sans-serif; font-size: clamp(2.1rem, 6vw, 4rem); font-weight: 900; letter-spacing: 2px; color: #fff; line-height: 0.95; }
+  .logo span { color: var(--accent); text-shadow: 0 0 24px rgba(0,212,255,0.5); }
+  .subline { color: var(--text-mid); letter-spacing: 3px; font-size: 0.74rem; margin-top: 12px; }
+  .status { min-width: 245px; text-align: right; color: var(--text-dim); font-size: 0.66rem; letter-spacing: 2px; line-height: 2.1; }
+  .status .on { color: var(--accent2); }
+  .cursor { display: inline-block; width: 8px; height: 13px; background: var(--accent); margin-left: 5px; vertical-align: middle; animation: blink 1s step-end infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  .atlas-rail {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) repeat(4, minmax(138px, 1fr));
+    gap: 10px;
+    margin-bottom: 30px;
+  }
+  .rail-main, .rail-link {
+    border: 1px solid var(--border);
+    background: rgba(8, 17, 23, 0.88);
+    border-radius: 4px;
+    min-height: 76px;
+  }
+  .rail-main { padding: 16px 18px; border-color: rgba(0,212,255,0.38); box-shadow: inset 0 0 24px rgba(0,212,255,0.04); }
+  .rail-main strong { display: block; font-family: "Orbitron", sans-serif; color: #fff; letter-spacing: 2px; font-size: 0.9rem; margin-bottom: 7px; }
+  .rail-main span { color: var(--text-mid); font-family: "Exo 2", sans-serif; font-size: 0.8rem; line-height: 1.45; }
+  .rail-link {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    padding: 13px 14px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  }
+  .rail-link:hover, .card:hover { border-color: var(--card-accent, var(--accent)); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.45), 0 0 18px var(--card-glow, var(--glow)); }
+  .rail-link small, .card-id { color: var(--text-dim); font-size: 0.58rem; letter-spacing: 3px; text-transform: uppercase; }
+  .rail-link b { color: #fff; font-family: "Orbitron", sans-serif; letter-spacing: 1px; font-size: 0.78rem; }
+
+  .section-label { display: flex; align-items: center; gap: 12px; margin: 28px 0 14px; color: var(--text-dim); font-size: 0.65rem; letter-spacing: 4px; text-transform: uppercase; }
+  .section-label::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+  .card {
+    --card-accent: var(--accent);
+    --card-glow: var(--glow);
+    position: relative;
+    overflow: hidden;
+    min-height: 190px;
+    display: flex;
+    flex-direction: column;
+    color: inherit;
+    text-decoration: none;
+    background: linear-gradient(180deg, rgba(13,27,37,0.95), rgba(8,17,23,0.96));
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 18px;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  }
+  .card::before { content: ""; position: absolute; inset: 0 0 auto; height: 2px; background: linear-gradient(90deg, transparent, var(--card-accent), transparent); opacity: 0.8; }
+  .card-name { font-family: "Orbitron", sans-serif; color: #fff; font-weight: 700; letter-spacing: 2px; font-size: 0.9rem; margin: 12px 0 6px; }
+  .card-url { color: var(--card-accent); font-size: 0.62rem; letter-spacing: 1px; opacity: 0.82; overflow-wrap: anywhere; }
+  .card-desc { font-family: "Exo 2", sans-serif; color: var(--text-mid); font-size: 0.82rem; line-height: 1.55; margin: 12px 0 16px; font-weight: 300; }
+  .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: auto; padding-top: 12px; border-top: 1px solid rgba(20,49,67,0.75); }
+  .tag { border: 1px solid var(--card-accent); color: var(--card-accent); border-radius: 2px; padding: 3px 7px; font-size: 0.56rem; letter-spacing: 2px; text-transform: uppercase; opacity: 0.72; }
+  .terminal { margin-top: 28px; padding: 16px 18px; background: var(--bg2); border: 1px solid var(--border); border-radius: 4px; color: var(--text-dim); font-size: 0.68rem; line-height: 2.1; letter-spacing: 1px; }
+  .tl::before { content: "> "; color: var(--accent2); }
+  .hi { color: var(--accent); }
+  .ok { color: var(--accent2); }
+  footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; color: var(--text-dim); border-top: 1px solid var(--border); margin-top: 30px; padding-top: 18px; font-size: 0.62rem; letter-spacing: 2px; }
+
+  @media (max-width: 880px) {
+    header { grid-template-columns: 1fr; }
+    .status { text-align: left; min-width: 0; }
+    .atlas-rail { grid-template-columns: 1fr 1fr; }
+    .rail-main { grid-column: 1 / -1; }
+  }
+  @media (max-width: 560px) {
+    .wrap { padding: 26px 14px 54px; }
+    .atlas-rail, .grid { grid-template-columns: 1fr; }
+    .card { min-height: 170px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">// PRIVATE NODE - CLOUDFLARE ACCESS READY</div>
+      <div class="logo">DREW<span>BE</span>FREE</div>
+      <div class="subline">LOCAL APPS - ATLAS OPS - PROJECT CONTROL<span class="cursor"></span></div>
+    </div>
+    <div class="status">
+      <div>ACCESS <span class="on" id="accessMode">ATLAS LOCAL FIRST</span></div>
+      <div>PRIMARY <span class="on">ATLAS</span></div>
+      <div>FALLBACK <span class="on">TAILSCALE</span></div>
+      <div>MAP <a href="http://atlas/ecosystem/" data-protected-href="https://portal.drewbefree.com/ecosystem/" style="color:var(--accent);text-decoration:none;">ECOSYSTEM &gt;</a></div>
+    </div>
+  </header>
+
+  <section class="atlas-rail" aria-label="Atlas local priority links">
+    <div class="rail-main">
+      <strong>ATLAS LOCAL FIRST</strong>
+      <span>Your daily operator surfaces are pinned here: leads, wiki, service health, planning, and the deeper ecosystem registry.</span>
+    </div>
+    <a class="rail-link" href="http://atlas:3027/" data-protected-href="https://leads.drewbefree.com/" style="--card-accent:#00ff88;--card-glow:rgba(0,255,136,0.1);"><small>LOCAL APP</small><b>Lead Desk</b></a>
+    <a class="rail-link" href="http://atlas/wiki/" data-protected-href="https://wiki.drewbefree.com/wiki/" style="--card-accent:#00d4ff;"><small>DOCS</small><b>Atlas Wiki</b></a>
+    <a class="rail-link" href="http://atlas/ecosystem/" data-protected-href="https://portal.drewbefree.com/ecosystem/" style="--card-accent:#a78bfa;"><small>REGISTRY</small><b>Ecosystem</b></a>
+    <a class="rail-link" href="http://atlas:3001/d/atlas-overview/poweredge-dashboard" data-protected-href="https://grafana.drewbefree.com/d/atlas-overview/poweredge-dashboard" style="--card-accent:#f59e0b;"><small>HEALTH</small><b>Grafana</b></a>
+  </section>
+
+  <div class="section-label">// LOCAL APPS & ATLAS TOOLS</div>
+  <section class="grid" aria-label="Local apps and Atlas tools">
+    <a class="card" href="http://atlas:3027/" data-protected-href="https://leads.drewbefree.com/" style="--card-accent:#00ff88;--card-glow:rgba(0,255,136,0.11);">
+      <div class="card-id">ATLAS_001 // LOCAL APP</div>
+      <div class="card-name">LEAD DESK</div>
+      <div class="card-url">http://atlas:3027/</div>
+      <div class="card-desc">Morning lead review hub for Surf the Webb, pinned first because this is the thing you actually open.</div>
+      <div class="tags"><span class="tag">Leads</span><span class="tag">Local</span><span class="tag">Daily</span></div>
+    </a>
+    <a class="card" href="http://atlas/wiki/" data-protected-href="https://wiki.drewbefree.com/wiki/" style="--card-accent:#00d4ff;">
+      <div class="card-id">ATLAS_002 // DOCS</div>
+      <div class="card-name">ATLAS WIKI</div>
+      <div class="card-url">http://atlas/wiki/</div>
+      <div class="card-desc">Private docs for machines, services, workflows, project notes, runbooks, and operating memory.</div>
+      <div class="tags"><span class="tag">Wiki</span><span class="tag">Runbooks</span><span class="tag">Docs</span></div>
+    </a>
+    <a class="card" href="http://atlas/ecosystem/" data-protected-href="https://portal.drewbefree.com/ecosystem/" style="--card-accent:#a78bfa;--card-glow:rgba(167,139,250,0.12);">
+      <div class="card-id">ATLAS_003 // MAP</div>
+      <div class="card-name">ECOSYSTEM MAP</div>
+      <div class="card-url">http://atlas/ecosystem/</div>
+      <div class="card-desc">Full registry view for repos, dashboards, docs, services, sync links, and detailed project drawers.</div>
+      <div class="tags"><span class="tag">Registry</span><span class="tag">Search</span><span class="tag">Deep View</span></div>
+    </a>
+    <a class="card" href="http://atlas:3001/d/atlas-overview/poweredge-dashboard" data-protected-href="https://grafana.drewbefree.com/d/atlas-overview/poweredge-dashboard" style="--card-accent:#f59e0b;--card-glow:rgba(245,158,11,0.11);">
+      <div class="card-id">ATLAS_004 // HEALTH</div>
+      <div class="card-name">GRAFANA</div>
+      <div class="card-url">http://atlas:3001/d/atlas-overview/poweredge-dashboard</div>
+      <div class="card-desc">Atlas health, GPU telemetry, dashboards, benchmarks, and service visibility from one monitoring surface.</div>
+      <div class="tags"><span class="tag">Metrics</span><span class="tag">P40</span><span class="tag">Health</span></div>
+    </a>
+    <a class="card" href="http://atlas:9090" data-protected-href="https://prometheus.drewbefree.com/" style="--card-accent:#ef4444;--card-glow:rgba(239,68,68,0.11);">
+      <div class="card-id">ATLAS_005 // METRICS</div>
+      <div class="card-name">PROMETHEUS</div>
+      <div class="card-url">http://atlas:9090</div>
+      <div class="card-desc">Raw metrics and target status behind the Grafana panels when you need the source signal.</div>
+      <div class="tags"><span class="tag">Metrics</span><span class="tag">Targets</span></div>
+    </a>
+    <a class="card" href="http://atlas:7474" data-protected-href="https://tokens.drewbefree.com/" style="--card-accent:#38bdf8;">
+      <div class="card-id">ATLAS_006 // COSTS</div>
+      <div class="card-name">AI TOKEN DASHBOARD</div>
+      <div class="card-url">http://atlas:7474</div>
+      <div class="card-desc">Usage and cost tracking for local and hosted AI work, with quick visibility into current spend.</div>
+      <div class="tags"><span class="tag">Tokens</span><span class="tag">Cost</span><span class="tag">AI</span></div>
+    </a>
+    <a class="card" href="http://atlas:8095" data-protected-href="https://planning.drewbefree.com/" style="--card-accent:#c084fc;--card-glow:rgba(192,132,252,0.12);">
+      <div class="card-id">ATLAS_007 // PLANNING</div>
+      <div class="card-name">LEANTIME</div>
+      <div class="card-url">http://atlas:8095</div>
+      <div class="card-desc">Project planning cockpit for repo work, milestones, backlog sync, and Atlas operating plans.</div>
+      <div class="tags"><span class="tag">Projects</span><span class="tag">Backlog</span></div>
+    </a>
+    <a class="card" href="http://100.71.165.80:9119" data-protected-href="https://hermes.drewbefree.com/" style="--card-accent:#22c55e;">
+      <div class="card-id">ATLAS_008 // AGENT</div>
+      <div class="card-name">HERMES</div>
+      <div class="card-url">http://100.71.165.80:9119</div>
+      <div class="card-desc">Agent runtime dashboard and terminal surface, still backed by Atlas/Tailscale access rules.</div>
+      <div class="tags"><span class="tag">Agent</span><span class="tag">Terminal</span></div>
+    </a>
+  </section>
+
+  <div class="section-label">// PROJECT SHORTCUTS</div>
+  <section class="grid" aria-label="Project shortcuts">
+    <a class="card" href="https://github.com/DrewBeFree/infra" style="--card-accent:#94a3b8;">
+      <div class="card-id">REPO_001 // INFRA</div>
+      <div class="card-name">INFRA REPO</div>
+      <div class="card-url">github.com/DrewBeFree/infra</div>
+      <div class="card-desc">Source of truth for the portal, wiki, registry, runbooks, and Atlas operating documentation.</div>
+      <div class="tags"><span class="tag">GitHub</span><span class="tag">Registry</span></div>
+    </a>
+    <a class="card" href="http://atlas:8787" data-protected-href="https://scanner.drewbefree.com/" style="--card-accent:#14b8a6;">
+      <div class="card-id">APP_009 // LOCAL</div>
+      <div class="card-name">TRADING SCANNER</div>
+      <div class="card-url">http://atlas:8787</div>
+      <div class="card-desc">Active local scanner surface, kept in the registry while the experimental fork stays archived.</div>
+      <div class="tags"><span class="tag">Atlas</span><span class="tag">Trading</span></div>
+    </a>
+    <a class="card" href="http://atlas/status/" data-protected-href="https://portal.drewbefree.com/status/" style="--card-accent:#64748b;">
+      <div class="card-id">ATLAS_009 // STATUS</div>
+      <div class="card-name">OLD STATUS DASHBOARD</div>
+      <div class="card-url">http://atlas/status/</div>
+      <div class="card-desc">Preserved status dashboard location from before the ecosystem portal took over Atlas home.</div>
+      <div class="tags"><span class="tag">Legacy</span><span class="tag">Status</span></div>
+    </a>
+  </section>
+
+  <div class="terminal" aria-label="Private command center scan">
+    <div class="tl">scan ./atlas <span class="hi">lead-desk - wiki - ecosystem - grafana - prometheus - tokens - leantime - hermes</span></div>
+    <div class="tl">route mode <span class="ok" id="routeMode">atlas/tailscale fallbacks active</span></div>
+    <div class="tl">cloudflare <span class="hi">protected aliases ready after Access policy is enabled</span></div>
+  </div>
+
+  <footer>
+    <span>PRIVATE COMMAND CENTER</span>
+    <span>ATLAS LOCAL FIRST</span>
+    <span>DREWBEFREE.COM</span>
+  </footer>
+</div>
+<script>
+  function isProtectedHostedMode() {
+    return window.location.protocol === "https:" && /(^|\.)drewbefree\.com$/i.test(window.location.hostname);
+  }
+
+  if (isProtectedHostedMode()) {
+    document.querySelectorAll("[data-protected-href]").forEach((link) => {
+      link.dataset.internalHref = link.getAttribute("href");
+      link.href = link.dataset.protectedHref;
+    });
+    document.getElementById("accessMode").textContent = "CLOUDFLARE ACCESS";
+    document.getElementById("routeMode").textContent = "https protected aliases active";
+  }
+</script>
+</body>
+</html>
