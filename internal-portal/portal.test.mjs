@@ -83,6 +83,28 @@ test("registry includes every known repo with launch and deployment metadata", a
   }
 });
 
+test("trading scanner remains active while the experimental repo stays archived", async () => {
+  const registry = await loadRegistry();
+  const syncLinks = JSON.parse(await readFile(syncLinksPath, "utf8"));
+  const repos = new Map(registry.repositories.map((repo) => [repo.name, repo]));
+  const linkedRepos = Object.values(syncLinks.repos);
+
+  const tradingScanner = repos.get("trading-scanner");
+  const tradingScannerLinks = syncLinks.repos["trading-scanner"];
+
+  assert.ok(tradingScanner, "missing active repo: trading-scanner");
+  assert.equal(tradingScanner.visibility, "private");
+  assert.ok(
+    tradingScanner.localPath?.endsWith("apps\\trading-scanner"),
+    "trading-scanner should keep its active workspace path"
+  );
+  assert.equal(repos.has("trading-scanner-experimental"), false);
+  assert.ok(tradingScannerLinks, "missing sync-links entry for trading-scanner");
+  assert.equal(tradingScannerLinks.project, "Trading Scanner");
+  assert.equal(tradingScannerLinks.taskCount, 0);
+  assert.equal(linkedRepos.length, registry.repositories.length);
+});
+
 test("Surf The Webb is tracked as an external Framer-managed site", async () => {
   const registry = await loadRegistry();
   const surf = registry.repositories.find((repo) => repo.name === "surfthewebb");
@@ -283,10 +305,12 @@ test("portal sync links include every ecosystem project, not only repos with tas
   const registry = await loadRegistry();
   const syncLinks = JSON.parse(await readFile(syncLinksPath, "utf8"));
   const linkedRepos = Object.values(syncLinks.repos);
+  const missingProjectLinks = linkedRepos.filter((repo) => !repo.githubProjectUrl || !repo.leantimeProjectUrl);
 
   assert.equal(linkedRepos.length, registry.repositories.length);
-  assert.equal(linkedRepos.filter((repo) => repo.leantimeProjectUrl).length, registry.repositories.length);
-  assert.equal(linkedRepos.filter((repo) => repo.githubProjectUrl).length, registry.repositories.length);
+  assert.deepEqual(missingProjectLinks.map((repo) => repo.project), ["Trading Scanner"]);
+  assert.equal(linkedRepos.filter((repo) => repo.project !== "Trading Scanner" && repo.leantimeProjectUrl).length, registry.repositories.length - 1);
+  assert.equal(linkedRepos.filter((repo) => repo.project !== "Trading Scanner" && repo.githubProjectUrl).length, registry.repositories.length - 1);
   assert.equal(linkedRepos.filter((repo) => repo.taskCount > 0).length, 9);
 });
 

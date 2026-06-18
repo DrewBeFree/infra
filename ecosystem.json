@@ -1,6 +1,6 @@
 {
   "schema": "drewbefree.ecosystem.v1",
-  "updatedAt": "2026-06-08",
+  "updatedAt": "2026-06-18",
   "owner": "DrewBeFree",
   "canonical": true,
   "generatedFrom": [
@@ -490,6 +490,51 @@
           "open",
           "build",
           "deploy"
+        ]
+      }
+    },
+    {
+      "name": "trading-scanner",
+      "displayName": "Trading Scanner",
+      "category": "app",
+      "visibility": "private",
+      "summary": "Production-grade volatility-controlled market scanner with a live Atlas dashboard.",
+      "githubUrl": "https://github.com/DrewBeFree/trading-scanner",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\apps\\trading-scanner",
+      "liveUrls": [
+        "http://atlas:8787"
+      ],
+      "docs": [
+        {
+          "label": "README.md",
+          "url": "https://github.com/DrewBeFree/trading-scanner/blob/main/README.md"
+        },
+        {
+          "label": "BACKLOG.md",
+          "url": "https://github.com/DrewBeFree/trading-scanner/blob/main/BACKLOG.md"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "docker-compose",
+          "host": "atlas",
+          "path": "C:\\Users\\drewb\\Documents\\GitHub\\apps\\trading-scanner",
+          "url": "http://atlas:8787",
+          "notes": "Atlas-hosted Docker Compose dashboard on port 8787."
+        }
+      ],
+      "publicCommandCenter": false,
+      "statusControl": {
+        "state": "live",
+        "checks": [
+          "github",
+          "docs",
+          "atlas"
+        ],
+        "actions": [
+          "open",
+          "run",
+          "logs"
         ]
       }
     },

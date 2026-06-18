@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-05",
+  "generatedAt": "2026-06-18",
   "source": "infra/data/task-sync reports",
   "repos": {
     "adhd-snap": {
@@ -555,6 +555,17 @@
           "githubProjectItemSynced": true
         }
       ]
+    },
+    "trading-scanner": {
+      "project": "Trading Scanner",
+      "repoFullName": "DrewBeFree/trading-scanner",
+      "githubRepoUrl": "https://github.com/DrewBeFree/trading-scanner",
+      "githubProjectNumber": null,
+      "githubProjectUrl": null,
+      "leantimeProjectId": null,
+      "leantimeProjectUrl": null,
+      "taskCount": 0,
+      "tasks": []
     }
   }
 }
