@@ -1947,3 +1947,163 @@
 - Choose execution mode for the implementation plan.
 - Implement protected route metadata, adaptive HTTPS links, and the Cloudflare Access runbook.
 - After implementation, run portal tests and set up Cloudflare routes/policies on Atlas.
+
+## 2026-06-18 (portal baseline repair review)
+
+**What we did:**
+- Reviewed `.git/sdd/baseline-repair-report.md` and `.git/sdd/review-7a61cf1..482420a.diff`.
+- Checked the one-file `ecosystem.json` repair against the Cloudflare portal constraints without rerunning tests.
+- Found that `ecosystem.json` and `internal-portal/sync-links.json` now agree, but `repos.json` still lists `trading-scanner`.
+
+**Where we stopped:**
+- Review verdict is ready to report.
+- Unrelated dirty worktree files were left untouched.
+
+**Next up:**
+- Decide whether to remove or explicitly archive the remaining `trading-scanner` entry in `repos.json` before continuing Cloudflare implementation.
+
+## 2026-06-18 (trading scanner baseline re-review)
+
+**What we did:**
+- Reviewed `.git/sdd/baseline-repair-report.md` and `.git/sdd/review-7a61cf1..efb92d3-baseline-rereview.diff`.
+- Confirmed the follow-up restores active `trading-scanner`, removes archived `trading-scanner-experimental` from portal registry data, and adds regression coverage plus a `sync-links.json` row.
+- Used the report's passing validation evidence without rerunning tests.
+
+**Where we stopped:**
+- Review verdict is ready: spec compliance approved and task quality approved, with only minor residual notes.
+- Unrelated dirty worktree files remain untouched except this required session log entry.
+
+**Next up:**
+- Continue the Cloudflare-protected portal implementation from the repaired baseline.
+
+## 2026-06-18 (protected portal task 1 review)
+
+**What we did:**
+- Reviewed `.git/sdd/task-1-brief.md`, `.git/sdd/task-1-report.md`, and `.git/sdd/review-efb92d3..97301db-task1.diff`.
+- Checked Task 1 against the Cloudflare protected-route scope without rerunning tests.
+- Confirmed the change only adds `registry.protectedAccess.routes[]` metadata and matching contract coverage.
+
+**Where we stopped:**
+- Review verdict is ready: spec compliance approved and task quality approved.
+- Existing unrelated dirty worktree files were left untouched except this required session log entry.
+
+**Next up:**
+- Continue with the next Cloudflare-protected portal task.
+
+## 2026-06-18 (protected portal task 2 review)
+
+**What we did:**
+- Reviewed `.git/sdd/task-2-brief.md`, `.git/sdd/task-2-report.md`, and `.git/sdd/review-97301db..f51b81b-task2.diff`.
+- Checked the adaptive protected-link implementation against the Cloudflare portal constraints without rerunning tests.
+- Found that the hard-coded priority links were wired, but hosted-mode generated registry/docs/drawer links can still fall back to Atlas/Tailscale URLs or lose their target path.
+
+**Where we stopped:**
+- Review verdict is ready: spec compliance not approved and task quality not approved until the protected URL resolver handles generated links correctly.
+- Existing unrelated dirty worktree files were left untouched except this required session log entry.
+
+**Next up:**
+- Fix protected URL resolution for generated registry/docs/drawer links, then continue the Cloudflare-protected portal implementation.
+
+## 2026-06-18 (protected portal task 2 re-review)
+
+**What we did:**
+- Reviewed `.git/sdd/task-2-brief.md`, `.git/sdd/task-2-report.md`, and `.git/sdd/review-97301db..d0f8d24-task2-rereview.diff`.
+- Checked the follow-up URL normalization without rerunning tests, using the implementer report evidence.
+- Confirmed suffix/query/hash preservation improved, but found generated drawer/sync and some registry service links can still leave internal HTTP URLs in hosted mode.
+
+**Where we stopped:**
+- Review verdict is ready: spec compliance not approved and task quality not approved.
+- Existing unrelated dirty worktree files were left untouched except this required session log entry.
+
+**Next up:**
+- Route all generated protected-service links, including sync links and alternate local/Tailscale aliases, through the protected URL resolver before continuing Task 2.
+
+## 2026-06-18 (protected portal task 2 second re-review)
+
+**What we did:**
+- Reviewed `.git/sdd/task-2-brief.md`, `.git/sdd/task-2-report.md`, and `.git/sdd/review-97301db..e767b29-task2-rereview2.diff`.
+- Checked the latest protected-link fixes without rerunning tests, using the implementer report evidence.
+- Confirmed the resolver now preserves suffix/query/hash paths and covers the sync drawer Leantime project URL plus the Lead Desk `100.117.87.57` alias.
+- Found remaining hosted-mode link regressions: static data-protected priority links can still drop path-specific fallbacks, and generated catalog/drawer links can still expose unmatched internal service aliases.
+
+**Where we stopped:**
+- Review verdict is ready: spec compliance not approved and task quality not approved.
+- Existing unrelated dirty worktree files were left untouched except this required session log entry.
+
+**Next up:**
+- Preserve original protected-link href suffixes in `upgradeProtectedLinks()` and either normalize all protected-service aliases or filter unmatched internal URLs from hosted-mode generated links.
+
+## 2026-06-18 (protected portal task 2 final review)
+
+**What we did:**
+- Reviewed `.git/sdd/task-2-brief.md`, `.git/sdd/task-2-report.md`, and `.git/sdd/review-97301db..0696938-task2-finalreview.diff`.
+- Checked the final Task 2 protected-link implementation without rerunning tests, using the implementer report evidence.
+- Confirmed the prior blockers are fixed for static path-preserving links, suffix/query/hash mapping, trailing slash handling, sync drawer Leantime links, Lead Desk aliases, and known Leantime/Hermes/Grafana/token aliases.
+- Found one remaining quality issue: `http://atlas:9090` is treated as a Grafana alias even though the registry/UI identify it as Prometheus, causing hosted-mode Prometheus links to open Grafana instead.
+
+**Where we stopped:**
+- Review verdict is ready: spec compliance not approved and task quality not approved because of the Prometheus-to-Grafana link regression.
+- Existing unrelated dirty worktree files were left untouched except this required session log entry.
+
+**Next up:**
+- Remove the `http://atlas:9090` Grafana alias and either add a real protected Prometheus route or suppress/filter that unmatched internal Prometheus link in hosted mode.
+
+## 2026-06-18 (protected portal task 2 approval check)
+
+**What we did:**
+- Reviewed `.git/sdd/task-2-brief.md`, `.git/sdd/task-2-report.md`, and `.git/sdd/review-97301db..e86e328-task2-approvedcheck.diff`.
+- Checked the updated Task 2 fix without rerunning tests, using the implementer report evidence.
+- Confirmed the previous blockers are fixed, including static path-preserving links, suffix/query/hash and trailing slash handling, sync drawer Leantime links, protected service aliases, and Prometheus routing.
+
+**Where we stopped:**
+- Review verdict is ready: spec compliance approved and task quality approved.
+- Existing unrelated dirty worktree files were left untouched except this required session log entry.
+
+**Next up:**
+- Continue with the next Cloudflare-protected portal task or Cloudflare Tunnel/Access runbook wiring.
+
+## 2026-06-18 (protected portal task 3 review)
+
+**What we did:**
+- Reviewed `.git/sdd/task-3-brief.md`, `.git/sdd/task-3-report.md`, and `.git/sdd/review-e86e328..e5d8455-task3.diff`.
+- Checked the Cloudflare Access runbook, README hosted-route notes, and docs coverage test without rerunning tests.
+- Confirmed the runbook documents current protected routes, keeps origins internal, preserves the Tailscale fallback, and contains no committed secrets.
+
+**Where we stopped:**
+- Review verdict is ready: spec compliance approved and task quality approved.
+- Existing unrelated dirty worktree files were left untouched except this required session log entry.
+
+**Next up:**
+- Continue with any remaining Cloudflare Tunnel/Access setup or deployment validation work.
+
+## 2026-06-18 (Cloudflare-protected internal portal complete)
+
+**What we did:**
+- Implemented Cloudflare Access route metadata in `ecosystem.json` for the private portal and local operator surfaces.
+- Updated `internal-portal` so protected hosted mode rewrites priority, registry, docs, drawer, sync, and service links to HTTPS Cloudflare aliases while local/Tailscale mode keeps Atlas fallbacks.
+- Added protected routes for Portal, Wiki, Lead Desk, Grafana, Prometheus, AI Token Dashboard, Leantime, and Hermes.
+- Added `docs/runbooks/cloudflare-protected-internal-portal.md` and README notes with no-secrets Cloudflare Tunnel/Access setup guidance.
+- Repaired stale portal baseline data so active `trading-scanner` remains tracked while archived `trading-scanner-experimental` stays removed.
+- Verified `node --test internal-portal/portal.test.mjs`, `node --check internal-portal/app.js`, `node --check internal-portal/dev-server.mjs`, `python -m json.tool ecosystem.json > $null`, and `git diff --check`.
+
+**Subagents used:**
+- Euclid: repaired the initial portal baseline test data.
+- Franklin: reviewed the first baseline repair and found `trading-scanner` was removed too broadly.
+- Leibniz: restored active `trading-scanner` and kept only archived experimental data removed.
+- Epicurus: re-reviewed the baseline repair and approved it with a minor note about missing planning links.
+- Erdos: implemented Task 1 protected route registry metadata and tests.
+- Boole: reviewed Task 1 and approved it.
+- Einstein: implemented Task 2 initial adaptive protected links.
+- Heisenberg, Archimedes, Ramanujan, Maxwell, Russell: reviewed Task 2 iterations and found resolver, alias, sync-link, and Prometheus-routing issues.
+- Mencius, Carson, Kepler, Fermat: fixed Task 2 protected URL resolver, aliases, sync drawer links, path preservation, and Prometheus routing.
+- Lovelace: implemented Task 3 Cloudflare Access runbook and README notes.
+- Godel: reviewed Task 3 and approved it.
+
+**Where we stopped:**
+- Branch `feat/cloudflare-protected-portal` contains the implementation and docs through commit `e5d8455` plus this final session-log entry.
+- The Cloudflare config itself has not been created in the Cloudflare dashboard or installed on Atlas yet.
+- Existing unrelated dirty infra files were left untouched.
+
+**Next up:**
+- Create the Cloudflare Tunnel and Access policies from `docs/runbooks/cloudflare-protected-internal-portal.md`.
+- Deploy/refresh the internal portal on Atlas, then verify unauthenticated hosted access shows Cloudflare Access and authenticated access reaches the portal/services.
