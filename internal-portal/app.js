@@ -1286,9 +1286,12 @@ function upgradeProtectedLinks() {
       return;
     }
 
-    link.dataset.internalHref = link.getAttribute("href") || route.fallbackUrl;
-    link.dataset.protectedHref = route.publicUrl;
-    link.href = isProtectedHostedMode() ? route.publicUrl : route.fallbackUrl;
+    const originalHref = link.getAttribute("href") || route.fallbackUrl;
+    const protectedHref = protectedUrlFor(originalHref);
+
+    link.dataset.internalHref = originalHref;
+    link.dataset.protectedHref = protectedHref;
+    link.href = isProtectedHostedMode() ? protectedHref : originalHref;
   });
 
   const networkLabel = $("#networkStatusLabel");

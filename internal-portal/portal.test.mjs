@@ -213,7 +213,32 @@ test("protected Access routes cover the local operator surfaces", async () => {
     assert.equal(route.access, "cloudflare-access");
   }
 
-  assert.deepEqual(routes.get("lead-desk").aliases, ["http://100.117.87.57:3027"]);
+  assert.deepEqual(routes.get("lead-desk").aliases, [
+    "http://100.117.87.57:3027",
+    "http://10.0.0.91:3027",
+    "http://127.0.0.1:3027",
+    "http://atlas:3027/"
+  ]);
+  assert.deepEqual(routes.get("grafana").aliases, [
+    "http://atlas:3001",
+    "http://atlas.tail401605.ts.net:3001",
+    "http://atlas:9090"
+  ]);
+  assert.deepEqual(routes.get("ai-token-dashboard").aliases, [
+    "http://atlas:7474",
+    "http://127.0.0.1:7474"
+  ]);
+  assert.deepEqual(routes.get("leantime").aliases, [
+    "http://100.71.165.80:8095",
+    "http://atlas:8095",
+    "http://atlas:8095/",
+    "http://127.0.0.1:8095"
+  ]);
+  assert.deepEqual(routes.get("hermes").aliases, [
+    "http://localhost:9119",
+    "http://100.71.165.80:9119",
+    "http://127.0.0.1:9119"
+  ]);
 });
 
 test("Hermes Agent is tracked as an Atlas install with access commands", async () => {
@@ -324,6 +349,10 @@ test("portal static files are present and load the canonical registry", async ()
   assert.match(app, /function protectedRoutes/);
   assert.match(app, /function protectedUrlFor/);
   assert.match(app, /upgradeProtectedLinks/);
+  assert.match(app, /const originalHref = link\.getAttribute\("href"\) \|\| route\.fallbackUrl;/);
+  assert.match(app, /const protectedHref = protectedUrlFor\(originalHref\);/);
+  assert.match(app, /link\.dataset\.protectedHref = protectedHref;/);
+  assert.match(app, /link\.href = isProtectedHostedMode\(\) \? protectedHref : originalHref;/);
   assert.match(app, /Cloudflare Access protected/);
   assert.doesNotMatch(app, /openSidebarGroups: new Set\(\["apps"\]\)/);
   assert.match(app, /renderSitemap/);
@@ -402,36 +431,45 @@ test("protected hosted links preserve route suffixes and normalize slash variant
     app.protectedUrlFor("http://100.117.87.57:3027/projects/showProject/7"),
     "https://leads.drewbefree.com/projects/showProject/7"
   );
+  assert.equal(
+    app.protectedUrlFor("http://atlas.tail401605.ts.net:3001/d/atlas-overview/poweredge-dashboard"),
+    "https://grafana.drewbefree.com/d/atlas-overview/poweredge-dashboard"
+  );
+  assert.equal(
+    app.protectedUrlFor("http://atlas:9090"),
+    "https://grafana.drewbefree.com/"
+  );
 });
 
 test("protected link upgrades keep local fallback hrefs outside hosted mode", async () => {
   const registry = await loadRegistry();
   const app = await loadAppSandbox();
-  const leadDeskLink = {
-    dataset: { protectedRoute: "lead-desk" },
-    getAttribute: (name) => (name === "href" ? "http://atlas:3027/" : null),
-    href: "http://atlas:3027/"
+  const grafanaLink = {
+    dataset: { protectedRoute: "grafana" },
+    getAttribute: (name) => (name === "href" ? "http://atlas:3001/d/atlas-overview/poweredge-dashboard" : null),
+    href: "http://atlas:3001/d/atlas-overview/poweredge-dashboard"
   };
   const networkLabel = { innerHTML: "" };
 
   app.state.registry = { protectedAccess: registry.protectedAccess };
-  app.document.querySelectorAll = (selector) => (selector === "[data-protected-route]" ? [leadDeskLink] : []);
+  app.document.querySelectorAll = (selector) => (selector === "[data-protected-route]" ? [grafanaLink] : []);
   app.document.querySelector = (selector) => (selector === "#networkStatusLabel" ? networkLabel : null);
   app.window.location.protocol = "http:";
   app.window.location.hostname = "localhost";
 
   app.upgradeProtectedLinks();
 
-  assert.equal(leadDeskLink.dataset.internalHref, "http://atlas:3027/");
-  assert.equal(leadDeskLink.dataset.protectedHref, "https://leads.drewbefree.com/");
-  assert.equal(leadDeskLink.href, "http://atlas:3027/");
+  assert.equal(grafanaLink.dataset.internalHref, "http://atlas:3001/d/atlas-overview/poweredge-dashboard");
+  assert.equal(grafanaLink.dataset.protectedHref, "http://atlas:3001/d/atlas-overview/poweredge-dashboard");
+  assert.equal(grafanaLink.href, "http://atlas:3001/d/atlas-overview/poweredge-dashboard");
   assert.match(networkLabel.innerHTML, /Atlas\/Tailscale only/);
 
   app.window.location.protocol = "https:";
   app.window.location.hostname = "portal.drewbefree.com";
   app.upgradeProtectedLinks();
 
-  assert.equal(leadDeskLink.href, "https://leads.drewbefree.com/");
+  assert.equal(grafanaLink.dataset.protectedHref, "https://grafana.drewbefree.com/d/atlas-overview/poweredge-dashboard");
+  assert.equal(grafanaLink.href, "https://grafana.drewbefree.com/d/atlas-overview/poweredge-dashboard");
   assert.match(networkLabel.innerHTML, /Cloudflare Access protected/);
 });
 
