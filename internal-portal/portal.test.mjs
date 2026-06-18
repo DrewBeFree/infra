@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
+import vm from "node:vm";
 import test from "node:test";
 
 const registryPath = new URL("../ecosystem.json", import.meta.url);
@@ -47,6 +48,36 @@ const visibilityLevels = new Set(["public", "private", "sensitive"]);
 async function loadRegistry() {
   const raw = await readFile(registryPath, "utf8");
   return JSON.parse(raw);
+}
+
+async function loadAppSandbox() {
+  const source = await readFile(appPath, "utf8");
+  const sandbox = {
+    URL,
+    console,
+    fetch: async () => ({ ok: false }),
+    document: {
+      querySelector: () => null,
+      querySelectorAll: () => []
+    },
+    window: {
+      location: {
+        protocol: "https:",
+        hostname: "portal.drewbefree.com"
+      }
+    }
+  };
+
+  sandbox.window.window = sandbox.window;
+  vm.runInNewContext(
+    `${source.replace(/\ninit\(\);\s*$/, "\n")}\n;globalThis.__portal = { state, protectedUrlFor, upgradeProtectedLinks, document, window };`,
+    sandbox,
+    {
+      filename: "internal-portal/app.js"
+    }
+  );
+
+  return sandbox.__portal;
 }
 
 test("ecosystem registry is the canonical Atlas/Tailscale source of truth", async () => {
@@ -337,6 +368,65 @@ test("portal static files are present and load the canonical registry", async ()
   assert.match(style, /\.map-zone/);
   assert.match(style, /\.zone-head/);
   assert.match(style, /fade-in-up/);
+});
+
+test("protected hosted links preserve route suffixes and normalize slash variants", async () => {
+  const registry = await loadRegistry();
+  const app = await loadAppSandbox();
+
+  app.state.registry = { protectedAccess: registry.protectedAccess };
+
+  assert.equal(
+    app.protectedUrlFor("http://atlas/wiki/projects/adhd-snap/"),
+    "https://wiki.drewbefree.com/wiki/projects/adhd-snap/"
+  );
+  assert.equal(
+    app.protectedUrlFor("http://atlas/wiki/projects/adhd-snap/?ref=1#intro"),
+    "https://wiki.drewbefree.com/wiki/projects/adhd-snap/?ref=1#intro"
+  );
+  assert.equal(
+    app.protectedUrlFor("http://atlas:8095"),
+    "https://planning.drewbefree.com/"
+  );
+  assert.equal(
+    app.protectedUrlFor("http://atlas:8095/projects/board?x=1#y"),
+    "https://planning.drewbefree.com/projects/board?x=1#y"
+  );
+  assert.equal(
+    app.protectedUrlFor("http://100.71.165.80:9119/metrics?format=text#top"),
+    "https://hermes.drewbefree.com/metrics?format=text#top"
+  );
+});
+
+test("protected link upgrades keep local fallback hrefs outside hosted mode", async () => {
+  const registry = await loadRegistry();
+  const app = await loadAppSandbox();
+  const leadDeskLink = {
+    dataset: { protectedRoute: "lead-desk" },
+    getAttribute: (name) => (name === "href" ? "http://atlas:3027/" : null),
+    href: "http://atlas:3027/"
+  };
+  const networkLabel = { innerHTML: "" };
+
+  app.state.registry = { protectedAccess: registry.protectedAccess };
+  app.document.querySelectorAll = (selector) => (selector === "[data-protected-route]" ? [leadDeskLink] : []);
+  app.document.querySelector = (selector) => (selector === "#networkStatusLabel" ? networkLabel : null);
+  app.window.location.protocol = "http:";
+  app.window.location.hostname = "localhost";
+
+  app.upgradeProtectedLinks();
+
+  assert.equal(leadDeskLink.dataset.internalHref, "http://atlas:3027/");
+  assert.equal(leadDeskLink.dataset.protectedHref, "https://leads.drewbefree.com/");
+  assert.equal(leadDeskLink.href, "http://atlas:3027/");
+  assert.match(networkLabel.innerHTML, /Atlas\/Tailscale only/);
+
+  app.window.location.protocol = "https:";
+  app.window.location.hostname = "portal.drewbefree.com";
+  app.upgradeProtectedLinks();
+
+  assert.equal(leadDeskLink.href, "https://leads.drewbefree.com/");
+  assert.match(networkLabel.innerHTML, /Cloudflare Access protected/);
 });
 
 test("portal sync links include every ecosystem project, not only repos with tasks", async () => {

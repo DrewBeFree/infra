@@ -93,6 +93,21 @@ function isWebUrl(url) {
   return /^https?:\/\//i.test(url || "");
 }
 
+function normalizedProtectedUrlParts(url) {
+  try {
+    const parsed = new URL(url);
+    return {
+      origin: parsed.origin,
+      pathname: parsed.pathname.replace(/\/+$/, "") || "/",
+      rawPathname: parsed.pathname,
+      search: parsed.search,
+      hash: parsed.hash
+    };
+  } catch {
+    return null;
+  }
+}
+
 function protectedRoutes() {
   return state.registry?.protectedAccess?.routes || [];
 }
@@ -101,10 +116,56 @@ function protectedRouteById(id) {
   return protectedRoutes().find((route) => route.id === id);
 }
 
-function protectedUrlWithSourceParts(route, sourceUrl) {
+function protectedRouteMatch(route, sourceUrl) {
+  const source = normalizedProtectedUrlParts(sourceUrl);
+  if (!source) {
+    return null;
+  }
+
+  let match = null;
+
+  for (const candidateUrl of [route.fallbackUrl, route.origin]) {
+    const candidate = normalizedProtectedUrlParts(candidateUrl);
+    if (!candidate || candidate.origin !== source.origin) {
+      continue;
+    }
+
+    const matchesBase = candidate.pathname === "/"
+      ? source.pathname.startsWith("/")
+      : source.pathname === candidate.pathname || source.pathname.startsWith(`${candidate.pathname}/`);
+
+    if (!matchesBase) {
+      continue;
+    }
+
+    if (!match || candidate.pathname.length > match.pathname.length) {
+      match = candidate;
+    }
+  }
+
+  return match ? { source, base: match } : null;
+}
+
+function protectedUrlWithSourceParts(route, sourceUrl, match = protectedRouteMatch(route, sourceUrl)) {
   try {
     const base = new URL(route.publicUrl);
-    const source = new URL(sourceUrl);
+    if (!match) {
+      return base.toString();
+    }
+
+    const { source, base: sourceBase } = match;
+    const suffix = source.pathname.slice(sourceBase.pathname.length);
+
+    if (suffix) {
+      const publicPath = base.pathname.replace(/\/+$/, "") || "/";
+      const normalizedSuffix = suffix.replace(/^\/+/, "");
+      base.pathname = publicPath === "/" ? `/${normalizedSuffix}` : `${publicPath}/${normalizedSuffix}`;
+
+      if (source.rawPathname.endsWith("/") && !base.pathname.endsWith("/")) {
+        base.pathname = `${base.pathname}/`;
+      }
+    }
+
     base.search = source.search;
     base.hash = source.hash;
     return base.toString();
@@ -118,18 +179,14 @@ function protectedUrlFor(url) {
     return url;
   }
 
-  const lower = String(url).toLowerCase();
-  const route = protectedRoutes().find((candidate) => {
-    const fallback = String(candidate.fallbackUrl || "").toLowerCase();
-    const origin = String(candidate.origin || "").toLowerCase();
-    return lower === fallback || lower.startsWith(fallback) || lower === origin || lower.startsWith(origin);
-  });
-
-  if (!route) {
-    return url;
+  for (const route of protectedRoutes()) {
+    const match = protectedRouteMatch(route, url);
+    if (match) {
+      return protectedUrlWithSourceParts(route, url, match);
+    }
   }
 
-  return protectedUrlWithSourceParts(route, url);
+  return url;
 }
 
 function atlasWikiToLocal(url) {
