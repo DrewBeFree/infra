@@ -29,6 +29,9 @@
         "publicUrl": "https://portal.drewbefree.com/ecosystem/",
         "origin": "http://127.0.0.1/ecosystem/",
         "fallbackUrl": "http://atlas/ecosystem/",
+        "aliases": [
+          "http://atlas/"
+        ],
         "access": "cloudflare-access"
       },
       {

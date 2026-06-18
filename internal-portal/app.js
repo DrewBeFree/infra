@@ -124,14 +124,16 @@ function protectedRouteMatch(route, sourceUrl) {
 
   let match = null;
 
-  for (const candidateUrl of [route.fallbackUrl, route.origin, ...(route.aliases || [])]) {
+  const aliases = route.aliases || [];
+
+  for (const candidateUrl of [route.fallbackUrl, route.origin, ...aliases]) {
     const candidate = normalizedProtectedUrlParts(candidateUrl);
     if (!candidate || candidate.origin !== source.origin) {
       continue;
     }
 
     const matchesBase = candidate.pathname === "/"
-      ? source.pathname.startsWith("/")
+      ? (route.id === "portal" && aliases.includes(candidateUrl) ? source.pathname === "/" : true)
       : source.pathname === candidate.pathname || source.pathname.startsWith(`${candidate.pathname}/`);
 
     if (!matchesBase) {
@@ -785,7 +787,7 @@ function actionLabelForUrl(url) {
   if (lower.includes(":3001") || lower.includes("/d/") || lower.includes("grafana")) {
     return "Grafana";
   }
-  if (lower.includes(":9090")) {
+  if (lower.includes("prometheus") || lower.includes(":9090")) {
     return "Prometheus";
   }
   if (lower.includes(":9443")) {

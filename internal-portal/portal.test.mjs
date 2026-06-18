@@ -70,7 +70,7 @@ async function loadAppSandbox() {
 
   sandbox.window.window = sandbox.window;
   vm.runInNewContext(
-    `${source.replace(/\ninit\(\);\s*$/, "\n")}\n;globalThis.__portal = { state, protectedUrlFor, resolvedUrl, syncSectionHtml, upgradeProtectedLinks, document, window };`,
+    `${source.replace(/\ninit\(\);\s*$/, "\n")}\n;globalThis.__portal = { state, protectedUrlFor, actionLabelForUrl, resolvedUrl, syncSectionHtml, upgradeProtectedLinks, document, window };`,
     sandbox,
     {
       filename: "internal-portal/app.js"
@@ -432,6 +432,10 @@ test("protected hosted links preserve route suffixes and normalize slash variant
     "https://wiki.drewbefree.com/wiki/projects/adhd-snap/?ref=1#intro"
   );
   assert.equal(
+    app.protectedUrlFor("http://atlas/"),
+    "https://portal.drewbefree.com/ecosystem/"
+  );
+  assert.equal(
     app.protectedUrlFor("http://atlas:8095"),
     "https://planning.drewbefree.com/"
   );
@@ -455,6 +459,13 @@ test("protected hosted links preserve route suffixes and normalize slash variant
     app.protectedUrlFor("http://atlas:9090"),
     "https://prometheus.drewbefree.com/"
   );
+});
+
+test("protected Prometheus links keep their Prometheus label after rewrite", async () => {
+  const app = await loadAppSandbox();
+
+  assert.equal(app.actionLabelForUrl("https://prometheus.drewbefree.com/"), "Prometheus");
+  assert.equal(app.actionLabelForUrl("http://atlas:9090"), "Prometheus");
 });
 
 test("protected link upgrades keep local fallback hrefs outside hosted mode", async () => {
