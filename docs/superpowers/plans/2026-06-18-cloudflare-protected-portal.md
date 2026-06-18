@@ -266,18 +266,15 @@ function protectedRouteById(id) {
   return protectedRoutes().find((route) => route.id === id);
 }
 
-function appendPath(baseUrl, sourceUrl) {
+function protectedUrlWithSourceParts(route, sourceUrl) {
   try {
-    const base = new URL(baseUrl);
+    const base = new URL(route.publicUrl);
     const source = new URL(sourceUrl);
-    const basePath = base.pathname.endsWith("/") ? base.pathname.slice(0, -1) : base.pathname;
-    const sourcePath = source.pathname === "/" ? "" : source.pathname;
-    base.pathname = `${basePath}${sourcePath}` || "/";
     base.search = source.search;
     base.hash = source.hash;
     return base.toString();
   } catch {
-    return baseUrl;
+    return route.publicUrl;
   }
 }
 
@@ -297,7 +294,7 @@ function protectedUrlFor(url) {
     return url;
   }
 
-  return appendPath(route.publicUrl, url);
+  return protectedUrlWithSourceParts(route, url);
 }
 ```
 
@@ -556,4 +553,4 @@ Expected: plan and log are committed without staging unrelated dirty files.
 
 - Spec coverage: The plan covers protected hostnames, local app links, HTTPS browser-facing URLs, Atlas HTTP origins, docs, tests, and no-secret constraints.
 - Placeholder scan: No `TBD`, `TODO`, `implement later`, or undefined edge-case instructions are present.
-- Type consistency: `protectedAccess.routes[]`, `isProtectedHostedMode()`, `protectedRoutes()`, `protectedUrlFor()`, and `upgradeProtectedLinks()` are named consistently across tasks.
+- Type consistency: `protectedAccess.routes[]`, `isProtectedHostedMode()`, `protectedRoutes()`, `protectedUrlFor()`, `protectedUrlWithSourceParts()`, and `upgradeProtectedLinks()` are named consistently across tasks.
