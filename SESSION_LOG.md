@@ -2124,3 +2124,28 @@
 **Next up:**
 - Add the Atlas root portal alias or prefer `/ecosystem/` for generated portal links.
 - Preserve the Prometheus quick action label after protected URL rewriting.
+
+## 2026-06-18 (private Command Center launcher)
+
+**What we did:**
+- Added `internal-portal/launcher.html` as a distinct private Command Center-style front door for daily Atlas/local access.
+- Made Atlas local tools prominent: Lead Desk, Atlas Wiki, Ecosystem Map, Grafana, Prometheus, AI Token Dashboard, Leantime, Hermes, Trading Scanner, and the old status dashboard.
+- Added protected hosted link targets for the launcher, including `scanner.drewbefree.com` and `portal.drewbefree.com/status/`, so hosted mode does not leave Atlas-only links clickable.
+- Added a top-level `Launcher` link from the existing ecosystem portal nav.
+- Updated the Cloudflare runbook and portal README so `https://portal.drewbefree.com/` is the intended launcher front door and `/ecosystem/` remains the deeper registry/map.
+- Added portal tests for the launcher content and hosted-mode link rewriting.
+- Verified `node --test internal-portal/portal.test.mjs`, `node --check internal-portal/app.js`, `node --check internal-portal/dev-server.mjs`, `python -m json.tool ecosystem.json > $null`, and `git diff --check`.
+
+**Subagents used:**
+- Schrodinger: reviewed the launcher commit, found two hosted-mode Atlas-only shortcut regressions, then re-reviewed the fix and approved it.
+
+**Where we stopped:**
+- Branch `feat/cloudflare-protected-portal` includes commit `6e208d7` for the private launcher.
+- Local preview is available at `http://127.0.0.1:8765/internal-portal/launcher.html`.
+- Cloudflare Tunnel/Access routes still need to be created on Atlas/Cloudflare before the hosted URLs work.
+- Existing unrelated dirty Leantime/task-sync files were left untouched.
+
+**Next up:**
+- Deploy/refresh `internal-portal/` on Atlas so `http://atlas/ecosystem/launcher.html` is available there.
+- Configure the Cloudflare routes and Access policy from `docs/runbooks/cloudflare-protected-internal-portal.md`.
+- Point or route `https://portal.drewbefree.com/` to the launcher and verify the protected aliases after authentication.
