@@ -2149,3 +2149,19 @@
 - Deploy/refresh `internal-portal/` on Atlas so `http://atlas/ecosystem/launcher.html` is available there.
 - Configure the Cloudflare routes and Access policy from `docs/runbooks/cloudflare-protected-internal-portal.md`.
 - Point or route `https://portal.drewbefree.com/` to the launcher and verify the protected aliases after authentication.
+
+## 2026-06-18 (launcher push and phone access handoff)
+
+**What we did:**
+- Confirmed the local launcher preview is at `http://127.0.0.1:8765/internal-portal/launcher.html`.
+- Clarified phone access: use `http://atlas/ecosystem/launcher.html` from a Tailscale-connected phone after Atlas deploy, and use `https://portal.drewbefree.com/` after Cloudflare Tunnel/Access is configured.
+- Prepared the protected portal branch for push/merge while leaving unrelated Leantime/task-sync worktree files untouched.
+
+**Subagents used:**
+- None in this handoff step.
+
+**Where we stopped:**
+- Branch `feat/cloudflare-protected-portal` contains the private launcher and protected route docs.
+
+**Next up:**
+- Push `feat/cloudflare-protected-portal`, merge it into `main`, push `main`, then deploy/refresh Atlas portal assets.
