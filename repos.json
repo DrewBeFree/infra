@@ -92,12 +92,6 @@
                              "github":  "https://github.com/DrewBeFree/trading-scanner.git"
                          },
                          {
-                             "name":  "trading-scanner-experimental",
-                             "targetDirectory":  "apps/trading-scanner-experimental",
-                             "type":  "app",
-                             "github":  "https://github.com/DrewBeFree/trading-scanner-experimental.git"
-                         },
-                         {
                              "name":  "dwebbsolutions",
                              "targetDirectory":  "sites/dwebbsolutions",
                              "type":  "site",
