@@ -45,6 +45,9 @@
         "publicUrl": "https://leads.drewbefree.com/",
         "origin": "http://127.0.0.1:3027",
         "fallbackUrl": "http://atlas:3027/",
+        "aliases": [
+          "http://100.117.87.57:3027"
+        ],
         "access": "cloudflare-access"
       },
       {

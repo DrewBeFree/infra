@@ -70,7 +70,7 @@ async function loadAppSandbox() {
 
   sandbox.window.window = sandbox.window;
   vm.runInNewContext(
-    `${source.replace(/\ninit\(\);\s*$/, "\n")}\n;globalThis.__portal = { state, protectedUrlFor, upgradeProtectedLinks, document, window };`,
+    `${source.replace(/\ninit\(\);\s*$/, "\n")}\n;globalThis.__portal = { state, protectedUrlFor, resolvedUrl, syncSectionHtml, upgradeProtectedLinks, document, window };`,
     sandbox,
     {
       filename: "internal-portal/app.js"
@@ -212,6 +212,8 @@ test("protected Access routes cover the local operator surfaces", async () => {
     assert.equal(route.fallbackUrl, fallbackUrl);
     assert.equal(route.access, "cloudflare-access");
   }
+
+  assert.deepEqual(routes.get("lead-desk").aliases, ["http://100.117.87.57:3027"]);
 });
 
 test("Hermes Agent is tracked as an Atlas install with access commands", async () => {
@@ -396,6 +398,10 @@ test("protected hosted links preserve route suffixes and normalize slash variant
     app.protectedUrlFor("http://100.71.165.80:9119/metrics?format=text#top"),
     "https://hermes.drewbefree.com/metrics?format=text#top"
   );
+  assert.equal(
+    app.protectedUrlFor("http://100.117.87.57:3027/projects/showProject/7"),
+    "https://leads.drewbefree.com/projects/showProject/7"
+  );
 });
 
 test("protected link upgrades keep local fallback hrefs outside hosted mode", async () => {
@@ -427,6 +433,32 @@ test("protected link upgrades keep local fallback hrefs outside hosted mode", as
 
   assert.equal(leadDeskLink.href, "https://leads.drewbefree.com/");
   assert.match(networkLabel.innerHTML, /Cloudflare Access protected/);
+});
+
+test("sync drawer Leantime project URLs are resolved through protected hosting", async () => {
+  const app = await loadAppSandbox();
+
+  app.state.syncLinks = {
+    repos: {
+      "lead-gen-agent": {
+        project: "Lead Gen Agent",
+        taskCount: 1,
+        leantimeProjectUrl: "http://atlas:8095/projects/showProject/7",
+        githubProjectUrl: "https://github.com/orgs/DrewBeFree/projects/1",
+        githubRepoUrl: "https://github.com/DrewBeFree/lead-gen-agent",
+        tasks: []
+      }
+    }
+  };
+
+  app.state.registry = { protectedAccess: (await loadRegistry()).protectedAccess };
+  app.window.location.protocol = "https:";
+  app.window.location.hostname = "portal.drewbefree.com";
+
+  const html = app.syncSectionHtml({ name: "lead-gen-agent" });
+
+  assert.match(html, /https:\/\/planning\.drewbefree\.com\/projects\/showProject\/7/);
+  assert.doesNotMatch(html, /http:\/\/atlas:8095\/projects\/showProject\/7/);
 });
 
 test("portal sync links include every ecosystem project, not only repos with tasks", async () => {

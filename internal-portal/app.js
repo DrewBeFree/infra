@@ -124,7 +124,7 @@ function protectedRouteMatch(route, sourceUrl) {
 
   let match = null;
 
-  for (const candidateUrl of [route.fallbackUrl, route.origin]) {
+  for (const candidateUrl of [route.fallbackUrl, route.origin, ...(route.aliases || [])]) {
     const candidate = normalizedProtectedUrlParts(candidateUrl);
     if (!candidate || candidate.origin !== source.origin) {
       continue;
@@ -898,14 +898,14 @@ function syncSectionHtml(item) {
   }
 
   const links = [
-    record.githubProjectUrl ? `<a href="${escapeAttr(record.githubProjectUrl)}" target="_blank" rel="noreferrer">GitHub Project</a>` : "",
-    record.leantimeProjectUrl ? `<a href="${escapeAttr(record.leantimeProjectUrl)}" target="_blank" rel="noreferrer">Leantime Project</a>` : "",
-    record.githubRepoUrl ? `<a href="${escapeAttr(record.githubRepoUrl)}" target="_blank" rel="noreferrer">GitHub Repo</a>` : ""
+    record.githubProjectUrl ? `<a href="${escapeAttr(resolvedUrl(record.githubProjectUrl))}" target="_blank" rel="noreferrer">GitHub Project</a>` : "",
+    record.leantimeProjectUrl ? `<a href="${escapeAttr(resolvedUrl(record.leantimeProjectUrl))}" target="_blank" rel="noreferrer">Leantime Project</a>` : "",
+    record.githubRepoUrl ? `<a href="${escapeAttr(resolvedUrl(record.githubRepoUrl))}" target="_blank" rel="noreferrer">GitHub Repo</a>` : ""
   ].filter(Boolean).join("");
 
   const tasks = (record.tasks || []).slice(0, 8).map((task) => {
     const issue = task.githubIssueUrl
-      ? `<a href="${escapeAttr(task.githubIssueUrl)}" target="_blank" rel="noreferrer">#${escapeText(task.githubIssueNumber)} ${escapeText(task.title)}</a>`
+      ? `<a href="${escapeAttr(resolvedUrl(task.githubIssueUrl))}" target="_blank" rel="noreferrer">#${escapeText(task.githubIssueNumber)} ${escapeText(task.title)}</a>`
       : `<span>${escapeText(task.title)}</span>`;
     return `<li>${issue}<small>${escapeText(task.sourceFile)}:${escapeText(task.sourceLine)}</small></li>`;
   }).join("");
