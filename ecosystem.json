@@ -61,7 +61,17 @@
         "fallbackUrl": "http://atlas:3001/",
         "aliases": [
           "http://atlas:3001",
-          "http://atlas.tail401605.ts.net:3001",
+          "http://atlas.tail401605.ts.net:3001"
+        ],
+        "access": "cloudflare-access"
+      },
+      {
+        "id": "prometheus",
+        "label": "Prometheus",
+        "publicUrl": "https://prometheus.drewbefree.com/",
+        "origin": "http://127.0.0.1:9090",
+        "fallbackUrl": "http://atlas:9090/",
+        "aliases": [
           "http://atlas:9090"
         ],
         "access": "cloudflare-access"
