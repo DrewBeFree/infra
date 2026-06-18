@@ -1930,3 +1930,20 @@
 
 **Next up:**
 - No immediate infra action for the archived scanner unless you want historical references cleaned from logs/docs.
+## 2026-06-18 (Cloudflare-protected internal portal planning)
+
+**What we did:**
+- Confirmed the existing `infra/internal-portal` is the right private Command Center-style page for local apps, projects, Atlas services, docs, and dashboards.
+- Chose Cloudflare Tunnel + Cloudflare Access as the protected hosted access path.
+- Wrote and committed the design spec for a Cloudflare-protected portal, then amended it to require HTTPS protected aliases for local services such as Lead Desk, Atlas wiki, ecosystem portal, Grafana, AI Token Dashboard, Leantime, and Hermes.
+- Wrote and committed the implementation plan at `docs/superpowers/plans/2026-06-18-cloudflare-protected-portal.md`.
+
+**Where we stopped:**
+- Work is on branch `feat/cloudflare-protected-portal` with commits `c7922be`, `628eaaa`, and `058bd7b`.
+- No portal implementation changes have been applied yet; only spec and plan docs were committed.
+- Existing unrelated dirty Leantime/task-sync files in the infra worktree were left untouched.
+
+**Next up:**
+- Choose execution mode for the implementation plan.
+- Implement protected route metadata, adaptive HTTPS links, and the Cloudflare Access runbook.
+- After implementation, run portal tests and set up Cloudflare routes/policies on Atlas.
