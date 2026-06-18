@@ -19,7 +19,7 @@
       <a href="#docsSection">Docs</a>
     </nav>
     <div id="lastUpdated" class="updated-pill">Updated --</div>
-    <div class="network-pill"><span></span> Atlas/Tailscale only</div>
+    <div id="networkStatusLabel" class="network-pill"><span></span> Atlas/Tailscale only</div>
   </header>
 
   <div class="app-layout">
@@ -70,30 +70,30 @@
         <span id="sensitiveCount">--</span>
         <label>Sensitive</label>
       </div>
-      <a class="ops-link-card" id="leadDeskCard" href="http://100.117.87.57:3027" target="_blank" rel="noreferrer" title="3 likely leads / 9 total in Lead Desk">
+      <a class="ops-link-card" id="leadDeskCard" href="http://atlas:3027/" data-protected-route="lead-desk" target="_blank" rel="noreferrer" title="3 likely leads / 9 total in Lead Desk">
         <span id="likelyLeadCount">3</span>
         <label>Likely Leads</label>
       </a>
     </section>
 
     <section class="priority-links" aria-label="Priority operations links">
-      <a href="http://100.117.87.57:3027" target="_blank" rel="noreferrer">
+      <a href="http://atlas:3027/" data-protected-route="lead-desk" target="_blank" rel="noreferrer">
         <span>Lead Desk</span>
         <strong>Morning leads</strong>
       </a>
-      <a href="http://atlas:3001/d/atlas-overview/poweredge-dashboard" target="_blank" rel="noreferrer">
+      <a href="http://atlas:3001/d/atlas-overview/poweredge-dashboard" data-protected-route="grafana" target="_blank" rel="noreferrer">
         <span>AI Dashboard</span>
         <strong>Atlas metrics</strong>
       </a>
-      <a href="http://atlas:7474" target="_blank" rel="noreferrer">
+      <a href="http://atlas:7474" data-protected-route="ai-token-dashboard" target="_blank" rel="noreferrer">
         <span>AI Token Dashboard</span>
         <strong>Usage + costs</strong>
       </a>
-      <a href="http://atlas:8095" target="_blank" rel="noreferrer">
+      <a href="http://atlas:8095" data-protected-route="leantime" target="_blank" rel="noreferrer">
         <span>Leantime</span>
         <strong>Projects</strong>
       </a>
-      <a href="http://100.71.165.80:9119" target="_blank" rel="noreferrer">
+      <a href="http://100.71.165.80:9119" data-protected-route="hermes" target="_blank" rel="noreferrer">
         <span>Hermes</span>
         <strong>Dashboard</strong>
       </a>

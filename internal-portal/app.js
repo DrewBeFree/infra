@@ -52,6 +52,10 @@ function isLocalPreview() {
   return ["127.0.0.1", "localhost", "::1"].includes(window.location.hostname);
 }
 
+function isProtectedHostedMode() {
+  return window.location.protocol === "https:" && /(^|\.)drewbefree\.com$/i.test(window.location.hostname);
+}
+
 async function loadRegistry() {
   let lastError;
 
@@ -89,6 +93,45 @@ function isWebUrl(url) {
   return /^https?:\/\//i.test(url || "");
 }
 
+function protectedRoutes() {
+  return state.registry?.protectedAccess?.routes || [];
+}
+
+function protectedRouteById(id) {
+  return protectedRoutes().find((route) => route.id === id);
+}
+
+function protectedUrlWithSourceParts(route, sourceUrl) {
+  try {
+    const base = new URL(route.publicUrl);
+    const source = new URL(sourceUrl);
+    base.search = source.search;
+    base.hash = source.hash;
+    return base.toString();
+  } catch {
+    return route.publicUrl;
+  }
+}
+
+function protectedUrlFor(url) {
+  if (!isProtectedHostedMode() || !isWebUrl(url)) {
+    return url;
+  }
+
+  const lower = String(url).toLowerCase();
+  const route = protectedRoutes().find((candidate) => {
+    const fallback = String(candidate.fallbackUrl || "").toLowerCase();
+    const origin = String(candidate.origin || "").toLowerCase();
+    return lower === fallback || lower.startsWith(fallback) || lower === origin || lower.startsWith(origin);
+  });
+
+  if (!route) {
+    return url;
+  }
+
+  return protectedUrlWithSourceParts(route, url);
+}
+
 function atlasWikiToLocal(url) {
   if (!isLocalPreview()) {
     return url;
@@ -123,10 +166,10 @@ function resolvedUrl(url) {
   }
 
   if (url.startsWith("http://atlas/")) {
-    return atlasWikiToLocal(url);
+    return protectedUrlFor(atlasWikiToLocal(url));
   }
 
-  return url;
+  return protectedUrlFor(url);
 }
 
 function preferredOpenUrl(item) {
@@ -1179,6 +1222,26 @@ function bindPriorityLinks() {
   });
 }
 
+function upgradeProtectedLinks() {
+  document.querySelectorAll("[data-protected-route]").forEach((link) => {
+    const route = protectedRouteById(link.dataset.protectedRoute);
+    if (!route) {
+      return;
+    }
+
+    link.dataset.internalHref = link.getAttribute("href") || route.fallbackUrl;
+    link.dataset.protectedHref = route.publicUrl;
+    link.href = isProtectedHostedMode() ? route.publicUrl : route.fallbackUrl;
+  });
+
+  const networkLabel = $("#networkStatusLabel");
+  if (networkLabel) {
+    networkLabel.innerHTML = isProtectedHostedMode()
+      ? "<span></span> Cloudflare Access protected"
+      : "<span></span> Atlas/Tailscale only";
+  }
+}
+
 function renderError(error) {
   $("#repoGrid").innerHTML = `
     <article class="catalog-row error-card">
@@ -1203,6 +1266,7 @@ async function init() {
     ]);
     state.registry = registry;
     state.syncLinks = syncLinks;
+    upgradeProtectedLinks();
     renderStats();
     updateFilterSummary();
     renderSidebar();

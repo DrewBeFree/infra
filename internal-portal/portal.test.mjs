@@ -256,7 +256,13 @@ test("portal static files are present and load the canonical registry", async ()
   assert.match(index, /leadDeskCard/);
   assert.match(index, /likelyLeadCount/);
   assert.match(index, /Likely Leads/);
-  assert.match(index, /http:\/\/100\.117\.87\.57:3027/);
+  assert.match(index, /data-protected-route="lead-desk"/);
+  assert.match(index, /data-protected-route="grafana"/);
+  assert.match(index, /data-protected-route="ai-token-dashboard"/);
+  assert.match(index, /data-protected-route="leantime"/);
+  assert.match(index, /data-protected-route="hermes"/);
+  assert.match(index, /networkStatusLabel/);
+  assert.match(index, /href="http:\/\/atlas:3027\/"/);
   assert.match(index, /AI Dashboard/);
   assert.match(index, /Hermes/);
   assert.match(index, /http:\/\/100\.71\.165\.80:9119/);
@@ -281,6 +287,11 @@ test("portal static files are present and load the canonical registry", async ()
   assert.match(app, /openMainSections: new Set\(\)/);
   assert.match(app, /bindMainSectionToggles/);
   assert.match(app, /openMainSection/);
+  assert.match(app, /function isProtectedHostedMode/);
+  assert.match(app, /function protectedRoutes/);
+  assert.match(app, /function protectedUrlFor/);
+  assert.match(app, /upgradeProtectedLinks/);
+  assert.match(app, /Cloudflare Access protected/);
   assert.doesNotMatch(app, /openSidebarGroups: new Set\(\["apps"\]\)/);
   assert.match(app, /renderSitemap/);
   assert.match(app, /workspaceBucket/);
