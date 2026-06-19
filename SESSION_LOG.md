@@ -2374,3 +2374,16 @@
 **Next up:**
 - Hard refresh `https://hermes.drewbefree.com/` after Cloudflare Access login and retry chat; the events feed should reconnect.
 - If the browser still shows stale failures, sign out/in of Cloudflare Access or open a fresh private window to rule out cached dashboard state.
+
+## 2026-06-19 (Hermes chat confirmed working)
+
+**What we did:**
+- Confirmed from Drew that Hermes chat is working after the Cloudflare WebSocket route fix.
+- Updated status to close the retry/refresh follow-up from the prior Hermes entry.
+
+**Where we stopped:**
+- `https://hermes.drewbefree.com/` is usable for chat through Cloudflare Access.
+- Atlas live tunnel routing remains pointed at the WebSocket-aware Hermes proxy at `http://100.71.165.80:9119`.
+
+**Next up:**
+- No immediate Hermes follow-up; monitor normally.
