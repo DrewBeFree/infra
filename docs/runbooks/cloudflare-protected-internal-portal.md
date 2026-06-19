@@ -8,7 +8,7 @@ Expose the Atlas internal ecosystem portal and high-use local operator surfaces 
 
 | Public URL | Atlas origin | Fallback |
 | --- | --- | --- |
-| `https://portal.drewbefree.com/` | `http://127.0.0.1/ecosystem/launcher.html` | `http://atlas/ecosystem/launcher.html` |
+| `https://portal.drewbefree.com/` | `http://127.0.0.1/` -> `/ecosystem/launcher.html` | `http://atlas/ecosystem/launcher.html` |
 | `https://portal.drewbefree.com/ecosystem/` | `http://127.0.0.1/ecosystem/` | `http://atlas/ecosystem/` |
 | `https://wiki.drewbefree.com/wiki/` | `http://127.0.0.1/wiki/` | `http://atlas/wiki/` |
 | `https://leads.drewbefree.com/` | `http://127.0.0.1:3027` | `http://atlas:3027/` |
@@ -50,7 +50,7 @@ git diff --check
 
 After Cloudflare setup:
 
-- `https://portal.drewbefree.com/` requires Cloudflare Access before showing the private Command Center launcher.
+- `https://portal.drewbefree.com/` requires Cloudflare Access before Atlas redirects to the private Command Center launcher.
 - `https://portal.drewbefree.com/ecosystem/` requires Cloudflare Access before showing the portal.
 - `https://wiki.drewbefree.com/wiki/` requires Cloudflare Access before showing the wiki.
 - `https://leads.drewbefree.com/` requires Cloudflare Access before showing Lead Desk.

@@ -31,12 +31,12 @@ if [[ "$INSTALL_HOME_REDIRECT" == "1" ]]; then
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="refresh" content="0; url=/ecosystem/">
-    <title>DrewBeFree Ecosystem</title>
-    <script>window.location.replace("/ecosystem/");</script>
+    <meta http-equiv="refresh" content="0; url=/ecosystem/launcher.html">
+    <title>DrewBeFree Private Command Center</title>
+    <script>window.location.replace("/ecosystem/launcher.html");</script>
   </head>
   <body>
-    <p><a href="/ecosystem/">Open the DrewBeFree Ecosystem portal</a></p>
+    <p><a href="/ecosystem/launcher.html">Open the DrewBeFree Private Command Center</a></p>
   </body>
 </html>
 HTML
@@ -44,5 +44,5 @@ fi
 
 echo "Internal ecosystem portal synced to $TARGET"
 if [[ "$INSTALL_HOME_REDIRECT" == "1" ]]; then
-  echo "Atlas home redirects to /ecosystem/; previous status dashboard is preserved at /status/"
+  echo "Atlas home redirects to /ecosystem/launcher.html; previous status dashboard is preserved at /status/"
 fi

@@ -21,7 +21,7 @@ rsync -a --delete internal-portal/ /opt/homelab-status-dashboard/ecosystem/
 cp ecosystem.json /opt/homelab-status-dashboard/ecosystem/ecosystem.json
 ```
 
-The deploy script also installs `http://atlas/` as a lightweight redirect to `/ecosystem/`.
+The deploy script also installs `http://atlas/` as a lightweight redirect to `/ecosystem/launcher.html`.
 On the first run, if the previous status dashboard is still at the Atlas root, it is copied to
 `/opt/homelab-status-dashboard/status/` so it remains available at `http://atlas/status/`.
 
@@ -39,7 +39,7 @@ location /ecosystem/ {
 }
 ```
 
-Then open `http://atlas/` or `http://atlas/ecosystem/` from a Tailscale-connected device.
+Then open `http://atlas/`, `http://atlas/ecosystem/launcher.html`, or `http://atlas/ecosystem/` from a Tailscale-connected device.
 
 ## Priority links
 
@@ -63,7 +63,7 @@ The portal can also be reached through Cloudflare Access at:
 The private Command Center-style launcher lives at `launcher.html` and should be
 the daily front door once Cloudflare is configured:
 
-- Hosted launcher: `https://portal.drewbefree.com/` -> `http://127.0.0.1/ecosystem/launcher.html`
+- Hosted launcher: `https://portal.drewbefree.com/` -> `http://127.0.0.1/` -> `/ecosystem/launcher.html`
 - Atlas/Tailscale fallback: `http://atlas/ecosystem/launcher.html`
 
 When opened from a protected `*.drewbefree.com` hostname, priority links prefer HTTPS Cloudflare Access aliases for Lead Desk, the Atlas wiki, Grafana, AI Token Dashboard, Leantime, and Hermes. Atlas/Tailscale HTTP links remain the fallback and source-of-truth origins.

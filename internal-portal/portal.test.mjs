@@ -292,7 +292,7 @@ test("portal deploy installs Atlas home redirect while preserving the old status
   const statusDashboard = registry.dashboards.find((dashboard) => dashboard.id === "atlas-status-dashboard");
 
   assert.match(deploy, /INTERNAL_PORTAL_INSTALL_HOME_REDIRECT/);
-  assert.match(deploy, /url=\/ecosystem\//);
+  assert.match(deploy, /url=\/ecosystem\/launcher\.html/);
   assert.match(deploy, /STATUS_TARGET/);
   assert.ok(statusDashboard.liveUrls.includes("http://atlas/status/"));
 });

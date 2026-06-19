@@ -2218,3 +2218,29 @@
 **Next up:**
 - In Cloudflare Zero Trust, create the `portal.drewbefree.com` self-hosted Access app and allow only Drew's email.
 - After Access is active, update Atlas `cloudflared` ingress for `portal.drewbefree.com` to `http://127.0.0.1/ecosystem/launcher.html` and restart the user service.
+
+## 2026-06-18 (Cloudflare protected portal wired)
+
+**What we did:**
+- Created the Cloudflare Access self-hosted app `DrewBeFree Private Portal` for `portal.drewbefree.com`.
+- Attached the `Allow Drew only` Access policy, verified it includes only `drewbefree@gmail.com`, and corrected the app destination from the accidental apex `drewbefree.com` to `portal.drewbefree.com`.
+- Added the DrewBeFree DNS record `portal.drewbefree.com` as a proxied Tunnel record for the `answering-agent` tunnel.
+- Updated Atlas `cloudflared` ingress to route `portal.drewbefree.com` to `http://127.0.0.1`, preserved `api.kybernet.tech`, validated the config, backed it up, and restarted the user service.
+- Updated the internal portal deploy redirect so `http://atlas/` and the protected portal root land on `/ecosystem/launcher.html`.
+- Deployed the updated portal redirect on Atlas.
+- Verified unauthenticated `https://portal.drewbefree.com/` redirects to Cloudflare Access login and public `https://drewbefree.com/` still returns GitHub Pages `200`.
+- Verified `node --test internal-portal/portal.test.mjs`, `node --check internal-portal/app.js`, `node --check internal-portal/dev-server.mjs`, and `git diff --check`.
+
+**Subagents used:**
+- None.
+
+**Where we stopped:**
+- `portal.drewbefree.com` is protected by Cloudflare Access and routes to Atlas through the `answering-agent` tunnel.
+- Atlas `cloudflared` backup was saved as `/home/drew/.cloudflared/config.yml.bak-20260618203837`.
+- Public DrewBeFree apex remains DNS-only/GitHub Pages and is not protected by the private portal Access app.
+- Existing unrelated Leantime/task-sync worktree files were left untouched.
+
+**Next up:**
+- Log in through Cloudflare Access from phone/browser and confirm the hosted launcher loads after the one-time email approval flow.
+- Add the remaining protected hostnames (`wiki`, `leads`, `grafana`, `prometheus`, `tokens`, `planning`, `hermes`, `scanner`) when ready.
+- Clean up the accidental Kybernet-zone `*.drewbefree.com.kybernet.tech` DNS records from the earlier CLI routing attempt.
