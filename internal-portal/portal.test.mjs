@@ -203,7 +203,7 @@ test("protected Access routes cover the local operator surfaces", async () => {
     ["prometheus", "https://prometheus.drewbefree.com/", "http://127.0.0.1:9090", "http://atlas:9090/"],
     ["ai-token-dashboard", "https://tokens.drewbefree.com/", "http://127.0.0.1:7474", "http://atlas:7474/"],
     ["leantime", "https://planning.drewbefree.com/", "http://127.0.0.1:8095", "http://atlas:8095/"],
-    ["hermes", "https://hermes.drewbefree.com/", "http://127.0.0.1:9119", "http://100.71.165.80:9119/"]
+    ["hermes", "https://hermes.drewbefree.com/", "http://100.71.165.80:9119", "http://100.71.165.80:9119/"]
   ];
 
   for (const [id, publicUrl, origin, fallbackUrl] of expectedRoutes) {

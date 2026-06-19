@@ -109,7 +109,7 @@
         "id": "hermes",
         "label": "Hermes",
         "publicUrl": "https://hermes.drewbefree.com/",
-        "origin": "http://127.0.0.1:9119",
+        "origin": "http://100.71.165.80:9119",
         "fallbackUrl": "http://100.71.165.80:9119/",
         "aliases": [
           "http://localhost:9119",

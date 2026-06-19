@@ -20,7 +20,7 @@ Expose the Atlas internal ecosystem portal and high-use local operator surfaces 
 | `https://scanner.drewbefree.com/` | `http://127.0.0.1:8787` | `http://atlas:8787/` |
 | `https://tokens.drewbefree.com/` | `http://127.0.0.1:7474` | `http://atlas:7474/` |
 | `https://planning.drewbefree.com/` | `http://127.0.0.1:8095` | `http://atlas:8095/` |
-| `https://hermes.drewbefree.com/` | `http://127.0.0.1:9119` | `http://100.71.165.80:9119/` |
+| `https://hermes.drewbefree.com/` | `http://100.71.165.80:9119` | `http://100.71.165.80:9119/` |
 | `https://portal.drewbefree.com/status/` | `http://127.0.0.1/status/` | `http://atlas/status/` |
 
 ## Cloudflare Setup
@@ -66,6 +66,8 @@ Keep the Lead Desk API ingress above the Lead Desk frontend ingress:
 ```
 
 The private launcher uses this path for the Lead Desk high-fit, draft-ready, and manual-reply counts. Grafana health uses `/api/health`.
+
+Route Hermes through the Tailscale nginx proxy at `http://100.71.165.80:9119`, not directly to `127.0.0.1:9119` and not through the older system nginx shim on `127.0.0.1:9120`. Hermes' realtime endpoints (`/api/ws`, `/api/events`, and `/api/pty`) require the user nginx proxy because it forwards WebSocket upgrade headers and strips `Origin` before the request reaches the loopback-bound Hermes dashboard.
 
 No secrets belong in this repo. Do not commit tunnel tokens, credentials JSON files, Access service tokens, passwords, Basic Auth hashes, or API keys.
 
