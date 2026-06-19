@@ -2165,3 +2165,23 @@
 
 **Next up:**
 - Push `feat/cloudflare-protected-portal`, merge it into `main`, push `main`, then deploy/refresh Atlas portal assets.
+
+## 2026-06-18 (Cloudflare setup discovery)
+
+**What we did:**
+- Checked Atlas Cloudflare state and confirmed `cloudflared` is installed, current at version `2026.6.0`, and running as the user service `cloudflared.service`.
+- Confirmed the active tunnel is `answering-agent` (`188e5c59-c931-49a2-84c9-6646aadcd3c9`) and currently only routes `api.kybernet.tech`.
+- Confirmed Atlas local origins for the launcher, ecosystem, wiki, Grafana, Prometheus, scanner, token dashboard, Leantime, Hermes, and Lead Desk; Lead Desk is reachable via Atlas's Tailscale IP rather than `127.0.0.1`.
+- Confirmed `drewbefree.com` is still using Namecheap nameservers (`dns1.registrar-servers.com`, `dns2.registrar-servers.com`), so `portal.drewbefree.com` cannot be protected by Cloudflare Access until the domain is onboarded to Cloudflare or we use an already-Cloudflare-managed domain.
+- Queried Prometheus and confirmed 8/8 scrape targets are up: benchmarks, cAdvisor, IPMI, node exporter, NVIDIA GPU, Ollama, Prometheus, and SMART disk exporter.
+
+**Subagents used:**
+- None.
+
+**Where we stopped:**
+- No Atlas origins were exposed through Cloudflare. The active `cloudflared` config was left unchanged.
+- Attempting to route `*.drewbefree.com` with the existing Kybernet Cloudflare cert created wrong `*.drewbefree.com.kybernet.tech` DNS records; those should be deleted from the Kybernet Cloudflare DNS page.
+
+**Next up:**
+- Choose whether to migrate `drewbefree.com` DNS to Cloudflare for `https://portal.drewbefree.com/`, or use `portal.kybernet.tech`/related Kybernet hostnames for the protected portal.
+- After the domain choice, create the Cloudflare Access self-hosted app/policy before activating tunnel ingress to Atlas origins.
