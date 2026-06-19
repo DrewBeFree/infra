@@ -2333,3 +2333,25 @@
 **Next up:**
 - Re-check the portal from the browser/iPad after refresh.
 - Finish the remaining protected alias DNS/Access records for `wiki`, `grafana`, `prometheus`, `tokens`, `planning`, `hermes`, and `scanner`.
+
+## 2026-06-19 (private apex and public resume pivot)
+
+**What we did:**
+- Decided to make the public DrewBeFree Command Center private too and move the intentionally public professional surface to a future resume page.
+- Added `drewbefree.com` to the existing Cloudflare Access app `DrewBeFree Private Portal`, still using the `Allow Drew only` policy.
+- Turned Cloudflare proxy on for all four apex GitHub Pages A records so Access can challenge before GitHub Pages serves the Command Center.
+- Turned Cloudflare proxy on for the `www.drewbefree.com` CNAME; it currently redirects toward the protected apex.
+- Verified unauthenticated `https://drewbefree.com/` returns a Cloudflare Access login redirect instead of a GitHub Pages `200`.
+- Documented the new private-apex/public-resume split in the Cloudflare runbook and backlog.
+
+**Subagents used:**
+- None.
+
+**Where we stopped:**
+- `drewbefree.com` is protected by Cloudflare Access.
+- `www.drewbefree.com` is proxied and redirects toward the apex, but Cloudflare did not persist it as a separate Access app destination in the same app.
+- `resume.drewbefree.com` has not been created yet; it is the intended public replacement surface.
+
+**Next up:**
+- Create and publish the public resume page, likely at `resume.drewbefree.com`.
+- Add `www.drewbefree.com` as an explicit Access destination using Cloudflare custom-hostname input or a separate Access app if needed.

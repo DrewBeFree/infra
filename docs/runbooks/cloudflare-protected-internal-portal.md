@@ -8,6 +8,8 @@ Expose the Atlas internal ecosystem portal and high-use local operator surfaces 
 
 | Public URL | Atlas origin | Fallback |
 | --- | --- | --- |
+| `https://drewbefree.com/` | GitHub Pages Command Center, Cloudflare proxied | `https://drewbefree.github.io/drewbefree-command-center/` |
+| `https://www.drewbefree.com/` | GitHub Pages redirect to apex, Cloudflare proxied | `https://drewbefree.com/` |
 | `https://portal.drewbefree.com/` | `http://127.0.0.1/` -> `/ecosystem/launcher.html` | `http://atlas/ecosystem/launcher.html` |
 | `https://portal.drewbefree.com/ecosystem/` | `http://127.0.0.1/ecosystem/` | `http://atlas/ecosystem/` |
 | `https://wiki.drewbefree.com/wiki/` | `http://127.0.0.1/wiki/` | `http://atlas/wiki/` |
@@ -45,6 +47,10 @@ hermes.drewbefree.com     CNAME 188e5c59-c931-49a2-84c9-6646aadcd3c9.cfargotunne
 scanner.drewbefree.com    CNAME 188e5c59-c931-49a2-84c9-6646aadcd3c9.cfargotunnel.com
 ```
 
+The DrewBeFree apex is different: it stays on the GitHub Pages A records but must be orange-cloud proxied so Cloudflare Access can challenge before GitHub Pages serves the public Command Center. `www.drewbefree.com` should also be proxied; GitHub Pages redirects it to the apex.
+
+The intended public replacement surface is `https://resume.drewbefree.com/`. Keep that hostname out of the Drew-only Access application and point it at the future public resume page.
+
 ## Atlas Notes
 
 The tunnel service URLs use Atlas local origins. The browser-facing URLs are HTTPS, but the origin URLs can remain HTTP because `cloudflared` connects from Atlas to local services.
@@ -77,6 +83,7 @@ git diff --check
 After Cloudflare setup:
 
 - `https://portal.drewbefree.com/` requires Cloudflare Access before Atlas redirects to the private Command Center launcher.
+- `https://drewbefree.com/` requires Cloudflare Access before showing the GitHub Pages Command Center.
 - `https://portal.drewbefree.com/ecosystem/` requires Cloudflare Access before showing the portal.
 - `https://wiki.drewbefree.com/wiki/` requires Cloudflare Access before showing the wiki.
 - `https://leads.drewbefree.com/` requires Cloudflare Access before showing Lead Desk.

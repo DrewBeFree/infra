@@ -28,7 +28,11 @@ Strategic work to establish consistent structure, standards, and sync across sys
 ## In Progress
 
 - [ ] **DrewBeFree Cloudflare DNS migration cleanup**
+  - Keep `drewbefree.com` private: apex GitHub Pages A records are Cloudflare-proxied and covered by the Drew-only Access app.
+  - Keep `www.drewbefree.com` proxied; it redirects toward the protected apex. Add it as an explicit Access destination later if Cloudflare accepts it via custom-hostname input or a separate Access app.
+  - Create the intentionally public resume surface at `resume.drewbefree.com`, outside the Drew-only Access app.
   - Add the public GitHub Pages CNAMEs that were intentionally deferred during the Cloudflare nameserver migration:
+    - `resume.drewbefree.com` -> public resume page target, likely GitHub Pages (DNS only or proxied without Access)
     - `soccer.drewbefree.com` -> `drewbefree.github.io` (DNS only)
     - `food.drewbefree.com` -> `drewbefree.github.io` (DNS only)
     - `snap.drewbefree.com` -> `drewbefree.github.io` (DNS only)
