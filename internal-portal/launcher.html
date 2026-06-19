@@ -301,9 +301,10 @@
   function launcherSignalUrls() {
     const hosted = isProtectedHostedMode();
     const localHost = window.location.hostname || "atlas";
+    const hostedOrigin = window.location.origin || "https://portal.drewbefree.com";
     return {
-      leadDashboardEndpoint: hosted ? "https://leads.drewbefree.com/api/dashboard" : `http://${localHost}:8017/api/dashboard`,
-      grafanaHealthEndpoint: hosted ? "https://grafana.drewbefree.com/api/health" : `http://${localHost}:3001/api/health`
+      leadDashboardEndpoint: hosted ? `${hostedOrigin}/api/dashboard` : `http://${localHost}:8017/api/dashboard`,
+      grafanaHealthEndpoint: hosted ? `${hostedOrigin}/api/health` : `http://${localHost}:3001/api/health`
     };
   }
 

@@ -665,6 +665,33 @@ test("private launcher signal endpoints follow the current Atlas hostname", asyn
   assert.equal(sandbox.window.__urls.grafanaHealthEndpoint, "http://100.117.87.57:3001/api/health");
 });
 
+test("private launcher hosted signal endpoints stay same-origin for Cloudflare Access", async () => {
+  const launcher = await readFile(launcherPath, "utf8");
+  const scriptMatch = launcher.match(/<script>([\s\S]*?)<\/script>/);
+  assert.ok(scriptMatch, "launcher inline script missing");
+
+  const sandbox = {
+    document: {
+      addEventListener: () => {},
+      getElementById: (id) => ({ textContent: id }),
+      querySelectorAll: () => []
+    },
+    window: {
+      location: {
+        origin: "https://portal.drewbefree.com",
+        protocol: "https:",
+        hostname: "portal.drewbefree.com"
+      }
+    }
+  };
+
+  sandbox.window.window = sandbox.window;
+  vm.runInNewContext(`${scriptMatch[1]}\nwindow.__urls = launcherSignalUrls();`, sandbox, { filename: "internal-portal/launcher.html" });
+
+  assert.equal(sandbox.window.__urls.leadDashboardEndpoint, "https://portal.drewbefree.com/api/dashboard");
+  assert.equal(sandbox.window.__urls.grafanaHealthEndpoint, "https://portal.drewbefree.com/api/health");
+});
+
 test("private launcher rewrites Atlas-only links in protected hosted mode", async () => {
   const launcher = await readFile(launcherPath, "utf8");
   const scriptMatch = launcher.match(/<script>([\s\S]*?)<\/script>/);

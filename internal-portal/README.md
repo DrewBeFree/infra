@@ -62,8 +62,10 @@ The private Command Center launcher shows compact live state on the cards Drew o
 
 When the launcher is opened through `https://portal.drewbefree.com/`, those checks use the protected aliases:
 
-- `https://leads.drewbefree.com/api/dashboard`
-- `https://grafana.drewbefree.com/api/health`
+- `https://portal.drewbefree.com/api/dashboard`
+- `https://portal.drewbefree.com/api/health`
+
+Keep hosted live checks same-origin on `portal.drewbefree.com`. Cross-origin requests to other Cloudflare Access applications, such as `leads.drewbefree.com`, can be redirected to the Access login flow and blocked by browser CORS before the launcher can read a useful response.
 
 The Lead Desk API path must be routed before the Lead Desk frontend route in `cloudflared` ingress, otherwise `/api/dashboard` is handled by the Next.js frontend and returns 404.
 

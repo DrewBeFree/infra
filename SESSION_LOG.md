@@ -2312,3 +2312,24 @@
 
 **Next up:**
 - Open the launcher from iPad using the reachable Atlas/Tailscale portal URL and refresh; the indicators should populate when that hostname can reach ports `8017` and `3001`.
+
+## 2026-06-19 (hosted launcher same-origin signals)
+
+**What we did:**
+- Diagnosed the hosted launcher console error: `portal.drewbefree.com` was fetching live state from separate Cloudflare Access apps (`leads.drewbefree.com` / `grafana.drewbefree.com`), which redirected to the Access login host and got blocked by browser CORS.
+- Updated hosted launcher signal endpoints to stay same-origin on `https://portal.drewbefree.com/api/dashboard` and `https://portal.drewbefree.com/api/health`; local/Tailscale mode still follows the current Atlas hostname.
+- Added a regression test proving hosted signal endpoints stay same-origin for Cloudflare Access.
+- Added Atlas `cloudflared` path routes for `portal.drewbefree.com/api/dashboard` to Lead Desk API and `portal.drewbefree.com/api/health` to Grafana before the portal catch-all.
+- Deployed the refreshed launcher to Atlas and verified the tunnel ingress matcher plus both local origins.
+- Verified `node --test internal-portal/portal.test.mjs` and `git diff --check`.
+
+**Subagents used:**
+- None.
+
+**Where we stopped:**
+- The hosted portal is deployed with same-origin live-state calls; a hard refresh of `https://portal.drewbefree.com/` should stop the CORS login redirect noise and let Lead Desk/Grafana cards populate after Access login.
+- Atlas `cloudflared` backup for this route change was saved as `/home/drew/.cloudflared/config.yml.bak-20260619010255-portal-signal-api`.
+
+**Next up:**
+- Re-check the portal from the browser/iPad after refresh.
+- Finish the remaining protected alias DNS/Access records for `wiki`, `grafana`, `prometheus`, `tokens`, `planning`, `hermes`, and `scanner`.
