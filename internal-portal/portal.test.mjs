@@ -639,6 +639,32 @@ test("private launcher falls back to a Grafana image beacon when health API is b
   assert.equal(elements.get("grafanaSignalVersion").textContent, "beacon");
 });
 
+test("private launcher signal endpoints follow the current Atlas hostname", async () => {
+  const launcher = await readFile(launcherPath, "utf8");
+  const scriptMatch = launcher.match(/<script>([\s\S]*?)<\/script>/);
+  assert.ok(scriptMatch, "launcher inline script missing");
+
+  const sandbox = {
+    document: {
+      addEventListener: () => {},
+      getElementById: () => null,
+      querySelectorAll: () => []
+    },
+    window: {
+      location: {
+        protocol: "http:",
+        hostname: "100.117.87.57"
+      }
+    }
+  };
+
+  sandbox.window.window = sandbox.window;
+  vm.runInNewContext(`${scriptMatch[1]}\nwindow.__urls = launcherSignalUrls();`, sandbox, { filename: "internal-portal/launcher.html" });
+
+  assert.equal(sandbox.window.__urls.leadDashboardEndpoint, "http://100.117.87.57:8017/api/dashboard");
+  assert.equal(sandbox.window.__urls.grafanaHealthEndpoint, "http://100.117.87.57:3001/api/health");
+});
+
 test("private launcher rewrites Atlas-only links in protected hosted mode", async () => {
   const launcher = await readFile(launcherPath, "utf8");
   const scriptMatch = launcher.match(/<script>([\s\S]*?)<\/script>/);

@@ -2294,3 +2294,21 @@
 - In Cloudflare, add the remaining hostnames to the Drew-only Access application, then create proxied CNAME/Tunnel records pointing each hostname at `188e5c59-c931-49a2-84c9-6646aadcd3c9.cfargotunnel.com`.
 - Re-test from iPad after DNS is active: `scanner.drewbefree.com`, `grafana.drewbefree.com`, `prometheus.drewbefree.com`, `tokens.drewbefree.com`, `planning.drewbefree.com`, `hermes.drewbefree.com`, and `wiki.drewbefree.com`.
 - Clean up accidental Kybernet-zone records like `scanner.drewbefree.com.kybernet.tech` when convenient.
+
+## 2026-06-19 (launcher signal hostname fix)
+
+**What we did:**
+- Diagnosed why the launcher screenshot showed Lead Desk `OFFLINE` and Grafana `DOWN`: the page was reachable, but the status widgets were hardcoded to fetch `http://atlas:8017` and `http://atlas:3001`, which fails from clients that open the launcher through another Atlas/Tailscale hostname or IP.
+- Updated local-mode signal endpoints to use the current browser hostname, so `http://<current-host>/ecosystem/launcher.html` fetches Lead Desk from `http://<current-host>:8017/api/dashboard` and Grafana from `http://<current-host>:3001/api/health`.
+- Added a regression test covering the IP/Tailscale-host case.
+- Deployed the fix to Atlas and verified `node --test internal-portal/portal.test.mjs` and `git diff --check`.
+
+**Subagents used:**
+- None.
+
+**Where we stopped:**
+- The Atlas launcher no longer depends on the literal `atlas` hostname for local live indicators.
+- The in-app browser could not reach `http://100.117.87.57/ecosystem/launcher.html` on port 80, so that specific IP route appears unavailable from this machine; the code now follows whichever reachable hostname/IP is used to open the launcher.
+
+**Next up:**
+- Open the launcher from iPad using the reachable Atlas/Tailscale portal URL and refresh; the indicators should populate when that hostname can reach ports `8017` and `3001`.
