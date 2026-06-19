@@ -82,6 +82,7 @@
   .rail-link:hover, .card:hover { border-color: var(--card-accent, var(--accent)); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,0.45), 0 0 18px var(--card-glow, var(--glow)); }
   .rail-link small, .card-id { color: var(--text-dim); font-size: 0.58rem; letter-spacing: 3px; text-transform: uppercase; }
   .rail-link b { color: #fff; font-family: "Orbitron", sans-serif; letter-spacing: 1px; font-size: 0.78rem; }
+  .rail-signal { color: var(--card-accent, var(--accent)); font-size: 0.58rem; letter-spacing: 2px; text-transform: uppercase; line-height: 1.25; }
 
   .section-label { display: flex; align-items: center; gap: 12px; margin: 28px 0 14px; color: var(--text-dim); font-size: 0.65rem; letter-spacing: 4px; text-transform: uppercase; }
   .section-label::after { content: ""; flex: 1; height: 1px; background: var(--border); }
@@ -106,6 +107,31 @@
   .card-name { font-family: "Orbitron", sans-serif; color: #fff; font-weight: 700; letter-spacing: 2px; font-size: 0.9rem; margin: 12px 0 6px; }
   .card-url { color: var(--card-accent); font-size: 0.62rem; letter-spacing: 1px; opacity: 0.82; overflow-wrap: anywhere; }
   .card-desc { font-family: "Exo 2", sans-serif; color: var(--text-mid); font-size: 0.82rem; line-height: 1.55; margin: 12px 0 16px; font-weight: 300; }
+  .signal {
+    border: 1px solid rgba(127,179,197,0.18);
+    background: rgba(5,10,14,0.42);
+    border-radius: 4px;
+    margin: 0 0 14px;
+    padding: 10px;
+  }
+  .signal-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    color: var(--text-dim);
+    font-size: 0.56rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .signal-state { color: var(--card-accent); }
+  .signal-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .signal-metric { min-width: 0; }
+  .signal-value { display: block; color: #fff; font-family: "Orbitron", sans-serif; font-size: 1rem; line-height: 1.1; }
+  .signal-label { display: block; color: var(--text-mid); font-size: 0.54rem; letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; }
+  .signal[data-state="live"], .signal[data-state="up"] { border-color: rgba(0,255,136,0.28); }
+  .signal[data-state="offline"], .signal[data-state="down"] { border-color: rgba(255,107,53,0.42); }
+  .signal[data-state="offline"] .signal-state, .signal[data-state="down"] .signal-state { color: var(--danger); }
   .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: auto; padding-top: 12px; border-top: 1px solid rgba(20,49,67,0.75); }
   .tag { border: 1px solid var(--card-accent); color: var(--card-accent); border-radius: 2px; padding: 3px 7px; font-size: 0.56rem; letter-spacing: 2px; text-transform: uppercase; opacity: 0.72; }
   .terminal { margin-top: 28px; padding: 16px 18px; background: var(--bg2); border: 1px solid var(--border); border-radius: 4px; color: var(--text-dim); font-size: 0.68rem; line-height: 2.1; letter-spacing: 1px; }
@@ -148,10 +174,10 @@
       <strong>ATLAS LOCAL FIRST</strong>
       <span>Your daily operator surfaces are pinned here: leads, wiki, service health, planning, and the deeper ecosystem registry.</span>
     </div>
-    <a class="rail-link" href="http://atlas:3027/" data-protected-href="https://leads.drewbefree.com/" style="--card-accent:#00ff88;--card-glow:rgba(0,255,136,0.1);"><small>LOCAL APP</small><b>Lead Desk</b></a>
+    <a class="rail-link" href="http://atlas:3027/" data-protected-href="https://leads.drewbefree.com/" style="--card-accent:#00ff88;--card-glow:rgba(0,255,136,0.1);"><small>LOCAL APP</small><b>Lead Desk</b><span class="rail-signal" id="leadRailSignal">checking leads</span></a>
     <a class="rail-link" href="http://atlas/wiki/" data-protected-href="https://wiki.drewbefree.com/wiki/" style="--card-accent:#00d4ff;"><small>DOCS</small><b>Atlas Wiki</b></a>
     <a class="rail-link" href="http://atlas/ecosystem/" data-protected-href="https://portal.drewbefree.com/ecosystem/" style="--card-accent:#a78bfa;"><small>REGISTRY</small><b>Ecosystem</b></a>
-    <a class="rail-link" href="http://atlas:3001/d/atlas-overview/poweredge-dashboard" data-protected-href="https://grafana.drewbefree.com/d/atlas-overview/poweredge-dashboard" style="--card-accent:#f59e0b;"><small>HEALTH</small><b>Grafana</b></a>
+    <a class="rail-link" href="http://atlas:3001/d/atlas-overview/poweredge-dashboard" data-protected-href="https://grafana.drewbefree.com/d/atlas-overview/poweredge-dashboard" style="--card-accent:#f59e0b;"><small>HEALTH</small><b>Grafana</b><span class="rail-signal" id="grafanaRailSignal">checking</span></a>
   </section>
 
   <div class="section-label">// LOCAL APPS & ATLAS TOOLS</div>
@@ -161,6 +187,14 @@
       <div class="card-name">LEAD DESK</div>
       <div class="card-url">http://atlas:3027/</div>
       <div class="card-desc">Morning lead review hub for Surf the Webb, pinned first because this is the thing you actually open.</div>
+      <div class="signal" id="leadSignal" data-state="checking" aria-label="Lead Desk live state">
+        <div class="signal-head"><span>Lead signal</span><span class="signal-state" id="leadSignalStatus">CHECKING</span></div>
+        <div class="signal-grid">
+          <span class="signal-metric"><span class="signal-value" id="leadHighFit">--</span><span class="signal-label">High fit</span></span>
+          <span class="signal-metric"><span class="signal-value" id="leadDraftReady">--</span><span class="signal-label">Draft ready</span></span>
+          <span class="signal-metric"><span class="signal-value" id="leadManual">--</span><span class="signal-label">Manual</span></span>
+        </div>
+      </div>
       <div class="tags"><span class="tag">Leads</span><span class="tag">Local</span><span class="tag">Daily</span></div>
     </a>
     <a class="card" href="http://atlas/wiki/" data-protected-href="https://wiki.drewbefree.com/wiki/" style="--card-accent:#00d4ff;">
@@ -182,6 +216,14 @@
       <div class="card-name">GRAFANA</div>
       <div class="card-url">http://atlas:3001/d/atlas-overview/poweredge-dashboard</div>
       <div class="card-desc">Atlas health, GPU telemetry, dashboards, benchmarks, and service visibility from one monitoring surface.</div>
+      <div class="signal" id="grafanaSignal" data-state="checking" aria-label="Grafana monitoring state">
+        <div class="signal-head"><span>Monitoring</span><span class="signal-state" id="grafanaSignalStatus">CHECKING</span></div>
+        <div class="signal-grid">
+          <span class="signal-metric"><span class="signal-value" id="grafanaSignalVersion">--</span><span class="signal-label">Grafana</span></span>
+          <span class="signal-metric"><span class="signal-value">API</span><span class="signal-label">Health</span></span>
+          <span class="signal-metric"><span class="signal-value">DB</span><span class="signal-label">Check</span></span>
+        </div>
+      </div>
       <div class="tags"><span class="tag">Metrics</span><span class="tag">P40</span><span class="tag">Health</span></div>
     </a>
     <a class="card" href="http://atlas:9090" data-protected-href="https://prometheus.drewbefree.com/" style="--card-accent:#ef4444;--card-glow:rgba(239,68,68,0.11);">
@@ -256,6 +298,115 @@
     return window.location.protocol === "https:" && /(^|\.)drewbefree\.com$/i.test(window.location.hostname);
   }
 
+  function launcherSignalUrls() {
+    const hosted = isProtectedHostedMode();
+    return {
+      leadDashboardEndpoint: hosted ? "https://leads.drewbefree.com/api/dashboard" : "http://atlas:8017/api/dashboard",
+      grafanaHealthEndpoint: hosted ? "https://grafana.drewbefree.com/api/health" : "http://atlas:3001/api/health"
+    };
+  }
+
+  function text(id, value) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.textContent = value;
+    }
+  }
+
+  function signalState(id, state) {
+    const el = document.getElementById(id);
+    if (el) {
+      el.dataset.state = state;
+    }
+  }
+
+  async function refreshLeadSignal(endpoint) {
+    try {
+      const response = await fetch(endpoint, { cache: "no-store" });
+      if (!response.ok) {
+        throw new Error(`Lead Desk API returned ${response.status}`);
+      }
+
+      const dashboard = await response.json();
+      const metrics = dashboard.metrics || {};
+      const highFit = metrics.high_fit ?? "--";
+      const draftReady = metrics.draft_ready ?? "--";
+      const manual = metrics.manual_reply_required ?? "--";
+
+      text("leadHighFit", String(highFit));
+      text("leadDraftReady", String(draftReady));
+      text("leadManual", String(manual));
+      text("leadRailSignal", `${highFit} high / ${draftReady} drafts`);
+      text("leadSignalStatus", "LIVE");
+      signalState("leadSignal", "live");
+    } catch {
+      text("leadRailSignal", "api unreachable");
+      text("leadSignalStatus", "OFFLINE");
+      signalState("leadSignal", "offline");
+    }
+  }
+
+  function grafanaBeaconEndpoint(endpoint) {
+    return endpoint.replace(/\/api\/health.*$/, "/public/img/fav32.png");
+  }
+
+  function probeGrafanaBeacon(endpoint) {
+    const ImageCtor = window.Image || (typeof Image !== "undefined" ? Image : null);
+    if (!ImageCtor) {
+      return Promise.resolve(false);
+    }
+
+    return new Promise((resolve) => {
+      const image = new ImageCtor();
+      let settled = false;
+      const finish = (result) => {
+        if (settled) {
+          return;
+        }
+        settled = true;
+        resolve(result);
+      };
+      image.onload = () => finish(true);
+      image.onerror = () => finish(false);
+      if (typeof window.setTimeout === "function") {
+        window.setTimeout(() => finish(false), 3000);
+      }
+      image.src = grafanaBeaconEndpoint(endpoint);
+    });
+  }
+
+  async function refreshGrafanaSignal(endpoint) {
+    try {
+      const response = await fetch(endpoint, { cache: "no-store" });
+      if (!response.ok) {
+        throw new Error(`Grafana API returned ${response.status}`);
+      }
+
+      const health = await response.json();
+      const up = health.database === "ok";
+      text("grafanaRailSignal", up ? "UP" : "DOWN");
+      text("grafanaSignalStatus", up ? "UP" : "DOWN");
+      text("grafanaSignalVersion", health.version ? health.version.split("+")[0] : "--");
+      signalState("grafanaSignal", up ? "up" : "down");
+    } catch {
+      const beaconUp = await probeGrafanaBeacon(endpoint);
+      text("grafanaRailSignal", beaconUp ? "UP" : "DOWN");
+      text("grafanaSignalStatus", beaconUp ? "UP" : "DOWN");
+      text("grafanaSignalVersion", beaconUp ? "beacon" : "--");
+      signalState("grafanaSignal", beaconUp ? "up" : "down");
+    }
+  }
+
+  async function refreshLauncherSignals() {
+    const { leadDashboardEndpoint, grafanaHealthEndpoint } = launcherSignalUrls();
+    await Promise.all([
+      refreshLeadSignal(leadDashboardEndpoint),
+      refreshGrafanaSignal(grafanaHealthEndpoint)
+    ]);
+  }
+
+  window.refreshLauncherSignals = refreshLauncherSignals;
+
   if (isProtectedHostedMode()) {
     document.querySelectorAll("[data-protected-href]").forEach((link) => {
       link.dataset.internalHref = link.getAttribute("href");
@@ -263,6 +414,10 @@
     });
     document.getElementById("accessMode").textContent = "CLOUDFLARE ACCESS";
     document.getElementById("routeMode").textContent = "https protected aliases active";
+  }
+
+  if (document.addEventListener) {
+    document.addEventListener("DOMContentLoaded", refreshLauncherSignals);
   }
 </script>
 </body>

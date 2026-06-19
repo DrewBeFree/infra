@@ -53,6 +53,20 @@ The first viewport includes priority access tiles for:
 
 On mobile, the navigator is an off-canvas sidebar opened by the fixed menu button. Priority links remain visible above filters so operational surfaces are not buried in the directory.
 
+## Live state indicators
+
+The private Command Center launcher shows compact live state on the cards Drew opens most:
+
+- Lead Desk reads `http://atlas:8017/api/dashboard` locally and shows high-fit, draft-ready, and manual-reply counts.
+- Grafana tries `http://atlas:3001/api/health` locally and shows `UP` or `DOWN` with the Grafana version when the browser is allowed to read it. If browser CORS blocks the health API, the launcher falls back to a Grafana PNG asset beacon and still shows a reliable `UP`/`DOWN` signal.
+
+When the launcher is opened through `https://portal.drewbefree.com/`, those checks use the protected aliases:
+
+- `https://leads.drewbefree.com/api/dashboard`
+- `https://grafana.drewbefree.com/api/health`
+
+The Lead Desk API path must be routed before the Lead Desk frontend route in `cloudflared` ingress, otherwise `/api/dashboard` is handled by the Next.js frontend and returns 404.
+
 ## Cloudflare Access hosted route
 
 The portal can also be reached through Cloudflare Access at:
@@ -67,5 +81,19 @@ the daily front door once Cloudflare is configured:
 - Atlas/Tailscale fallback: `http://atlas/ecosystem/launcher.html`
 
 When opened from a protected `*.drewbefree.com` hostname, priority links prefer HTTPS Cloudflare Access aliases for Lead Desk, the Atlas wiki, Grafana, AI Token Dashboard, Leantime, and Hermes. Atlas/Tailscale HTTP links remain the fallback and source-of-truth origins.
+
+If DNS must be created manually in the Cloudflare dashboard, add proxied CNAME records pointing at the Atlas tunnel target:
+
+```text
+wiki       CNAME 188e5c59-c931-49a2-84c9-6646aadcd3c9.cfargotunnel.com
+grafana    CNAME 188e5c59-c931-49a2-84c9-6646aadcd3c9.cfargotunnel.com
+prometheus CNAME 188e5c59-c931-49a2-84c9-6646aadcd3c9.cfargotunnel.com
+tokens     CNAME 188e5c59-c931-49a2-84c9-6646aadcd3c9.cfargotunnel.com
+planning   CNAME 188e5c59-c931-49a2-84c9-6646aadcd3c9.cfargotunnel.com
+hermes     CNAME 188e5c59-c931-49a2-84c9-6646aadcd3c9.cfargotunnel.com
+scanner    CNAME 188e5c59-c931-49a2-84c9-6646aadcd3c9.cfargotunnel.com
+```
+
+Also add the same hostnames to the Drew-only Cloudflare Access application before enabling DNS, so Atlas apps are never exposed without identity protection.
 
 Setup and validation steps live in `../docs/runbooks/cloudflare-protected-internal-portal.md`.

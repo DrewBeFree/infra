@@ -11,6 +11,7 @@ Expose the Atlas internal ecosystem portal and high-use local operator surfaces 
 | `https://portal.drewbefree.com/` | `http://127.0.0.1/` -> `/ecosystem/launcher.html` | `http://atlas/ecosystem/launcher.html` |
 | `https://portal.drewbefree.com/ecosystem/` | `http://127.0.0.1/ecosystem/` | `http://atlas/ecosystem/` |
 | `https://wiki.drewbefree.com/wiki/` | `http://127.0.0.1/wiki/` | `http://atlas/wiki/` |
+| `https://leads.drewbefree.com/api/dashboard` | `http://100.71.165.80:8017/api/dashboard` | `http://atlas:8017/api/dashboard` |
 | `https://leads.drewbefree.com/` | `http://127.0.0.1:3027` | `http://atlas:3027/` |
 | `https://grafana.drewbefree.com/` | `http://127.0.0.1:3001` | `http://atlas:3001/` |
 | `https://prometheus.drewbefree.com/` | `http://127.0.0.1:9090` | `http://atlas:9090/` |
@@ -28,12 +29,37 @@ Expose the Atlas internal ecosystem portal and high-use local operator surfaces 
 4. Add one published application route for each protected route in the table.
 5. Create a Cloudflare Access self-hosted application for the protected hostnames.
 6. Add an Access policy named `drew-only` that allows only Drew's approved email identity.
-7. Confirm unauthenticated private/incognito access shows the Cloudflare Access login.
-8. Confirm authenticated Drew access reaches each app.
+7. In DrewBeFree DNS, create proxied CNAME/Tunnel records only after the matching Access hostname is covered.
+8. Confirm unauthenticated private/incognito access shows the Cloudflare Access login.
+9. Confirm authenticated Drew access reaches each app.
+
+When creating DNS manually, each protected app hostname should point at the Atlas tunnel:
+
+```text
+wiki.drewbefree.com       CNAME 188e5c59-c931-49a2-84c9-6646aadcd3c9.cfargotunnel.com
+grafana.drewbefree.com    CNAME 188e5c59-c931-49a2-84c9-6646aadcd3c9.cfargotunnel.com
+prometheus.drewbefree.com CNAME 188e5c59-c931-49a2-84c9-6646aadcd3c9.cfargotunnel.com
+tokens.drewbefree.com     CNAME 188e5c59-c931-49a2-84c9-6646aadcd3c9.cfargotunnel.com
+planning.drewbefree.com   CNAME 188e5c59-c931-49a2-84c9-6646aadcd3c9.cfargotunnel.com
+hermes.drewbefree.com     CNAME 188e5c59-c931-49a2-84c9-6646aadcd3c9.cfargotunnel.com
+scanner.drewbefree.com    CNAME 188e5c59-c931-49a2-84c9-6646aadcd3c9.cfargotunnel.com
+```
 
 ## Atlas Notes
 
 The tunnel service URLs use Atlas local origins. The browser-facing URLs are HTTPS, but the origin URLs can remain HTTP because `cloudflared` connects from Atlas to local services.
+
+Keep the Lead Desk API ingress above the Lead Desk frontend ingress:
+
+```yaml
+- hostname: leads.drewbefree.com
+  path: /api/.*
+  service: http://100.71.165.80:8017
+- hostname: leads.drewbefree.com
+  service: http://100.71.165.80:3027
+```
+
+The private launcher uses this path for the Lead Desk high-fit, draft-ready, and manual-reply counts. Grafana health uses `/api/health`.
 
 No secrets belong in this repo. Do not commit tunnel tokens, credentials JSON files, Access service tokens, passwords, Basic Auth hashes, or API keys.
 

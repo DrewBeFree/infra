@@ -454,6 +454,191 @@ test("private Command Center launcher makes Atlas local tools first-class", asyn
   assert.match(launcher, /querySelectorAll\("\[data-protected-href\]"\)/);
 });
 
+test("private Command Center launcher includes live state indicators", async () => {
+  const launcher = await readFile(launcherPath, "utf8");
+
+  assert.match(launcher, /id="leadRailSignal"/);
+  assert.match(launcher, /id="leadSignal"/);
+  assert.match(launcher, /id="leadHighFit"/);
+  assert.match(launcher, /id="leadDraftReady"/);
+  assert.match(launcher, /High fit/);
+  assert.match(launcher, /Draft ready/);
+  assert.match(launcher, /id="grafanaRailSignal"/);
+  assert.match(launcher, /id="grafanaSignal"/);
+  assert.match(launcher, /id="grafanaSignalStatus"/);
+  assert.match(launcher, /Monitoring/);
+  assert.match(launcher, /function refreshLauncherSignals/);
+  assert.match(launcher, /leadDashboardEndpoint/);
+  assert.match(launcher, /grafanaHealthEndpoint/);
+});
+
+test("private launcher refreshes Lead Desk and Grafana state indicators", async () => {
+  const launcher = await readFile(launcherPath, "utf8");
+  const scriptMatch = launcher.match(/<script>([\s\S]*?)<\/script>/);
+  assert.ok(scriptMatch, "launcher inline script missing");
+
+  const elementIds = [
+    "leadRailSignal",
+    "leadSignal",
+    "leadSignalStatus",
+    "leadHighFit",
+    "leadDraftReady",
+    "leadManual",
+    "grafanaRailSignal",
+    "grafanaSignal",
+    "grafanaSignalStatus",
+    "grafanaSignalVersion"
+  ];
+  const elements = new Map(elementIds.map((id) => [
+    id,
+    {
+      textContent: "",
+      dataset: {},
+      classList: {
+        add() {},
+        remove() {}
+      }
+    }
+  ]));
+
+  const sandbox = {
+    console,
+    fetch: async (url) => {
+      if (String(url).includes("/api/dashboard")) {
+        return {
+          ok: true,
+          json: async () => ({
+            metrics: {
+              high_fit: 5,
+              draft_ready: 16,
+              manual_reply_required: 16,
+              total_leads: 17
+            }
+          })
+        };
+      }
+      if (String(url).includes("/api/health")) {
+        return {
+          ok: true,
+          json: async () => ({
+            database: "ok",
+            version: "13.0.1+security-01"
+          })
+        };
+      }
+      throw new Error(`unexpected fetch: ${url}`);
+    },
+    document: {
+      addEventListener: () => {},
+      getElementById: (id) => elements.get(id) ?? null,
+      querySelectorAll: () => []
+    },
+    window: {
+      location: {
+        protocol: "http:",
+        hostname: "atlas"
+      }
+    }
+  };
+
+  sandbox.window.window = sandbox.window;
+  vm.runInNewContext(scriptMatch[1], sandbox, { filename: "internal-portal/launcher.html" });
+
+  assert.equal(typeof sandbox.window.refreshLauncherSignals, "function");
+
+  await sandbox.window.refreshLauncherSignals();
+
+  assert.equal(elements.get("leadHighFit").textContent, "5");
+  assert.equal(elements.get("leadDraftReady").textContent, "16");
+  assert.equal(elements.get("leadManual").textContent, "16");
+  assert.match(elements.get("leadRailSignal").textContent, /5 high \/ 16 drafts/);
+  assert.equal(elements.get("leadSignalStatus").textContent, "LIVE");
+  assert.equal(elements.get("grafanaSignalStatus").textContent, "UP");
+  assert.match(elements.get("grafanaSignalVersion").textContent, /13\.0\.1/);
+  assert.equal(elements.get("grafanaRailSignal").textContent, "UP");
+});
+
+test("private launcher falls back to a Grafana image beacon when health API is blocked", async () => {
+  const launcher = await readFile(launcherPath, "utf8");
+  const scriptMatch = launcher.match(/<script>([\s\S]*?)<\/script>/);
+  assert.ok(scriptMatch, "launcher inline script missing");
+
+  const elementIds = [
+    "leadRailSignal",
+    "leadSignal",
+    "leadSignalStatus",
+    "leadHighFit",
+    "leadDraftReady",
+    "leadManual",
+    "grafanaRailSignal",
+    "grafanaSignal",
+    "grafanaSignalStatus",
+    "grafanaSignalVersion"
+  ];
+  const elements = new Map(elementIds.map((id) => [
+    id,
+    {
+      textContent: "",
+      dataset: {},
+      classList: {
+        add() {},
+        remove() {}
+      }
+    }
+  ]));
+
+  class FakeImage {
+    set src(value) {
+      this._src = value;
+      Promise.resolve().then(() => this.onload?.());
+    }
+    get src() {
+      return this._src;
+    }
+  }
+
+  const sandbox = {
+    Image: FakeImage,
+    console,
+    fetch: async (url) => {
+      if (String(url).includes("/api/dashboard")) {
+        return {
+          ok: true,
+          json: async () => ({
+            metrics: {
+              high_fit: 5,
+              draft_ready: 16,
+              manual_reply_required: 16
+            }
+          })
+        };
+      }
+      throw new Error("CORS blocked Grafana health");
+    },
+    document: {
+      addEventListener: () => {},
+      getElementById: (id) => elements.get(id) ?? null,
+      querySelectorAll: () => []
+    },
+    window: {
+      location: {
+        protocol: "http:",
+        hostname: "atlas"
+      }
+    }
+  };
+
+  sandbox.window.window = sandbox.window;
+  sandbox.window.Image = FakeImage;
+  vm.runInNewContext(scriptMatch[1], sandbox, { filename: "internal-portal/launcher.html" });
+
+  await sandbox.window.refreshLauncherSignals();
+
+  assert.equal(elements.get("grafanaSignalStatus").textContent, "UP");
+  assert.equal(elements.get("grafanaRailSignal").textContent, "UP");
+  assert.equal(elements.get("grafanaSignalVersion").textContent, "beacon");
+});
+
 test("private launcher rewrites Atlas-only links in protected hosted mode", async () => {
   const launcher = await readFile(launcherPath, "utf8");
   const scriptMatch = launcher.match(/<script>([\s\S]*?)<\/script>/);
@@ -626,5 +811,21 @@ test("public Command Center no longer exposes UHaul Planner", async () => {
 
   assert.doesNotMatch(commandCenter, /uhaul\.drewbefree\.com/i);
   assert.doesNotMatch(commandCenter, /UHAUL PLANNER/i);
-  assert.match(commandCenter, /7 apps deployed/);
+  assert.match(commandCenter, /5 apps deployed/);
+});
+
+test("Poker and AI Dog Trainer are tracked but hidden from the public Command Center", async () => {
+  const registry = await loadRegistry();
+  const commandCenter = await readFile(commandCenterPath, "utf8");
+
+  for (const name of ["poker", "ai-dog-trainer"]) {
+    const repo = registry.repositories.find((item) => item.name === name);
+    assert.ok(repo, `${name} should remain tracked in the private registry`);
+    assert.equal(repo.publicCommandCenter, false);
+  }
+
+  assert.doesNotMatch(commandCenter, /poker\.drewbefree\.com/i);
+  assert.doesNotMatch(commandCenter, /POKER NIGHT/i);
+  assert.doesNotMatch(commandCenter, /ai-dog-trainer/i);
+  assert.doesNotMatch(commandCenter, /AI DOG TRAINER/i);
 });

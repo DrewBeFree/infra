@@ -2268,3 +2268,29 @@
 **Next up:**
 - Wire the remaining launcher aliases (`wiki`, `grafana`, `prometheus`, `tokens`, `planning`, `hermes`, `scanner`) with Access, DNS, and ingress rules.
 - Clean up the accidental Kybernet-zone `*.drewbefree.com.kybernet.tech` DNS records from the earlier CLI routing attempt.
+
+## 2026-06-19 (launcher live state + alias prep)
+
+**What we did:**
+- Added live state indicators to the private Command Center launcher: Lead Desk now shows high-fit, draft-ready, and manual-reply counts; Grafana now shows `UP`/`DOWN`.
+- Verified the deployed Atlas launcher renders Lead Desk as `5 high / 16 drafts` and Grafana as `UP` using the PNG beacon fallback when the browser cannot read Grafana `/api/health` because of CORS.
+- Updated Atlas `cloudflared` ingress for the pending protected aliases: `wiki`, `grafana`, `prometheus`, `tokens`, `planning`, `hermes`, and `scanner`.
+- Added a path-specific `leads.drewbefree.com/api/.*` ingress rule to route Lead Desk dashboard JSON to `http://100.71.165.80:8017` before the Lead Desk frontend route.
+- Backed up the previous Atlas tunnel config as `/home/drew/.cloudflared/config.yml.bak-20260619001128-protected-aliases`, validated the new config, and restarted `cloudflared`.
+- Documented the live indicator endpoints, required Cloudflare CNAME records, and Access-before-DNS rule in the portal README and Cloudflare runbook.
+- Marked Poker and AI Dog Trainer as hidden from the public Command Center source of truth.
+- Removed Poker, AI Dog Trainer, and stale UHaul visibility from the public Command Center pages/docs.
+- Verified `node --test internal-portal/portal.test.mjs`, `node --check internal-portal/app.js`, `node --check internal-portal/dev-server.mjs`, and `git diff --check`.
+
+**Subagents used:**
+- None.
+
+**Where we stopped:**
+- `http://atlas/ecosystem/launcher.html` is deployed and shows the live Lead Desk and Grafana signals.
+- Atlas ingress is ready for the remaining protected aliases.
+- DrewBeFree DNS still returns NXDOMAIN for `wiki`, `grafana`, `prometheus`, `tokens`, `planning`, `hermes`, and `scanner` because Cloudflare dashboard automation could not type into the DNS form and the local `cloudflared` cert still creates records in the Kybernet zone.
+
+**Next up:**
+- In Cloudflare, add the remaining hostnames to the Drew-only Access application, then create proxied CNAME/Tunnel records pointing each hostname at `188e5c59-c931-49a2-84c9-6646aadcd3c9.cfargotunnel.com`.
+- Re-test from iPad after DNS is active: `scanner.drewbefree.com`, `grafana.drewbefree.com`, `prometheus.drewbefree.com`, `tokens.drewbefree.com`, `planning.drewbefree.com`, `hermes.drewbefree.com`, and `wiki.drewbefree.com`.
+- Clean up accidental Kybernet-zone records like `scanner.drewbefree.com.kybernet.tech` when convenient.

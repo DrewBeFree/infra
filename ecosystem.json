@@ -188,7 +188,7 @@
           "notes": "Repository has Python app dependencies; no public runtime URL is recorded yet."
         }
       ],
-      "publicCommandCenter": true,
+      "publicCommandCenter": false,
       "version": "v0.1.0",
       "statusControl": {
         "state": "tracked",
@@ -420,7 +420,7 @@
           "url": "https://poker.drewbefree.com"
         }
       ],
-      "publicCommandCenter": true,
+      "publicCommandCenter": false,
       "version": "v0.7.0",
       "statusControl": {
         "state": "live",
