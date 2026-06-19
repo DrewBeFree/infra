@@ -2199,3 +2199,22 @@
 
 **Next up:**
 - In Cloudflare, add `drewbefree.com`, import/copy existing GitHub Pages records, then update Namecheap nameservers once the record list is verified.
+
+## 2026-06-18 (Cloudflare access scope checkpoint)
+
+**What we did:**
+- Confirmed Namecheap nameserver migration is propagating to Cloudflare nameservers.
+- Verified `drewbefree.com`, `www`, and several public app subdomains still resolve to GitHub Pages.
+- Added the missing deferred public CNAMEs and accidental Kybernet-route cleanup to `BACKLOG.md`.
+- Clarified that `portal.drewbefree.com` should not expose Atlas until a Cloudflare Access policy allows only Drew's approved email identity.
+
+**Subagents used:**
+- None.
+
+**Where we stopped:**
+- `portal.drewbefree.com` is not yet active for the Atlas origin.
+- The existing Atlas `cloudflared` certificate/config is still associated with the Kybernet tunnel route state and needs DrewBeFree-zone routing/Access to be completed carefully.
+
+**Next up:**
+- In Cloudflare Zero Trust, create the `portal.drewbefree.com` self-hosted Access app and allow only Drew's email.
+- After Access is active, update Atlas `cloudflared` ingress for `portal.drewbefree.com` to `http://127.0.0.1/ecosystem/launcher.html` and restart the user service.

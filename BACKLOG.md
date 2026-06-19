@@ -27,6 +27,18 @@ Strategic work to establish consistent structure, standards, and sync across sys
 
 ## In Progress
 
+- [ ] **DrewBeFree Cloudflare DNS migration cleanup**
+  - Add the public GitHub Pages CNAMEs that were intentionally deferred during the Cloudflare nameserver migration:
+    - `soccer.drewbefree.com` -> `drewbefree.github.io` (DNS only)
+    - `food.drewbefree.com` -> `drewbefree.github.io` (DNS only)
+    - `snap.drewbefree.com` -> `drewbefree.github.io` (DNS only)
+    - `recap.drewbefree.com` -> `drewbefree.github.io` (DNS only)
+    - `uhaul.drewbefree.com` -> `drewbefree.github.io` (DNS only)
+    - `photography.drewbefree.com` -> `drewbefree.github.io` (DNS only)
+  - Delete accidental Kybernet-zone DNS records such as `portal.drewbefree.com.kybernet.tech` that were created before `drewbefree.com` was onboarded to Cloudflare.
+  - Verify `drewbefree.com`, `www`, and public app subdomains still resolve to GitHub Pages after cleanup.
+  - **Status:** In progress; nameservers now point to Cloudflare, missing records are known.
+
 - [ ] **WSL Setup — Move infrastructure work to WSL**
   - Set up WSL development environment
   - Test clone scripts in WSL bash
