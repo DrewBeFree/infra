@@ -2244,3 +2244,27 @@
 - Log in through Cloudflare Access from phone/browser and confirm the hosted launcher loads after the one-time email approval flow.
 - Add the remaining protected hostnames (`wiki`, `leads`, `grafana`, `prometheus`, `tokens`, `planning`, `hermes`, `scanner`) when ready.
 - Clean up the accidental Kybernet-zone `*.drewbefree.com.kybernet.tech` DNS records from the earlier CLI routing attempt.
+
+## 2026-06-18 (Cloudflare Lead Desk route wired)
+
+**What we did:**
+- Investigated `leads.drewbefree.com` returning browser DNS failure after the protected portal login worked.
+- Confirmed Lead Desk is running on Atlas at `100.71.165.80:3027` and returns `200` with `Host: leads.drewbefree.com`.
+- Added `leads.drewbefree.com` as a second public hostname on the existing `DrewBeFree Private Portal` Cloudflare Access app, still protected by the `Allow Drew only` policy.
+- Added the DrewBeFree DNS record `leads.drewbefree.com` as a proxied Tunnel record for the `answering-agent` tunnel.
+- Updated Atlas `cloudflared` ingress to route `leads.drewbefree.com` to `http://100.71.165.80:3027`, validated the config, backed it up, and restarted the user service.
+- Flushed the local Windows DNS resolver cache after it held a stale NXDOMAIN result.
+- Verified `https://leads.drewbefree.com/` loads the Surf the Webb Lead Desk after Cloudflare Access.
+
+**Subagents used:**
+- None.
+
+**Where we stopped:**
+- `portal.drewbefree.com` opens the private launcher after Access login.
+- `leads.drewbefree.com` opens Lead Desk after Access login.
+- Atlas `cloudflared` backup was saved as `/home/drew/.cloudflared/config.yml.bak-20260618235043-leads`.
+- Existing unrelated Leantime/task-sync worktree files were left untouched.
+
+**Next up:**
+- Wire the remaining launcher aliases (`wiki`, `grafana`, `prometheus`, `tokens`, `planning`, `hermes`, `scanner`) with Access, DNS, and ingress rules.
+- Clean up the accidental Kybernet-zone `*.drewbefree.com.kybernet.tech` DNS records from the earlier CLI routing attempt.
