@@ -2355,3 +2355,22 @@
 **Next up:**
 - Create and publish the public resume page, likely at `resume.drewbefree.com`.
 - Add `www.drewbefree.com` as an explicit Access destination using Cloudflare custom-hostname input or a separate Access app if needed.
+
+## 2026-06-19 (Hermes Cloudflare WebSocket fix)
+
+**What we did:**
+- Investigated Hermes chat console failures on `https://hermes.drewbefree.com/` where `/api/ws`, `/api/events`, and `/api/pty` WebSockets failed and the UI showed the events feed disconnected.
+- Confirmed the same Hermes session token returned `101 Switching Protocols` through the Tailscale user nginx proxy at `http://100.71.165.80:9119`, while the Cloudflare-facing system nginx shim at `127.0.0.1:9120` returned `401` because it lacked the realtime proxy headers/Origin handling.
+- Updated live Atlas `cloudflared` ingress so `hermes.drewbefree.com` routes to `http://100.71.165.80:9119` instead of `http://127.0.0.1:9120`, validated the tunnel config, and restarted `cloudflared.service`.
+- Updated `ecosystem.json`, `internal-portal/portal.test.mjs`, and `docs/runbooks/cloudflare-protected-internal-portal.md` to document the Tailscale nginx proxy as Hermes' protected origin.
+- Verified `cloudflared` matches `https://hermes.drewbefree.com/api/ws` to `http://100.71.165.80:9119`, the configured origin returns `101 Switching Protocols`, and `cloudflared.service` is active.
+- Ran `node --test internal-portal/portal.test.mjs`, `node --check internal-portal/app.js`, `node --check internal-portal/dev-server.mjs`, and `git diff --check` successfully.
+- Committed `bf87684` (`fix: route hermes access through websocket proxy`), merged it to `main`, and pushed `origin/main`.
+
+**Where we stopped:**
+- Atlas live tunnel routing and the infra repo source of truth now agree: Hermes' protected hostname uses the working WebSocket-aware nginx proxy at `100.71.165.80:9119`.
+- The infra repo is on `main` at `bf87684`; unrelated untracked Leantime/task-sync files remain untouched.
+
+**Next up:**
+- Hard refresh `https://hermes.drewbefree.com/` after Cloudflare Access login and retry chat; the events feed should reconnect.
+- If the browser still shows stale failures, sign out/in of Cloudflare Access or open a fresh private window to rule out cached dashboard state.
