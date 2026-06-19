@@ -2185,3 +2185,17 @@
 **Next up:**
 - Choose whether to migrate `drewbefree.com` DNS to Cloudflare for `https://portal.drewbefree.com/`, or use `portal.kybernet.tech`/related Kybernet hostnames for the protected portal.
 - After the domain choice, create the Cloudflare Access self-hosted app/policy before activating tunnel ingress to Atlas origins.
+
+## 2026-06-18 (DrewBeFree DNS migration checklist)
+
+**What we did:**
+- Provided a step-by-step checklist for moving `drewbefree.com` DNS from Namecheap nameservers to Cloudflare while preserving the public GitHub Pages command center and app subdomains.
+
+**Subagents used:**
+- None.
+
+**Where we stopped:**
+- No DNS changes were made in this step.
+
+**Next up:**
+- In Cloudflare, add `drewbefree.com`, import/copy existing GitHub Pages records, then update Namecheap nameservers once the record list is verified.
