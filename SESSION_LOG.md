@@ -1,4 +1,17 @@
-﻿## 2026-06-25 19:16 — Session wrap-up
+﻿## 2026-06-25 19:20 — Logoff and Hermes testing guidance
+
+**What we did:**
+- Completed first logoff checklist and pushed infra SESSION_LOG.md
+- Researched Hermes infrastructure (mobile proxy, websocket routing)
+- Documented three recommended tests: basic HTTP (401 auth check), authenticated access (HTML response), and websocket realtime (/api/events with token)
+- Provided guidance on verifying the recent websocket proxy fix
+
+**Where we stopped:**
+- No open items; session ready to wrap
+
+**Next up:**
+- No pending work
+## 2026-06-25 19:16 — Session wrap-up
 
 **What we did:**
 - Ran logoff checklist
