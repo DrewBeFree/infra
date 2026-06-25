@@ -1,4 +1,14 @@
-## 2026-06-08 17:56 — Fix raw issue import 404 for experimental
+﻿## 2026-06-25 19:16 — Session wrap-up
+
+**What we did:**
+- Ran logoff checklist
+
+**Where we stopped:**
+- Clean working tree, all changes committed
+
+**Next up:**
+- No pending work
+## 2026-06-08 17:56 â€” Fix raw issue import 404 for experimental
 
 **What we did:**
 - Root cause: receive-task-sync.yml used ${{ secrets.GITHUB_TOKEN }} (infra-repo scoped only) for the inline "Import ALL GitHub issues" python and the dispatch/scheduled sync steps; github_request to /repos/DrewBeFree/trading-scanner-experimental/... (and fetch_issues etc.) returned 404.
@@ -19,13 +29,13 @@
 - (If desired) cd /home/drew/GitHub/apps/trading-scanner-experimental && git add .github/workflows/trigger-task-sync.yml && git commit -m "ci: use canonical task-sync trigger (full repo in payload)" && git push
 - Optional follow-up: hoist the per-issue getAllTickets out of the loop in the import heredoc (N full scans today).
 
-## 2026-06-05 02:41 — AI Dashboard Activity and Settings views
+## 2026-06-05 02:41 â€” AI Dashboard Activity and Settings views
 
 **What we did:**
 - Added Activity view: 30-day stacked token chart (full-width), summary cards (sessions/messages/API value), daily breakdown table with per-model color badges
 - Added Settings view: editable form for display name, per-subscription monthly costs, API keys (OpenAI/xAI/Gemini with show/hide toggle), Ollama host, GCP project ID
-- Added GET /api/config endpoint to app.py — returns current config.json
-- Added POST /api/config endpoint — merges and saves updates (handles subscriptions list and api_keys dict separately to avoid clobbering unlisted fields)
+- Added GET /api/config endpoint to app.py â€” returns current config.json
+- Added POST /api/config endpoint â€” merges and saves updates (handles subscriptions list and api_keys dict separately to avoid clobbering unlisted fields)
 - Extracted _send_json() helper in Handler to eliminate duplication
 - Wired nav links (Activity, Settings) with switchView() JS; all three views fully functional
 - Rewrote MANUAL.md to reflect current architecture (generate-stats.py, atlas deployment, all providers, new views)
@@ -39,14 +49,14 @@
 - GCP credits editing in Settings (currently manual config.json edits only)
 - Long-term SQLite history to extend beyond the 30-day session file window
 
-## 2026-06-05 00:24 — Atlas backend gateway live for LDU
+## 2026-06-05 00:24 â€” Atlas backend gateway live for LDU
 
 **What we did:**
 - Built FastAPI backend (`backend/main.py`) with unified `/api/llm` endpoint and `/api/health`
 - Implemented Gemini (gemini-2.5-flash) server-side; OpenAI, Claude, Grok stubbed
 - Added `backend/requirements.txt`, `.env.example`, `start.sh` (auto-venv), `ldu-gateway.service` (systemd)
 - Updated `app-config.js` to point gatewayUrl at Atlas (`10.0.0.145:8001`)
-- Updated `app.js` hybrid mode to route all cloud providers through `callGateway()` — no API keys in browser
+- Updated `app.js` hybrid mode to route all cloud providers through `callGateway()` â€” no API keys in browser
 - Resolved merge conflict with app-factory branch, corrected Atlas IP, fixed port conflict (moved to 8001)
 - Restored index.html (overwritten by app-factory branch), added app-config.js script tag
 - Fixed Gemini model name (gemini-2.5-flash), fixed thinkingConfig placement in API payload
@@ -56,14 +66,14 @@
 - Bumped version to v0.4.0, updated MANUAL.md with architecture section
 
 **Where we stopped:**
-- Gateway live and confirmed working — Gemini turns hitting Atlas with 200 OK
-- OpenAI, Claude, Grok return stub text — keys not yet added to Atlas .env
+- Gateway live and confirmed working â€” Gemini turns hitting Atlas with 200 OK
+- OpenAI, Claude, Grok return stub text â€” keys not yet added to Atlas .env
 
 **Next up:**
 - Add API keys for OpenAI, Claude, Grok to Atlas `backend/.env` and implement provider functions
 - Consider serving frontend from Atlas instead of WSL start_server.py
 
-## 2026-06-01 20:30 — Phase A App Factory wrap-up
+## 2026-06-01 20:30 â€” Phase A App Factory wrap-up
 
 **What we did:**
 - Cleaned up Phase A E2E test scaffolding (TEST_BASE_BRANCH override, test-only alerts, transcript injection).
@@ -83,12 +93,12 @@
 
 # Session Log
 
-## 2026-05-30 16:41 — Fixed telemetry report persistence bug
+## 2026-05-30 16:41 â€” Fixed telemetry report persistence bug
 
 **What we did:**
 - Identified root cause: `loadHistorySession()` restored stats, but `handleMotionSelect()` called `resetState()` which cleared them
 - Fixed by saving stats before `resetState()` and restoring them after (lines 2081-2091 in app.js)
-- Verified fix with code simulation: stats now preserve through session load (turns: 15 → 0 → 15)
+- Verified fix with code simulation: stats now preserve through session load (turns: 15 â†’ 0 â†’ 15)
 - Confirmed pre-populated test session has complete telemetry (15 turns, 1,774 tokens, detailed logs)
 - Committed fix with detailed message explaining bug and solution
 
@@ -156,7 +166,7 @@
 - Push `fix/separate-homelab-repo`.
 - After closing this Codex/browser session, delete the old ignored `infra/homelab` folder if no process is using it.
 
-## 2026-05-30 02:50 — camera rotation fix, v0.14.2
+## 2026-05-30 02:50 â€” camera rotation fix, v0.14.2
 
 **What we did:**
 - Diagnosed camera rotation breaking after centering: root cause was missing interpolated newX/newY/newZ values in animateCamera()
@@ -165,7 +175,7 @@
 - Explicitly disable controls during animation, re-enable + sync spherical coords at end
 - Added regression test in camera.test.js to verify interpolation
 - Bumped version from v0.14.1 to v0.14.2 (patch for bug fix)
-- Updated Command Center (index.html) and state.html to v0.14.2 · 2026-05-30
+- Updated Command Center (index.html) and state.html to v0.14.2 Â· 2026-05-30
 - Updated terminal scan line with new version
 - Regenerated wiki catalog and pushed
 
@@ -179,7 +189,7 @@
 
 ---
 
-## 2026-05-29 18:37 — UHaul Planner v0.14.1 test & fixes
+## 2026-05-29 18:37 â€” UHaul Planner v0.14.1 test & fixes
 
 **What we did:**
 - Tested UHaul Load Planner v0.14.0 features from overnight session checklist
@@ -196,11 +206,11 @@
 
 ---
 
-## 2026-05-29 17:28 — Game status badge with host cancel control
+## 2026-05-29 17:28 â€” Game status badge with host cancel control
 
 **What we did:**
-- Added prominent status badge to signup page: "✓ Game On" (6+ signups), "⏳ Pending Seat Count" (<6), or "❌ Cancelled"
-- Added "🚫 Cancel Game" button to host panel to toggle game cancellation state
+- Added prominent status badge to signup page: "âœ“ Game On" (6+ signups), "â³ Pending Seat Count" (<6), or "âŒ Cancelled"
+- Added "ðŸš« Cancel Game" button to host panel to toggle game cancellation state
 - Added `is_cancelled` column to `poker_games` table in Supabase
 - Fixed version numbering to v0.7.0 across all files (signup page, host panel, Command Center, state.html)
 - Created CLAUDE.md with deployment checklist to prevent missed version/footer updates
@@ -214,7 +224,7 @@
 
 ---
 
-## 2026-05-29 (overnight session 2) — Ollama monitoring + lead gen agent plan
+## 2026-05-29 (overnight session 2) â€” Ollama monitoring + lead gen agent plan
 
 **What we did:**
 
@@ -244,7 +254,7 @@
 - Clarify 6 refinement questions on lead gen agent, start Phase 1 POC
 - Monitor Ollama metrics in Grafana, tune dashboard
 
-## 2026-05-29 03:50 — autonomous overnight UHaul improvements setup
+## 2026-05-29 03:50 â€” autonomous overnight UHaul improvements setup
 
 **What we did:**
 - Set up autonomous work permissions: .claude/settings.json in project root configured to allow Read/Write/Edit/Bash and safe git operations (blocks merges to main, force pushes)
@@ -265,11 +275,11 @@
 - Polish truck recommendation algorithm
 - Test, merge, and bump version to v0.14.0
 
-## 2026-05-28 23:12 — CRLF line-ending normalization cleanup
+## 2026-05-28 23:12 â€” CRLF line-ending normalization cleanup
 
 **What we did:**
-- Ran logoff on llm-debate-union; discovered 8 files had CRLF → LF line-ending drift (.gitignore, CONTEXT.md, SESSION_LOG.md, app.js, index.html, start_server.py, style.css, sw.js)
-- Confirmed via `git diff -w` that no functional code was changed — pure whitespace normalization
+- Ran logoff on llm-debate-union; discovered 8 files had CRLF â†’ LF line-ending drift (.gitignore, CONTEXT.md, SESSION_LOG.md, app.js, index.html, start_server.py, style.css, sw.js)
+- Confirmed via `git diff -w` that no functional code was changed â€” pure whitespace normalization
 
 **Where we stopped:**
 - No open items; pending commit of the line-ending cleanup
@@ -278,11 +288,11 @@
 - Commit the CRLF cleanup and push to main
 - Optional: add `.gitattributes` with `* text=auto eol=lf` to prevent recurrence
 
-## 2026-05-28 — daily-planner: Ideas, voice dictation, task categories
+## 2026-05-28 â€” daily-planner: Ideas, voice dictation, task categories
 
 **What we did:**
 - Added Ideas tab: full CRUD (add, delete, timestamp display), Supabase-backed with demo mode support
-- Added voice dictation via Web Speech API — mic button on task and idea inputs, toggles `.recording` state
+- Added voice dictation via Web Speech API â€” mic button on task and idea inputs, toggles `.recording` state
 - Added task categories with colored badge rendering (Personal, Urgent, Work); category stored in Supabase `tasks` table
 
 **Where we stopped:**
@@ -293,20 +303,20 @@
 
 ---
 
-## 2026-05-28 04:06 — monitoring stack live, all exporters up
+## 2026-05-28 04:06 â€” monitoring stack live, all exporters up
 
 **What we did:**
 - Deployed Prometheus + Grafana monitoring stack to Atlas via scp + docker compose
 - Fixed port conflicts: cAdvisor remapped to 8085 (8080 taken by Portainer), Grafana to 3001 (3000 taken by open-webui)
-- Fixed Grafana datasource UID mismatch: dashboard JSONs referenced uid "prometheus" but Grafana assigned "PBFA97CFB590B2093" — patched dashboards and restarted
-- Fixed Prometheus scrape targets: all exporters used localhost (unreachable from inside container) — changed to Docker service names (node-exporter:9100, smartctl-exporter:9633, cadvisor:8080, ollama-exporter:9642)
+- Fixed Grafana datasource UID mismatch: dashboard JSONs referenced uid "prometheus" but Grafana assigned "PBFA97CFB590B2093" â€” patched dashboards and restarted
+- Fixed Prometheus scrape targets: all exporters used localhost (unreachable from inside container) â€” changed to Docker service names (node-exporter:9100, smartctl-exporter:9633, cadvisor:8080, ollama-exporter:9642)
 - All 6 monitoring containers healthy: Prometheus, Grafana, node-exporter, smartctl-exporter, cAdvisor, ollama-exporter
 - All 4 exporters confirmed up=1 in Prometheus; dashboards populating with live data
 - Saved all fixes back to homelab/docs/528/ and pushed to GitHub
 
 **Where we stopped:**
-- Stack live at http://100.71.165.80:3001 — both dashboards loading with real data
-- Ephemeral volumes (data lost on container restart) — persistent volume migration pending
+- Stack live at http://100.71.165.80:3001 â€” both dashboards loading with real data
+- Ephemeral volumes (data lost on container restart) â€” persistent volume migration pending
 
 **Next up:**
 - Convert to persistent Docker volumes to retain metric history across restarts
@@ -314,20 +324,20 @@
 - Watch SMART dashboard for sdh/sdi error trends on the WD Reds
 - Future: email/Slack alerts, GPU metrics (K80), Plex/UPS stats
 
-## 2026-05-28 03:24 — monitoring stack deployment guide for Atlas
+## 2026-05-28 03:24 â€” monitoring stack deployment guide for Atlas
 
 **What we did:**
 - Designed and built a complete Prometheus + Grafana monitoring stack for Atlas
 - Created homelab/docs/528/ with 10 ready-to-deploy config files: docker-compose.yml, prometheus.yml, prometheus-scrape.yml, alert.rules.yml, grafana-datasource.yml, dashboards.yml, atlas-overview.json, atlas-storage.json, ollama-exporter.js
 - Built 2 pre-built Grafana dashboards: Atlas Overview (CPU, RAM, load, Docker, Ollama) and Storage & SMART Health (SMART pass/fail, disk temps, UDMA CRC errors, I/O)
 - Stack includes 6 exporters: node-exporter, cAdvisor, process-exporter, SMART disk health exporter (privileged), Ollama custom Node.js exporter
-- Context: Atlas WD Reds showing concerning SMART data (sdh UDMA CRC errors, sdi reallocated sectors) — dashboards surface these in real-time
+- Context: Atlas WD Reds showing concerning SMART data (sdh UDMA CRC errors, sdi reallocated sectors) â€” dashboards surface these in real-time
 - Created deployment docs: QUICK_SUMMARY.md, COPY_PASTE_DEPLOY.md, MONITORING_DEPLOYMENT_GUIDE.md, DASHBOARD_PREVIEW.md, 00_START_HERE.txt
 - Committed and pushed to homelab repo; infra submodule pointer updated
 
 **Where we stopped:**
 - All 10 config files and docs committed in homelab/docs/528/
-- Stack not yet deployed on Atlas — user runs COPY_PASTE_DEPLOY.md steps (15–20 min)
+- Stack not yet deployed on Atlas â€” user runs COPY_PASTE_DEPLOY.md steps (15â€“20 min)
 - Ephemeral volumes for initial deploy; persistent volume migration is next session
 
 **Next up:**
@@ -336,14 +346,14 @@
 - Next session: convert to persistent Docker volumes, change Grafana password
 - Future: email/Slack alerts when thresholds breach, GPU metrics (K80), Plex/UPS stats
 
-## 2026-05-26 12:27 — repo sync and uhaul delete button
+## 2026-05-26 12:27 â€” repo sync and uhaul delete button
 
 **What we did:**
 - Cleaned up CRLF/LF line-ending noise in golf, poker, daily-planner (git restore, no real changes)
 - Committed and pushed answering-agent fix: removed erroneous "Rim Jobs" from A Couple Two Trees services prompt
-- Merged uhaul-load-planner feature/delete-button-edit-modal → main and pushed (delete button in edit modal, v0.13.1)
-- Confirmed Command Center and state.html already at v0.13.1 · 2026-05-26 (version bump was in the feature branch)
-- Diagnosed 3D camera angle concern as pre-existing change (42c02e4) — not caused by merge; confirmed working on phone
+- Merged uhaul-load-planner feature/delete-button-edit-modal â†’ main and pushed (delete button in edit modal, v0.13.1)
+- Confirmed Command Center and state.html already at v0.13.1 Â· 2026-05-26 (version bump was in the feature branch)
+- Diagnosed 3D camera angle concern as pre-existing change (42c02e4) â€” not caused by merge; confirmed working on phone
 
 **Where we stopped:**
 - All repos clean and in sync with origin
@@ -351,10 +361,10 @@
 **Next up:**
 - No pending work
 
-## 2026-05-26 12:01 — logoff only, no session work
+## 2026-05-26 12:01 â€” logoff only, no session work
 
 **What we did:**
-- No development work this session — ran /logoff immediately after session start
+- No development work this session â€” ran /logoff immediately after session start
 - Identified leftover uncommitted/unpushed state across repos from prior sessions
 
 **Where we stopped:**
@@ -366,12 +376,12 @@
 - Decide on uhaul-load-planner feature branch (merge or continue)
 - Commit or discard answering-agent prompt.txt change
 
-## 2026-05-26 09:16 — fix atlas wiki conflict after deploy
+## 2026-05-26 09:16 â€” fix atlas wiki conflict after deploy
 
 **What we did:**
 - Fixed atlas wiki conflict: stashed local M wiki/docs/index.md on atlas, git pull succeeded
 - Restored 18 project pages (git checkout -- wiki/docs/projects/) after erroneous gen_catalog.py run had zeroed them out
-- Rebuilt wiki on atlas (gen_catalog.py --timestamp-only + mkdocs build) — http://atlas/wiki/ confirmed working
+- Rebuilt wiki on atlas (gen_catalog.py --timestamp-only + mkdocs build) â€” http://atlas/wiki/ confirmed working
 
 **Where we stopped:**
 - Atlas wiki fully rebuilt; all 18 project pages restored and live
@@ -379,13 +389,13 @@
 **Next up:**
 - No pending work
 
-## 2026-05-26 00:40 — 3D feedback fixes + wiki sync, v0.13.1
+## 2026-05-26 00:40 â€” 3D feedback fixes + wiki sync, v0.13.1
 
 **What we did:**
 - Identified post-v0.13.0 commits not captured in previous session log: PR #47 (wiki sync) and PR #48 (3D feedback fixes)
 - PR #47: added wiki sync GitHub Action, docs/Home.md landing page for GitHub Wiki
-- PR #48: 3D visual fixes — cab clipping into attic floor, troika text rendering crash, z-fighting on wheel wells/decals/grid, wheel offset corrections for all trucks, grid/camera/zoom polish; double-click to edit on 3D items added; MANUAL.md + README updated
-- Bumped version to v0.13.1 · 2026-05-26 in Command Center card-meta, terminal scan line, and state.html
+- PR #48: 3D visual fixes â€” cab clipping into attic floor, troika text rendering crash, z-fighting on wheel wells/decals/grid, wheel offset corrections for all trucks, grid/camera/zoom polish; double-click to edit on 3D items added; MANUAL.md + README updated
+- Bumped version to v0.13.1 Â· 2026-05-26 in Command Center card-meta, terminal scan line, and state.html
 
 **Where we stopped:**
 - Command Center and state.html updated to v0.13.1; untracked agent artifacts (.agentrules, tests/, json files) left uncommitted
@@ -395,7 +405,7 @@
 - Continue 3D roadmap (weight distribution view, stacking UI refinement)
 - Phase 2 features from GitHub issues backlog
 
-## 2026-05-25 11:41 — logoff: 3D scene launch, bump to v0.13.0
+## 2026-05-25 11:41 â€” logoff: 3D scene launch, bump to v0.13.0
 
 **What we did:**
 - Captured 14 unlogged commits since v0.11.2
@@ -407,7 +417,7 @@
 - Layout UX: sidebar collapses on mobile, empty new layouts prompt truck selection
 - Truck size persisted per layout and restored on load
 - Fixed layout name overwriting, race conditions on creation, hardcoded truck dims, empty layouts loading as defaults
-- Bumped to v0.13.0 · 2026-05-25 in Command Center card-meta, terminal scan line, and state.html
+- Bumped to v0.13.0 Â· 2026-05-25 in Command Center card-meta, terminal scan line, and state.html
 - Rewrote MANUAL.md to document Svelte + Threlte tech stack and 3D scene controls
 
 **Where we stopped:**
@@ -417,13 +427,13 @@
 - Continue 3D roadmap (weight distribution view, stacking UI refinement)
 - Phase 2 features from GitHub issues backlog
 
-## 2026-05-25 09:52 — diagnose trips RLS write permission bugs
+## 2026-05-25 09:52 â€” diagnose trips RLS write permission bugs
 
 **What we did:**
 - Investigated "archive list doesn't persist" and "create new list does nothing" in Trips tab
 - Root cause: `trip_lists` table has RLS enabled but anon role lacks INSERT and UPDATE policies
 - Same pattern as v0.9.3/v0.9.5 fixes (tasks, trip_items got write policies; trip_lists was missed)
-- Provided SQL to add anon insert + update policies on `trip_lists` — no code changes needed
+- Provided SQL to add anon insert + update policies on `trip_lists` â€” no code changes needed
 
 **Where we stopped:**
 - Fix identified, SQL provided to user; not yet confirmed applied in Supabase
@@ -433,7 +443,7 @@
 
 ---
 
-## 2026-05-24 22:36 — pushed vite migration, cleaned up branch
+## 2026-05-24 22:36 â€” pushed vite migration, cleaned up branch
 
 **What we did:**
 - Deleted stale feat/vite-migration branch (local and confirmed remote didn't exist)
@@ -448,13 +458,13 @@
 - Continue 3D roadmap (rendering layer, stacking logic)
 - Phase 2 features from GitHub issues backlog
 
-## 2026-05-24 20:40 — Vite migration merged, version bumped
+## 2026-05-24 20:40 â€” Vite migration merged, version bumped
 
 **What we did:**
-- Reviewed `feat/vite-migration` branch (1 commit ahead of main — Issue #31: monolithic index.html → Vite ES modules)
+- Reviewed `feat/vite-migration` branch (1 commit ahead of main â€” Issue #31: monolithic index.html â†’ Vite ES modules)
 - Merged `feat/vite-migration` into `main` via fast-forward; pushed to origin
 - Bumped version to v0.11.1 (patch: catches up missed v0.11.0 Command Center update + Vite refactor)
-- Updated Command Center card-meta, terminal scan line, and state.html to v0.11.1 · 2026-05-24
+- Updated Command Center card-meta, terminal scan line, and state.html to v0.11.1 Â· 2026-05-24
 
 **Where we stopped:**
 - Version files updated; final commit + push pending (logoff step 7)
@@ -463,16 +473,16 @@
 - Continue 3D roadmap (rendering layer, stacking logic)
 - Review MANUAL.md for Vite migration changes
 
-## 2026-05-24 20:07 — confirm_slot, booking fallback, dashboard UI
+## 2026-05-24 20:07 â€” confirm_slot, booking fallback, dashboard UI
 
 **What we did:**
-- Diagnosed voicemail not appearing: calendar booking failure caused early return with no draft; fixed to always continue to Claude and draft SMS even when booking fails (status → escalated)
-- Added POST /retell/confirm-slot custom function — agent calls it mid-call when caller agrees to a slot, stores structured slot (start/end/tech_id/label) server-side by call_id; post-call webhook prefers this over text analysis field
+- Diagnosed voicemail not appearing: calendar booking failure caused early return with no draft; fixed to always continue to Claude and draft SMS even when booking fails (status â†’ escalated)
+- Added POST /retell/confirm-slot custom function â€” agent calls it mid-call when caller agrees to a slot, stores structured slot (start/end/tech_id/label) server-side by call_id; post-call webhook prefers this over text analysis field
 - Fixed availability offering: when no preferred day given, now spreads one slot per calendar day instead of filling all 3 from the same day
 - Added transcript accordion (collapsed by default) with pill label on main dashboard modal; structured summary always visible above it
 - Matched all-leads expanded row to main modal: structured summary always visible, Transcript pill accordion below
 - Fixed mobile header layout on both pages; transcript key-value grid stacks vertically on narrow screens
-- Cleaned up Retell global prompt — removed Scheduling section (workflow handles it), removed duplicate closing line
+- Cleaned up Retell global prompt â€” removed Scheduling section (workflow handles it), removed duplicate closing line
 - Updated MANUAL.md to reflect confirm_slot pipeline, workflow agent setup, custom functions, slot logic
 
 **Where we stopped:**
@@ -480,11 +490,11 @@
 - confirm_slot registered in Retell workflow but not yet end-to-end tested on a real call
 
 **Next up:**
-- Test a real call end-to-end: slot offered → caller agrees → confirm_slot fires → calendar booked
+- Test a real call end-to-end: slot offered â†’ caller agrees â†’ confirm_slot fires â†’ calendar booked
 - A2P 10DLC carrier approval (outbound SMS still blocked)
 - client_id multi-tenancy
 
-## 2026-05-24 13:13 — uhaul 3D model + multi-truck features
+## 2026-05-24 13:13 â€” uhaul 3D model + multi-truck features
 
 **What we did:**
 - Merged feat/3d-data-model branch (5 Codex commits) into main
@@ -503,13 +513,13 @@
 - Continue 3D roadmap (rendering layer, stacking logic)
 - Multi-truck UX polish as needed
 
-## 2026-05-24 12:42 — calendar booking fix + booked pill UI
+## 2026-05-24 12:42 â€” calendar booking fix + booked pill UI
 
 **What we did:**
 - Fixed 400 Bad Request from Google Calendar freeBusy/event insert: naive confirmed-slot datetimes now localized to BUSINESS_TZ before API calls
 - Added Booked pill to dashboard cards (index.html + all.html): glowing green pill with appointment tooltip when confirmed_slot is set
 - Merged fix/confirmed-slot-calendar-booking to main; auto-deploy landed on Atlas at v0.5.1
-- Verified end-to-end: fake Retell webhook with open slot → freeBusy check passes → Calendar event created → confirmed_slot persisted → lead drafted
+- Verified end-to-end: fake Retell webhook with open slot â†’ freeBusy check passes â†’ Calendar event created â†’ confirmed_slot persisted â†’ lead drafted
 - Updated MANUAL.md: noted Booked pill, removed resolved pending item
 
 **Where we stopped:**
@@ -521,28 +531,28 @@
 - client_id multi-tenancy (orchestrator hardcoded to a-couple-two-trees)
 - Push Codex commits (user has pending work)
 
-## 2026-05-24 07:35 — Fix: Retell call_analyzed gate (verified live)
+## 2026-05-24 07:35 â€” Fix: Retell call_analyzed gate (verified live)
 
 **What we did:**
-- Fixed empty-lead bug: /retell/post-call now only processes the call_analyzed event (call_started/call_ended lack transcript + custom_analysis_data, and dedup was dropping the analyzed event) — v0.5.1, deployed to atlas
+- Fixed empty-lead bug: /retell/post-call now only processes the call_analyzed event (call_started/call_ended lack transcript + custom_analysis_data, and dedup was dropping the analyzed event) â€” v0.5.1, deployed to atlas
 - Verified a live VM call end to end: lead captured name "Johnny", intent new_job, confirmed_slot "Tuesday June 2 at 11 AM", draft SMS pinned to that time
 - Confirmed Supabase confirmed_slot column exists; Retell get_availability function + confirmed_slot analysis field are registered and firing
 
 **Where we stopped:**
-- Full pipeline verified on the live VM: live calendar offer → caller agrees → call_analyzed → captured → draft pinned + saved to Supabase
+- Full pipeline verified on the live VM: live calendar offer â†’ caller agrees â†’ call_analyzed â†’ captured â†’ draft pinned + saved to Supabase
 - Old empty lead 98de750d (from the pre-fix call) can be trashed in the dashboard
 
 **Next up:**
 - Revisit multi-tenant calendar auth (issue #24) when adding more technicians/clients
 - Optional cleanup: root kb.yaml is unused on the VM (.env points to clients/ KB), so the repo's pending root-kb.yaml deletion is safe to commit
 
-## 2026-05-24 07:03 — Live calendar availability + confirmed slot
+## 2026-05-24 07:03 â€” Live calendar availability + confirmed slot
 
 **What we did:**
 - Added POST /retell/get-availability so the Retell agent can pull real open slots mid-call (offer-only); returns spoken phrase + structured slots
 - Wired real Google Calendar free/busy into compute_candidate_slots() (was mocked): honors business hours, buffer, lead time, busy blocks in America/New_York
-- Fixed service-account creds to request calendar.readonly scope; fixed drew's google_cal_id typo (drew.befree → drewbefree)
-- Added OAuth fallback to calendar creds (service account if present, else calendar_token.json) — single-owner runs on OAuth, SA deferred to multi-tenant
+- Fixed service-account creds to request calendar.readonly scope; fixed drew's google_cal_id typo (drew.befree â†’ drewbefree)
+- Added OAuth fallback to calendar creds (service account if present, else calendar_token.json) â€” single-owner runs on OAuth, SA deferred to multi-tenant
 - Verified live against the real calendar end-to-end on atlas (v0.5.0): VM reflects real busy times (Monday OOO/league correctly skipped)
 - Removed placeholder tech billy from prefer_tech_order (fake calendar would mask real conflicts)
 - Wired confirmed_slot: /retell/post-call reads it, Claude pins the draft SMS to the agreed time, persisted to leads.confirmed_slot (guarded write)
@@ -554,17 +564,17 @@
 - Pending manual steps: run `alter table leads add column confirmed_slot text;` in Supabase; register Retell custom function get_availability + post-call analysis field confirmed_slot
 
 **Next up:**
-- Register the Retell get_availability custom function + confirmed_slot analysis field so offer → capture → draft flows end to end
+- Register the Retell get_availability custom function + confirmed_slot analysis field so offer â†’ capture â†’ draft flows end to end
 - Add the Supabase confirmed_slot column
 - Revisit multi-tenant calendar auth (issue #24) when adding more technicians/clients
 - Optional: root kb.yaml is now unused on the VM, so the repo's pending root-kb.yaml deletion is safe to commit
 
-## 2026-05-24 05:25 — U-Haul product roadmap + GitHub backlog
+## 2026-05-24 05:25 â€” U-Haul product roadmap + GitHub backlog
 
 **What we did:**
-- Wrote docs/PRODUCT_ROADMAP.md — U-Haul acquisition pitch + phased roadmap (3D-native data model, 2D top-down as first render mode) + Appendix A with web-verified truck specs (cargo van → 26')
-- Wrote docs/TASKS.md — 30-issue breakdown across 5 milestones
-- Created 10 labels, 5 milestones, 30 GitHub issues (#1–30 aligned to TASKS.md)
+- Wrote docs/PRODUCT_ROADMAP.md â€” U-Haul acquisition pitch + phased roadmap (3D-native data model, 2D top-down as first render mode) + Appendix A with web-verified truck specs (cargo van â†’ 26')
+- Wrote docs/TASKS.md â€” 30-issue breakdown across 5 milestones
+- Created 10 labels, 5 milestones, 30 GitHub issues (#1â€“30 aligned to TASKS.md)
 - Created GitHub Projects board #5 "U-Haul Load Planner Roadmap" with all 30 issues
 - Committed docs on feat/product-roadmap-tasks, merged to main (ff), pushed, deleted branch
 - Resolved gh auth (missing project scope); user regenerated a minimal-scope PAT after a token leak + device-flow rate limits
@@ -574,14 +584,14 @@
 - Pre-existing uncommitted WIP (CNAME, README, index.html, manifest.json, sw.js) left untouched
 
 **Next up:**
-- Issue #1 — refactor to 3D-native data model (foundation)
-- Research issues #27–30 (trailer/U-Box specs, furniture preset data, supply→SKU mapping, U-Haul app architecture)
+- Issue #1 â€” refactor to 3D-native data model (foundation)
+- Research issues #27â€“30 (trailer/U-Box specs, furniture preset data, supplyâ†’SKU mapping, U-Haul app architecture)
 
-## 2026-05-24 03:56 — Dashboard UI polish + dark theme
+## 2026-05-24 03:56 â€” Dashboard UI polish + dark theme
 
 **What we did:**
 - Formatted transcript in modal: structured summary grid + styled Agent/Caller conversation turns
-- Card snippets now show extracted data (service · urgency · address) instead of raw transcript
+- Card snippets now show extracted data (service Â· urgency Â· address) instead of raw transcript
 - Reverted to dark slate theme (#1a2236 background) on both index.html and all.html
 - Replaced Remove button with SVG trash icon positioned in card footer
 - Added confirmation modal before removing any lead (Cancel / Remove)
@@ -598,13 +608,13 @@
 - client_id multi-tenancy (orchestrator hardcoded to a-couple-two-trees)
 - Connect ElevenLabs to Retell for Grandma Rachel voice
 
-## 2026-05-24 03:27 — Retell AI integration + client KB structure
+## 2026-05-24 03:27 â€” Retell AI integration + client KB structure
 
 **What we did:**
 - Integrated Retell AI as the live voice agent (replaces Twilio passive voicemail)
-- Added POST /retell/post-call webhook endpoint — receives Retell's post-call payload, short-circuits on out-of-area or no-appointment calls, hands off to orchestrator
+- Added POST /retell/post-call webhook endpoint â€” receives Retell's post-call payload, short-circuits on out-of-area or no-appointment calls, hands off to orchestrator
 - Added call_id dedup to prevent double processing when Retell fires multiple webhook events
-- Built generate_prompt.py — generates Retell global prompt from kb.yaml (knowledge only, no collection logic)
+- Built generate_prompt.py â€” generates Retell global prompt from kb.yaml (knowledge only, no collection logic)
 - Reorganized KB into clients/a-couple-two-trees/ folder structure for multi-client support
 - Generated ElevenLabs Grandma Rachel voicemail greeting (old-lady-vm2.mp3), served at api.kybernet.tech
 - Bumped app version to 0.3.0
@@ -612,7 +622,7 @@
 - Rewrote MANUAL.md to reflect Retell pipeline
 
 **Where we stopped:**
-- Full pipeline working end-to-end: Twilio → Retell AI conversation → webhook → Claude → Supabase → dashboard
+- Full pipeline working end-to-end: Twilio â†’ Retell AI conversation â†’ webhook â†’ Claude â†’ Supabase â†’ dashboard
 - A2P 10DLC approval still pending on Twilio
 - Google Calendar slots still mocked
 
@@ -621,18 +631,18 @@
 - client_id multi-tenancy (orchestrator hardcoded to a-couple-two-trees)
 - Connect ElevenLabs to Retell for Grandma Rachel voice in the agent
 
-## 2026-05-23 20:17 — SMS compliance + wiki pipeline update + logoff automation
+## 2026-05-23 20:17 â€” SMS compliance + wiki pipeline update + logoff automation
 
 **What we did:**
 - Added SMS opt-in checkbox and full consent disclosure to kybernet-tech contact form
 - Added validation: phone number requires SMS consent checkbox before submit
 - Pushed kybernet-tech (A2P 10DLC compliance gap closed)
-- Updated wiki agents.md — answering agent section rewritten for Twilio pipeline
+- Updated wiki agents.md â€” answering agent section rewritten for Twilio pipeline
 - Discovered MANUAL.md in each repo is the source gen_catalog.py pulls into wiki project pages
 - Rewrote MANUAL.md in answering-agent repo to reflect current Twilio pipeline
 - Added git-revision-date-localized plugin to mkdocs.yml (last-updated timestamp on every wiki page)
 - Installed plugin on atlas venv, added to wiki requirements.txt
-- Deployed wiki successfully — answering-agent page now current
+- Deployed wiki successfully â€” answering-agent page now current
 - Added step 8 (update MANUAL.md) and step 9 (deploy wiki) to /logoff skill
 - Updated CLAUDE.md via claude-config with same steps, pushed to claude-config repo
 
@@ -646,46 +656,46 @@
 - Stop/disable answering-poller on atlas (gmail poller, now deprecated)
 - Wire real Google Calendar free/busy into compute_candidate_slots()
 
-## 2026-05-23 19:02 — Twilio pipeline + dashboard + auto-deploy
+## 2026-05-23 19:02 â€” Twilio pipeline + dashboard + auto-deploy
 
 **What we did:**
 - Replaced Gmail/Google Voice ingestion with Twilio end-to-end (inbound voice, recording, transcription)
 - Built /twilio/voice, /twilio/recording, /twilio/transcription, /send endpoints in app.py
-- Fixed caller number: Twilio includes From in transcription callback — no API lookup needed
+- Fixed caller number: Twilio includes From in transcription callback â€” no API lookup needed
 - Added caller_name extraction from Claude agent output, written back to Supabase
 - Redesigned dashboard to 4-column status board (New/Drafted/Sent/Escalated), each showing 3 most recent cards
 - Added modal on card click with full voicemail, draft reply, slots, and action buttons
 - Added Remove button on all leads (index.html and all.html)
-- Added CORS middleware (answer.kybernet.tech → api.kybernet.tech)
-- Set up GitHub Actions auto-deploy: push to main triggers /webhook/deploy → git pull + systemctl restart
+- Added CORS middleware (answer.kybernet.tech â†’ api.kybernet.tech)
+- Set up GitHub Actions auto-deploy: push to main triggers /webhook/deploy â†’ git pull + systemctl restart
 - Added STARTED_AT and updated /health endpoint (version + started_at)
 - Added "last updated" deploy-info header to index.html and all.html (fetches /health on load)
 
 **Where we stopped:**
 - Last updated indicator committed and pushed (bdc6aa1)
-- A2P 10DLC approval still pending on Twilio — outbound SMS to real customers blocked until approved
+- A2P 10DLC approval still pending on Twilio â€” outbound SMS to real customers blocked until approved
 - Gmail poller (answering-poller systemd service) should be stopped/disabled on atlas
 
 **Next up:**
 - Verify auto-deploy fires on next push
 - Stop/disable answering-poller on atlas: systemctl --user stop answering-poller && systemctl --user disable answering-poller
-- Add Cloudflare CNAME: answer → drewbefree.github.io (DNS only) if not already done
+- Add Cloudflare CNAME: answer â†’ drewbefree.github.io (DNS only) if not already done
 - Once A2P approved, test outbound SMS to a real customer number
 
-## 2026-05-22 21:50 — Cloudflare tunnel + Twilio outbound SMS
+## 2026-05-22 21:50 â€” Cloudflare tunnel + Twilio outbound SMS
 
 **What we did:**
-- Installed cloudflared on atlas, created Tunnel for api.kybernet.tech (issue #9 ✓)
+- Installed cloudflared on atlas, created Tunnel for api.kybernet.tech (issue #9 âœ“)
 - Added /twilio/voice and /twilio/recording endpoints for inbound calls (issue #10)
-- Added /send endpoint for outbound SMS via Twilio (issue #11 ✓)
+- Added /send endpoint for outbound SMS via Twilio (issue #11 âœ“)
 - Updated dashboard UI: Send button now calls /send instead of copying to clipboard
 - Served static dashboard from FastAPI at api.kybernet.tech
-- Tested Gmail poller: working end-to-end (voicemail → Claude draft → Supabase)
+- Tested Gmail poller: working end-to-end (voicemail â†’ Claude draft â†’ Supabase)
 - Confirmed Twilio credentials in .env, basic webhook structure in place
 
 **Where we stopped:**
 - Issue #11 (outbound SMS) complete and deployed
-- Issue #10 (Twilio inbound) closed/backlogged — transcription config too complex
+- Issue #10 (Twilio inbound) closed/backlogged â€” transcription config too complex
 - Gmail poller confirmed working as primary ingestion
 - Dashboard live at https://api.kybernet.tech
 - User wants unified Twilio number with transcription next
@@ -694,7 +704,7 @@
 - Issue #10 revisited: simplify Twilio inbound transcription (fetch via API instead of webhook)
 - Issue #2: wire Google Calendar free/busy into slot computation
 
-## 2026-05-22 19:05 — kybernet-tech privacy/terms pages + footer fix
+## 2026-05-22 19:05 â€” kybernet-tech privacy/terms pages + footer fix
 
 **What we did:**
 - Created privacy.html and terms.html for Twilio A2P campaign registration
@@ -702,7 +712,7 @@
 - Privacy policy covers SMS opt-in/out, data collection, sharing, and retention
 - Terms covers SMS messaging terms, scheduling links, liability, and governing law
 - Added Privacy Policy and Terms of Service links to the footer of index.html
-- Fixed root cause bug: global `nav { position: fixed }` CSS was pulling the footer `<nav>` out of the footer and rendering it at the top of the page — fixed by changing footer nav to a `<div>`
+- Fixed root cause bug: global `nav { position: fixed }` CSS was pulling the footer `<nav>` out of the footer and rendering it at the top of the page â€” fixed by changing footer nav to a `<div>`
 - Fixed secondary CSS bug: `flex-wrap: gap` was invalid, changed to `flex-wrap: wrap; gap: 16px`
 - All changes committed and pushed to main
 
@@ -712,15 +722,15 @@
 
 **Next up:**
 - Verify footer links are visible on live site after CDN propagates
-- Twilio A2P submission is already in — await carrier approval
+- Twilio A2P submission is already in â€” await carrier approval
 
-## 2026-05-22 02:40 — Add Agents & Skills wiki section
+## 2026-05-22 02:40 â€” Add Agents & Skills wiki section
 
 **What we did:**
 - Created `wiki/docs/agents-and-skills/` with three pages: index.md, agents.md, skills.md
 - index.md: differentiator table (agents vs skills) + quick reference for all agents and skills
-- agents.md: detailed entries for Bob, Answering Agent, Recap Agents, Interactive Setup — pipelines, design choices, project links
-- skills.md: detailed entries for /log-session, /logoff, /update-atlas — step-by-step breakdowns and when-to-use
+- agents.md: detailed entries for Bob, Answering Agent, Recap Agents, Interactive Setup â€” pipelines, design choices, project links
+- skills.md: detailed entries for /log-session, /logoff, /update-atlas â€” step-by-step breakdowns and when-to-use
 - Added "Agents & Skills" section to mkdocs.yml nav and wiki home page
 - Deployed via ./wiki/deploy.sh; built in 1.02s
 
@@ -731,10 +741,10 @@
 - Make all URLs clickable in wiki
 - Upgrade wiki UI
 
-## 2026-05-22 02:32 — Bob session log backfill
+## 2026-05-22 02:32 â€” Bob session log backfill
 
 **What we did:**
-- Noticed bob SESSION_LOG.md hadn't been updated after dev→main merge and MANUAL.md addition
+- Noticed bob SESSION_LOG.md hadn't been updated after devâ†’main merge and MANUAL.md addition
 - Backfilled bob/SESSION_LOG.md with the 2026-05-22 01:59 entry covering those changes
 - Pushed bob repo to origin/main
 
@@ -745,11 +755,11 @@
 - Consider conversation history / multi-turn context in bot.py
 - Optionally re-enable Alienware OpenClaw for non-Slack use cases
 
-## 2026-05-22 02:29 — Alienware specs added to wiki machines page
+## 2026-05-22 02:29 â€” Alienware specs added to wiki machines page
 
 **What we did:**
 - Updated `wiki/docs/infrastructure/machines.md` with detailed Alienware hardware specs from Speccy report
-- Added CPU (i9-14900F, 24c/32t), RAM (32 GB DDR5-5600), GPU (RTX 4070 Ti SUPER 16 GB), display (5120×1440 Odyssey G95C), storage, networking, peripherals, and services tables
+- Added CPU (i9-14900F, 24c/32t), RAM (32 GB DDR5-5600), GPU (RTX 4070 Ti SUPER 16 GB), display (5120Ã—1440 Odyssey G95C), storage, networking, peripherals, and services tables
 - Committed to feat branch, merged to main, deployed via `./wiki/deploy.sh`
 - Wiki rebuilt on atlas in 0.58s
 
@@ -760,13 +770,13 @@
 - Make all URLs clickable in wiki
 - Upgrade wiki UI
 
-## 2026-05-21 20:46 — Atlas OpenClaw to custom Bob Slack bot
+## 2026-05-21 20:46 â€” Atlas OpenClaw to custom Bob Slack bot
 
 **What we did:**
 - Diagnosed duplicate Ollama runtimes on Atlas (Docker + systemd conflict); killed stuck runner with `docker restart ollama`
 - Confirmed local llama3.2:3b and 1b both too slow for OpenClaw's 6800-token system prompt on CPU
 - Pulled llama3.2:1b to Atlas Docker Ollama
-- Built lightweight Python Slack bot (bob) using Slack Bolt + Ollama /api/chat directly — tiny system prompt, fast responses
+- Built lightweight Python Slack bot (bob) using Slack Bolt + Ollama /api/chat directly â€” tiny system prompt, fast responses
 - Deployed as `bob.service` systemd user service on Atlas
 - Diagnosed competing socket mode conflict: Alienware's OpenClaw (Windows scheduled task, pid 18004) was intercepting all Slack events
 - Stopped Alienware OpenClaw (gateway stop + taskkill)
@@ -777,14 +787,14 @@
 **Where we stopped:**
 - Bob is live on Atlas, responding to DMs and @mentions using llama3.2:1b
 - Alienware OpenClaw disabled (service stopped, process killed)
-- Bob repo exists on dev branch — not yet merged to main
+- Bob repo exists on dev branch â€” not yet merged to main
 
 **Next up:**
-- Merge bob dev → main
+- Merge bob dev â†’ main
 - Consider conversation history / multi-turn context in bot.py
 - Optionally re-enable Alienware OpenClaw for other use cases (non-Slack)
 
-## 2026-05-20 22:29 — Twilio path C backlog + Slack notification
+## 2026-05-20 22:29 â€” Twilio path C backlog + Slack notification
 
 **What we did:**
 - Added Slack notification to orchestrator (fires after draft created, uses Bob webhook)
@@ -796,7 +806,7 @@
 **Where we stopped:**
 - Issue #1 (Slack notifications) shipped
 - Twilio credentials in hand, no number purchased yet
-- Issues #9–11 written and ready for next session
+- Issues #9â€“11 written and ready for next session
 
 **Next up:**
 - #9: Install cloudflared on atlas, create tunnel for api.kybernet.tech
@@ -804,7 +814,7 @@
 - #11: Add /send endpoint + update UI Send button to call it
 - User to buy a Twilio number before next session
 
-## 2026-05-20 20:42 — answering-agent ingestion pipeline + deploy
+## 2026-05-20 20:42 â€” answering-agent ingestion pipeline + deploy
 
 **What we did:**
 - Wrote gmail_poller.py: polls Gmail every 60s for GV voicemail emails, parses caller number/name and transcript, calls process_voicemail() directly
@@ -812,12 +822,12 @@
 - Fixed process_email: mark_read in finally block so it always fires on error
 - Updated Gmail query to in:anywhere (GV emails were landing in Trash due to a filter)
 - Fixed caller name parsing: handles "New voicemail from Bob Smith" format (contact name) in addition to phone number format
-- Deployed answering-poller as user systemd service on atlas (100.71.165.80) with linger enabled — always-on
+- Deployed answering-poller as user systemd service on atlas (100.71.165.80) with linger enabled â€” always-on
 - Moved ui/ to docs/ for GitHub Pages; added CNAME for answer.kybernet.tech
 - Enabled GitHub Pages on private repo (GitHub Pro); UI is live at answer.kybernet.tech
-- Opened GitHub Issues #1–7 with semantic version milestones (0.2.0, 0.3.0, 1.0.0)
-- Added Slack notification (Bob webhook) when a draft is ready — fires after draft written to Supabase
-- Tested full end-to-end: real voicemail from friend → Gmail → atlas poller → Claude → Supabase → UI → Slack notification
+- Opened GitHub Issues #1â€“7 with semantic version milestones (0.2.0, 0.3.0, 1.0.0)
+- Added Slack notification (Bob webhook) when a draft is ready â€” fires after draft written to Supabase
+- Tested full end-to-end: real voicemail from friend â†’ Gmail â†’ atlas poller â†’ Claude â†’ Supabase â†’ UI â†’ Slack notification
 
 **Where we stopped:**
 - Issue #1 (Slack notifications) complete and deployed
@@ -829,14 +839,14 @@
 - #3: Auto-deploy on atlas (git clone + webhook or cron pull)
 - #4: 72h no-response escalation cron
 
-## 2026-05-20 05:13 — Centralize Claude Code config in claude-config repo
+## 2026-05-20 05:13 â€” Centralize Claude Code config in claude-config repo
 
 **What we did:**
 - Fixed Mac statusline rendering ANSI codes as literal text (switched to bash + `$'...'` syntax)
 - Added 5h/7d rate limit usage to statusline via `rate_limits.*.used_percentage`
-- Audited Claude config across Mac, Alienware Windows, Alienware WSL, and atlas — only Alienware Windows and atlas had full setups
+- Audited Claude config across Mac, Alienware Windows, Alienware WSL, and atlas â€” only Alienware Windows and atlas had full setups
 - Created `claude-config` private GitHub repo as single source of truth: shared CLAUDE.md, statusline, skills (logoff, log-session, update-atlas), commands (kybernet-prep, recap-agents), per-machine settings under machines/{mac,alienware-windows,alienware-wsl,atlas}
-- Deployed via setup.sh (Mac/WSL/atlas) and setup.ps1 (Windows) — all four use symlinks (Developer Mode on Windows)
+- Deployed via setup.sh (Mac/WSL/atlas) and setup.ps1 (Windows) â€” all four use symlinks (Developer Mode on Windows)
 - Added SessionStart hook to all four machine configs to auto-pull on session start
 
 **Where we stopped:**
@@ -846,7 +856,7 @@
 **Next up:**
 - No pending work
 
-## 2026-05-20 01:19 — Fix atlas dashboard deploy + session accordion
+## 2026-05-20 01:19 â€” Fix atlas dashboard deploy + session accordion
 
 **What we did:**
 - Diagnosed /update-atlas failure: deploy.sh was pointing to /opt/homelab-status-dashboard which wasn't a git repo; infra repo lives at ~/infra on atlas
@@ -858,7 +868,7 @@
 
 **Where we stopped:**
 - Dashboard accordion now working; deploy pipeline fully functional
-- deploy.sh: git pull → rsync → cp config.js
+- deploy.sh: git pull â†’ rsync â†’ cp config.js
 
 **Next up:**
 - Verify /update-atlas end-to-end in next session
@@ -866,10 +876,10 @@
 
 ---
 
-## 2026-05-20 00:43 — WSL statusLine fix + log-session skill
+## 2026-05-20 00:43 â€” WSL statusLine fix + log-session skill
 
 **What we did:**
-- Diagnosed why `/statusline` kept saying "not set up" — the statusline-setup skill checks `.zshrc` for PS1 and always gives a false negative; the real setup is a standalone bash script
+- Diagnosed why `/statusline` kept saying "not set up" â€” the statusline-setup skill checks `.zshrc` for PS1 and always gives a false negative; the real setup is a standalone bash script
 - Root cause: WSL uses `/home/drew/.claude/settings.json` (was missing `statusLine`); PowerShell uses `/mnt/c/Users/drewb/.claude/settings.json` (had it)
 - Fixed WSL statusLine by adding the config to `/home/drew/.claude/settings.json`
 - Saved memory so we never run statusline-setup again for this
@@ -886,18 +896,18 @@
 
 ---
 
-## 2026-05-19 — Dashboard redesign + deploy to atlas
+## 2026-05-19 â€” Dashboard redesign + deploy to atlas
 
 **What we did:**
 - Verified dashboard was not deployed to atlas; fixed WSL SSH using Windows key
-- Merged infra dev → main and pushed to GitHub
+- Merged infra dev â†’ main and pushed to GitHub
 - Cloned infra repo on atlas; confirmed nginx already configured at /opt/homelab-status-dashboard
-- Redesigned dashboard with Pro Blue theme: Space Grotesk font, navy header, blue→purple→cyan gradient divider, white cards on light blue-gray bg
+- Redesigned dashboard with Pro Blue theme: Space Grotesk font, navy header, blueâ†’purpleâ†’cyan gradient divider, white cards on light blue-gray bg
 - Added live indicator: pulsing dot (amber=fetching, green=live, red=error)
 - Added session timestamp support (YYYY-MM-DD HH:MM format) with same-day session stacking
 - Grouped backlog by type: Infrastructure / Apps / Sites / Agents
 - Added +N remaining badge to Up Next; infra sorted to top
-- Added hosting machine indicator (⬡ atlas) in header eyebrow
+- Added hosting machine indicator (â¬¡ atlas) in header eyebrow
 - Added XSS-safe esc() helper in render.js
 
 **Where we stopped:**
@@ -907,18 +917,18 @@
 **Next up:**
 - Verify mobile shows infra first after hard refresh
 - Add `100.71.165.80 atlas` to Windows hosts file for shortname access
-- Use `## YYYY-MM-DD HH:MM — context` format for all future session log entries
+- Use `## YYYY-MM-DD HH:MM â€” context` format for all future session log entries
 
 ---
 
-## 2026-05-19 — homelab-status-dashboard build + housekeeping
+## 2026-05-19 â€” homelab-status-dashboard build + housekeeping
 
 **What we did:**
 - Designed and built homelab-status-dashboard (data.js, render.js, index.html) inside infra repo
 - Wrote design spec and implementation plan to docs/superpowers/
 - Fixed UTF-8 decode bug and session log date parsing in data.js
 - Redesigned dashboard with Command Center-inspired dark aesthetic (single index.html)
-- Partially deployed to atlas — data loads, backlog accordion not expanding yet
+- Partially deployed to atlas â€” data loads, backlog accordion not expanding yet
 - Moved interactive-setup/ from infra/ to agents/interactive-setup/, inited as own git repo
 - Added interactive-setup to repos.json
 - Added 4 new backlog items (unified terminal, dashboard redesign, clone strategy, Docker strategy)
@@ -932,7 +942,7 @@
 **Next up:**
 - Fix backlog accordion expand/collapse
 - Verify redesigned index.html on atlas
-- Merge infra dev → main and push
+- Merge infra dev â†’ main and push
 - Create interactive-setup GitHub repo and push
 - Tackle unified terminal / cross-machine access
 
@@ -957,7 +967,7 @@
 
 # Session Log
 
-## 2026-05-18 â€” Repository reorganization: Extract ai-dog-trainer from DrewBeFree
+## 2026-05-18 Ã¢â‚¬â€ Repository reorganization: Extract ai-dog-trainer from DrewBeFree
 
 **What we did:**
 - Created new `ai-dog-trainer` repository under `apps/`
@@ -977,35 +987,35 @@
 
 ---
 
-## 2026-05-18 â€” Task 1: Audit & document directory structure + naming conventions
+## 2026-05-18 Ã¢â‚¬â€ Task 1: Audit & document directory structure + naming conventions
 
 **What we did:**
 - Scanned entire GitHub directory structure across all 7 categories (apps/, sites/, agents/, infra/, notes/, DrewBeFree/, _worktrees/)
 - Analyzed project patterns: 9 web apps, 3 sites, 1 agent, infra, backend
 - Documented directory structure templates for 4 project types (PWA, static site, Python, Docker)
 - Identified naming conventions: kebab-case projects, lowercase standard dirs, git branch patterns (main/dev/feat/fix/claude)
-- Created `STRUCTURE.md` â€” comprehensive reference documenting all standards, templates, and documentation requirements
-- Created `repos.json` â€” manifest listing all 15 repositories with GitHub URLs and target directories
-- Created `clone-all.ps1` â€” PowerShell script to clone entire structure on Windows
-- Created `clone-all.sh` â€” Bash script to clone entire structure on Linux/macOS
+- Created `STRUCTURE.md` Ã¢â‚¬â€ comprehensive reference documenting all standards, templates, and documentation requirements
+- Created `repos.json` Ã¢â‚¬â€ manifest listing all 15 repositories with GitHub URLs and target directories
+- Created `clone-all.ps1` Ã¢â‚¬â€ PowerShell script to clone entire structure on Windows
+- Created `clone-all.sh` Ã¢â‚¬â€ Bash script to clone entire structure on Linux/macOS
 
 **Where we stopped:**
 - Task 1 complete and all deliverables committed
 - Multi-machine setup now supported: any machine can run clone script to replicate folder structure
 
 **Next up:**
-- Task 2: Create project templates for apps and sites (blocked by Task 1 âœ… now unblocked)
+- Task 2: Create project templates for apps and sites (blocked by Task 1 Ã¢Å“â€¦ now unblocked)
 
 ---
 
-## 2026-05-18 â€” Infrastructure repo creation and backlog setup
+## 2026-05-18 Ã¢â‚¬â€ Infrastructure repo creation and backlog setup
 
 **What we did:**
 - Created new `infra` GitHub repository (separate from `homelab`)
 - Moved broad infrastructure docs from homelab to infra root:
-  - `infrastructure-tools.md` â€” tools reference for Alienware + PowerEdge
-  - `alienware-vs-poweredge.md` â€” workload split decision rule
-- Created `INFRASTRUCTURE.md` â€” strategic backlog and task list
+  - `infrastructure-tools.md` Ã¢â‚¬â€ tools reference for Alienware + PowerEdge
+  - `alienware-vs-poweredge.md` Ã¢â‚¬â€ workload split decision rule
+- Created `INFRASTRUCTURE.md` Ã¢â‚¬â€ strategic backlog and task list
 - Established priority order for infrastructure work:
   1. Directory structure + naming conventions
   2. Project templates
@@ -1117,7 +1127,7 @@
 - Captured the canonical board decision, fields, labels, known unfinished portal/UHaul work, and future sync between `BACKLOG.md`, session logs, GitHub Issues, and the internal portal.
 
 **Where we stopped:**
-- The backlog now has a ready item named `Ecosystem project tracking — standardize GitHub Projects + Issues`.
+- The backlog now has a ready item named `Ecosystem project tracking â€” standardize GitHub Projects + Issues`.
 
 **Next up:**
 - Inventory existing GitHub Projects, choose the canonical ecosystem board, then seed issues for the known unfinished work.
@@ -1137,7 +1147,7 @@
 **Next up:**
 - Start a fresh session for GitHub Projects/Issues cleanup, Leantime evaluation planning, or UHaul IP/edge restriction work.
 
-## 2026-05-30 — LLM Debate Union Atlas deployment plan
+## 2026-05-30 â€” LLM Debate Union Atlas deployment plan
 
 **What we did:**
 - Added infra wiki workflow plan for deploying LLM Debate Union on Atlas with PocketBase, a cloud LLM gateway, and a Postgres + pgvector memory-vault path.
@@ -2487,7 +2497,7 @@
 - Consider updating the Analytics UI to show cache-read tokens and label token categories more clearly.
 ---
 ## Merged from older /home/drew/infra/ copy (2026-06-08 snapshot)
-## 2026-06-08 23:xx — Complete raw issue import for experimental + Leantime connectivity
+## 2026-06-08 23:xx â€” Complete raw issue import for experimental + Leantime connectivity
 
 **What we did:**
 - Fixed Leantime connectivity: updated /home/drew/services/leantime/docker-compose.yml to publish port on 127.0.0.1:8095 (in addition to Tailscale 100.71.165.80:8095) and restarted the container. Verified curl to both endpoints returns 302 from the host.
@@ -2511,7 +2521,7 @@
 - Re-run `/log-session` or manually append to infra/SESSION_LOG.md and the app's if desired.
 - User can now verify the project "Trading Scanner Experimental" and the imported tickets (with gh-issue markers) exist in Leantime.
 
-## 2026-06-08 17:56 — Fix raw issue import 404 for experimental
+## 2026-06-08 17:56 â€” Fix raw issue import 404 for experimental
 
 **What we did:**
 - Root cause: receive-task-sync.yml used ${{ secrets.GITHUB_TOKEN }} (infra-repo scoped only) for the inline "Import ALL GitHub issues" python and the dispatch/scheduled sync steps; github_request to /repos/DrewBeFree/trading-scanner-experimental/... (and fetch_issues etc.) returned 404.
@@ -2532,13 +2542,13 @@
 - (If desired) cd /home/drew/GitHub/apps/trading-scanner-experimental && git add .github/workflows/trigger-task-sync.yml && git commit -m "ci: use canonical task-sync trigger (full repo in payload)" && git push
 - Optional follow-up: hoist the per-issue getAllTickets out of the loop in the import heredoc (N full scans today).
 
-## 2026-06-05 02:41 — AI Dashboard Activity and Settings views
+## 2026-06-05 02:41 â€” AI Dashboard Activity and Settings views
 
 **What we did:**
 - Added Activity view: 30-day stacked token chart (full-width), summary cards (sessions/messages/API value), daily breakdown table with per-model color badges
 - Added Settings view: editable form for display name, per-subscription monthly costs, API keys (OpenAI/xAI/Gemini with show/hide toggle), Ollama host, GCP project ID
-- Added GET /api/config endpoint to app.py — returns current config.json
-- Added POST /api/config endpoint — merges and saves updates (handles subscriptions list and api_keys dict separately to avoid clobbering unlisted fields)
+- Added GET /api/config endpoint to app.py â€” returns current config.json
+- Added POST /api/config endpoint â€” merges and saves updates (handles subscriptions list and api_keys dict separately to avoid clobbering unlisted fields)
 - Extracted _send_json() helper in Handler to eliminate duplication
 - Wired nav links (Activity, Settings) with switchView() JS; all three views fully functional
 - Rewrote MANUAL.md to reflect current architecture (generate-stats.py, atlas deployment, all providers, new views)
@@ -2552,14 +2562,14 @@
 - GCP credits editing in Settings (currently manual config.json edits only)
 - Long-term SQLite history to extend beyond the 30-day session file window
 
-## 2026-06-05 00:24 — Atlas backend gateway live for LDU
+## 2026-06-05 00:24 â€” Atlas backend gateway live for LDU
 
 **What we did:**
 - Built FastAPI backend (`backend/main.py`) with unified `/api/llm` endpoint and `/api/health`
 - Implemented Gemini (gemini-2.5-flash) server-side; OpenAI, Claude, Grok stubbed
 - Added `backend/requirements.txt`, `.env.example`, `start.sh` (auto-venv), `ldu-gateway.service` (systemd)
 - Updated `app-config.js` to point gatewayUrl at Atlas (`10.0.0.145:8001`)
-- Updated `app.js` hybrid mode to route all cloud providers through `callGateway()` — no API keys in browser
+- Updated `app.js` hybrid mode to route all cloud providers through `callGateway()` â€” no API keys in browser
 - Resolved merge conflict with app-factory branch, corrected Atlas IP, fixed port conflict (moved to 8001)
 - Restored index.html (overwritten by app-factory branch), added app-config.js script tag
 - Fixed Gemini model name (gemini-2.5-flash), fixed thinkingConfig placement in API payload
@@ -2569,14 +2579,14 @@
 - Bumped version to v0.4.0, updated MANUAL.md with architecture section
 
 **Where we stopped:**
-- Gateway live and confirmed working — Gemini turns hitting Atlas with 200 OK
-- OpenAI, Claude, Grok return stub text — keys not yet added to Atlas .env
+- Gateway live and confirmed working â€” Gemini turns hitting Atlas with 200 OK
+- OpenAI, Claude, Grok return stub text â€” keys not yet added to Atlas .env
 
 **Next up:**
 - Add API keys for OpenAI, Claude, Grok to Atlas `backend/.env` and implement provider functions
 - Consider serving frontend from Atlas instead of WSL start_server.py
 
-## 2026-06-01 20:30 — Phase A App Factory wrap-up
+## 2026-06-01 20:30 â€” Phase A App Factory wrap-up
 
 **What we did:**
 - Cleaned up Phase A E2E test scaffolding (TEST_BASE_BRANCH override, test-only alerts, transcript injection).
@@ -2596,12 +2606,12 @@
 
 # Session Log
 
-## 2026-05-30 16:41 — Fixed telemetry report persistence bug
+## 2026-05-30 16:41 â€” Fixed telemetry report persistence bug
 
 **What we did:**
 - Identified root cause: `loadHistorySession()` restored stats, but `handleMotionSelect()` called `resetState()` which cleared them
 - Fixed by saving stats before `resetState()` and restoring them after (lines 2081-2091 in app.js)
-- Verified fix with code simulation: stats now preserve through session load (turns: 15 → 0 → 15)
+- Verified fix with code simulation: stats now preserve through session load (turns: 15 â†’ 0 â†’ 15)
 - Confirmed pre-populated test session has complete telemetry (15 turns, 1,774 tokens, detailed logs)
 - Committed fix with detailed message explaining bug and solution
 
@@ -2669,7 +2679,7 @@
 - Push `fix/separate-homelab-repo`.
 - After closing this Codex/browser session, delete the old ignored `infra/homelab` folder if no process is using it.
 
-## 2026-05-30 02:50 — camera rotation fix, v0.14.2
+## 2026-05-30 02:50 â€” camera rotation fix, v0.14.2
 
 **What we did:**
 - Diagnosed camera rotation breaking after centering: root cause was missing interpolated newX/newY/newZ values in animateCamera()
@@ -2678,7 +2688,7 @@
 - Explicitly disable controls during animation, re-enable + sync spherical coords at end
 - Added regression test in camera.test.js to verify interpolation
 - Bumped version from v0.14.1 to v0.14.2 (patch for bug fix)
-- Updated Command Center (index.html) and state.html to v0.14.2 · 2026-05-30
+- Updated Command Center (index.html) and state.html to v0.14.2 Â· 2026-05-30
 - Updated terminal scan line with new version
 - Regenerated wiki catalog and pushed
 
@@ -2692,7 +2702,7 @@
 
 ---
 
-## 2026-05-29 18:37 — UHaul Planner v0.14.1 test & fixes
+## 2026-05-29 18:37 â€” UHaul Planner v0.14.1 test & fixes
 
 **What we did:**
 - Tested UHaul Load Planner v0.14.0 features from overnight session checklist
@@ -2709,11 +2719,11 @@
 
 ---
 
-## 2026-05-29 17:28 — Game status badge with host cancel control
+## 2026-05-29 17:28 â€” Game status badge with host cancel control
 
 **What we did:**
-- Added prominent status badge to signup page: "✓ Game On" (6+ signups), "⏳ Pending Seat Count" (<6), or "❌ Cancelled"
-- Added "🚫 Cancel Game" button to host panel to toggle game cancellation state
+- Added prominent status badge to signup page: "âœ“ Game On" (6+ signups), "â³ Pending Seat Count" (<6), or "âŒ Cancelled"
+- Added "ðŸš« Cancel Game" button to host panel to toggle game cancellation state
 - Added `is_cancelled` column to `poker_games` table in Supabase
 - Fixed version numbering to v0.7.0 across all files (signup page, host panel, Command Center, state.html)
 - Created CLAUDE.md with deployment checklist to prevent missed version/footer updates
@@ -2727,7 +2737,7 @@
 
 ---
 
-## 2026-05-29 (overnight session 2) — Ollama monitoring + lead gen agent plan
+## 2026-05-29 (overnight session 2) â€” Ollama monitoring + lead gen agent plan
 
 **What we did:**
 
@@ -2757,7 +2767,7 @@
 - Clarify 6 refinement questions on lead gen agent, start Phase 1 POC
 - Monitor Ollama metrics in Grafana, tune dashboard
 
-## 2026-05-29 03:50 — autonomous overnight UHaul improvements setup
+## 2026-05-29 03:50 â€” autonomous overnight UHaul improvements setup
 
 **What we did:**
 - Set up autonomous work permissions: .claude/settings.json in project root configured to allow Read/Write/Edit/Bash and safe git operations (blocks merges to main, force pushes)
@@ -2778,11 +2788,11 @@
 - Polish truck recommendation algorithm
 - Test, merge, and bump version to v0.14.0
 
-## 2026-05-28 23:12 — CRLF line-ending normalization cleanup
+## 2026-05-28 23:12 â€” CRLF line-ending normalization cleanup
 
 **What we did:**
-- Ran logoff on llm-debate-union; discovered 8 files had CRLF → LF line-ending drift (.gitignore, CONTEXT.md, SESSION_LOG.md, app.js, index.html, start_server.py, style.css, sw.js)
-- Confirmed via `git diff -w` that no functional code was changed — pure whitespace normalization
+- Ran logoff on llm-debate-union; discovered 8 files had CRLF â†’ LF line-ending drift (.gitignore, CONTEXT.md, SESSION_LOG.md, app.js, index.html, start_server.py, style.css, sw.js)
+- Confirmed via `git diff -w` that no functional code was changed â€” pure whitespace normalization
 
 **Where we stopped:**
 - No open items; pending commit of the line-ending cleanup
@@ -2791,11 +2801,11 @@
 - Commit the CRLF cleanup and push to main
 - Optional: add `.gitattributes` with `* text=auto eol=lf` to prevent recurrence
 
-## 2026-05-28 — daily-planner: Ideas, voice dictation, task categories
+## 2026-05-28 â€” daily-planner: Ideas, voice dictation, task categories
 
 **What we did:**
 - Added Ideas tab: full CRUD (add, delete, timestamp display), Supabase-backed with demo mode support
-- Added voice dictation via Web Speech API — mic button on task and idea inputs, toggles `.recording` state
+- Added voice dictation via Web Speech API â€” mic button on task and idea inputs, toggles `.recording` state
 - Added task categories with colored badge rendering (Personal, Urgent, Work); category stored in Supabase `tasks` table
 
 **Where we stopped:**
@@ -2806,20 +2816,20 @@
 
 ---
 
-## 2026-05-28 04:06 — monitoring stack live, all exporters up
+## 2026-05-28 04:06 â€” monitoring stack live, all exporters up
 
 **What we did:**
 - Deployed Prometheus + Grafana monitoring stack to Atlas via scp + docker compose
 - Fixed port conflicts: cAdvisor remapped to 8085 (8080 taken by Portainer), Grafana to 3001 (3000 taken by open-webui)
-- Fixed Grafana datasource UID mismatch: dashboard JSONs referenced uid "prometheus" but Grafana assigned "PBFA97CFB590B2093" — patched dashboards and restarted
-- Fixed Prometheus scrape targets: all exporters used localhost (unreachable from inside container) — changed to Docker service names (node-exporter:9100, smartctl-exporter:9633, cadvisor:8080, ollama-exporter:9642)
+- Fixed Grafana datasource UID mismatch: dashboard JSONs referenced uid "prometheus" but Grafana assigned "PBFA97CFB590B2093" â€” patched dashboards and restarted
+- Fixed Prometheus scrape targets: all exporters used localhost (unreachable from inside container) â€” changed to Docker service names (node-exporter:9100, smartctl-exporter:9633, cadvisor:8080, ollama-exporter:9642)
 - All 6 monitoring containers healthy: Prometheus, Grafana, node-exporter, smartctl-exporter, cAdvisor, ollama-exporter
 - All 4 exporters confirmed up=1 in Prometheus; dashboards populating with live data
 - Saved all fixes back to homelab/docs/528/ and pushed to GitHub
 
 **Where we stopped:**
-- Stack live at http://100.71.165.80:3001 — both dashboards loading with real data
-- Ephemeral volumes (data lost on container restart) — persistent volume migration pending
+- Stack live at http://100.71.165.80:3001 â€” both dashboards loading with real data
+- Ephemeral volumes (data lost on container restart) â€” persistent volume migration pending
 
 **Next up:**
 - Convert to persistent Docker volumes to retain metric history across restarts
@@ -2827,20 +2837,20 @@
 - Watch SMART dashboard for sdh/sdi error trends on the WD Reds
 - Future: email/Slack alerts, GPU metrics (K80), Plex/UPS stats
 
-## 2026-05-28 03:24 — monitoring stack deployment guide for Atlas
+## 2026-05-28 03:24 â€” monitoring stack deployment guide for Atlas
 
 **What we did:**
 - Designed and built a complete Prometheus + Grafana monitoring stack for Atlas
 - Created homelab/docs/528/ with 10 ready-to-deploy config files: docker-compose.yml, prometheus.yml, prometheus-scrape.yml, alert.rules.yml, grafana-datasource.yml, dashboards.yml, atlas-overview.json, atlas-storage.json, ollama-exporter.js
 - Built 2 pre-built Grafana dashboards: Atlas Overview (CPU, RAM, load, Docker, Ollama) and Storage & SMART Health (SMART pass/fail, disk temps, UDMA CRC errors, I/O)
 - Stack includes 6 exporters: node-exporter, cAdvisor, process-exporter, SMART disk health exporter (privileged), Ollama custom Node.js exporter
-- Context: Atlas WD Reds showing concerning SMART data (sdh UDMA CRC errors, sdi reallocated sectors) — dashboards surface these in real-time
+- Context: Atlas WD Reds showing concerning SMART data (sdh UDMA CRC errors, sdi reallocated sectors) â€” dashboards surface these in real-time
 - Created deployment docs: QUICK_SUMMARY.md, COPY_PASTE_DEPLOY.md, MONITORING_DEPLOYMENT_GUIDE.md, DASHBOARD_PREVIEW.md, 00_START_HERE.txt
 - Committed and pushed to homelab repo; infra submodule pointer updated
 
 **Where we stopped:**
 - All 10 config files and docs committed in homelab/docs/528/
-- Stack not yet deployed on Atlas — user runs COPY_PASTE_DEPLOY.md steps (15–20 min)
+- Stack not yet deployed on Atlas â€” user runs COPY_PASTE_DEPLOY.md steps (15â€“20 min)
 - Ephemeral volumes for initial deploy; persistent volume migration is next session
 
 **Next up:**
@@ -2849,14 +2859,14 @@
 - Next session: convert to persistent Docker volumes, change Grafana password
 - Future: email/Slack alerts when thresholds breach, GPU metrics (K80), Plex/UPS stats
 
-## 2026-05-26 12:27 — repo sync and uhaul delete button
+## 2026-05-26 12:27 â€” repo sync and uhaul delete button
 
 **What we did:**
 - Cleaned up CRLF/LF line-ending noise in golf, poker, daily-planner (git restore, no real changes)
 - Committed and pushed answering-agent fix: removed erroneous "Rim Jobs" from A Couple Two Trees services prompt
-- Merged uhaul-load-planner feature/delete-button-edit-modal → main and pushed (delete button in edit modal, v0.13.1)
-- Confirmed Command Center and state.html already at v0.13.1 · 2026-05-26 (version bump was in the feature branch)
-- Diagnosed 3D camera angle concern as pre-existing change (42c02e4) — not caused by merge; confirmed working on phone
+- Merged uhaul-load-planner feature/delete-button-edit-modal â†’ main and pushed (delete button in edit modal, v0.13.1)
+- Confirmed Command Center and state.html already at v0.13.1 Â· 2026-05-26 (version bump was in the feature branch)
+- Diagnosed 3D camera angle concern as pre-existing change (42c02e4) â€” not caused by merge; confirmed working on phone
 
 **Where we stopped:**
 - All repos clean and in sync with origin
@@ -2864,10 +2874,10 @@
 **Next up:**
 - No pending work
 
-## 2026-05-26 12:01 — logoff only, no session work
+## 2026-05-26 12:01 â€” logoff only, no session work
 
 **What we did:**
-- No development work this session — ran /logoff immediately after session start
+- No development work this session â€” ran /logoff immediately after session start
 - Identified leftover uncommitted/unpushed state across repos from prior sessions
 
 **Where we stopped:**
@@ -2879,12 +2889,12 @@
 - Decide on uhaul-load-planner feature branch (merge or continue)
 - Commit or discard answering-agent prompt.txt change
 
-## 2026-05-26 09:16 — fix atlas wiki conflict after deploy
+## 2026-05-26 09:16 â€” fix atlas wiki conflict after deploy
 
 **What we did:**
 - Fixed atlas wiki conflict: stashed local M wiki/docs/index.md on atlas, git pull succeeded
 - Restored 18 project pages (git checkout -- wiki/docs/projects/) after erroneous gen_catalog.py run had zeroed them out
-- Rebuilt wiki on atlas (gen_catalog.py --timestamp-only + mkdocs build) — http://atlas/wiki/ confirmed working
+- Rebuilt wiki on atlas (gen_catalog.py --timestamp-only + mkdocs build) â€” http://atlas/wiki/ confirmed working
 
 **Where we stopped:**
 - Atlas wiki fully rebuilt; all 18 project pages restored and live
@@ -2892,13 +2902,13 @@
 **Next up:**
 - No pending work
 
-## 2026-05-26 00:40 — 3D feedback fixes + wiki sync, v0.13.1
+## 2026-05-26 00:40 â€” 3D feedback fixes + wiki sync, v0.13.1
 
 **What we did:**
 - Identified post-v0.13.0 commits not captured in previous session log: PR #47 (wiki sync) and PR #48 (3D feedback fixes)
 - PR #47: added wiki sync GitHub Action, docs/Home.md landing page for GitHub Wiki
-- PR #48: 3D visual fixes — cab clipping into attic floor, troika text rendering crash, z-fighting on wheel wells/decals/grid, wheel offset corrections for all trucks, grid/camera/zoom polish; double-click to edit on 3D items added; MANUAL.md + README updated
-- Bumped version to v0.13.1 · 2026-05-26 in Command Center card-meta, terminal scan line, and state.html
+- PR #48: 3D visual fixes â€” cab clipping into attic floor, troika text rendering crash, z-fighting on wheel wells/decals/grid, wheel offset corrections for all trucks, grid/camera/zoom polish; double-click to edit on 3D items added; MANUAL.md + README updated
+- Bumped version to v0.13.1 Â· 2026-05-26 in Command Center card-meta, terminal scan line, and state.html
 
 **Where we stopped:**
 - Command Center and state.html updated to v0.13.1; untracked agent artifacts (.agentrules, tests/, json files) left uncommitted
@@ -2908,7 +2918,7 @@
 - Continue 3D roadmap (weight distribution view, stacking UI refinement)
 - Phase 2 features from GitHub issues backlog
 
-## 2026-05-25 11:41 — logoff: 3D scene launch, bump to v0.13.0
+## 2026-05-25 11:41 â€” logoff: 3D scene launch, bump to v0.13.0
 
 **What we did:**
 - Captured 14 unlogged commits since v0.11.2
@@ -2920,7 +2930,7 @@
 - Layout UX: sidebar collapses on mobile, empty new layouts prompt truck selection
 - Truck size persisted per layout and restored on load
 - Fixed layout name overwriting, race conditions on creation, hardcoded truck dims, empty layouts loading as defaults
-- Bumped to v0.13.0 · 2026-05-25 in Command Center card-meta, terminal scan line, and state.html
+- Bumped to v0.13.0 Â· 2026-05-25 in Command Center card-meta, terminal scan line, and state.html
 - Rewrote MANUAL.md to document Svelte + Threlte tech stack and 3D scene controls
 
 **Where we stopped:**
@@ -2930,13 +2940,13 @@
 - Continue 3D roadmap (weight distribution view, stacking UI refinement)
 - Phase 2 features from GitHub issues backlog
 
-## 2026-05-25 09:52 — diagnose trips RLS write permission bugs
+## 2026-05-25 09:52 â€” diagnose trips RLS write permission bugs
 
 **What we did:**
 - Investigated "archive list doesn't persist" and "create new list does nothing" in Trips tab
 - Root cause: `trip_lists` table has RLS enabled but anon role lacks INSERT and UPDATE policies
 - Same pattern as v0.9.3/v0.9.5 fixes (tasks, trip_items got write policies; trip_lists was missed)
-- Provided SQL to add anon insert + update policies on `trip_lists` — no code changes needed
+- Provided SQL to add anon insert + update policies on `trip_lists` â€” no code changes needed
 
 **Where we stopped:**
 - Fix identified, SQL provided to user; not yet confirmed applied in Supabase
@@ -2946,7 +2956,7 @@
 
 ---
 
-## 2026-05-24 22:36 — pushed vite migration, cleaned up branch
+## 2026-05-24 22:36 â€” pushed vite migration, cleaned up branch
 
 **What we did:**
 - Deleted stale feat/vite-migration branch (local and confirmed remote didn't exist)
@@ -2961,13 +2971,13 @@
 - Continue 3D roadmap (rendering layer, stacking logic)
 - Phase 2 features from GitHub issues backlog
 
-## 2026-05-24 20:40 — Vite migration merged, version bumped
+## 2026-05-24 20:40 â€” Vite migration merged, version bumped
 
 **What we did:**
-- Reviewed `feat/vite-migration` branch (1 commit ahead of main — Issue #31: monolithic index.html → Vite ES modules)
+- Reviewed `feat/vite-migration` branch (1 commit ahead of main â€” Issue #31: monolithic index.html â†’ Vite ES modules)
 - Merged `feat/vite-migration` into `main` via fast-forward; pushed to origin
 - Bumped version to v0.11.1 (patch: catches up missed v0.11.0 Command Center update + Vite refactor)
-- Updated Command Center card-meta, terminal scan line, and state.html to v0.11.1 · 2026-05-24
+- Updated Command Center card-meta, terminal scan line, and state.html to v0.11.1 Â· 2026-05-24
 
 **Where we stopped:**
 - Version files updated; final commit + push pending (logoff step 7)
@@ -2976,16 +2986,16 @@
 - Continue 3D roadmap (rendering layer, stacking logic)
 - Review MANUAL.md for Vite migration changes
 
-## 2026-05-24 20:07 — confirm_slot, booking fallback, dashboard UI
+## 2026-05-24 20:07 â€” confirm_slot, booking fallback, dashboard UI
 
 **What we did:**
-- Diagnosed voicemail not appearing: calendar booking failure caused early return with no draft; fixed to always continue to Claude and draft SMS even when booking fails (status → escalated)
-- Added POST /retell/confirm-slot custom function — agent calls it mid-call when caller agrees to a slot, stores structured slot (start/end/tech_id/label) server-side by call_id; post-call webhook prefers this over text analysis field
+- Diagnosed voicemail not appearing: calendar booking failure caused early return with no draft; fixed to always continue to Claude and draft SMS even when booking fails (status â†’ escalated)
+- Added POST /retell/confirm-slot custom function â€” agent calls it mid-call when caller agrees to a slot, stores structured slot (start/end/tech_id/label) server-side by call_id; post-call webhook prefers this over text analysis field
 - Fixed availability offering: when no preferred day given, now spreads one slot per calendar day instead of filling all 3 from the same day
 - Added transcript accordion (collapsed by default) with pill label on main dashboard modal; structured summary always visible above it
 - Matched all-leads expanded row to main modal: structured summary always visible, Transcript pill accordion below
 - Fixed mobile header layout on both pages; transcript key-value grid stacks vertically on narrow screens
-- Cleaned up Retell global prompt — removed Scheduling section (workflow handles it), removed duplicate closing line
+- Cleaned up Retell global prompt â€” removed Scheduling section (workflow handles it), removed duplicate closing line
 - Updated MANUAL.md to reflect confirm_slot pipeline, workflow agent setup, custom functions, slot logic
 
 **Where we stopped:**
@@ -2993,11 +3003,11 @@
 - confirm_slot registered in Retell workflow but not yet end-to-end tested on a real call
 
 **Next up:**
-- Test a real call end-to-end: slot offered → caller agrees → confirm_slot fires → calendar booked
+- Test a real call end-to-end: slot offered â†’ caller agrees â†’ confirm_slot fires â†’ calendar booked
 - A2P 10DLC carrier approval (outbound SMS still blocked)
 - client_id multi-tenancy
 
-## 2026-05-24 13:13 — uhaul 3D model + multi-truck features
+## 2026-05-24 13:13 â€” uhaul 3D model + multi-truck features
 
 **What we did:**
 - Merged feat/3d-data-model branch (5 Codex commits) into main
@@ -3016,13 +3026,13 @@
 - Continue 3D roadmap (rendering layer, stacking logic)
 - Multi-truck UX polish as needed
 
-## 2026-05-24 12:42 — calendar booking fix + booked pill UI
+## 2026-05-24 12:42 â€” calendar booking fix + booked pill UI
 
 **What we did:**
 - Fixed 400 Bad Request from Google Calendar freeBusy/event insert: naive confirmed-slot datetimes now localized to BUSINESS_TZ before API calls
 - Added Booked pill to dashboard cards (index.html + all.html): glowing green pill with appointment tooltip when confirmed_slot is set
 - Merged fix/confirmed-slot-calendar-booking to main; auto-deploy landed on Atlas at v0.5.1
-- Verified end-to-end: fake Retell webhook with open slot → freeBusy check passes → Calendar event created → confirmed_slot persisted → lead drafted
+- Verified end-to-end: fake Retell webhook with open slot â†’ freeBusy check passes â†’ Calendar event created â†’ confirmed_slot persisted â†’ lead drafted
 - Updated MANUAL.md: noted Booked pill, removed resolved pending item
 
 **Where we stopped:**
@@ -3034,28 +3044,28 @@
 - client_id multi-tenancy (orchestrator hardcoded to a-couple-two-trees)
 - Push Codex commits (user has pending work)
 
-## 2026-05-24 07:35 — Fix: Retell call_analyzed gate (verified live)
+## 2026-05-24 07:35 â€” Fix: Retell call_analyzed gate (verified live)
 
 **What we did:**
-- Fixed empty-lead bug: /retell/post-call now only processes the call_analyzed event (call_started/call_ended lack transcript + custom_analysis_data, and dedup was dropping the analyzed event) — v0.5.1, deployed to atlas
+- Fixed empty-lead bug: /retell/post-call now only processes the call_analyzed event (call_started/call_ended lack transcript + custom_analysis_data, and dedup was dropping the analyzed event) â€” v0.5.1, deployed to atlas
 - Verified a live VM call end to end: lead captured name "Johnny", intent new_job, confirmed_slot "Tuesday June 2 at 11 AM", draft SMS pinned to that time
 - Confirmed Supabase confirmed_slot column exists; Retell get_availability function + confirmed_slot analysis field are registered and firing
 
 **Where we stopped:**
-- Full pipeline verified on the live VM: live calendar offer → caller agrees → call_analyzed → captured → draft pinned + saved to Supabase
+- Full pipeline verified on the live VM: live calendar offer â†’ caller agrees â†’ call_analyzed â†’ captured â†’ draft pinned + saved to Supabase
 - Old empty lead 98de750d (from the pre-fix call) can be trashed in the dashboard
 
 **Next up:**
 - Revisit multi-tenant calendar auth (issue #24) when adding more technicians/clients
 - Optional cleanup: root kb.yaml is unused on the VM (.env points to clients/ KB), so the repo's pending root-kb.yaml deletion is safe to commit
 
-## 2026-05-24 07:03 — Live calendar availability + confirmed slot
+## 2026-05-24 07:03 â€” Live calendar availability + confirmed slot
 
 **What we did:**
 - Added POST /retell/get-availability so the Retell agent can pull real open slots mid-call (offer-only); returns spoken phrase + structured slots
 - Wired real Google Calendar free/busy into compute_candidate_slots() (was mocked): honors business hours, buffer, lead time, busy blocks in America/New_York
-- Fixed service-account creds to request calendar.readonly scope; fixed drew's google_cal_id typo (drew.befree → drewbefree)
-- Added OAuth fallback to calendar creds (service account if present, else calendar_token.json) — single-owner runs on OAuth, SA deferred to multi-tenant
+- Fixed service-account creds to request calendar.readonly scope; fixed drew's google_cal_id typo (drew.befree â†’ drewbefree)
+- Added OAuth fallback to calendar creds (service account if present, else calendar_token.json) â€” single-owner runs on OAuth, SA deferred to multi-tenant
 - Verified live against the real calendar end-to-end on atlas (v0.5.0): VM reflects real busy times (Monday OOO/league correctly skipped)
 - Removed placeholder tech billy from prefer_tech_order (fake calendar would mask real conflicts)
 - Wired confirmed_slot: /retell/post-call reads it, Claude pins the draft SMS to the agreed time, persisted to leads.confirmed_slot (guarded write)
@@ -3067,17 +3077,17 @@
 - Pending manual steps: run `alter table leads add column confirmed_slot text;` in Supabase; register Retell custom function get_availability + post-call analysis field confirmed_slot
 
 **Next up:**
-- Register the Retell get_availability custom function + confirmed_slot analysis field so offer → capture → draft flows end to end
+- Register the Retell get_availability custom function + confirmed_slot analysis field so offer â†’ capture â†’ draft flows end to end
 - Add the Supabase confirmed_slot column
 - Revisit multi-tenant calendar auth (issue #24) when adding more technicians/clients
 - Optional: root kb.yaml is now unused on the VM, so the repo's pending root-kb.yaml deletion is safe to commit
 
-## 2026-05-24 05:25 — U-Haul product roadmap + GitHub backlog
+## 2026-05-24 05:25 â€” U-Haul product roadmap + GitHub backlog
 
 **What we did:**
-- Wrote docs/PRODUCT_ROADMAP.md — U-Haul acquisition pitch + phased roadmap (3D-native data model, 2D top-down as first render mode) + Appendix A with web-verified truck specs (cargo van → 26')
-- Wrote docs/TASKS.md — 30-issue breakdown across 5 milestones
-- Created 10 labels, 5 milestones, 30 GitHub issues (#1–30 aligned to TASKS.md)
+- Wrote docs/PRODUCT_ROADMAP.md â€” U-Haul acquisition pitch + phased roadmap (3D-native data model, 2D top-down as first render mode) + Appendix A with web-verified truck specs (cargo van â†’ 26')
+- Wrote docs/TASKS.md â€” 30-issue breakdown across 5 milestones
+- Created 10 labels, 5 milestones, 30 GitHub issues (#1â€“30 aligned to TASKS.md)
 - Created GitHub Projects board #5 "U-Haul Load Planner Roadmap" with all 30 issues
 - Committed docs on feat/product-roadmap-tasks, merged to main (ff), pushed, deleted branch
 - Resolved gh auth (missing project scope); user regenerated a minimal-scope PAT after a token leak + device-flow rate limits
@@ -3087,14 +3097,14 @@
 - Pre-existing uncommitted WIP (CNAME, README, index.html, manifest.json, sw.js) left untouched
 
 **Next up:**
-- Issue #1 — refactor to 3D-native data model (foundation)
-- Research issues #27–30 (trailer/U-Box specs, furniture preset data, supply→SKU mapping, U-Haul app architecture)
+- Issue #1 â€” refactor to 3D-native data model (foundation)
+- Research issues #27â€“30 (trailer/U-Box specs, furniture preset data, supplyâ†’SKU mapping, U-Haul app architecture)
 
-## 2026-05-24 03:56 — Dashboard UI polish + dark theme
+## 2026-05-24 03:56 â€” Dashboard UI polish + dark theme
 
 **What we did:**
 - Formatted transcript in modal: structured summary grid + styled Agent/Caller conversation turns
-- Card snippets now show extracted data (service · urgency · address) instead of raw transcript
+- Card snippets now show extracted data (service Â· urgency Â· address) instead of raw transcript
 - Reverted to dark slate theme (#1a2236 background) on both index.html and all.html
 - Replaced Remove button with SVG trash icon positioned in card footer
 - Added confirmation modal before removing any lead (Cancel / Remove)
@@ -3111,13 +3121,13 @@
 - client_id multi-tenancy (orchestrator hardcoded to a-couple-two-trees)
 - Connect ElevenLabs to Retell for Grandma Rachel voice
 
-## 2026-05-24 03:27 — Retell AI integration + client KB structure
+## 2026-05-24 03:27 â€” Retell AI integration + client KB structure
 
 **What we did:**
 - Integrated Retell AI as the live voice agent (replaces Twilio passive voicemail)
-- Added POST /retell/post-call webhook endpoint — receives Retell's post-call payload, short-circuits on out-of-area or no-appointment calls, hands off to orchestrator
+- Added POST /retell/post-call webhook endpoint â€” receives Retell's post-call payload, short-circuits on out-of-area or no-appointment calls, hands off to orchestrator
 - Added call_id dedup to prevent double processing when Retell fires multiple webhook events
-- Built generate_prompt.py — generates Retell global prompt from kb.yaml (knowledge only, no collection logic)
+- Built generate_prompt.py â€” generates Retell global prompt from kb.yaml (knowledge only, no collection logic)
 - Reorganized KB into clients/a-couple-two-trees/ folder structure for multi-client support
 - Generated ElevenLabs Grandma Rachel voicemail greeting (old-lady-vm2.mp3), served at api.kybernet.tech
 - Bumped app version to 0.3.0
@@ -3125,7 +3135,7 @@
 - Rewrote MANUAL.md to reflect Retell pipeline
 
 **Where we stopped:**
-- Full pipeline working end-to-end: Twilio → Retell AI conversation → webhook → Claude → Supabase → dashboard
+- Full pipeline working end-to-end: Twilio â†’ Retell AI conversation â†’ webhook â†’ Claude â†’ Supabase â†’ dashboard
 - A2P 10DLC approval still pending on Twilio
 - Google Calendar slots still mocked
 
@@ -3134,18 +3144,18 @@
 - client_id multi-tenancy (orchestrator hardcoded to a-couple-two-trees)
 - Connect ElevenLabs to Retell for Grandma Rachel voice in the agent
 
-## 2026-05-23 20:17 — SMS compliance + wiki pipeline update + logoff automation
+## 2026-05-23 20:17 â€” SMS compliance + wiki pipeline update + logoff automation
 
 **What we did:**
 - Added SMS opt-in checkbox and full consent disclosure to kybernet-tech contact form
 - Added validation: phone number requires SMS consent checkbox before submit
 - Pushed kybernet-tech (A2P 10DLC compliance gap closed)
-- Updated wiki agents.md — answering agent section rewritten for Twilio pipeline
+- Updated wiki agents.md â€” answering agent section rewritten for Twilio pipeline
 - Discovered MANUAL.md in each repo is the source gen_catalog.py pulls into wiki project pages
 - Rewrote MANUAL.md in answering-agent repo to reflect current Twilio pipeline
 - Added git-revision-date-localized plugin to mkdocs.yml (last-updated timestamp on every wiki page)
 - Installed plugin on atlas venv, added to wiki requirements.txt
-- Deployed wiki successfully — answering-agent page now current
+- Deployed wiki successfully â€” answering-agent page now current
 - Added step 8 (update MANUAL.md) and step 9 (deploy wiki) to /logoff skill
 - Updated CLAUDE.md via claude-config with same steps, pushed to claude-config repo
 
@@ -3159,46 +3169,46 @@
 - Stop/disable answering-poller on atlas (gmail poller, now deprecated)
 - Wire real Google Calendar free/busy into compute_candidate_slots()
 
-## 2026-05-23 19:02 — Twilio pipeline + dashboard + auto-deploy
+## 2026-05-23 19:02 â€” Twilio pipeline + dashboard + auto-deploy
 
 **What we did:**
 - Replaced Gmail/Google Voice ingestion with Twilio end-to-end (inbound voice, recording, transcription)
 - Built /twilio/voice, /twilio/recording, /twilio/transcription, /send endpoints in app.py
-- Fixed caller number: Twilio includes From in transcription callback — no API lookup needed
+- Fixed caller number: Twilio includes From in transcription callback â€” no API lookup needed
 - Added caller_name extraction from Claude agent output, written back to Supabase
 - Redesigned dashboard to 4-column status board (New/Drafted/Sent/Escalated), each showing 3 most recent cards
 - Added modal on card click with full voicemail, draft reply, slots, and action buttons
 - Added Remove button on all leads (index.html and all.html)
-- Added CORS middleware (answer.kybernet.tech → api.kybernet.tech)
-- Set up GitHub Actions auto-deploy: push to main triggers /webhook/deploy → git pull + systemctl restart
+- Added CORS middleware (answer.kybernet.tech â†’ api.kybernet.tech)
+- Set up GitHub Actions auto-deploy: push to main triggers /webhook/deploy â†’ git pull + systemctl restart
 - Added STARTED_AT and updated /health endpoint (version + started_at)
 - Added "last updated" deploy-info header to index.html and all.html (fetches /health on load)
 
 **Where we stopped:**
 - Last updated indicator committed and pushed (bdc6aa1)
-- A2P 10DLC approval still pending on Twilio — outbound SMS to real customers blocked until approved
+- A2P 10DLC approval still pending on Twilio â€” outbound SMS to real customers blocked until approved
 - Gmail poller (answering-poller systemd service) should be stopped/disabled on atlas
 
 **Next up:**
 - Verify auto-deploy fires on next push
 - Stop/disable answering-poller on atlas: systemctl --user stop answering-poller && systemctl --user disable answering-poller
-- Add Cloudflare CNAME: answer → drewbefree.github.io (DNS only) if not already done
+- Add Cloudflare CNAME: answer â†’ drewbefree.github.io (DNS only) if not already done
 - Once A2P approved, test outbound SMS to a real customer number
 
-## 2026-05-22 21:50 — Cloudflare tunnel + Twilio outbound SMS
+## 2026-05-22 21:50 â€” Cloudflare tunnel + Twilio outbound SMS
 
 **What we did:**
-- Installed cloudflared on atlas, created Tunnel for api.kybernet.tech (issue #9 ✓)
+- Installed cloudflared on atlas, created Tunnel for api.kybernet.tech (issue #9 âœ“)
 - Added /twilio/voice and /twilio/recording endpoints for inbound calls (issue #10)
-- Added /send endpoint for outbound SMS via Twilio (issue #11 ✓)
+- Added /send endpoint for outbound SMS via Twilio (issue #11 âœ“)
 - Updated dashboard UI: Send button now calls /send instead of copying to clipboard
 - Served static dashboard from FastAPI at api.kybernet.tech
-- Tested Gmail poller: working end-to-end (voicemail → Claude draft → Supabase)
+- Tested Gmail poller: working end-to-end (voicemail â†’ Claude draft â†’ Supabase)
 - Confirmed Twilio credentials in .env, basic webhook structure in place
 
 **Where we stopped:**
 - Issue #11 (outbound SMS) complete and deployed
-- Issue #10 (Twilio inbound) closed/backlogged — transcription config too complex
+- Issue #10 (Twilio inbound) closed/backlogged â€” transcription config too complex
 - Gmail poller confirmed working as primary ingestion
 - Dashboard live at https://api.kybernet.tech
 - User wants unified Twilio number with transcription next
@@ -3207,7 +3217,7 @@
 - Issue #10 revisited: simplify Twilio inbound transcription (fetch via API instead of webhook)
 - Issue #2: wire Google Calendar free/busy into slot computation
 
-## 2026-05-22 19:05 — kybernet-tech privacy/terms pages + footer fix
+## 2026-05-22 19:05 â€” kybernet-tech privacy/terms pages + footer fix
 
 **What we did:**
 - Created privacy.html and terms.html for Twilio A2P campaign registration
@@ -3215,7 +3225,7 @@
 - Privacy policy covers SMS opt-in/out, data collection, sharing, and retention
 - Terms covers SMS messaging terms, scheduling links, liability, and governing law
 - Added Privacy Policy and Terms of Service links to the footer of index.html
-- Fixed root cause bug: global `nav { position: fixed }` CSS was pulling the footer `<nav>` out of the footer and rendering it at the top of the page — fixed by changing footer nav to a `<div>`
+- Fixed root cause bug: global `nav { position: fixed }` CSS was pulling the footer `<nav>` out of the footer and rendering it at the top of the page â€” fixed by changing footer nav to a `<div>`
 - Fixed secondary CSS bug: `flex-wrap: gap` was invalid, changed to `flex-wrap: wrap; gap: 16px`
 - All changes committed and pushed to main
 
@@ -3225,15 +3235,15 @@
 
 **Next up:**
 - Verify footer links are visible on live site after CDN propagates
-- Twilio A2P submission is already in — await carrier approval
+- Twilio A2P submission is already in â€” await carrier approval
 
-## 2026-05-22 02:40 — Add Agents & Skills wiki section
+## 2026-05-22 02:40 â€” Add Agents & Skills wiki section
 
 **What we did:**
 - Created `wiki/docs/agents-and-skills/` with three pages: index.md, agents.md, skills.md
 - index.md: differentiator table (agents vs skills) + quick reference for all agents and skills
-- agents.md: detailed entries for Bob, Answering Agent, Recap Agents, Interactive Setup — pipelines, design choices, project links
-- skills.md: detailed entries for /log-session, /logoff, /update-atlas — step-by-step breakdowns and when-to-use
+- agents.md: detailed entries for Bob, Answering Agent, Recap Agents, Interactive Setup â€” pipelines, design choices, project links
+- skills.md: detailed entries for /log-session, /logoff, /update-atlas â€” step-by-step breakdowns and when-to-use
 - Added "Agents & Skills" section to mkdocs.yml nav and wiki home page
 - Deployed via ./wiki/deploy.sh; built in 1.02s
 
@@ -3244,10 +3254,10 @@
 - Make all URLs clickable in wiki
 - Upgrade wiki UI
 
-## 2026-05-22 02:32 — Bob session log backfill
+## 2026-05-22 02:32 â€” Bob session log backfill
 
 **What we did:**
-- Noticed bob SESSION_LOG.md hadn't been updated after dev→main merge and MANUAL.md addition
+- Noticed bob SESSION_LOG.md hadn't been updated after devâ†’main merge and MANUAL.md addition
 - Backfilled bob/SESSION_LOG.md with the 2026-05-22 01:59 entry covering those changes
 - Pushed bob repo to origin/main
 
@@ -3258,11 +3268,11 @@
 - Consider conversation history / multi-turn context in bot.py
 - Optionally re-enable Alienware OpenClaw for non-Slack use cases
 
-## 2026-05-22 02:29 — Alienware specs added to wiki machines page
+## 2026-05-22 02:29 â€” Alienware specs added to wiki machines page
 
 **What we did:**
 - Updated `wiki/docs/infrastructure/machines.md` with detailed Alienware hardware specs from Speccy report
-- Added CPU (i9-14900F, 24c/32t), RAM (32 GB DDR5-5600), GPU (RTX 4070 Ti SUPER 16 GB), display (5120×1440 Odyssey G95C), storage, networking, peripherals, and services tables
+- Added CPU (i9-14900F, 24c/32t), RAM (32 GB DDR5-5600), GPU (RTX 4070 Ti SUPER 16 GB), display (5120Ã—1440 Odyssey G95C), storage, networking, peripherals, and services tables
 - Committed to feat branch, merged to main, deployed via `./wiki/deploy.sh`
 - Wiki rebuilt on atlas in 0.58s
 
@@ -3273,13 +3283,13 @@
 - Make all URLs clickable in wiki
 - Upgrade wiki UI
 
-## 2026-05-21 20:46 — Atlas OpenClaw to custom Bob Slack bot
+## 2026-05-21 20:46 â€” Atlas OpenClaw to custom Bob Slack bot
 
 **What we did:**
 - Diagnosed duplicate Ollama runtimes on Atlas (Docker + systemd conflict); killed stuck runner with `docker restart ollama`
 - Confirmed local llama3.2:3b and 1b both too slow for OpenClaw's 6800-token system prompt on CPU
 - Pulled llama3.2:1b to Atlas Docker Ollama
-- Built lightweight Python Slack bot (bob) using Slack Bolt + Ollama /api/chat directly — tiny system prompt, fast responses
+- Built lightweight Python Slack bot (bob) using Slack Bolt + Ollama /api/chat directly â€” tiny system prompt, fast responses
 - Deployed as `bob.service` systemd user service on Atlas
 - Diagnosed competing socket mode conflict: Alienware's OpenClaw (Windows scheduled task, pid 18004) was intercepting all Slack events
 - Stopped Alienware OpenClaw (gateway stop + taskkill)
@@ -3290,14 +3300,14 @@
 **Where we stopped:**
 - Bob is live on Atlas, responding to DMs and @mentions using llama3.2:1b
 - Alienware OpenClaw disabled (service stopped, process killed)
-- Bob repo exists on dev branch — not yet merged to main
+- Bob repo exists on dev branch â€” not yet merged to main
 
 **Next up:**
-- Merge bob dev → main
+- Merge bob dev â†’ main
 - Consider conversation history / multi-turn context in bot.py
 - Optionally re-enable Alienware OpenClaw for other use cases (non-Slack)
 
-## 2026-05-20 22:29 — Twilio path C backlog + Slack notification
+## 2026-05-20 22:29 â€” Twilio path C backlog + Slack notification
 
 **What we did:**
 - Added Slack notification to orchestrator (fires after draft created, uses Bob webhook)
@@ -3309,7 +3319,7 @@
 **Where we stopped:**
 - Issue #1 (Slack notifications) shipped
 - Twilio credentials in hand, no number purchased yet
-- Issues #9–11 written and ready for next session
+- Issues #9â€“11 written and ready for next session
 
 **Next up:**
 - #9: Install cloudflared on atlas, create tunnel for api.kybernet.tech
@@ -3317,7 +3327,7 @@
 - #11: Add /send endpoint + update UI Send button to call it
 - User to buy a Twilio number before next session
 
-## 2026-05-20 20:42 — answering-agent ingestion pipeline + deploy
+## 2026-05-20 20:42 â€” answering-agent ingestion pipeline + deploy
 
 **What we did:**
 - Wrote gmail_poller.py: polls Gmail every 60s for GV voicemail emails, parses caller number/name and transcript, calls process_voicemail() directly
@@ -3325,12 +3335,12 @@
 - Fixed process_email: mark_read in finally block so it always fires on error
 - Updated Gmail query to in:anywhere (GV emails were landing in Trash due to a filter)
 - Fixed caller name parsing: handles "New voicemail from Bob Smith" format (contact name) in addition to phone number format
-- Deployed answering-poller as user systemd service on atlas (100.71.165.80) with linger enabled — always-on
+- Deployed answering-poller as user systemd service on atlas (100.71.165.80) with linger enabled â€” always-on
 - Moved ui/ to docs/ for GitHub Pages; added CNAME for answer.kybernet.tech
 - Enabled GitHub Pages on private repo (GitHub Pro); UI is live at answer.kybernet.tech
-- Opened GitHub Issues #1–7 with semantic version milestones (0.2.0, 0.3.0, 1.0.0)
-- Added Slack notification (Bob webhook) when a draft is ready — fires after draft written to Supabase
-- Tested full end-to-end: real voicemail from friend → Gmail → atlas poller → Claude → Supabase → UI → Slack notification
+- Opened GitHub Issues #1â€“7 with semantic version milestones (0.2.0, 0.3.0, 1.0.0)
+- Added Slack notification (Bob webhook) when a draft is ready â€” fires after draft written to Supabase
+- Tested full end-to-end: real voicemail from friend â†’ Gmail â†’ atlas poller â†’ Claude â†’ Supabase â†’ UI â†’ Slack notification
 
 **Where we stopped:**
 - Issue #1 (Slack notifications) complete and deployed
@@ -3342,14 +3352,14 @@
 - #3: Auto-deploy on atlas (git clone + webhook or cron pull)
 - #4: 72h no-response escalation cron
 
-## 2026-05-20 05:13 — Centralize Claude Code config in claude-config repo
+## 2026-05-20 05:13 â€” Centralize Claude Code config in claude-config repo
 
 **What we did:**
 - Fixed Mac statusline rendering ANSI codes as literal text (switched to bash + `$'...'` syntax)
 - Added 5h/7d rate limit usage to statusline via `rate_limits.*.used_percentage`
-- Audited Claude config across Mac, Alienware Windows, Alienware WSL, and atlas — only Alienware Windows and atlas had full setups
+- Audited Claude config across Mac, Alienware Windows, Alienware WSL, and atlas â€” only Alienware Windows and atlas had full setups
 - Created `claude-config` private GitHub repo as single source of truth: shared CLAUDE.md, statusline, skills (logoff, log-session, update-atlas), commands (kybernet-prep, recap-agents), per-machine settings under machines/{mac,alienware-windows,alienware-wsl,atlas}
-- Deployed via setup.sh (Mac/WSL/atlas) and setup.ps1 (Windows) — all four use symlinks (Developer Mode on Windows)
+- Deployed via setup.sh (Mac/WSL/atlas) and setup.ps1 (Windows) â€” all four use symlinks (Developer Mode on Windows)
 - Added SessionStart hook to all four machine configs to auto-pull on session start
 
 **Where we stopped:**
@@ -3359,7 +3369,7 @@
 **Next up:**
 - No pending work
 
-## 2026-05-20 01:19 — Fix atlas dashboard deploy + session accordion
+## 2026-05-20 01:19 â€” Fix atlas dashboard deploy + session accordion
 
 **What we did:**
 - Diagnosed /update-atlas failure: deploy.sh was pointing to /opt/homelab-status-dashboard which wasn't a git repo; infra repo lives at ~/infra on atlas
@@ -3371,7 +3381,7 @@
 
 **Where we stopped:**
 - Dashboard accordion now working; deploy pipeline fully functional
-- deploy.sh: git pull → rsync → cp config.js
+- deploy.sh: git pull â†’ rsync â†’ cp config.js
 
 **Next up:**
 - Verify /update-atlas end-to-end in next session
@@ -3379,10 +3389,10 @@
 
 ---
 
-## 2026-05-20 00:43 — WSL statusLine fix + log-session skill
+## 2026-05-20 00:43 â€” WSL statusLine fix + log-session skill
 
 **What we did:**
-- Diagnosed why `/statusline` kept saying "not set up" — the statusline-setup skill checks `.zshrc` for PS1 and always gives a false negative; the real setup is a standalone bash script
+- Diagnosed why `/statusline` kept saying "not set up" â€” the statusline-setup skill checks `.zshrc` for PS1 and always gives a false negative; the real setup is a standalone bash script
 - Root cause: WSL uses `/home/drew/.claude/settings.json` (was missing `statusLine`); PowerShell uses `/mnt/c/Users/drewb/.claude/settings.json` (had it)
 - Fixed WSL statusLine by adding the config to `/home/drew/.claude/settings.json`
 - Saved memory so we never run statusline-setup again for this
@@ -3399,18 +3409,18 @@
 
 ---
 
-## 2026-05-19 — Dashboard redesign + deploy to atlas
+## 2026-05-19 â€” Dashboard redesign + deploy to atlas
 
 **What we did:**
 - Verified dashboard was not deployed to atlas; fixed WSL SSH using Windows key
-- Merged infra dev → main and pushed to GitHub
+- Merged infra dev â†’ main and pushed to GitHub
 - Cloned infra repo on atlas; confirmed nginx already configured at /opt/homelab-status-dashboard
-- Redesigned dashboard with Pro Blue theme: Space Grotesk font, navy header, blue→purple→cyan gradient divider, white cards on light blue-gray bg
+- Redesigned dashboard with Pro Blue theme: Space Grotesk font, navy header, blueâ†’purpleâ†’cyan gradient divider, white cards on light blue-gray bg
 - Added live indicator: pulsing dot (amber=fetching, green=live, red=error)
 - Added session timestamp support (YYYY-MM-DD HH:MM format) with same-day session stacking
 - Grouped backlog by type: Infrastructure / Apps / Sites / Agents
 - Added +N remaining badge to Up Next; infra sorted to top
-- Added hosting machine indicator (⬡ atlas) in header eyebrow
+- Added hosting machine indicator (â¬¡ atlas) in header eyebrow
 - Added XSS-safe esc() helper in render.js
 
 **Where we stopped:**
@@ -3420,18 +3430,18 @@
 **Next up:**
 - Verify mobile shows infra first after hard refresh
 - Add `100.71.165.80 atlas` to Windows hosts file for shortname access
-- Use `## YYYY-MM-DD HH:MM — context` format for all future session log entries
+- Use `## YYYY-MM-DD HH:MM â€” context` format for all future session log entries
 
 ---
 
-## 2026-05-19 — homelab-status-dashboard build + housekeeping
+## 2026-05-19 â€” homelab-status-dashboard build + housekeeping
 
 **What we did:**
 - Designed and built homelab-status-dashboard (data.js, render.js, index.html) inside infra repo
 - Wrote design spec and implementation plan to docs/superpowers/
 - Fixed UTF-8 decode bug and session log date parsing in data.js
 - Redesigned dashboard with Command Center-inspired dark aesthetic (single index.html)
-- Partially deployed to atlas — data loads, backlog accordion not expanding yet
+- Partially deployed to atlas â€” data loads, backlog accordion not expanding yet
 - Moved interactive-setup/ from infra/ to agents/interactive-setup/, inited as own git repo
 - Added interactive-setup to repos.json
 - Added 4 new backlog items (unified terminal, dashboard redesign, clone strategy, Docker strategy)
@@ -3445,7 +3455,7 @@
 **Next up:**
 - Fix backlog accordion expand/collapse
 - Verify redesigned index.html on atlas
-- Merge infra dev → main and push
+- Merge infra dev â†’ main and push
 - Create interactive-setup GitHub repo and push
 - Tackle unified terminal / cross-machine access
 
@@ -3470,7 +3480,7 @@
 
 # Session Log
 
-## 2026-05-18 â€” Repository reorganization: Extract ai-dog-trainer from DrewBeFree
+## 2026-05-18 Ã¢â‚¬â€ Repository reorganization: Extract ai-dog-trainer from DrewBeFree
 
 **What we did:**
 - Created new `ai-dog-trainer` repository under `apps/`
@@ -3490,35 +3500,35 @@
 
 ---
 
-## 2026-05-18 â€” Task 1: Audit & document directory structure + naming conventions
+## 2026-05-18 Ã¢â‚¬â€ Task 1: Audit & document directory structure + naming conventions
 
 **What we did:**
 - Scanned entire GitHub directory structure across all 7 categories (apps/, sites/, agents/, infra/, notes/, DrewBeFree/, _worktrees/)
 - Analyzed project patterns: 9 web apps, 3 sites, 1 agent, infra, backend
 - Documented directory structure templates for 4 project types (PWA, static site, Python, Docker)
 - Identified naming conventions: kebab-case projects, lowercase standard dirs, git branch patterns (main/dev/feat/fix/claude)
-- Created `STRUCTURE.md` â€” comprehensive reference documenting all standards, templates, and documentation requirements
-- Created `repos.json` â€” manifest listing all 15 repositories with GitHub URLs and target directories
-- Created `clone-all.ps1` â€” PowerShell script to clone entire structure on Windows
-- Created `clone-all.sh` â€” Bash script to clone entire structure on Linux/macOS
+- Created `STRUCTURE.md` Ã¢â‚¬â€ comprehensive reference documenting all standards, templates, and documentation requirements
+- Created `repos.json` Ã¢â‚¬â€ manifest listing all 15 repositories with GitHub URLs and target directories
+- Created `clone-all.ps1` Ã¢â‚¬â€ PowerShell script to clone entire structure on Windows
+- Created `clone-all.sh` Ã¢â‚¬â€ Bash script to clone entire structure on Linux/macOS
 
 **Where we stopped:**
 - Task 1 complete and all deliverables committed
 - Multi-machine setup now supported: any machine can run clone script to replicate folder structure
 
 **Next up:**
-- Task 2: Create project templates for apps and sites (blocked by Task 1 âœ… now unblocked)
+- Task 2: Create project templates for apps and sites (blocked by Task 1 Ã¢Å“â€¦ now unblocked)
 
 ---
 
-## 2026-05-18 â€” Infrastructure repo creation and backlog setup
+## 2026-05-18 Ã¢â‚¬â€ Infrastructure repo creation and backlog setup
 
 **What we did:**
 - Created new `infra` GitHub repository (separate from `homelab`)
 - Moved broad infrastructure docs from homelab to infra root:
-  - `infrastructure-tools.md` â€” tools reference for Alienware + PowerEdge
-  - `alienware-vs-poweredge.md` â€” workload split decision rule
-- Created `INFRASTRUCTURE.md` â€” strategic backlog and task list
+  - `infrastructure-tools.md` Ã¢â‚¬â€ tools reference for Alienware + PowerEdge
+  - `alienware-vs-poweredge.md` Ã¢â‚¬â€ workload split decision rule
+- Created `INFRASTRUCTURE.md` Ã¢â‚¬â€ strategic backlog and task list
 - Established priority order for infrastructure work:
   1. Directory structure + naming conventions
   2. Project templates
@@ -3630,7 +3640,7 @@
 - Captured the canonical board decision, fields, labels, known unfinished portal/UHaul work, and future sync between `BACKLOG.md`, session logs, GitHub Issues, and the internal portal.
 
 **Where we stopped:**
-- The backlog now has a ready item named `Ecosystem project tracking — standardize GitHub Projects + Issues`.
+- The backlog now has a ready item named `Ecosystem project tracking â€” standardize GitHub Projects + Issues`.
 
 **Next up:**
 - Inventory existing GitHub Projects, choose the canonical ecosystem board, then seed issues for the known unfinished work.
@@ -3650,7 +3660,7 @@
 **Next up:**
 - Start a fresh session for GitHub Projects/Issues cleanup, Leantime evaluation planning, or UHaul IP/edge restriction work.
 
-## 2026-05-30 — LLM Debate Union Atlas deployment plan
+## 2026-05-30 â€” LLM Debate Union Atlas deployment plan
 
 **What we did:**
 - Added infra wiki workflow plan for deploying LLM Debate Union on Atlas with PocketBase, a cloud LLM gateway, and a Postgres + pgvector memory-vault path.
@@ -4274,3 +4284,150 @@
 - Decide whether to create a public fork of `Leantime/leantime` or a private `leantime-atlas` overlay repo.
 - Implement the admin/owner menu visibility patch in that chosen source path, then apply it to Atlas from the documented script.
 - Harden the raw issue importer in `scripts/ecosystem_task_sync.py` and add duplicate-prevention tests before broad rollout.
+
+---
+
+## 2026-06-20 - Workspace consolidation pass
+
+**What we did:**
+- Reviewed top-level folders on `/home/drew/` for duplication and sprawl.
+- Deleted confirmed duplicates and stray items:
+  - `/home/drew/internal-portal/` (duplicate of `GitHub/infra/internal-portal/`)
+  - `/home/drew/openclaw-agents/` (old experiment)
+  - `/home/drew/-n` (stray file from a bad command)
+- Moved real projects into the canonical `GitHub/` structure:
+  - `llm-debate-union/` â†’ `GitHub/personal/llm-debate-union/`
+  - `monitoring/` â†’ `GitHub/infra/monitoring/`
+  - `benchmarks/` â†’ `GitHub/infra/benchmarks/`
+- Confirmed `ops/` is its own repo (`DrewBeFree/atlas-ops`) and should stay at top level.
+- Created two planning artifacts in `atlas-migration-backups/`:
+  - `workspace-consolidation-plan.md`
+  - `workspace-consolidation-plan.html`
+- Added a new wiki page: `wiki/docs/infrastructure/workspace.md` documenting the final layout.
+- Created 5 new kanban cards on the `atlas-structure` board (all `ready`):
+  - Review services/ folder structure
+  - Decide on actions-runner/ and hermes-mobile-proxy/
+  - Link workspace.md in wiki navigation
+  - Reconcile old .ai/ per-project plan with current consolidation
+  - Update BACKLOG.md with consolidation outcomes
+- Clarified that Hermes Kanban triage is currently manual (no auto-triage from chat).
+
+**Where we stopped:**
+- Left `services/`, `actions-runner/`, `hermes-mobile-proxy/`, and `atlas-migration-backups/` at top level for now.
+- Did not update `BACKLOG.md` or the old `.ai/` plan yet.
+
+**Next up:**
+- Review the 5 new kanban cards in the next session.
+- Decide on the remaining top-level folders.
+- Optionally reconcile the older per-project `.ai/` cleanup plan.
+
+
+## 2026-06-22 - Public portal and DrewBeFree DNS triage
+
+**What we did:**
+- Confirmed Atlas is the canonical workspace; Alienware no longer has the GitHub checkout.
+- Verified `drewbefree.com` still returns a Cloudflare Access redirect from Atlas, while several public app subdomains are NXDOMAIN.
+- Confirmed GitHub Pages serves `food`, `soccer`, and `uhaul` correctly when DNS is forced to GitHub Pages, so the app repos/CNAME files are healthy.
+- Installed and enabled `classic-inbox-redirect.service` on Atlas. It listens on `127.0.0.1:3037` and redirects to `https://leads.drewbefree.com/`, preserving the path.
+- Added `classic-inbox.drewbefree.com` to the live Atlas `cloudflared` ingress and validated the rule.
+- Attempted `cloudflared tunnel route dns` for `classic-inbox.drewbefree.com`; Atlas still has the Kybernet-zone cloudflared cert, so it created/targeted the wrong `classic-inbox.drewbefree.com.kybernet.tech`-style route instead of a DrewBeFree-zone record.
+
+**Where we stopped:**
+- The Atlas redirect origin and tunnel ingress are ready, but `classic-inbox.drewbefree.com` is still NXDOMAIN until the DrewBeFree Cloudflare zone gets a DNS record.
+- `drewbefree.com` is still protected by Cloudflare Access from unauthenticated Atlas curl.
+- Missing public DNS records: `uhaul`, `soccer`, `food`, `snap`, `recap`, and `photography` under `drewbefree.com`.
+
+**Next up:**
+- In the DrewBeFree Cloudflare zone, turn the apex and `www` back to public GitHub Pages access, preferably DNS-only, and remove `drewbefree.com` from the Access app.
+- Add DNS-only CNAMEs to `drewbefree.github.io` for `uhaul`, `soccer`, `food`, `snap`, `recap`, and `photography`.
+- Add `classic-inbox.drewbefree.com` as a proxied tunnel CNAME to `188e5c59-c931-49a2-84c9-6646aadcd3c9.cfargotunnel.com`, keeping the origin as the redirect-only service.
+- Clean up the accidental Kybernet-zone `classic-inbox.drewbefree.com.kybernet.tech` DNS record if it appears in the Kybernet Cloudflare dashboard.
+
+## 2026-06-22 - Local classic inbox redirect for in-app browser
+
+**What we did:**
+- Fixed the immediate in-app browser target `http://127.0.0.1:3037/anything` on Alienware by starting a persistent hidden local Node redirect helper.
+- The helper listens on `127.0.0.1:3037` and redirects paths to `https://leads.drewbefree.com`, matching the Atlas redirect behavior.
+- Verified a fresh `curl -I http://127.0.0.1:3037/anything` returns `308 Permanent Redirect` with `Location: https://leads.drewbefree.com/anything`.
+
+**Where we stopped:**
+- The current local browser URL should work after refresh.
+- This is a local desktop helper, not the final DrewBeFree Cloudflare DNS fix.
+
+**Next up:**
+- Finish DrewBeFree Cloudflare-zone DNS/Access changes when zone credentials or dashboard access are available.
+
+## 2026-06-22 - PowerShell SSH quoting guardrail
+
+**What we did:**
+- Added a local Hookify rule at `/home/drew/GitHub/infra/.Codex/hookify.warn-powershell-ssh-quoting.local.md`.
+- The rule warns on Atlas SSH commands from Windows/PowerShell and explicitly says to avoid complex inline quoting, `$()` substitutions, awk/sed/perl quote soup, here-doc markers, and `$pid` as a loop variable.
+- Added `.Codex/*.local.md` to the infra repo `.gitignore` so local Hookify guardrails do not get accidentally committed.
+
+**Where we stopped:**
+- The quoting guardrail exists locally on Atlas in the infra repo.
+- `.gitignore` is modified in the dirty infra worktree; no commit was made.
+
+**Next up:**
+- For future Atlas SSH work from PowerShell, use the base64/stdin script pattern for anything beyond a trivial single command.
+
+## 2026-06-22 - Public DrewBeFree hostname verification
+
+**What we did:**
+- Re-checked public DNS and HTTPS for `drewbefree.com`, `www`, and the app hostnames discussed.
+- Confirmed `linksy`, `tasks`, `rv`, `poker`, and `homelab` resolve to GitHub Pages and return `200 OK`.
+- Confirmed `drewbefree.com` still returns a Cloudflare Access `302` login challenge, and `www` redirects to that protected apex.
+- Confirmed `soccer`, `food`, `uhaul`, `snap`, `recap`, and `photography` are still NXDOMAIN.
+
+**Where we stopped:**
+- Public accessibility is not fully fixed yet.
+- The no-secrets Cloudflare DNS fixer script exists on Atlas at `/home/drew/GitHub/infra/scripts/make_drewbefree_public_dns.py`, but it still needs a DrewBeFree Cloudflare API token to run.
+
+**Next up:**
+- Provide/run a Cloudflare token with Zone:Read and DNS:Edit for `drewbefree.com`, or make the equivalent DNS changes in the Cloudflare dashboard.
+
+## 2026-06-22 - Cloudflare token scope troubleshooting
+
+**What we did:**
+- User ran the DrewBeFree DNS fixer with a Cloudflare token, but Cloudflare returned zero zones for `drewbefree.com`.
+- Scrubbed obvious `CLOUDFLARE_API_TOKEN` / `cfat_` lines from Atlas persistent shell history files without printing the token.
+- Updated `/home/drew/GitHub/infra/scripts/make_drewbefree_public_dns.py` to support `CLOUDFLARE_ZONE_ID` as a fallback and to explain the token scope problem more clearly.
+
+**Where we stopped:**
+- The token used could not read the `drewbefree.com` zone, likely due to wrong account/scope or missing `Zone -> Zone -> Read` for the DrewBeFree zone.
+- The pasted token should be revoked/rotated because it was exposed in chat/terminal.
+
+**Next up:**
+- Create a new Cloudflare token scoped to `drewbefree.com` with `Zone -> Zone -> Read` and `Zone -> DNS -> Edit`, or provide `CLOUDFLARE_ZONE_ID` from the zone overview if the token can edit DNS but cannot list zones.
+
+## 2026-06-22 - DrewBeFree public DNS applied and mail-record side effect
+
+**What we did:**
+- Verified after the Cloudflare DNS script ran that public app hostnames now resolve to GitHub Pages and return `200 OK`: `soccer`, `food`, `uhaul`, `snap`, `recap`, `photography`, plus existing `linksy`, `tasks`, and `rv`.
+- Verified `drewbefree.com` now resolves to GitHub Pages A records and returns `200 OK` over IPv4.
+- Found the first version of `make_drewbefree_public_dns.py` deleted apex MX and SPF TXT records while replacing web A records.
+- Patched `make_drewbefree_public_dns.py` so it only deletes conflicting web-address records (`A`, `AAAA`, `CNAME`) and preserves mail/verification records.
+- Added `/home/drew/GitHub/infra/scripts/restore_drewbefree_email_forwarding_dns.py` to restore Namecheap email forwarding MX records and SPF TXT.
+
+**Where we stopped:**
+- Public website/app access is effectively fixed.
+- Apex email forwarding DNS still needs restoration: MX records and SPF TXT currently return no public answer.
+
+**Next up:**
+- Run the restore helper with a valid Cloudflare token, then verify `drewbefree.com` MX/TXT records are back.
+- Revoke/rotate the exposed Cloudflare token after restoration.
+
+## 2026-06-22 - Backlog email DNS restoration instead of fixing now
+
+**What we did:**
+- Accepted the decision to leave `drewbefree.com` email forwarding DNS unrestored for now because no email is expected from the domain or subdomains.
+- Updated `/home/drew/GitHub/infra/BACKLOG.md` so the DrewBeFree public DNS item reflects that public web/app DNS is restored.
+- Added a separate backlog item for future apex email forwarding DNS restoration, pointing to `scripts/restore_drewbefree_email_forwarding_dns.py` if email is needed later.
+
+**Where we stopped:**
+- Public web/app DNS remains the priority state.
+- Email MX/SPF restoration is intentionally deferred.
+
+**Next up:**
+- Rotate/revoke the exposed temporary Cloudflare token.
+- If email forwarding is ever needed, run the restore helper with a fresh Cloudflare DNS token and verify MX/TXT.
