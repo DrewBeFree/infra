@@ -56,7 +56,7 @@
 
   .atlas-rail {
     display: grid;
-    grid-template-columns: minmax(0, 1.4fr) repeat(4, minmax(138px, 1fr));
+    grid-template-columns: minmax(0, 1.4fr) repeat(6, minmax(118px, 1fr));
     gap: 10px;
     margin-bottom: 30px;
   }
@@ -174,18 +174,20 @@
       <strong>ATLAS LOCAL FIRST</strong>
       <span>Your daily operator surfaces are pinned here: leads, wiki, service health, planning, and the deeper ecosystem registry.</span>
     </div>
-    <a class="rail-link" href="http://atlas:3027/" data-protected-href="https://leads.drewbefree.com/" style="--card-accent:#00ff88;--card-glow:rgba(0,255,136,0.1);"><small>LOCAL APP</small><b>Lead Desk</b><span class="rail-signal" id="leadRailSignal">checking leads</span></a>
+    <a class="rail-link" href="http://100.71.165.80:3027/" data-protected-href="https://leads.drewbefree.com/" style="--card-accent:#00ff88;--card-glow:rgba(0,255,136,0.1);"><small>LOCAL APP</small><b>Lead Desk</b><span class="rail-signal" id="leadRailSignal">checking leads</span></a>
     <a class="rail-link" href="http://atlas/wiki/" data-protected-href="https://wiki.drewbefree.com/wiki/" style="--card-accent:#00d4ff;"><small>DOCS</small><b>Atlas Wiki</b></a>
     <a class="rail-link" href="http://atlas/ecosystem/" data-protected-href="https://portal.drewbefree.com/ecosystem/" style="--card-accent:#a78bfa;"><small>REGISTRY</small><b>Ecosystem</b></a>
+    <a class="rail-link" href="http://atlas/ecosystem/tree.html" data-protected-href="https://portal.drewbefree.com/ecosystem/tree.html" style="--card-accent:#8b5cf6;"><small>TREE</small><b>Ecosystem Tree</b></a>
+    <a class="rail-link" href="http://atlas/ecosystem/changelog.html" data-protected-href="https://portal.drewbefree.com/ecosystem/changelog.html" style="--card-accent:#38bdf8;"><small>HISTORY</small><b>Changelog</b></a>
     <a class="rail-link" href="http://atlas:3001/d/atlas-overview/poweredge-dashboard" data-protected-href="https://grafana.drewbefree.com/d/atlas-overview/poweredge-dashboard" style="--card-accent:#f59e0b;"><small>HEALTH</small><b>Grafana</b><span class="rail-signal" id="grafanaRailSignal">checking</span></a>
   </section>
 
   <div class="section-label">// LOCAL APPS & ATLAS TOOLS</div>
   <section class="grid" aria-label="Local apps and Atlas tools">
-    <a class="card" href="http://atlas:3027/" data-protected-href="https://leads.drewbefree.com/" style="--card-accent:#00ff88;--card-glow:rgba(0,255,136,0.11);">
+    <a class="card" href="http://100.71.165.80:3027/" data-protected-href="https://leads.drewbefree.com/" style="--card-accent:#00ff88;--card-glow:rgba(0,255,136,0.11);">
       <div class="card-id">ATLAS_001 // LOCAL APP</div>
       <div class="card-name">LEAD DESK</div>
-      <div class="card-url">http://atlas:3027/</div>
+      <div class="card-url">http://100.71.165.80:3027/</div>
       <div class="card-desc">Morning lead review hub for Surf the Webb, pinned first because this is the thing you actually open.</div>
       <div class="signal" id="leadSignal" data-state="checking" aria-label="Lead Desk live state">
         <div class="signal-head"><span>Lead signal</span><span class="signal-state" id="leadSignalStatus">CHECKING</span></div>
@@ -210,6 +212,20 @@
       <div class="card-url">http://atlas/ecosystem/</div>
       <div class="card-desc">Full registry view for repos, dashboards, docs, services, sync links, and detailed project drawers.</div>
       <div class="tags"><span class="tag">Registry</span><span class="tag">Search</span><span class="tag">Deep View</span></div>
+    </a>
+    <a class="card" href="http://atlas/ecosystem/tree.html" data-protected-href="https://portal.drewbefree.com/ecosystem/tree.html" style="--card-accent:#8b5cf6;--card-glow:rgba(139,92,246,0.13);">
+      <div class="card-id">ATLAS_003B // TREE</div>
+      <div class="card-name">ECOSYSTEM TREE</div>
+      <div class="card-url">http://atlas/ecosystem/tree.html</div>
+      <div class="card-desc">Fast collapsible tree view for the ecosystem when you just need the right project, dashboard, repo, or domain link from your phone.</div>
+      <div class="tags"><span class="tag">Phone</span><span class="tag">Tree</span><span class="tag">Shortcut</span></div>
+    </a>
+    <a class="card" href="http://atlas/ecosystem/changelog.html" data-protected-href="https://portal.drewbefree.com/ecosystem/changelog.html" style="--card-accent:#38bdf8;--card-glow:rgba(56,189,248,0.13);">
+      <div class="card-id">ATLAS_003C // HISTORY</div>
+      <div class="card-name">PROJECT CHANGELOG</div>
+      <div class="card-url">http://atlas/ecosystem/changelog.html</div>
+      <div class="card-desc">Recent commit history and session-log dates across the local ecosystem, regenerated during session logoff.</div>
+      <div class="tags"><span class="tag">Changelog</span><span class="tag">Logoff</span><span class="tag">History</span></div>
     </a>
     <a class="card" href="http://atlas:3001/d/atlas-overview/poweredge-dashboard" data-protected-href="https://grafana.drewbefree.com/d/atlas-overview/poweredge-dashboard" style="--card-accent:#f59e0b;--card-glow:rgba(245,158,11,0.11);">
       <div class="card-id">ATLAS_004 // HEALTH</div>
@@ -240,10 +256,10 @@
       <div class="card-desc">Usage and cost tracking for local and hosted AI work, with quick visibility into current spend.</div>
       <div class="tags"><span class="tag">Tokens</span><span class="tag">Cost</span><span class="tag">AI</span></div>
     </a>
-    <a class="card" href="http://atlas:8095" data-protected-href="https://planning.drewbefree.com/" style="--card-accent:#c084fc;--card-glow:rgba(192,132,252,0.12);">
+    <a class="card" href="http://100.71.165.80:8095" data-protected-href="https://planning.drewbefree.com/" style="--card-accent:#c084fc;--card-glow:rgba(192,132,252,0.12);">
       <div class="card-id">ATLAS_007 // PLANNING</div>
       <div class="card-name">LEANTIME</div>
-      <div class="card-url">http://atlas:8095</div>
+      <div class="card-url">http://100.71.165.80:8095</div>
       <div class="card-desc">Project planning cockpit for repo work, milestones, backlog sync, and Atlas operating plans.</div>
       <div class="tags"><span class="tag">Projects</span><span class="tag">Backlog</span></div>
     </a>

@@ -115,4 +115,7 @@ $entry"
 done
 
 echo ""
+python3 "$SCRIPT_DIR/scripts/generate_project_changelog.py" --output "$SCRIPT_DIR/internal-portal/changelog.html"
+echo "✓ Project changelog regenerated: $SCRIPT_DIR/internal-portal/changelog.html"
+
 echo "✓ Session logs updated across all touched repositories"

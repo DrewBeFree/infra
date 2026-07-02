@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#6366f1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Ecosystem Tree">
+<title>Drew’s Project Ecosystem • Tree View</title>
+<style>
+:root {
+  --bg: #f8f9fc;
+  --panel: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --accent: #6366f1;
+  --border: #e5e7eb;
+  --green: #10b981;
+  --brown: #92400e;
+  --shadow: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.5;
+}
+header {
+  background: white;
+  border-bottom: 1px solid var(--border);
+  padding: 32px 24px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+h1 {
+  margin: 0 0 8px;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -.5px;
+}
+.subtitle {
+  color: var(--muted);
+  margin: 0;
+  font-size: 15px;
+}
+.controls {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+input[type="search"] {
+  flex: 1;
+  min-width: 260px;
+  padding: 10px 16px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 14px;
+  background: white;
+}
+button {
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: white;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all .1s ease;
+}
+button:hover { background: #f3f4f6; }
+
+.tree {
+  max-width: 1180px;
+  margin: 32px auto;
+  padding: 0 24px 80px;
+}
+.branch {
+  margin-left: 28px;
+  position: relative;
+}
+.branch::before {
+  content: '';
+  position: absolute;
+  left: -18px;
+  top: 28px;
+  bottom: 22px;
+  width: 2px;
+  background: #e5e7eb;
+}
+.details {
+  margin: 4px 0;
+}
+.summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  cursor: pointer;
+  user-select: none;
+  box-shadow: var(--shadow);
+  transition: all .15s ease;
+}
+.summary:hover {
+  border-color: #c7d2fe;
+  box-shadow: 0 10px 15px -3px rgb(99 102 241 / 0.1);
+}
+.summary::marker { content: ''; }
+.summary::before {
+  content: '▶';
+  font-size: 11px;
+  color: #9ca3af;
+  transition: transform .2s ease;
+  width: 14px;
+}
+.details[open] > .summary::before {
+  transform: rotate(90deg);
+}
+.node-label {
+  font-weight: 600;
+  font-size: 15px;
+  flex: 1;
+}
+.node-meta {
+  font-size: 12px;
+  color: var(--muted);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.leaf {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 20px;
+  margin: 4px 0 4px 42px;
+  background: white;
+  border: 1px solid var(--border);
+  border-left: 5px solid;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  transition: all .1s ease;
+  text-decoration: none;
+  color: inherit;
+}
+.leaf:hover {
+  transform: translateX(3px);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.08);
+}
+.status {
+  font-size: 11px;
+  padding: 1px 9px;
+  border-radius: 999px;
+  font-weight: 500;
+}
+.status.live { background: #d1fae5; color: #065f46; }
+.status.active { background: #e0e7ff; color: #3730a3; }
+.status.mvp { background: #fef3c7; color: #92400e; }
+.status.stale { background: #fef3c7; color: #92400e; }
+
+.legend {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  margin: 40px 0 20px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.dot.green { background: var(--green); }
+.dot.brown { background: var(--brown); }
+
+footer {
+  text-align: center;
+  padding: 40px 20px;
+  color: #9ca3af;
+  font-size: 12px;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div style="max-width:1180px;margin:0 auto;padding:0 24px;">
+    <h1>Drew’s Project Ecosystem</h1>
+    <p class="subtitle">Hierarchical view of every app, dashboard, repo, and service • June 2026</p>
+    <p class="subtitle"><a href="launcher.html">Launcher</a> · <a href="index.html">Full registry</a> · <a href="/ecosystem-tree.html">Permanent shortcut</a></p>
+
+    <div class="controls">
+      <input type="search" id="search" placeholder="Search projects, repos, or domains…">
+      <button onclick="expandAll()">Expand All</button>
+      <button onclick="collapseAll()">Collapse All</button>
+      <button onclick="filterActive()">Show Active Only</button>
+    </div>
+  </div>
+</header>
+
+<div class="tree">
+
+  <!-- Infrastructure -->
+  <details class="details" open>
+    <summary class="summary">
+      <span class="node-label">🖥️ Infrastructure</span>
+      <span class="node-meta">Atlas • Hermes • Firecrawl • homelab • infra</span>
+    </summary>
+    <div class="branch">
+
+      <details class="details">
+        <summary class="summary">
+          <span class="node-label">Atlas (Primary Server)</span>
+          <span class="node-meta">Dell PowerEdge • 10.0.0.145 • Tailscale 100.71.165.80</span>
+        </summary>
+        <div class="branch">
+          <a class="leaf" style="border-left-color:var(--green)" href="http://100.71.165.80:9119" data-protected-href="https://hermes.drewbefree.com/" target="_blank">
+            <span><strong>Hermes Agent</strong> — core AI runtime + 5 personas</span>
+            <span class="status live">LIVE</span>
+          </a>
+          <a class="leaf" style="border-left-color:var(--green)" href="https://github.com/DrewBeFree/ai-chat-history" target="_blank">
+            <span><strong>AI Chat History</strong> — 2,652 convos • 38k chunks • curated knowledge</span>
+            <span class="status active">ACTIVE</span>
+          </a>
+          <a class="leaf" style="border-left-color:var(--green)" href="http://127.0.0.1:3002" target="_blank">
+            <span><strong>Firecrawl (self-hosted)</strong> — 127.0.0.1:3002</span>
+            <span class="status live">LIVE</span>
+          </a>
+          <a class="leaf" style="border-left-color:var(--green)" href="http://100.71.165.80:3001" data-protected-href="https://grafana.drewbefree.com/" target="_blank">
+            <span><strong>Grafana + Prometheus</strong> — monitoring stack</span>
+            <span class="status live">LIVE</span>
+          </a>
+        </div>
+      </details>
+
+      <a class="leaf" style="border-left-color:var(--green)" href="https://github.com/DrewBeFree/homelab" target="_blank">
+        <span><strong>homelab</strong> repo</span>
+        <span class="status active">ACTIVE</span>
+      </a>
+      <a class="leaf" style="border-left-color:#92400e" href="https://github.com/DrewBeFree/infra" target="_blank">
+        <span><strong>infra</strong> repo (diverged)</span>
+        <span class="status stale">STALE</span>
+      </a>
+    </div>
+  </details>
+
+  <!-- Apps -->
+  <details class="details" open>
+    <summary class="summary">
+      <span class="node-label">📱 Apps</span>
+      <span class="node-meta">26 repositories under apps/</span>
+    </summary>
+    <div class="branch">
+
+      <a class="leaf" style="border-left-color:var(--green)" href="https://github.com/DrewBeFree/DrewBeFree" target="_blank">
+        <span><strong>DrewBeFree</strong> — main personal site</span>
+        <span class="status active">ACTIVE</span>
+      </a>
+      <a class="leaf" style="border-left-color:var(--green)" href="https://github.com/DrewBeFree/DrewBeFree-Command-Center" target="_blank">
+        <span><strong>drewbefree-command-center</strong> — Poker Night, U-Haul, Linksy, Daily Planner, RV, Soccer</span>
+        <span class="status active">ACTIVE</span>
+      </a>
+      <a class="leaf" style="border-left-color:var(--green)" href="https://github.com/DrewBeFree/trading-scanner" target="_blank">
+        <span><strong>trading-scanner</strong> — aggressive 200 + crypto lane + Farley</span>
+        <span class="status active">ACTIVE</span>
+      </a>
+      <a class="leaf" style="border-left-color:var(--green)" href="https://github.com/DrewBeFree/llm-debate-union" target="_blank">
+        <span><strong>llm-debate-union</strong> — multi-model debate platform</span>
+        <span class="status mvp">MVP</span>
+      </a>
+
+      <details class="details">
+        <summary class="summary"><span class="node-label">Other Apps (smaller / personal tools)</span></summary>
+        <div class="branch">
+          <a class="leaf" style="border-left-color:#10b981" href="https://github.com/DrewBeFree/adhd-snap" target="_blank"><span>adhd-snap</span></a>
+          <a class="leaf" style="border-left-color:#10b981" href="https://github.com/DrewBeFree/daily-planner" target="_blank"><span>daily-planner</span></a>
+          <a class="leaf" style="border-left-color:#10b981" href="https://github.com/DrewBeFree/rv-maintenance" target="_blank"><span>rv-maintenance</span></a>
+          <a class="leaf" style="border-left-color:#10b981" href="https://github.com/DrewBeFree/soccer-pickup" target="_blank"><span>soccer-pickup</span></a>
+          <a class="leaf" style="border-left-color:#10b981" href="https://github.com/DrewBeFree/uhaul-load-planner" target="_blank"><span>uhaul-load-planner</span></a>
+          <a class="leaf" style="border-left-color:#10b981" href="https://github.com/DrewBeFree/poker" target="_blank"><span>poker</span></a>
+          <a class="leaf" style="border-left-color:#10b981" href="https://github.com/DrewBeFree/golf" target="_blank"><span>golf</span></a>
+          <a class="leaf" style="border-left-color:#10b981" href="https://github.com/DrewBeFree/recipes" target="_blank"><span>recipes</span></a>
+          <a class="leaf" style="border-left-color:#10b981" href="https://github.com/DrewBeFree/recap-viewer" target="_blank"><span>recap-viewer</span></a>
+          <a class="leaf" style="border-left-color:#10b981" href="https://github.com/DrewBeFree/ai-dog-trainer" target="_blank"><span>ai-dog-trainer</span></a>
+          <a class="leaf" style="border-left-color:#10b981" href="https://github.com/DrewBeFree/yes" target="_blank"><span>yes</span></a>
+        </div>
+      </details>
+    </div>
+  </details>
+
+  <!-- Agents -->
+  <details class="details">
+    <summary class="summary">
+      <span class="node-label">🤖 Agents</span>
+      <span class="node-meta">bob • answering-agent • lead-gen-agent • recap-agents</span>
+    </summary>
+    <div class="branch">
+      <a class="leaf" style="border-left-color:var(--green)" href="https://github.com/DrewBeFree/bob" target="_blank">
+        <span><strong>Bob (Slack Bot)</strong> — llama3.2:1b on Atlas</span>
+        <span class="status live">LIVE</span>
+      </a>
+      <a class="leaf" style="border-left-color:#10b981" href="https://github.com/DrewBeFree/answering-agent" target="_blank"><span>answering-agent</span></a>
+      <a class="leaf" style="border-left-color:#10b981" href="https://github.com/DrewBeFree/lead-gen-agent" target="_blank"><span>lead-gen-agent</span></a>
+      <a class="leaf" style="border-left-color:#10b981" href="https://github.com/DrewBeFree/recap-agents" target="_blank"><span>recap-agents</span></a>
+    </div>
+  </details>
+
+  <!-- Businesses & Sites -->
+  <details class="details">
+    <summary class="summary">
+      <span class="node-label">🏢 Businesses &amp; Sites</span>
+      <span class="node-meta">Surf The Webb • Kybernet • DW Solutions</span>
+    </summary>
+    <div class="branch">
+      <a class="leaf" style="border-left-color:var(--green)" href="https://surfthewebb.com" target="_blank">
+        <span><strong>Surf The Webb</strong> — monday.com consulting</span>
+        <span class="status live">LIVE</span>
+      </a>
+      <a class="leaf" style="border-left-color:var(--green)" href="https://kybernet.tech" target="_blank">
+        <span><strong>Kybernet</strong> — network + on-prem AI consulting</span>
+        <span class="status active">ACTIVE</span>
+      </a>
+      <a class="leaf" style="border-left-color:#10b981" href="#" target="_blank"><span>DW Solutions</span> — residential IT (Marietta)</a>
+      <a class="leaf" style="border-left-color:#10b981" href="https://dwebbsolutions.com" target="_blank"><span>dwebbsolutions.com</span></a>
+      <a class="leaf" style="border-left-color:#10b981" href="https://kybernet.tech" target="_blank"><span>kybernet.tech</span></a>
+      <a class="leaf" style="border-left-color:#10b981" href="#" target="_blank"><span>photography site</span></a>
+      <a class="leaf" style="border-left-color:#10b981" href="https://github.com/DrewBeFree/luke-codex-guide" target="_blank"><span>luke-codex-guide</span></a>
+    </div>
+  </details>
+
+  <!-- Dashboards & Monitoring -->
+  <details class="details">
+    <summary class="summary">
+      <span class="node-label">📊 Dashboards &amp; Monitoring</span>
+      <span class="node-meta">Trading Scanner • Grafana • Hermes UI • PROJECT_DASHBOARD</span>
+    </summary>
+    <div class="branch">
+      <a class="leaf" style="border-left-color:var(--green)" href="https://scanner.drewbefree.com" target="_blank">
+        <span><strong>Trading Scanner Dashboard</strong></span>
+        <span class="status live">LIVE</span>
+      </a>
+      <a class="leaf" style="border-left-color:var(--green)" href="http://100.71.165.80:3001" data-protected-href="https://grafana.drewbefree.com/" target="_blank">
+        <span><strong>Grafana</strong> — :3001</span>
+        <span class="status live">LIVE</span>
+      </a>
+      <a class="leaf" style="border-left-color:var(--green)" href="http://100.71.165.80:9119" data-protected-href="https://hermes.drewbefree.com/" target="_blank">
+        <span><strong>Hermes WebUI</strong> — :9119</span>
+        <span class="status live">LIVE</span>
+      </a>
+      <a class="leaf" style="border-left-color:var(--green)" href="http://100.71.165.80:8123/PROJECT_DASHBOARD.html" data-protected-href="https://portal.drewbefree.com/status/" target="_blank">
+        <span><strong>PROJECT_DASHBOARD.html</strong></span>
+        <span class="status active">ACTIVE</span>
+      </a>
+      <a class="leaf" style="border-left-color:var(--green)" href="http://atlas/ecosystem/tree.html" data-protected-href="https://portal.drewbefree.com/ecosystem/tree.html" target="_blank">
+        <span><strong>ecosystem-tree.html</strong> (this file)</span>
+        <span class="status active">ACTIVE</span>
+      </a>
+    </div>
+  </details>
+
+  <!-- Accounts / Domains -->
+  <details class="details">
+    <summary class="summary">
+      <span class="node-label">🔑 Accounts &amp; Domains</span>
+      <span class="node-meta">drewbefree.com • surfthewebb.com • kybernet.tech</span>
+    </summary>
+    <div class="branch">
+      <a class="leaf" style="border-left-color:var(--green)" href="https://drewbefree.com" target="_blank">
+        <span><strong>drewbefree.com</strong></span>
+        <span class="status live">LIVE</span>
+      </a>
+      <a class="leaf" style="border-left-color:var(--green)" href="https://surfthewebb.com" target="_blank">
+        <span><strong>surfthewebb.com</strong> (monday.com consulting)</span>
+        <span class="status live">LIVE</span>
+      </a>
+      <a class="leaf" style="border-left-color:#10b981" href="https://kybernet.tech" target="_blank"><span>kybernet.tech</span></a>
+    </div>
+  </details>
+
+</div>
+
+<div class="legend">
+  <span><span class="dot green"></span> Green border = recent / active (last ~45 days)</span>
+  <span><span class="dot brown"></span> Brown border = stale / needs attention</span>
+</div>
+
+<footer>
+  Source of truth: GitHub + local repos on Atlas • Updated June 2026
+</footer>
+
+<script>
+if (window.location.protocol === 'https:' && /(^|\.)drewbefree\.com$/i.test(window.location.hostname)) {
+  document.querySelectorAll('[data-protected-href]').forEach(link => {
+    link.dataset.internalHref = link.getAttribute('href');
+    link.href = link.dataset.protectedHref;
+  });
+}
+
+const searchInput = document.getElementById('search');
+
+searchInput.addEventListener('input', () => {
+  const term = searchInput.value.toLowerCase().trim();
+  document.querySelectorAll('.leaf').forEach(leaf => {
+    const text = leaf.textContent.toLowerCase();
+    leaf.style.display = text.includes(term) ? '' : 'none';
+  });
+});
+
+function expandAll() {
+  document.querySelectorAll('details').forEach(d => d.open = true);
+}
+function collapseAll() {
+  document.querySelectorAll('details').forEach(d => d.open = false);
+}
+function filterActive() {
+  document.querySelectorAll('.leaf').forEach(leaf => {
+    const isStale = leaf.style.borderLeftColor.includes('146');
+    leaf.style.display = isStale ? 'none' : '';
+  });
+}
+</script>
+
+</body>
+</html>

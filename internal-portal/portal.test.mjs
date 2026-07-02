@@ -7,6 +7,8 @@ import test from "node:test";
 const registryPath = new URL("../ecosystem.json", import.meta.url);
 const indexPath = new URL("./index.html", import.meta.url);
 const launcherPath = new URL("./launcher.html", import.meta.url);
+const treePath = new URL("./tree.html", import.meta.url);
+const changelogPath = new URL("./changelog.html", import.meta.url);
 const appPath = new URL("./app.js", import.meta.url);
 const stylePath = new URL("./style.css", import.meta.url);
 const syncLinksPath = new URL("./sync-links.json", import.meta.url);
@@ -17,31 +19,39 @@ const dogTrainerIconPath = new URL("./assets/app-icons/ai-dog-trainer.svg", impo
 const commandCenterPath = new URL("../../apps/drewbefree-command-center/index.html", import.meta.url);
 
 const requiredRepos = [
+  "DrewBeFree",
   "adhd-snap",
+  "ai-chat-history",
   "ai-dog-trainer",
   "answering-agent",
   "bob",
   "claude-config",
   "daily-planner",
-  "DrewBeFree",
   "drewbefree-command-center",
   "dwebbsolutions",
+  "firecrawl",
   "golf",
+  "hermes-memory-archive",
   "homelab",
   "infra",
   "interactive-setup",
   "kybernet-tech",
   "lead-gen-agent",
   "llm-debate-union",
+  "luke-codex-guide",
+  "personas-claude",
   "photography",
   "poker",
   "recap-agents",
   "recap-viewer",
   "recipes",
   "rv-maintenance",
+  "selling-shit",
   "soccer-pickup",
   "surfthewebb",
-  "uhaul-load-planner"
+  "trading-scanner",
+  "uhaul-load-planner",
+  "yes"
 ];
 
 const visibilityLevels = new Set(["public", "private", "sensitive"]);
@@ -157,10 +167,10 @@ test("Lead Gen Agent exposes the Lead Desk Hub as a live ecosystem link", async 
 
   assert.ok(leadGen);
   assert.equal(leadGen.category, "agent");
-  assert.ok(leadGen.liveUrls.includes("http://100.117.87.57:3027"));
-  assert.ok(leadGen.liveUrls.includes("http://127.0.0.1:3027"));
-  assert.ok(leadGen.deployTargets.some((target) => target.type === "fastapi-local" && target.url === "http://100.117.87.57:8017"));
-  assert.ok(leadGen.deployTargets.some((target) => target.type === "nextjs-local" && target.url === "http://100.117.87.57:3027"));
+  assert.ok(leadGen.liveUrls.includes("http://100.71.165.80:3027"));
+  assert.ok(leadGen.liveUrls.includes("http://100.71.165.80:3027"));
+  assert.ok(leadGen.deployTargets.some((target) => target.type === "fastapi-local" && target.url === "http://100.71.165.80:8017"));
+  assert.ok(leadGen.deployTargets.some((target) => target.type === "nextjs-local" && target.url === "http://100.71.165.80:3027"));
 });
 
 test("UHaul Planner is sensitive and removed from the public Command Center", async () => {
@@ -198,11 +208,11 @@ test("protected Access routes cover the local operator surfaces", async () => {
   const expectedRoutes = [
     ["portal", "https://portal.drewbefree.com/ecosystem/", "http://127.0.0.1/ecosystem/", "http://atlas/ecosystem/"],
     ["wiki", "https://wiki.drewbefree.com/wiki/", "http://127.0.0.1/wiki/", "http://atlas/wiki/"],
-    ["lead-desk", "https://leads.drewbefree.com/", "http://127.0.0.1:3027", "http://atlas:3027/"],
+    ["lead-desk", "https://leads.drewbefree.com/", "http://100.71.165.80:3027", "http://100.71.165.80:3027/"],
     ["grafana", "https://grafana.drewbefree.com/", "http://127.0.0.1:3001", "http://atlas:3001/"],
     ["prometheus", "https://prometheus.drewbefree.com/", "http://127.0.0.1:9090", "http://atlas:9090/"],
     ["ai-token-dashboard", "https://tokens.drewbefree.com/", "http://127.0.0.1:7474", "http://atlas:7474/"],
-    ["leantime", "https://planning.drewbefree.com/", "http://127.0.0.1:8095", "http://atlas:8095/"],
+    ["leantime", "https://planning.drewbefree.com/", "http://127.0.0.1:8095", "http://100.71.165.80:8095/"],
     ["hermes", "https://hermes.drewbefree.com/", "http://100.71.165.80:9119", "http://100.71.165.80:9119/"]
   ];
 
@@ -216,10 +226,10 @@ test("protected Access routes cover the local operator surfaces", async () => {
   }
 
   assert.deepEqual(routes.get("lead-desk").aliases, [
-    "http://100.117.87.57:3027",
-    "http://10.0.0.91:3027",
-    "http://127.0.0.1:3027",
-    "http://atlas:3027/"
+    "http://100.71.165.80:3027",
+    "http://100.71.165.80:3027/",
+    "http://100.71.165.80:3027",
+    "http://10.0.0.91:3027"
   ]);
   assert.deepEqual(routes.get("grafana").aliases, [
     "http://atlas:3001",
@@ -234,8 +244,7 @@ test("protected Access routes cover the local operator surfaces", async () => {
   ]);
   assert.deepEqual(routes.get("leantime").aliases, [
     "http://100.71.165.80:8095",
-    "http://atlas:8095",
-    "http://atlas:8095/",
+    "http://100.71.165.80:8095/",
     "http://127.0.0.1:8095"
   ]);
   assert.deepEqual(routes.get("hermes").aliases, [
@@ -279,7 +288,7 @@ test("Atlas / PowerEdge Monitoring links to Grafana and exposes docs", async () 
   assert.ok(dashboard.liveUrls.includes("http://atlas:9090"));
   assert.ok(dashboard.docs.some((doc) => doc.label === "Ollama exporter README"));
   assert.ok(dashboard.docs.some((doc) => doc.label === "Atlas monitoring deployment guide"));
-  assert.ok(dashboard.docs.some((doc) => doc.url.endsWith("/docs/528/atlas-overview.json")));
+  assert.ok(dashboard.docs.some((doc) => doc.url === "http://atlas/wiki/infrastructure/services/"));
   assert.ok(dashboard.deployTargets.some((target) => target.type === "docker-compose" && target.host === "atlas"));
   assert.equal(dashboard.statusControl.state, "live");
   assert.equal(docs.has("atlas-poweredge-monitoring-ollama-exporter-readme"), false);
@@ -293,6 +302,10 @@ test("portal deploy installs Atlas home redirect while preserving the old status
 
   assert.match(deploy, /INTERNAL_PORTAL_INSTALL_HOME_REDIRECT/);
   assert.match(deploy, /url=\/ecosystem\/launcher\.html/);
+  assert.match(deploy, /ecosystem-tree\.html/);
+  assert.match(deploy, /url=\/ecosystem\/tree\.html/);
+  assert.match(deploy, /generate_project_changelog\.py/);
+  assert.match(deploy, /changelog\.html/);
   assert.match(deploy, /STATUS_TARGET/);
   assert.ok(statusDashboard.liveUrls.includes("http://atlas/status/"));
 });
@@ -341,7 +354,7 @@ test("portal static files are present and load the canonical registry", async ()
   assert.match(index, /data-protected-route="leantime"/);
   assert.match(index, /data-protected-route="hermes"/);
   assert.match(index, /networkStatusLabel/);
-  assert.match(index, /href="http:\/\/atlas:3027\/"/);
+  assert.match(index, /href="http:\/\/100\.71\.165\.80:3027\/"/);
   assert.match(index, /AI Dashboard/);
   assert.match(index, /Hermes/);
   assert.match(index, /http:\/\/100\.71\.165\.80:9119/);
@@ -397,7 +410,7 @@ test("portal static files are present and load the canonical registry", async ()
   assert.match(app, /Hermes/);
   assert.match(app, /Lead Desk/);
   assert.match(app, /bindPriorityLinks/);
-  assert.match(app, /127\.0\.0\.1:8017\/api\/dashboard/);
+  assert.match(app, /100\.71\.165\.80:8017\/api\/dashboard/);
   assert.match(app, /high_fit/);
   assert.match(app, /matchesItemFilters/);
   assert.match(app, /renderCatalogRow/);
@@ -430,19 +443,23 @@ test("private Command Center launcher makes Atlas local tools first-class", asyn
   assert.match(launcher, /DrewBeFree \/\/ Private Command Center/);
   assert.match(launcher, /ATLAS LOCAL FIRST/);
   assert.match(launcher, /LOCAL APPS & ATLAS TOOLS/);
-  assert.match(launcher, /href="http:\/\/atlas:3027\/"/);
+  assert.match(launcher, /href="http:\/\/100\.71\.165\.80:3027\/"/);
   assert.match(launcher, /data-protected-href="https:\/\/leads\.drewbefree\.com\/"/);
   assert.match(launcher, /href="http:\/\/atlas\/wiki\/"/);
   assert.match(launcher, /data-protected-href="https:\/\/wiki\.drewbefree\.com\/wiki\/"/);
   assert.match(launcher, /href="http:\/\/atlas\/ecosystem\/"/);
   assert.match(launcher, /data-protected-href="https:\/\/portal\.drewbefree\.com\/ecosystem\/"/);
+  assert.match(launcher, /href="http:\/\/atlas\/ecosystem\/tree\.html"/);
+  assert.match(launcher, /data-protected-href="https:\/\/portal\.drewbefree\.com\/ecosystem\/tree\.html"/);
+  assert.match(launcher, /href="http:\/\/atlas\/ecosystem\/changelog\.html"/);
+  assert.match(launcher, /data-protected-href="https:\/\/portal\.drewbefree\.com\/ecosystem\/changelog\.html"/);
   assert.match(launcher, /href="http:\/\/atlas:3001\/d\/atlas-overview\/poweredge-dashboard"/);
   assert.match(launcher, /data-protected-href="https:\/\/grafana\.drewbefree\.com\/d\/atlas-overview\/poweredge-dashboard"/);
   assert.match(launcher, /href="http:\/\/atlas:9090"/);
   assert.match(launcher, /data-protected-href="https:\/\/prometheus\.drewbefree\.com\/"/);
   assert.match(launcher, /href="http:\/\/atlas:7474"/);
   assert.match(launcher, /data-protected-href="https:\/\/tokens\.drewbefree\.com\/"/);
-  assert.match(launcher, /href="http:\/\/atlas:8095"/);
+  assert.match(launcher, /href="http:\/\/100\.71\.165\.80:8095"/);
   assert.match(launcher, /data-protected-href="https:\/\/planning\.drewbefree\.com\/"/);
   assert.match(launcher, /href="http:\/\/100\.71\.165\.80:9119"/);
   assert.match(launcher, /data-protected-href="https:\/\/hermes\.drewbefree\.com\/"/);
@@ -452,6 +469,41 @@ test("private Command Center launcher makes Atlas local tools first-class", asyn
   assert.match(launcher, /data-protected-href="https:\/\/portal\.drewbefree\.com\/status\/"/);
   assert.match(launcher, /function isProtectedHostedMode/);
   assert.match(launcher, /querySelectorAll\("\[data-protected-href\]"\)/);
+});
+
+test("ecosystem tree is a hosted phone-friendly shortcut", async () => {
+  assert.ok(existsSync(treePath), "tree.html missing");
+
+  const tree = await readFile(treePath, "utf8");
+
+  assert.match(tree, /Drew’s Project Ecosystem/);
+  assert.match(tree, /apple-mobile-web-app-title/);
+  assert.match(tree, /href="launcher\.html"/);
+  assert.match(tree, /href="\/ecosystem-tree\.html"/);
+  assert.match(tree, /data-protected-href="https:\/\/portal\.drewbefree\.com\/ecosystem\/tree\.html"/);
+  assert.match(tree, /data-protected-href="https:\/\/grafana\.drewbefree\.com\/"/);
+  assert.match(tree, /data-protected-href="https:\/\/hermes\.drewbefree\.com\/"/);
+  assert.match(tree, /https:\/\/kybernet\.tech/);
+  assert.doesNotMatch(tree, /kybernet-tech\.com/);
+});
+
+test("project changelog page is generated for phone review", async () => {
+  assert.ok(existsSync(changelogPath), "changelog.html missing");
+
+  const changelog = await readFile(changelogPath, "utf8");
+
+  assert.match(changelog, /Project Changelog/);
+  assert.match(changelog, /Compact rows from local git metadata and SESSION_LOG headings/);
+  assert.match(changelog, /Latest changes across local repos/);
+  assert.match(changelog, /project-list/);
+  assert.match(changelog, /project-row/);
+  assert.match(changelog, /detail-panel/);
+  assert.match(changelog, /<details class="project-row"/);
+  assert.match(changelog, /Launcher/);
+  assert.match(changelog, /Registry/);
+  assert.match(changelog, /Tree/);
+  assert.match(changelog, /Projects/);
+  assert.match(changelog, /Local git repos/);
 });
 
 test("private Command Center launcher includes live state indicators", async () => {
@@ -653,7 +705,7 @@ test("private launcher signal endpoints follow the current Atlas hostname", asyn
     window: {
       location: {
         protocol: "http:",
-        hostname: "100.117.87.57"
+        hostname: "100.71.165.80"
       }
     }
   };
@@ -661,8 +713,8 @@ test("private launcher signal endpoints follow the current Atlas hostname", asyn
   sandbox.window.window = sandbox.window;
   vm.runInNewContext(`${scriptMatch[1]}\nwindow.__urls = launcherSignalUrls();`, sandbox, { filename: "internal-portal/launcher.html" });
 
-  assert.equal(sandbox.window.__urls.leadDashboardEndpoint, "http://100.117.87.57:8017/api/dashboard");
-  assert.equal(sandbox.window.__urls.grafanaHealthEndpoint, "http://100.117.87.57:3001/api/health");
+  assert.equal(sandbox.window.__urls.leadDashboardEndpoint, "http://100.71.165.80:8017/api/dashboard");
+  assert.equal(sandbox.window.__urls.grafanaHealthEndpoint, "http://100.71.165.80:3001/api/health");
 });
 
 test("private launcher hosted signal endpoints stay same-origin for Cloudflare Access", async () => {
@@ -749,11 +801,11 @@ test("protected hosted links preserve route suffixes and normalize slash variant
     "https://portal.drewbefree.com/ecosystem/"
   );
   assert.equal(
-    app.protectedUrlFor("http://atlas:8095"),
+    app.protectedUrlFor("http://100.71.165.80:8095"),
     "https://planning.drewbefree.com/"
   );
   assert.equal(
-    app.protectedUrlFor("http://atlas:8095/projects/board?x=1#y"),
+    app.protectedUrlFor("http://100.71.165.80:8095/projects/board?x=1#y"),
     "https://planning.drewbefree.com/projects/board?x=1#y"
   );
   assert.equal(
@@ -761,7 +813,7 @@ test("protected hosted links preserve route suffixes and normalize slash variant
     "https://hermes.drewbefree.com/metrics?format=text#top"
   );
   assert.equal(
-    app.protectedUrlFor("http://100.117.87.57:3027/projects/showProject/7"),
+    app.protectedUrlFor("http://100.71.165.80:3027/projects/showProject/7"),
     "https://leads.drewbefree.com/projects/showProject/7"
   );
   assert.equal(
@@ -821,7 +873,7 @@ test("sync drawer Leantime project URLs are resolved through protected hosting",
       "lead-gen-agent": {
         project: "Lead Gen Agent",
         taskCount: 1,
-        leantimeProjectUrl: "http://atlas:8095/projects/showProject/7",
+        leantimeProjectUrl: "http://100.71.165.80:8095/projects/showProject/7",
         githubProjectUrl: "https://github.com/orgs/DrewBeFree/projects/1",
         githubRepoUrl: "https://github.com/DrewBeFree/lead-gen-agent",
         tasks: []

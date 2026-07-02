@@ -41,14 +41,27 @@ location /ecosystem/ {
 
 Then open `http://atlas/`, `http://atlas/ecosystem/launcher.html`, or `http://atlas/ecosystem/` from a Tailscale-connected device.
 
+Direct ecosystem-tree shortcuts:
+
+- Hosted phone URL: `https://portal.drewbefree.com/ecosystem/tree.html`
+- Stable hosted alias: `https://portal.drewbefree.com/ecosystem-tree.html` or `https://portal.drewbefree.com/ecosystem-tree/`
+- Tailscale fallback: `http://atlas/ecosystem/tree.html` or `http://atlas/ecosystem-tree.html`
+
+Project changelog shortcuts:
+
+- Hosted phone URL: `https://portal.drewbefree.com/ecosystem/changelog.html`
+- Tailscale fallback: `http://atlas/ecosystem/changelog.html`
+- Generator: `python3 scripts/generate_project_changelog.py --output internal-portal/changelog.html`
+- Logoff hook: `./update-session-logs.sh ...` regenerates `internal-portal/changelog.html` after updating touched repo session logs.
+
 ## Priority links
 
 The first viewport includes priority access tiles for:
 
-- Lead Desk: `http://100.117.87.57:3027`
+- Lead Desk: `http://100.71.165.80:3027`
 - AI Dashboard / Grafana: `http://atlas:3001/d/atlas-overview/poweredge-dashboard`
 - AI Token Dashboard: `http://atlas:7474`
-- Leantime: `http://atlas:8095`
+- Leantime: `http://100.71.165.80:8095`
 - Hermes: `http://100.71.165.80:9119`, a Tailscale-only user-level nginx proxy with Basic Auth.
 
 On mobile, the navigator is an off-canvas sidebar opened by the fixed menu button. Priority links remain visible above filters so operational surfaces are not buried in the directory.
