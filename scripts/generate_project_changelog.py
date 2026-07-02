@@ -164,7 +164,8 @@ def render(rows: list[dict[str, Any]], output: Path, limit: int) -> None:
         return f'<a href="{html.escape(url, quote=True)}" target="_blank" rel="noreferrer">{html.escape(label)}</a>'
 
     project_rows = []
-    for row in rows:
+    project_templates = []
+    for idx, row in enumerate(rows):
         commits_html = "".join(
             f"""
             <li>
@@ -180,33 +181,37 @@ def render(rows: list[dict[str, Any]], output: Path, limit: int) -> None:
         row_date = latest_date.split()[0] if latest_commit else "—"
         latest_subject = latest_commit["subject"] if latest_commit else "No local git history"
         live = " ".join(link(url, "open") for url in row["live_urls"][:2])
+        detail_id = f"project-detail-{idx}"
         project_rows.append(
             f"""
-            <details class="project-row" data-status="{html.escape(row['status'])}">
-              <summary>
-                <span class="name">{html.escape(row['name'])}</span>
-                <span class="meta">{html.escape(row['kind'])} · {html.escape(row['visibility'])}</span>
-                <time>{html.escape(row_date)}</time>
-                <span class="subject">{html.escape(latest_subject)}</span>
-                <span class="status {html.escape(row['status'].replace(' ', '-'))}">{html.escape(row['status'])}</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">{html.escape(row['summary'])}</p>
-                <p class="links">{link(row['github_url'], 'GitHub')} {live}</p>
-                <p class="path">{html.escape(row['path'])}</p>
-                {f'<p class="error">{html.escape(row["error"])}</p>' if row['error'] else ''}
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul>{commits_html}</ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills">{logs_html or '<span>None found</span>'}</div>
-                  </section>
-                </div>
+            <button class="project-row" type="button" data-detail-id="{detail_id}" data-status="{html.escape(row['status'])}">
+              <span class="name">{html.escape(row['name'])}</span>
+              <time>{html.escape(row_date)}</time>
+              <span class="status {html.escape(row['status'].replace(' ', '-'))}">{html.escape(row['status'])}</span>
+            </button>
+            """
+        )
+        project_templates.append(
+            f"""
+            <template id="{detail_id}">
+              <p class="eyebrow">{html.escape(row['kind'])} · {html.escape(row['visibility'])}</p>
+              <h2>{html.escape(row['name'])}</h2>
+              <p class="summary-text">{html.escape(row['summary'])}</p>
+              <p class="latest-subject"><strong>Latest:</strong> {html.escape(latest_date)} · {html.escape(latest_subject)}</p>
+              <p class="links">{link(row['github_url'], 'GitHub')} {live}</p>
+              <p class="path">{html.escape(row['path'])}</p>
+              {f'<p class="error">{html.escape(row["error"])}</p>' if row['error'] else ''}
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul>{commits_html}</ul>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills">{logs_html or '<span>None found</span>'}</div>
+                </section>
               </div>
-            </details>
+            </template>
             """
         )
 
@@ -242,21 +247,23 @@ h1 {{ margin:0; font-size:clamp(1.35rem,2.6vw,2.25rem); letter-spacing:-0.05em; 
 .stat strong {{ display:block; font-size:1.08rem; line-height:1; }}
 .latest {{ margin:8px 0 10px; }}
 .latest summary {{ cursor:pointer; padding:5px 9px; color:var(--muted); text-transform:uppercase; letter-spacing:.16em; font-size:.64rem; }}
-.latest ul,.project-row ul {{ list-style:none; padding:0; margin:0; }}
-.latest li,.project-row li {{ display:grid; grid-template-columns:145px minmax(0,1fr); gap:10px; padding:7px 12px; border-top:1px solid rgba(127,179,197,.14); }}
+.latest ul,.drawer ul {{ list-style:none; padding:0; margin:0; }}
+.latest li,.drawer li {{ display:grid; grid-template-columns:145px minmax(0,1fr); gap:10px; padding:7px 0; border-top:1px solid rgba(127,179,197,.14); }}
 time {{ color:var(--muted); font-variant-numeric:tabular-nums; white-space:nowrap; }}
 .project-list {{ display:grid; grid-template-columns:repeat(auto-fit,minmax(285px,1fr)); gap:3px; align-items:start; }}
-.project-row summary {{ display:grid; grid-template-columns:minmax(0,1fr) 82px 58px; gap:6px; align-items:center; min-height:24px; padding:2px 7px; cursor:pointer; }}
-.project-row summary::marker {{ color:var(--accent); }}
-.project-row[open] {{ border-color:rgba(0,212,255,.38); }}
+.project-row {{ display:grid; grid-template-columns:minmax(0,1fr) 82px 58px; gap:6px; align-items:center; min-height:24px; padding:2px 7px; cursor:pointer; color:inherit; font:inherit; text-align:left; width:100%; }}
+.project-row:hover,.project-row.is-active {{ border-color:rgba(0,212,255,.5); background:rgba(13,27,37,.96); }}
 .name {{ font-weight:700; color:#fff; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }}
 .meta,.subject {{ display:none; }}
 .status {{ justify-self:end; white-space:nowrap; border:1px solid var(--border); border-radius:999px; padding:1px 5px; color:var(--muted); text-transform:uppercase; font-size:.52rem; }}
 .status.clean {{ color:var(--ok); border-color:rgba(0,255,136,.34); }}
 .status.dirty {{ color:var(--warn); border-color:rgba(245,158,11,.4); }}
 .status.error {{ color:var(--bad); border-color:rgba(255,107,53,.42); }}
-.detail-panel {{ border-top:1px solid rgba(127,179,197,.14); padding:9px 10px; background:rgba(5,10,14,.28); }}
-.summary-text {{ margin:.2rem 0 .5rem; color:#bdd5df; }}
+.drawer-backdrop {{ position:fixed; inset:0; background:rgba(0,0,0,.48); opacity:0; pointer-events:none; transition:opacity .18s ease; z-index:20; }}
+.drawer {{ position:fixed; top:0; right:0; width:min(560px,92vw); height:100vh; overflow:auto; background:rgba(10,21,29,.98); border-left:1px solid rgba(0,212,255,.35); box-shadow:-20px 0 60px rgba(0,0,0,.5); transform:translateX(102%); transition:transform .2s ease; z-index:21; padding:18px; }}
+.drawer.is-open,.drawer-backdrop.is-open {{ transform:translateX(0); opacity:1; pointer-events:auto; }}
+.drawer-close {{ float:right; border:1px solid var(--border); background:#071015; color:var(--text); border-radius:999px; padding:5px 10px; cursor:pointer; }}
+.summary-text,.latest-subject {{ margin:.2rem 0 .5rem; color:#bdd5df; }}
 .links {{ display:flex; flex-wrap:wrap; gap:10px; margin:.35rem 0; }}
 .detail-grid {{ display:grid; grid-template-columns:minmax(0,1.5fr) minmax(240px,.8fr); gap:18px; }}
 h3 {{ margin:8px 0 6px; color:var(--muted); font-size:.68rem; letter-spacing:.18em; text-transform:uppercase; }}
@@ -266,10 +273,10 @@ small {{ display:block; color:var(--dim); margin-top:2px; }}
 .session-pills span {{ border:1px solid rgba(0,212,255,.28); color:var(--muted); border-radius:999px; padding:3px 8px; font-size:.72rem; }}
 .error {{ color:var(--bad); }}
 @media (max-width:920px) {{
-  header,.latest li,.project-row li,.detail-grid {{ grid-template-columns:1fr; }}
+  header,.latest li,.drawer li,.detail-grid {{ grid-template-columns:1fr; }}
   .stats {{ grid-template-columns:repeat(2,1fr); }}
   .project-list {{ grid-template-columns:1fr; }}
-  .project-row summary {{ grid-template-columns:minmax(0,1fr) 88px 62px; }}
+  .project-row {{ grid-template-columns:minmax(0,1fr) 82px 58px; }}
 }}
 </style>
 </head>
@@ -296,6 +303,40 @@ small {{ display:block; color:var(--dim); margin-top:2px; }}
 <section class="project-list" aria-label="Project changelog rows">
 {''.join(project_rows)}
 </section>
+{''.join(project_templates)}
+<div id="drawerBackdrop" class="drawer-backdrop" hidden></div>
+<aside id="projectDrawer" class="drawer" aria-hidden="true" aria-label="Project changelog details">
+  <button id="drawerClose" class="drawer-close" type="button">Close</button>
+  <div id="drawerContent"></div>
+</aside>
+<script>
+const drawer = document.getElementById('projectDrawer');
+const drawerContent = document.getElementById('drawerContent');
+const drawerBackdrop = document.getElementById('drawerBackdrop');
+const drawerClose = document.getElementById('drawerClose');
+function closeDrawer() {{
+  drawer.classList.remove('is-open');
+  drawerBackdrop.classList.remove('is-open');
+  drawer.setAttribute('aria-hidden', 'true');
+  drawerBackdrop.hidden = true;
+  document.querySelectorAll('.project-row.is-active').forEach((row) => row.classList.remove('is-active'));
+}}
+function openDrawer(button) {{
+  const template = document.getElementById(button.dataset.detailId);
+  if (!template) return;
+  drawerContent.replaceChildren(template.content.cloneNode(true));
+  document.querySelectorAll('.project-row.is-active').forEach((row) => row.classList.remove('is-active'));
+  button.classList.add('is-active');
+  drawerBackdrop.hidden = false;
+  drawer.classList.add('is-open');
+  drawerBackdrop.classList.add('is-open');
+  drawer.setAttribute('aria-hidden', 'false');
+}}
+document.querySelectorAll('.project-row').forEach((button) => button.addEventListener('click', () => openDrawer(button)));
+drawerClose.addEventListener('click', closeDrawer);
+drawerBackdrop.addEventListener('click', closeDrawer);
+document.addEventListener('keydown', (event) => {{ if (event.key === 'Escape') closeDrawer(); }});
+</script>
 </div>
 </body>
 </html>

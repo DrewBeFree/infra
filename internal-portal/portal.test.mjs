@@ -497,8 +497,13 @@ test("project changelog page is generated for phone review", async () => {
   assert.match(changelog, /Latest changes across local repos/);
   assert.match(changelog, /project-list/);
   assert.match(changelog, /project-row/);
-  assert.match(changelog, /detail-panel/);
-  assert.match(changelog, /<details class="project-row"/);
+  assert.match(changelog, /drawer-backdrop/);
+  assert.match(changelog, /projectDrawer/);
+  assert.match(changelog, /drawerContent/);
+  assert.match(changelog, /data-detail-id="project-detail-/);
+  assert.match(changelog, /<template id="project-detail-/);
+  assert.match(changelog, /function openDrawer/);
+  assert.match(changelog, /function closeDrawer/);
   assert.match(changelog, /Launcher/);
   assert.match(changelog, /Registry/);
   assert.match(changelog, /Tree/);

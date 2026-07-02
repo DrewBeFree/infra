@@ -25,21 +25,23 @@ h1 { margin:0; font-size:clamp(1.35rem,2.6vw,2.25rem); letter-spacing:-0.05em; }
 .stat strong { display:block; font-size:1.08rem; line-height:1; }
 .latest { margin:8px 0 10px; }
 .latest summary { cursor:pointer; padding:5px 9px; color:var(--muted); text-transform:uppercase; letter-spacing:.16em; font-size:.64rem; }
-.latest ul,.project-row ul { list-style:none; padding:0; margin:0; }
-.latest li,.project-row li { display:grid; grid-template-columns:145px minmax(0,1fr); gap:10px; padding:7px 12px; border-top:1px solid rgba(127,179,197,.14); }
+.latest ul,.drawer ul { list-style:none; padding:0; margin:0; }
+.latest li,.drawer li { display:grid; grid-template-columns:145px minmax(0,1fr); gap:10px; padding:7px 0; border-top:1px solid rgba(127,179,197,.14); }
 time { color:var(--muted); font-variant-numeric:tabular-nums; white-space:nowrap; }
 .project-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(285px,1fr)); gap:3px; align-items:start; }
-.project-row summary { display:grid; grid-template-columns:minmax(0,1fr) 82px 58px; gap:6px; align-items:center; min-height:24px; padding:2px 7px; cursor:pointer; }
-.project-row summary::marker { color:var(--accent); }
-.project-row[open] { border-color:rgba(0,212,255,.38); }
+.project-row { display:grid; grid-template-columns:minmax(0,1fr) 82px 58px; gap:6px; align-items:center; min-height:24px; padding:2px 7px; cursor:pointer; color:inherit; font:inherit; text-align:left; width:100%; }
+.project-row:hover,.project-row.is-active { border-color:rgba(0,212,255,.5); background:rgba(13,27,37,.96); }
 .name { font-weight:700; color:#fff; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .meta,.subject { display:none; }
 .status { justify-self:end; white-space:nowrap; border:1px solid var(--border); border-radius:999px; padding:1px 5px; color:var(--muted); text-transform:uppercase; font-size:.52rem; }
 .status.clean { color:var(--ok); border-color:rgba(0,255,136,.34); }
 .status.dirty { color:var(--warn); border-color:rgba(245,158,11,.4); }
 .status.error { color:var(--bad); border-color:rgba(255,107,53,.42); }
-.detail-panel { border-top:1px solid rgba(127,179,197,.14); padding:9px 10px; background:rgba(5,10,14,.28); }
-.summary-text { margin:.2rem 0 .5rem; color:#bdd5df; }
+.drawer-backdrop { position:fixed; inset:0; background:rgba(0,0,0,.48); opacity:0; pointer-events:none; transition:opacity .18s ease; z-index:20; }
+.drawer { position:fixed; top:0; right:0; width:min(560px,92vw); height:100vh; overflow:auto; background:rgba(10,21,29,.98); border-left:1px solid rgba(0,212,255,.35); box-shadow:-20px 0 60px rgba(0,0,0,.5); transform:translateX(102%); transition:transform .2s ease; z-index:21; padding:18px; }
+.drawer.is-open,.drawer-backdrop.is-open { transform:translateX(0); opacity:1; pointer-events:auto; }
+.drawer-close { float:right; border:1px solid var(--border); background:#071015; color:var(--text); border-radius:999px; padding:5px 10px; cursor:pointer; }
+.summary-text,.latest-subject { margin:.2rem 0 .5rem; color:#bdd5df; }
 .links { display:flex; flex-wrap:wrap; gap:10px; margin:.35rem 0; }
 .detail-grid { display:grid; grid-template-columns:minmax(0,1.5fr) minmax(240px,.8fr); gap:18px; }
 h3 { margin:8px 0 6px; color:var(--muted); font-size:.68rem; letter-spacing:.18em; text-transform:uppercase; }
@@ -49,10 +51,10 @@ small { display:block; color:var(--dim); margin-top:2px; }
 .session-pills span { border:1px solid rgba(0,212,255,.28); color:var(--muted); border-radius:999px; padding:3px 8px; font-size:.72rem; }
 .error { color:var(--bad); }
 @media (max-width:920px) {
-  header,.latest li,.project-row li,.detail-grid { grid-template-columns:1fr; }
+  header,.latest li,.drawer li,.detail-grid { grid-template-columns:1fr; }
   .stats { grid-template-columns:repeat(2,1fr); }
   .project-list { grid-template-columns:1fr; }
-  .project-row summary { grid-template-columns:minmax(0,1fr) 88px 62px; }
+  .project-row { grid-template-columns:minmax(0,1fr) 82px 58px; }
 }
 </style>
 </head>
@@ -62,7 +64,7 @@ small { display:block; color:var(--dim); margin-top:2px; }
   <div>
     <p class="eyebrow">Private ecosystem history</p>
     <h1>Project Changelog</h1>
-    <p class="muted">Compact rows from local git metadata and SESSION_LOG headings. Updated 2026-07-02T05:03:33Z.</p>
+    <p class="muted">Compact rows from local git metadata and SESSION_LOG headings. Updated 2026-07-02T05:20:07Z.</p>
   </div>
   <p><a href="launcher.html">Launcher</a> · <a href="index.html">Registry</a> · <a href="tree.html">Tree</a></p>
 </header>
@@ -74,27 +76,330 @@ small { display:block; color:var(--dim); margin-top:2px; }
 </section>
 <details class="latest">
   <summary>Latest changes across local repos</summary>
-  <ul><li><time>2026-07-01 19:36</time><span>Trading Scanner: fix(dashboard): align accounts equity progress</span></li><li><time>2026-06-30 06:40</time><span>Selling Shit: fix: tuck advanced listing controls behind menu</span></li><li><time>2026-06-30 04:29</time><span>AI Chat History: docs: add curated evidence packs</span></li><li><time>2026-06-30 02:11</time><span>Hermes Agent: Merge pull request #55473 from NousResearch/bb/cmdk-drag-region</span></li><li><time>2026-06-29 22:59</time><span>Firecrawl: feat(sdks): wire through search enterprise parameter (#3919)</span></li><li><time>2026-06-25 19:49</time><span>Infra: session: 2026-06-25 19:20 — Logoff and Hermes testing guidance</span></li><li><time>2026-06-25 18:49</time><span>Hermes Memory Archive: init: hermes memory archive project rules</span></li><li><time>2026-06-24 03:30</time><span>LLM Debate Union: fix: restore BACKLOG.md, update version to v0.5.1, date to June 24, NWO WOLFPACK</span></li></ul>
+  <ul><li><time>2026-07-02 01:03</time><span>Infra: feat: add internal ecosystem changelog</span></li><li><time>2026-07-01 19:36</time><span>Trading Scanner: fix(dashboard): align accounts equity progress</span></li><li><time>2026-06-30 06:40</time><span>Selling Shit: fix: tuck advanced listing controls behind menu</span></li><li><time>2026-06-30 04:29</time><span>AI Chat History: docs: add curated evidence packs</span></li><li><time>2026-06-30 02:11</time><span>Hermes Agent: Merge pull request #55473 from NousResearch/bb/cmdk-drag-region</span></li><li><time>2026-06-29 22:59</time><span>Firecrawl: feat(sdks): wire through search enterprise parameter (#3919)</span></li><li><time>2026-06-25 18:49</time><span>Hermes Memory Archive: init: hermes memory archive project rules</span></li><li><time>2026-06-24 03:30</time><span>LLM Debate Union: fix: restore BACKLOG.md, update version to v0.5.1, date to June 24, NWO WOLFPACK</span></li></ul>
 </details>
 <section class="project-list" aria-label="Project changelog rows">
 
-            <details class="project-row" data-status="dirty">
-              <summary>
-                <span class="name">AI Token Dashboard</span>
-                <span class="meta">dashboard · sensitive</span>
-                <time>2026-06-05</time>
-                <span class="subject">session: 2026-06-05 — UI aesthetic overhaul</span>
-                <span class="status dirty">dirty</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Atlas dashboard for AI token usage, API value, provider settings, subscription costs, and local Ollama configuration.</p>
-                <p class="links"> <a href="http://atlas:7474" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path">/home/drew/services/ai-dashboard</p>
+            <button class="project-row" type="button" data-detail-id="project-detail-0" data-status="dirty">
+              <span class="name">AI Token Dashboard</span>
+              <time>2026-06-05</time>
+              <span class="status dirty">dirty</span>
+            </button>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul>
+            <button class="project-row" type="button" data-detail-id="project-detail-1" data-status="not local">
+              <span class="name">Answering Agent Dashboard</span>
+              <time>—</time>
+              <span class="status not-local">not local</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-2" data-status="not local">
+              <span class="name">Atlas / PowerEdge Monitoring</span>
+              <time>—</time>
+              <span class="status not-local">not local</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-3" data-status="not local">
+              <span class="name">Atlas Status Dashboard</span>
+              <time>—</time>
+              <span class="status not-local">not local</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-4" data-status="not local">
+              <span class="name">Internal Ecosystem Portal</span>
+              <time>—</time>
+              <span class="status not-local">not local</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-5" data-status="not local">
+              <span class="name">Leantime</span>
+              <time>—</time>
+              <span class="status not-local">not local</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-6" data-status="not local">
+              <span class="name">Public Command Center</span>
+              <time>—</time>
+              <span class="status not-local">not local</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-7" data-status="not local">
+              <span class="name">Recap Agents Dashboard</span>
+              <time>—</time>
+              <span class="status not-local">not local</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-8" data-status="dirty">
+              <span class="name">ADHD Snap</span>
+              <time>2026-05-31</time>
+              <span class="status dirty">dirty</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-9" data-status="dirty">
+              <span class="name">AI Chat History</span>
+              <time>2026-06-30</time>
+              <span class="status dirty">dirty</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-10" data-status="dirty">
+              <span class="name">AI Dog Trainer</span>
+              <time>2026-05-22</time>
+              <span class="status dirty">dirty</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-11" data-status="dirty">
+              <span class="name">Answering Agent</span>
+              <time>2026-05-26</time>
+              <span class="status dirty">dirty</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-12" data-status="dirty">
+              <span class="name">Bob</span>
+              <time>2026-05-21</time>
+              <span class="status dirty">dirty</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-13" data-status="clean">
+              <span class="name">Claude Config</span>
+              <time>2026-05-30</time>
+              <span class="status clean">clean</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-14" data-status="dirty">
+              <span class="name">Command Center</span>
+              <time>2026-06-22</time>
+              <span class="status dirty">dirty</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-15" data-status="dirty">
+              <span class="name">Daily Planner</span>
+              <time>2026-06-21</time>
+              <span class="status dirty">dirty</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-16" data-status="dirty">
+              <span class="name">DrewBeFree Profile</span>
+              <time>2026-05-27</time>
+              <span class="status dirty">dirty</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-17" data-status="dirty">
+              <span class="name">DW Solutions</span>
+              <time>2026-05-06</time>
+              <span class="status dirty">dirty</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-18" data-status="dirty">
+              <span class="name">Firecrawl</span>
+              <time>2026-06-29</time>
+              <span class="status dirty">dirty</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-19" data-status="clean">
+              <span class="name">Hermes Memory Archive</span>
+              <time>2026-06-25</time>
+              <span class="status clean">clean</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-20" data-status="clean">
+              <span class="name">Hermes Personas</span>
+              <time>2026-06-18</time>
+              <span class="status clean">clean</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-21" data-status="clean">
+              <span class="name">Homelab</span>
+              <time>2026-06-12</time>
+              <span class="status clean">clean</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-22" data-status="dirty">
+              <span class="name">Infra</span>
+              <time>2026-07-02</time>
+              <span class="status dirty">dirty</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-23" data-status="not local">
+              <span class="name">Interactive Setup</span>
+              <time>—</time>
+              <span class="status not-local">not local</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-24" data-status="clean">
+              <span class="name">Kybernet</span>
+              <time>2026-06-20</time>
+              <span class="status clean">clean</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-25" data-status="dirty">
+              <span class="name">Lead Gen Agent</span>
+              <time>2026-06-18</time>
+              <span class="status dirty">dirty</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-26" data-status="dirty">
+              <span class="name">Linksy</span>
+              <time>2026-05-22</time>
+              <span class="status dirty">dirty</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-27" data-status="clean">
+              <span class="name">LLM Debate Union</span>
+              <time>2026-06-24</time>
+              <span class="status clean">clean</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-28" data-status="clean">
+              <span class="name">Luke Codex Guide</span>
+              <time>2026-06-06</time>
+              <span class="status clean">clean</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-29" data-status="dirty">
+              <span class="name">Photography</span>
+              <time>2026-04-21</time>
+              <span class="status dirty">dirty</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-30" data-status="dirty">
+              <span class="name">Poker Night</span>
+              <time>2026-06-07</time>
+              <span class="status dirty">dirty</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-31" data-status="dirty">
+              <span class="name">Recap Agents</span>
+              <time>2026-05-24</time>
+              <span class="status dirty">dirty</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-32" data-status="dirty">
+              <span class="name">Recap Viewer</span>
+              <time>2026-05-22</time>
+              <span class="status dirty">dirty</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-33" data-status="dirty">
+              <span class="name">Recipes</span>
+              <time>2026-05-22</time>
+              <span class="status dirty">dirty</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-34" data-status="dirty">
+              <span class="name">RV Maintenance</span>
+              <time>2026-05-22</time>
+              <span class="status dirty">dirty</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-35" data-status="dirty">
+              <span class="name">Selling Shit</span>
+              <time>2026-06-30</time>
+              <span class="status dirty">dirty</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-36" data-status="dirty">
+              <span class="name">Soccer Pickup</span>
+              <time>2026-05-22</time>
+              <span class="status dirty">dirty</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-37" data-status="not local">
+              <span class="name">Surf The Webb</span>
+              <time>—</time>
+              <span class="status not-local">not local</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-38" data-status="dirty">
+              <span class="name">Trading Scanner</span>
+              <time>2026-07-01</time>
+              <span class="status dirty">dirty</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-39" data-status="dirty">
+              <span class="name">UHaul Planner</span>
+              <time>2026-05-29</time>
+              <span class="status dirty">dirty</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-40" data-status="clean">
+              <span class="name">Yes App</span>
+              <time>2026-06-07</time>
+              <span class="status clean">clean</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-41" data-status="not local">
+              <span class="name">Atlas iDRAC7</span>
+              <time>—</time>
+              <span class="status not-local">not local</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-42" data-status="not local">
+              <span class="name">Atlas SSH</span>
+              <time>—</time>
+              <span class="status not-local">not local</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-43" data-status="not local">
+              <span class="name">Atlas Wiki</span>
+              <time>—</time>
+              <span class="status not-local">not local</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-44" data-status="dirty">
+              <span class="name">Hermes Agent</span>
+              <time>2026-06-30</time>
+              <span class="status dirty">dirty</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-45" data-status="not local">
+              <span class="name">Homelab Status Dashboard</span>
+              <time>—</time>
+              <span class="status not-local">not local</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-46" data-status="not local">
+              <span class="name">Leantime</span>
+              <time>—</time>
+              <span class="status not-local">not local</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-47" data-status="not local">
+              <span class="name">Ollama</span>
+              <time>—</time>
+              <span class="status not-local">not local</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-48" data-status="not local">
+              <span class="name">Open WebUI</span>
+              <time>—</time>
+              <span class="status not-local">not local</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-49" data-status="not local">
+              <span class="name">OpenClaw</span>
+              <time>—</time>
+              <span class="status not-local">not local</span>
+            </button>
+
+            <button class="project-row" type="button" data-detail-id="project-detail-50" data-status="not local">
+              <span class="name">Portainer</span>
+              <time>—</time>
+              <span class="status not-local">not local</span>
+            </button>
+
+</section>
+
+            <template id="project-detail-0">
+              <p class="eyebrow">dashboard · sensitive</p>
+              <h2>AI Token Dashboard</h2>
+              <p class="summary-text">Atlas dashboard for AI token usage, API value, provider settings, subscription costs, and local Ollama configuration.</p>
+              <p class="latest-subject"><strong>Latest:</strong> 2026-06-05 05:34 · session: 2026-06-05 — UI aesthetic overhaul</p>
+              <p class="links"> <a href="http://atlas:7474" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path">/home/drew/services/ai-dashboard</p>
+
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul>
             <li>
               <time>2026-06-05 05:34</time>
               <span><code>24b0ce29</code> session: 2026-06-05 — UI aesthetic overhaul<small>DrewBeFree</small></span>
@@ -135,214 +440,166 @@ small { display:block; color:var(--dim); margin-top:2px; }
               <span><code>f6ffb0d5</code> Add Gemini/GCP section with credit breakdown and API key validation<small>Drew</small></span>
             </li>
             </ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>2026-06-05 — UI aesthetic overhaul</span><span>2026-06-05 02:41 — Activity and Settings views</span><span>2026-06-05 — Initial build</span></div>
-                  </section>
-                </div>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>2026-06-05 — UI aesthetic overhaul</span><span>2026-06-05 02:41 — Activity and Settings views</span><span>2026-06-05 — Initial build</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="not local">
-              <summary>
-                <span class="name">Answering Agent Dashboard</span>
-                <span class="meta">dashboard · sensitive</span>
-                <time>—</time>
-                <span class="subject">No local git history</span>
-                <span class="status not-local">not local</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Human approval board for voicemail reply drafts.</p>
-                <p class="links"> <a href="https://answer.kybernet.tech" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path"></p>
+            <template id="project-detail-1">
+              <p class="eyebrow">dashboard · sensitive</p>
+              <h2>Answering Agent Dashboard</h2>
+              <p class="summary-text">Human approval board for voicemail reply drafts.</p>
+              <p class="latest-subject"><strong>Latest:</strong> — · No local git history</p>
+              <p class="links"> <a href="https://answer.kybernet.tech" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path"></p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul><li><span class="muted">No local git commits available.</span></li></ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>None found</span></div>
-                  </section>
-                </div>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul><li><span class="muted">No local git commits available.</span></li></ul>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>None found</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="not local">
-              <summary>
-                <span class="name">Atlas / PowerEdge Monitoring</span>
-                <span class="meta">dashboard · private</span>
-                <time>—</time>
-                <span class="subject">No local git history</span>
-                <span class="status not-local">not local</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Prometheus/Grafana monitoring for the Atlas PowerEdge host, storage, and local LLM metrics.</p>
-                <p class="links"> <a href="http://atlas:3001/d/atlas-overview/poweredge-dashboard" target="_blank" rel="noreferrer">open</a> <a href="http://atlas:3001" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path"></p>
+            <template id="project-detail-2">
+              <p class="eyebrow">dashboard · private</p>
+              <h2>Atlas / PowerEdge Monitoring</h2>
+              <p class="summary-text">Prometheus/Grafana monitoring for the Atlas PowerEdge host, storage, and local LLM metrics.</p>
+              <p class="latest-subject"><strong>Latest:</strong> — · No local git history</p>
+              <p class="links"> <a href="http://atlas:3001/d/atlas-overview/poweredge-dashboard" target="_blank" rel="noreferrer">open</a> <a href="http://atlas:3001" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path"></p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul><li><span class="muted">No local git commits available.</span></li></ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>None found</span></div>
-                  </section>
-                </div>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul><li><span class="muted">No local git commits available.</span></li></ul>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>None found</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="not local">
-              <summary>
-                <span class="name">Atlas Status Dashboard</span>
-                <span class="meta">dashboard · private</span>
-                <time>—</time>
-                <span class="subject">No local git history</span>
-                <span class="status not-local">not local</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Cross-project session and backlog dashboard served from Atlas.</p>
-                <p class="links"> <a href="http://atlas/status/" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path"></p>
+            <template id="project-detail-3">
+              <p class="eyebrow">dashboard · private</p>
+              <h2>Atlas Status Dashboard</h2>
+              <p class="summary-text">Cross-project session and backlog dashboard served from Atlas.</p>
+              <p class="latest-subject"><strong>Latest:</strong> — · No local git history</p>
+              <p class="links"> <a href="http://atlas/status/" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path"></p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul><li><span class="muted">No local git commits available.</span></li></ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>None found</span></div>
-                  </section>
-                </div>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul><li><span class="muted">No local git commits available.</span></li></ul>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>None found</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="not local">
-              <summary>
-                <span class="name">Internal Ecosystem Portal</span>
-                <span class="meta">dashboard · private</span>
-                <time>—</time>
-                <span class="subject">No local git history</span>
-                <span class="status not-local">not local</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Atlas/Tailscale-only launcher and status/control-ready surface for every repo, service, dashboard, doc, and deploy target.</p>
-                <p class="links"> <a href="http://atlas/" target="_blank" rel="noreferrer">open</a> <a href="http://atlas/ecosystem/" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path"></p>
+            <template id="project-detail-4">
+              <p class="eyebrow">dashboard · private</p>
+              <h2>Internal Ecosystem Portal</h2>
+              <p class="summary-text">Atlas/Tailscale-only launcher and status/control-ready surface for every repo, service, dashboard, doc, and deploy target.</p>
+              <p class="latest-subject"><strong>Latest:</strong> — · No local git history</p>
+              <p class="links"> <a href="http://atlas/" target="_blank" rel="noreferrer">open</a> <a href="http://atlas/ecosystem/" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path"></p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul><li><span class="muted">No local git commits available.</span></li></ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>None found</span></div>
-                  </section>
-                </div>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul><li><span class="muted">No local git commits available.</span></li></ul>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>None found</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="not local">
-              <summary>
-                <span class="name">Leantime</span>
-                <span class="meta">dashboard · private</span>
-                <time>—</time>
-                <span class="subject">No local git history</span>
-                <span class="status not-local">not local</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Atlas-hosted planning cockpit seeded with current infra, app, testing, and ecosystem work.</p>
-                <p class="links"> <a href="http://100.71.165.80:8095" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path"></p>
+            <template id="project-detail-5">
+              <p class="eyebrow">dashboard · private</p>
+              <h2>Leantime</h2>
+              <p class="summary-text">Atlas-hosted planning cockpit seeded with current infra, app, testing, and ecosystem work.</p>
+              <p class="latest-subject"><strong>Latest:</strong> — · No local git history</p>
+              <p class="links"> <a href="http://100.71.165.80:8095" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path"></p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul><li><span class="muted">No local git commits available.</span></li></ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>None found</span></div>
-                  </section>
-                </div>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul><li><span class="muted">No local git commits available.</span></li></ul>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>None found</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="not local">
-              <summary>
-                <span class="name">Public Command Center</span>
-                <span class="meta">dashboard · public</span>
-                <time>—</time>
-                <span class="subject">No local git history</span>
-                <span class="status not-local">not local</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Public launcher at drewbefree.com. Sensitive items are not listed.</p>
-                <p class="links"> <a href="https://drewbefree.com" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path"></p>
+            <template id="project-detail-6">
+              <p class="eyebrow">dashboard · public</p>
+              <h2>Public Command Center</h2>
+              <p class="summary-text">Public launcher at drewbefree.com. Sensitive items are not listed.</p>
+              <p class="latest-subject"><strong>Latest:</strong> — · No local git history</p>
+              <p class="links"> <a href="https://drewbefree.com" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path"></p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul><li><span class="muted">No local git commits available.</span></li></ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>None found</span></div>
-                  </section>
-                </div>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul><li><span class="muted">No local git commits available.</span></li></ul>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>None found</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="not local">
-              <summary>
-                <span class="name">Recap Agents Dashboard</span>
-                <span class="meta">dashboard · private</span>
-                <time>—</time>
-                <span class="subject">No local git history</span>
-                <span class="status not-local">not local</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Kybernet meeting recap dashboard generated by recap-agents.</p>
-                <p class="links"> <a href="https://drewbefree.github.io/recap-agents/" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path"></p>
+            <template id="project-detail-7">
+              <p class="eyebrow">dashboard · private</p>
+              <h2>Recap Agents Dashboard</h2>
+              <p class="summary-text">Kybernet meeting recap dashboard generated by recap-agents.</p>
+              <p class="latest-subject"><strong>Latest:</strong> — · No local git history</p>
+              <p class="links"> <a href="https://drewbefree.github.io/recap-agents/" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path"></p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul><li><span class="muted">No local git commits available.</span></li></ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>None found</span></div>
-                  </section>
-                </div>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul><li><span class="muted">No local git commits available.</span></li></ul>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>None found</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="dirty">
-              <summary>
-                <span class="name">ADHD Snap</span>
-                <span class="meta">repo · public</span>
-                <time>2026-05-31</time>
-                <span class="subject">docs: update session log 2026-05-31</span>
-                <span class="status dirty">dirty</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Quick capture app for ADHD-friendly task and idea intake.</p>
-                <p class="links"><a href="https://github.com/DrewBeFree/adhd-snap" target="_blank" rel="noreferrer">GitHub</a> <a href="https://snap.drewbefree.com" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path">/home/drew/GitHub/apps/adhd-snap</p>
+            <template id="project-detail-8">
+              <p class="eyebrow">repo · public</p>
+              <h2>ADHD Snap</h2>
+              <p class="summary-text">Quick capture app for ADHD-friendly task and idea intake.</p>
+              <p class="latest-subject"><strong>Latest:</strong> 2026-05-31 00:05 · docs: update session log 2026-05-31</p>
+              <p class="links"><a href="https://github.com/DrewBeFree/adhd-snap" target="_blank" rel="noreferrer">GitHub</a> <a href="https://snap.drewbefree.com" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path">/home/drew/GitHub/apps/adhd-snap</p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul>
             <li>
               <time>2026-05-31 00:05</time>
               <span><code>21b835d4</code> docs: update session log 2026-05-31<small>Drew</small></span>
@@ -383,32 +640,26 @@ small { display:block; color:var(--dim); margin-top:2px; }
               <span><code>e6fdfc8c</code> feat: add Siri and iOS Shortcuts support via App Intents<small>Andrew Webb</small></span>
             </li>
             </ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>2026-05-31 00:04 — sounds, widget colors, icon, Siri phrase</span><span>2026-05-30 20:41 — widgets and squirrel icon, Issue #2 closed</span><span>2026-05-30 19:37 — Siri phrases, sounds backlog, logoff</span><span>2026-05-30 19:02 — Siri shortcuts working, app renamed Snap</span><span>2026-05-30 17:10 — Siri Shortcuts &amp; App Intents integration</span></div>
-                  </section>
-                </div>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>2026-05-31 00:04 — sounds, widget colors, icon, Siri phrase</span><span>2026-05-30 20:41 — widgets and squirrel icon, Issue #2 closed</span><span>2026-05-30 19:37 — Siri phrases, sounds backlog, logoff</span><span>2026-05-30 19:02 — Siri shortcuts working, app renamed Snap</span><span>2026-05-30 17:10 — Siri Shortcuts &amp; App Intents integration</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="dirty">
-              <summary>
-                <span class="name">AI Chat History</span>
-                <span class="meta">repo · sensitive</span>
-                <time>2026-06-30</time>
-                <span class="subject">docs: add curated evidence packs</span>
-                <span class="status dirty">dirty</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Private redacted archive and curated knowledge pipeline for historical AI chat exports.</p>
-                <p class="links"><a href="https://github.com/DrewBeFree/ai-chat-history" target="_blank" rel="noreferrer">GitHub</a> </p>
-                <p class="path">/home/drew/GitHub/ai-chat-history</p>
+            <template id="project-detail-9">
+              <p class="eyebrow">repo · sensitive</p>
+              <h2>AI Chat History</h2>
+              <p class="summary-text">Private redacted archive and curated knowledge pipeline for historical AI chat exports.</p>
+              <p class="latest-subject"><strong>Latest:</strong> 2026-06-30 04:29 · docs: add curated evidence packs</p>
+              <p class="links"><a href="https://github.com/DrewBeFree/ai-chat-history" target="_blank" rel="noreferrer">GitHub</a> </p>
+              <p class="path">/home/drew/GitHub/ai-chat-history</p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul>
             <li>
               <time>2026-06-30 04:29</time>
               <span><code>cd84f50a</code> docs: add curated evidence packs<small>DrewBeFree</small></span>
@@ -449,32 +700,26 @@ small { display:block; color:var(--dim); margin-top:2px; }
               <span><code>4fe940fd</code> feat: add archive search wrapper<small>DrewBeFree</small></span>
             </li>
             </ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>None found</span></div>
-                  </section>
-                </div>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>None found</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="dirty">
-              <summary>
-                <span class="name">AI Dog Trainer</span>
-                <span class="meta">repo · public</span>
-                <time>2026-05-22</time>
-                <span class="subject">docs: add instruction manual</span>
-                <span class="status dirty">dirty</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">AI-powered positive-reinforcement dog training coach.</p>
-                <p class="links"><a href="https://github.com/DrewBeFree/ai-dog-trainer" target="_blank" rel="noreferrer">GitHub</a> </p>
-                <p class="path">/home/drew/GitHub/apps/ai-dog-trainer</p>
+            <template id="project-detail-10">
+              <p class="eyebrow">repo · public</p>
+              <h2>AI Dog Trainer</h2>
+              <p class="summary-text">AI-powered positive-reinforcement dog training coach.</p>
+              <p class="latest-subject"><strong>Latest:</strong> 2026-05-22 01:52 · docs: add instruction manual</p>
+              <p class="links"><a href="https://github.com/DrewBeFree/ai-dog-trainer" target="_blank" rel="noreferrer">GitHub</a> </p>
+              <p class="path">/home/drew/GitHub/apps/ai-dog-trainer</p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul>
             <li>
               <time>2026-05-22 01:52</time>
               <span><code>9d0a18b9</code> docs: add instruction manual<small>Drew Webb</small></span>
@@ -485,32 +730,26 @@ small { display:block; color:var(--dim); margin-top:2px; }
               <span><code>86749085</code> Initial commit: AI dog trainer app extracted from DrewBeFree<small>Drew Webb</small></span>
             </li>
             </ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>2026-05-18</span><span>2026-05-18 — AI dog trainer: direct Claude API integration</span></div>
-                  </section>
-                </div>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>2026-05-18</span><span>2026-05-18 — AI dog trainer: direct Claude API integration</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="dirty">
-              <summary>
-                <span class="name">Answering Agent</span>
-                <span class="meta">repo · sensitive</span>
-                <time>2026-05-26</time>
-                <span class="subject">fix: remove erroneous service from A Couple Two Trees prompt</span>
-                <span class="status dirty">dirty</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">AI voicemail response system with Twilio, Claude, Supabase, Slack, and human approval.</p>
-                <p class="links"><a href="https://github.com/DrewBeFree/answering-agent" target="_blank" rel="noreferrer">GitHub</a> <a href="https://api.kybernet.tech" target="_blank" rel="noreferrer">open</a> <a href="https://answer.kybernet.tech" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path">/home/drew/GitHub/agents/answering-agent</p>
+            <template id="project-detail-11">
+              <p class="eyebrow">repo · sensitive</p>
+              <h2>Answering Agent</h2>
+              <p class="summary-text">AI voicemail response system with Twilio, Claude, Supabase, Slack, and human approval.</p>
+              <p class="latest-subject"><strong>Latest:</strong> 2026-05-26 12:22 · fix: remove erroneous service from A Couple Two Trees prompt</p>
+              <p class="links"><a href="https://github.com/DrewBeFree/answering-agent" target="_blank" rel="noreferrer">GitHub</a> <a href="https://api.kybernet.tech" target="_blank" rel="noreferrer">open</a> <a href="https://answer.kybernet.tech" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path">/home/drew/GitHub/agents/answering-agent</p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul>
             <li>
               <time>2026-05-26 12:22</time>
               <span><code>a91e37fb</code> fix: remove erroneous service from A Couple Two Trees prompt<small>Drew</small></span>
@@ -551,32 +790,26 @@ small { display:block; color:var(--dim); margin-top:2px; }
               <span><code>f68862bb</code> fix: mobile header layout + collapsed transcript accordion in modal<small>Drew</small></span>
             </li>
             </ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>2026-05-24 20:07 — confirm_slot, booking fallback, dashboard UI</span><span>2026-05-24 12:42 — calendar booking fix + booked pill UI</span><span>2026-05-24 10:55 - Booked pill on dashboard cards</span><span>2026-05-24 10:45 - Calendar token scope debug</span><span>2026-05-24 10:35 - Confirmed appointment display + Calendar booking</span></div>
-                  </section>
-                </div>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>2026-05-24 20:07 — confirm_slot, booking fallback, dashboard UI</span><span>2026-05-24 12:42 — calendar booking fix + booked pill UI</span><span>2026-05-24 10:55 - Booked pill on dashboard cards</span><span>2026-05-24 10:45 - Calendar token scope debug</span><span>2026-05-24 10:35 - Confirmed appointment display + Calendar booking</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="dirty">
-              <summary>
-                <span class="name">Bob</span>
-                <span class="meta">repo · private</span>
-                <time>2026-05-21</time>
-                <span class="subject">Add README</span>
-                <span class="status dirty">dirty</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Slack bot backed by a local Atlas LLM via Ollama.</p>
-                <p class="links"><a href="https://github.com/DrewBeFree/bob" target="_blank" rel="noreferrer">GitHub</a> </p>
-                <p class="path">/home/drew/GitHub/agents/bob</p>
+            <template id="project-detail-12">
+              <p class="eyebrow">repo · private</p>
+              <h2>Bob</h2>
+              <p class="summary-text">Slack bot backed by a local Atlas LLM via Ollama.</p>
+              <p class="latest-subject"><strong>Latest:</strong> 2026-05-21 22:17 · Add README</p>
+              <p class="links"><a href="https://github.com/DrewBeFree/bob" target="_blank" rel="noreferrer">GitHub</a> </p>
+              <p class="path">/home/drew/GitHub/agents/bob</p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul>
             <li>
               <time>2026-05-21 22:17</time>
               <span><code>03d2bfbd</code> Add README<small>Drew</small></span>
@@ -592,32 +825,26 @@ small { display:block; color:var(--dim); margin-top:2px; }
               <span><code>9e2fea02</code> Initial commit: Bob Slack bot backed by Ollama on Atlas<small>Drew</small></span>
             </li>
             </ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>2026-05-21 20:46 — Atlas OpenClaw to custom Bob Slack bot</span></div>
-                  </section>
-                </div>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>2026-05-21 20:46 — Atlas OpenClaw to custom Bob Slack bot</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="clean">
-              <summary>
-                <span class="name">Claude Config</span>
-                <span class="meta">repo · private</span>
-                <time>2026-05-30</time>
-                <span class="subject">Merge pull request #2 from DrewBeFree/docs/logoff-versioning-updates</span>
-                <span class="status clean">clean</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Personal Claude/Codex configuration, skills, and workflow automation instructions.</p>
-                <p class="links"><a href="https://github.com/DrewBeFree/claude-config" target="_blank" rel="noreferrer">GitHub</a> </p>
-                <p class="path">/home/drew/GitHub/claude-config</p>
+            <template id="project-detail-13">
+              <p class="eyebrow">repo · private</p>
+              <h2>Claude Config</h2>
+              <p class="summary-text">Personal Claude/Codex configuration, skills, and workflow automation instructions.</p>
+              <p class="latest-subject"><strong>Latest:</strong> 2026-05-30 00:48 · Merge pull request #2 from DrewBeFree/docs/logoff-versioning-updates</p>
+              <p class="links"><a href="https://github.com/DrewBeFree/claude-config" target="_blank" rel="noreferrer">GitHub</a> </p>
+              <p class="path">/home/drew/GitHub/claude-config</p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul>
             <li>
               <time>2026-05-30 00:48</time>
               <span><code>315064c3</code> Merge pull request #2 from DrewBeFree/docs/logoff-versioning-updates<small>Andrew Webb</small></span>
@@ -658,32 +885,26 @@ small { display:block; color:var(--dim); margin-top:2px; }
               <span><code>2c413205</code> Switch setup.ps1 to symlinks (Developer Mode)<small>Drew</small></span>
             </li>
             </ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>None found</span></div>
-                  </section>
-                </div>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>None found</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="dirty">
-              <summary>
-                <span class="name">Command Center</span>
-                <span class="meta">repo · public</span>
-                <time>2026-06-22</time>
-                <span class="subject">fix: correct public app count</span>
-                <span class="status dirty">dirty</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Public DrewBeFree launcher for sites and public apps.</p>
-                <p class="links"><a href="https://github.com/DrewBeFree/drewbefree-command-center" target="_blank" rel="noreferrer">GitHub</a> <a href="https://drewbefree.com" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path">/home/drew/GitHub/apps/drewbefree-command-center</p>
+            <template id="project-detail-14">
+              <p class="eyebrow">repo · public</p>
+              <h2>Command Center</h2>
+              <p class="summary-text">Public DrewBeFree launcher for sites and public apps.</p>
+              <p class="latest-subject"><strong>Latest:</strong> 2026-06-22 00:01 · fix: correct public app count</p>
+              <p class="links"><a href="https://github.com/DrewBeFree/drewbefree-command-center" target="_blank" rel="noreferrer">GitHub</a> <a href="https://drewbefree.com" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path">/home/drew/GitHub/apps/drewbefree-command-center</p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul>
             <li>
               <time>2026-06-22 00:01</time>
               <span><code>000e4a10</code> fix: correct public app count<small>DrewBeFree</small></span>
@@ -724,32 +945,26 @@ small { display:block; color:var(--dim); margin-top:2px; }
               <span><code>bfaf801f</code> chore: bump uhaul-planner to v0.14.1<small>Drew</small></span>
             </li>
             </ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>2026-06-19</span><span>2026-06-19 (stability audit)</span><span>2026-05-19</span><span>2026-05-12</span><span>2026-05-10</span></div>
-                  </section>
-                </div>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>2026-06-19</span><span>2026-06-19 (stability audit)</span><span>2026-05-19</span><span>2026-05-12</span><span>2026-05-10</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="dirty">
-              <summary>
-                <span class="name">Daily Planner</span>
-                <span class="meta">repo · public</span>
-                <time>2026-06-21</time>
-                <span class="subject">fix: make tabs horizontally scrollable on mobile to prevent page overflow</span>
-                <span class="status dirty">dirty</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Daily-driver tasks, grocery lists, packing lists, and morning print workflow.</p>
-                <p class="links"><a href="https://github.com/DrewBeFree/daily-planner" target="_blank" rel="noreferrer">GitHub</a> <a href="https://tasks.drewbefree.com" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path">/home/drew/GitHub/apps/daily-planner</p>
+            <template id="project-detail-15">
+              <p class="eyebrow">repo · public</p>
+              <h2>Daily Planner</h2>
+              <p class="summary-text">Daily-driver tasks, grocery lists, packing lists, and morning print workflow.</p>
+              <p class="latest-subject"><strong>Latest:</strong> 2026-06-21 14:09 · fix: make tabs horizontally scrollable on mobile to prevent page overflow</p>
+              <p class="links"><a href="https://github.com/DrewBeFree/daily-planner" target="_blank" rel="noreferrer">GitHub</a> <a href="https://tasks.drewbefree.com" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path">/home/drew/GitHub/apps/daily-planner</p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul>
             <li>
               <time>2026-06-21 14:09</time>
               <span><code>c693edc4</code> fix: make tabs horizontally scrollable on mobile to prevent page overflow<small>DrewBeFree</small></span>
@@ -790,32 +1005,26 @@ small { display:block; color:var(--dim); margin-top:2px; }
               <span><code>20cfb149</code> docs: add instruction manual<small>Drew</small></span>
             </li>
             </ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>2026-05-28 — Ideas section, voice dictation, task categories</span><span>2026-05-25 09:52 — diagnose trips RLS write permission bugs</span><span>2026-05-16 — Fix completion and mobile drag (v0.9.5)</span><span>2026-05-12 — Bulk add for trip items (v0.9.4)</span><span>2026-05-12 — Admin mode, RLS, mobile fixes (v0.9.3)</span></div>
-                  </section>
-                </div>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>2026-05-28 — Ideas section, voice dictation, task categories</span><span>2026-05-25 09:52 — diagnose trips RLS write permission bugs</span><span>2026-05-16 — Fix completion and mobile drag (v0.9.5)</span><span>2026-05-12 — Bulk add for trip items (v0.9.4)</span><span>2026-05-12 — Admin mode, RLS, mobile fixes (v0.9.3)</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="dirty">
-              <summary>
-                <span class="name">DrewBeFree Profile</span>
-                <span class="meta">repo · public</span>
-                <time>2026-05-27</time>
-                <span class="subject">feat: add ADHD Snap PWA</span>
-                <span class="status dirty">dirty</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">GitHub profile and personal namespace README.</p>
-                <p class="links"><a href="https://github.com/DrewBeFree/DrewBeFree" target="_blank" rel="noreferrer">GitHub</a> <a href="https://github.com/DrewBeFree" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path">/home/drew/GitHub/apps/DrewBeFree</p>
+            <template id="project-detail-16">
+              <p class="eyebrow">repo · public</p>
+              <h2>DrewBeFree Profile</h2>
+              <p class="summary-text">GitHub profile and personal namespace README.</p>
+              <p class="latest-subject"><strong>Latest:</strong> 2026-05-27 21:37 · feat: add ADHD Snap PWA</p>
+              <p class="links"><a href="https://github.com/DrewBeFree/DrewBeFree" target="_blank" rel="noreferrer">GitHub</a> <a href="https://github.com/DrewBeFree" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path">/home/drew/GitHub/apps/DrewBeFree</p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul>
             <li>
               <time>2026-05-27 21:37</time>
               <span><code>f6701317</code> feat: add ADHD Snap PWA<small>Claude</small></span>
@@ -856,32 +1065,26 @@ small { display:block; color:var(--dim); margin-top:2px; }
               <span><code>dff9857a</code> fix: lower shake threshold and prompt notifications on tap<small>Claude</small></span>
             </li>
             </ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>2026-05-18</span></div>
-                  </section>
-                </div>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>2026-05-18</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="dirty">
-              <summary>
-                <span class="name">DW Solutions</span>
-                <span class="meta">repo · public</span>
-                <time>2026-05-06</time>
-                <span class="subject">Update session log</span>
-                <span class="status dirty">dirty</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Public IT support site for homes and small businesses.</p>
-                <p class="links"><a href="https://github.com/DrewBeFree/dwebbsolutions" target="_blank" rel="noreferrer">GitHub</a> <a href="https://dwebbsolutions.com" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path">/home/drew/GitHub/sites/dwebbsolutions</p>
+            <template id="project-detail-17">
+              <p class="eyebrow">repo · public</p>
+              <h2>DW Solutions</h2>
+              <p class="summary-text">Public IT support site for homes and small businesses.</p>
+              <p class="latest-subject"><strong>Latest:</strong> 2026-05-06 20:32 · Update session log</p>
+              <p class="links"><a href="https://github.com/DrewBeFree/dwebbsolutions" target="_blank" rel="noreferrer">GitHub</a> <a href="https://dwebbsolutions.com" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path">/home/drew/GitHub/sites/dwebbsolutions</p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul>
             <li>
               <time>2026-05-06 20:32</time>
               <span><code>19a0ab09</code> Update session log<small>Andrew Webb</small></span>
@@ -917,32 +1120,26 @@ small { display:block; color:var(--dim); margin-top:2px; }
               <span><code>ac108a9c</code> Initial commit: DW Solutions replica site<small>Andrew Webb</small></span>
             </li>
             </ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>2026-05-06 — DW Solutions Website Replica + Favicon Rollout</span></div>
-                  </section>
-                </div>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>2026-05-06 — DW Solutions Website Replica + Favicon Rollout</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="dirty">
-              <summary>
-                <span class="name">Firecrawl</span>
-                <span class="meta">repo · public</span>
-                <time>2026-06-29</time>
-                <span class="subject">feat(sdks): wire through search enterprise parameter (#3919)</span>
-                <span class="status dirty">dirty</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Upstream Firecrawl checkout used for local Atlas web capture experiments.</p>
-                <p class="links"><a href="https://github.com/firecrawl/firecrawl" target="_blank" rel="noreferrer">GitHub</a> <a href="http://127.0.0.1:3002" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path">/home/drew/GitHub/firecrawl</p>
+            <template id="project-detail-18">
+              <p class="eyebrow">repo · public</p>
+              <h2>Firecrawl</h2>
+              <p class="summary-text">Upstream Firecrawl checkout used for local Atlas web capture experiments.</p>
+              <p class="latest-subject"><strong>Latest:</strong> 2026-06-29 22:59 · feat(sdks): wire through search enterprise parameter (#3919)</p>
+              <p class="links"><a href="https://github.com/firecrawl/firecrawl" target="_blank" rel="noreferrer">GitHub</a> <a href="http://127.0.0.1:3002" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path">/home/drew/GitHub/firecrawl</p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul>
             <li>
               <time>2026-06-29 22:59</time>
               <span><code>ad23ab55</code> feat(sdks): wire through search enterprise parameter (#3919)<small>firecrawl-spring[bot]</small></span>
@@ -983,94 +1180,76 @@ small { display:block; color:var(--dim); margin-top:2px; }
               <span><code>69e6b577</code> Merge pull request #3909 from firecrawl/monitoring-list<small>Developers Digest</small></span>
             </li>
             </ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>None found</span></div>
-                  </section>
-                </div>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>None found</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="clean">
-              <summary>
-                <span class="name">Hermes Memory Archive</span>
-                <span class="meta">repo · private</span>
-                <time>2026-06-25</time>
-                <span class="subject">init: hermes memory archive project rules</span>
-                <span class="status clean">clean</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Private Hermes memory archive workspace.</p>
-                <p class="links"><a href="https://github.com/DrewBeFree/hermes-memory-archive" target="_blank" rel="noreferrer">GitHub</a> </p>
-                <p class="path">/home/drew/GitHub/apps/hermes-memory-archive</p>
+            <template id="project-detail-19">
+              <p class="eyebrow">repo · private</p>
+              <h2>Hermes Memory Archive</h2>
+              <p class="summary-text">Private Hermes memory archive workspace.</p>
+              <p class="latest-subject"><strong>Latest:</strong> 2026-06-25 18:49 · init: hermes memory archive project rules</p>
+              <p class="links"><a href="https://github.com/DrewBeFree/hermes-memory-archive" target="_blank" rel="noreferrer">GitHub</a> </p>
+              <p class="path">/home/drew/GitHub/apps/hermes-memory-archive</p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul>
             <li>
               <time>2026-06-25 18:49</time>
               <span><code>1b9e26fe</code> init: hermes memory archive project rules<small>DrewBeFree</small></span>
             </li>
             </ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>None found</span></div>
-                  </section>
-                </div>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>None found</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="clean">
-              <summary>
-                <span class="name">Hermes Personas</span>
-                <span class="meta">repo · private</span>
-                <time>2026-06-18</time>
-                <span class="subject">Add Hermes persona router system and starter personas</span>
-                <span class="status clean">clean</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Hermes persona definitions and routing/reference materials.</p>
-                <p class="links"><a href="https://github.com/DrewBeFree/personas-claude" target="_blank" rel="noreferrer">GitHub</a> </p>
-                <p class="path">/home/drew/GitHub/personas-claude</p>
+            <template id="project-detail-20">
+              <p class="eyebrow">repo · private</p>
+              <h2>Hermes Personas</h2>
+              <p class="summary-text">Hermes persona definitions and routing/reference materials.</p>
+              <p class="latest-subject"><strong>Latest:</strong> 2026-06-18 22:57 · Add Hermes persona router system and starter personas</p>
+              <p class="links"><a href="https://github.com/DrewBeFree/personas-claude" target="_blank" rel="noreferrer">GitHub</a> </p>
+              <p class="path">/home/drew/GitHub/personas-claude</p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul>
             <li>
               <time>2026-06-18 22:57</time>
               <span><code>f82f4df6</code> Add Hermes persona router system and starter personas<small>Andrew Webb</small></span>
             </li>
             </ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>None found</span></div>
-                  </section>
-                </div>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>None found</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="clean">
-              <summary>
-                <span class="name">Homelab</span>
-                <span class="meta">repo · private</span>
-                <time>2026-06-12</time>
-                <span class="subject">Merge pull request #9 from DrewBeFree/docs/atlas-vault-session-log</span>
-                <span class="status clean">clean</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Atlas, Alienware, service maps, dashboard, and homelab deployment docs.</p>
-                <p class="links"><a href="https://github.com/DrewBeFree/homelab" target="_blank" rel="noreferrer">GitHub</a> <a href="https://homelab.drewbefree.com/infrastructure.html" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path">/home/drew/GitHub/homelab</p>
+            <template id="project-detail-21">
+              <p class="eyebrow">repo · private</p>
+              <h2>Homelab</h2>
+              <p class="summary-text">Atlas, Alienware, service maps, dashboard, and homelab deployment docs.</p>
+              <p class="latest-subject"><strong>Latest:</strong> 2026-06-12 22:35 · Merge pull request #9 from DrewBeFree/docs/atlas-vault-session-log</p>
+              <p class="links"><a href="https://github.com/DrewBeFree/homelab" target="_blank" rel="noreferrer">GitHub</a> <a href="https://homelab.drewbefree.com/infrastructure.html" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path">/home/drew/GitHub/homelab</p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul>
             <li>
               <time>2026-06-12 22:35</time>
               <span><code>a88d7b9c</code> Merge pull request #9 from DrewBeFree/docs/atlas-vault-session-log<small>Andrew Webb</small></span>
@@ -1111,32 +1290,31 @@ small { display:block; color:var(--dim); margin-top:2px; }
               <span><code>ab68bdc2</code> Merge pull request #6 from DrewBeFree/fix/atlas-vault-hardening<small>Andrew Webb</small></span>
             </li>
             </ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>2026-05-30 - Lead-gen docs moved into agent repo</span><span>2026-05-30 - Lead-gen implementation kickoff</span><span>2026-05-30 - Track leftover lead-gen docs</span><span>2026-05-30 - Update dashboard deploy path</span><span>2026-05-30 - Move homelab status dashboard into homelab</span></div>
-                  </section>
-                </div>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>2026-05-30 - Lead-gen docs moved into agent repo</span><span>2026-05-30 - Lead-gen implementation kickoff</span><span>2026-05-30 - Track leftover lead-gen docs</span><span>2026-05-30 - Update dashboard deploy path</span><span>2026-05-30 - Move homelab status dashboard into homelab</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="dirty">
-              <summary>
-                <span class="name">Infra</span>
-                <span class="meta">repo · private</span>
-                <time>2026-06-25</time>
-                <span class="subject">session: 2026-06-25 19:20 — Logoff and Hermes testing guidance</span>
-                <span class="status dirty">dirty</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Workspace infrastructure, repo manifest, wiki, clone tooling, and this ecosystem registry.</p>
-                <p class="links"><a href="https://github.com/DrewBeFree/infra" target="_blank" rel="noreferrer">GitHub</a> <a href="http://atlas/wiki/" target="_blank" rel="noreferrer">open</a> <a href="http://atlas/ecosystem/" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path">/home/drew/GitHub/infra</p>
+            <template id="project-detail-22">
+              <p class="eyebrow">repo · private</p>
+              <h2>Infra</h2>
+              <p class="summary-text">Workspace infrastructure, repo manifest, wiki, clone tooling, and this ecosystem registry.</p>
+              <p class="latest-subject"><strong>Latest:</strong> 2026-07-02 01:03 · feat: add internal ecosystem changelog</p>
+              <p class="links"><a href="https://github.com/DrewBeFree/infra" target="_blank" rel="noreferrer">GitHub</a> <a href="http://atlas/wiki/" target="_blank" rel="noreferrer">open</a> <a href="http://atlas/ecosystem/" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path">/home/drew/GitHub/infra</p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul>
+            <li>
+              <time>2026-07-02 01:03</time>
+              <span><code>377dcfff</code> feat: add internal ecosystem changelog<small>DrewBeFree</small></span>
+            </li>
+
             <li>
               <time>2026-06-25 19:49</time>
               <span><code>c143a868</code> session: 2026-06-25 19:20 — Logoff and Hermes testing guidance<small>Andrew Webb</small></span>
@@ -1171,64 +1349,47 @@ small { display:block; color:var(--dim); margin-top:2px; }
               <time>2026-06-19 15:02</time>
               <span><code>bf876842</code> fix: route hermes access through websocket proxy<small>Andrew Webb</small></span>
             </li>
-
-            <li>
-              <time>2026-06-19 01:54</time>
-              <span><code>f0e88a19</code> docs: record private apex resume split<small>Andrew Webb</small></span>
-            </li>
             </ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>2026-06-25 19:16 — Session wrap-up</span><span>2026-06-08 17:56 â€” Fix raw issue import 404 for experimental</span><span>2026-06-05 02:41 â€” AI Dashboard Activity and Settings views</span><span>2026-06-05 00:24 â€” Atlas backend gateway live for LDU</span><span>2026-06-01 20:30 â€” Phase A App Factory wrap-up</span></div>
-                  </section>
-                </div>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>2026-06-25 19:16 — Session wrap-up</span><span>2026-06-08 17:56 â€” Fix raw issue import 404 for experimental</span><span>2026-06-05 02:41 â€” AI Dashboard Activity and Settings views</span><span>2026-06-05 00:24 â€” Atlas backend gateway live for LDU</span><span>2026-06-01 20:30 â€” Phase A App Factory wrap-up</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="not local">
-              <summary>
-                <span class="name">Interactive Setup</span>
-                <span class="meta">repo · private</span>
-                <time>—</time>
-                <span class="subject">No local git history</span>
-                <span class="status not-local">not local</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Local/docs-only setup material for the homelab AI stack; no live GitHub repository exists.</p>
-                <p class="links"> </p>
-                <p class="path"></p>
+            <template id="project-detail-23">
+              <p class="eyebrow">repo · private</p>
+              <h2>Interactive Setup</h2>
+              <p class="summary-text">Local/docs-only setup material for the homelab AI stack; no live GitHub repository exists.</p>
+              <p class="latest-subject"><strong>Latest:</strong> — · No local git history</p>
+              <p class="links"> </p>
+              <p class="path"></p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul><li><span class="muted">No local git commits available.</span></li></ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>None found</span></div>
-                  </section>
-                </div>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul><li><span class="muted">No local git commits available.</span></li></ul>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>None found</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="clean">
-              <summary>
-                <span class="name">Kybernet</span>
-                <span class="meta">repo · public</span>
-                <time>2026-06-20</time>
-                <span class="subject">feat: full-viewport Spline 3D hero, edge to edge</span>
-                <span class="status clean">clean</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Public Ubiquiti UniFi network design and installation site.</p>
-                <p class="links"><a href="https://github.com/DrewBeFree/kybernet-tech" target="_blank" rel="noreferrer">GitHub</a> <a href="https://kybernet.tech" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path">/home/drew/GitHub/sites/kybernet-tech</p>
+            <template id="project-detail-24">
+              <p class="eyebrow">repo · public</p>
+              <h2>Kybernet</h2>
+              <p class="summary-text">Public Ubiquiti UniFi network design and installation site.</p>
+              <p class="latest-subject"><strong>Latest:</strong> 2026-06-20 07:16 · feat: full-viewport Spline 3D hero, edge to edge</p>
+              <p class="links"><a href="https://github.com/DrewBeFree/kybernet-tech" target="_blank" rel="noreferrer">GitHub</a> <a href="https://kybernet.tech" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path">/home/drew/GitHub/sites/kybernet-tech</p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul>
             <li>
               <time>2026-06-20 07:16</time>
               <span><code>3816297e</code> feat: full-viewport Spline 3D hero, edge to edge<small>DrewBeFree</small></span>
@@ -1269,32 +1430,26 @@ small { display:block; color:var(--dim); margin-top:2px; }
               <span><code>bbf6d8c1</code> Merge dev: add privacy and terms pages<small>Drew</small></span>
             </li>
             </ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>2026-05-22 19:05 — kybernet-tech privacy/terms pages + footer fix</span></div>
-                  </section>
-                </div>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>2026-05-22 19:05 — kybernet-tech privacy/terms pages + footer fix</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="dirty">
-              <summary>
-                <span class="name">Lead Gen Agent</span>
-                <span class="meta">repo · private</span>
-                <time>2026-06-18</time>
-                <span class="subject">docs: log alienware repo cleanup</span>
-                <span class="status dirty">dirty</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Review-gated manual lead inbox for Facebook and monday.com lead signals, with scoring, editable drafts, and fixture calibration.</p>
-                <p class="links"><a href="https://github.com/DrewBeFree/lead-gen-agent" target="_blank" rel="noreferrer">GitHub</a> <a href="http://100.71.165.80:3027" target="_blank" rel="noreferrer">open</a> <a href="http://100.71.165.80:3027" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path">/home/drew/GitHub/agents/lead-gen-agent</p>
+            <template id="project-detail-25">
+              <p class="eyebrow">repo · private</p>
+              <h2>Lead Gen Agent</h2>
+              <p class="summary-text">Review-gated manual lead inbox for Facebook and monday.com lead signals, with scoring, editable drafts, and fixture calibration.</p>
+              <p class="latest-subject"><strong>Latest:</strong> 2026-06-18 14:56 · docs: log alienware repo cleanup</p>
+              <p class="links"><a href="https://github.com/DrewBeFree/lead-gen-agent" target="_blank" rel="noreferrer">GitHub</a> <a href="http://100.71.165.80:3027" target="_blank" rel="noreferrer">open</a> <a href="http://100.71.165.80:3027" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path">/home/drew/GitHub/agents/lead-gen-agent</p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul>
             <li>
               <time>2026-06-18 14:56</time>
               <span><code>3efbea00</code> docs: log alienware repo cleanup<small>Andrew Webb</small></span>
@@ -1335,32 +1490,26 @@ small { display:block; color:var(--dim); margin-top:2px; }
               <span><code>2b81ee18</code> docs: log hermes mobile realtime fix<small>Andrew Webb</small></span>
             </li>
             </ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>2026-06-06 00:00 EDT - Lead agent status check</span><span>2026-06-06 00:10 EDT - Facebook scraping scope requested</span><span>2026-06-06 00:58 EDT - Facebook group scope and Lead Desk page</span><span>2026-06-06 01:14 EDT - Morning leads queued and ecosystem link live</span><span>2026-06-06 01:20 EDT - Phone access and 7:30 schedule check</span></div>
-                  </section>
-                </div>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>2026-06-06 00:00 EDT - Lead agent status check</span><span>2026-06-06 00:10 EDT - Facebook scraping scope requested</span><span>2026-06-06 00:58 EDT - Facebook group scope and Lead Desk page</span><span>2026-06-06 01:14 EDT - Morning leads queued and ecosystem link live</span><span>2026-06-06 01:20 EDT - Phone access and 7:30 schedule check</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="dirty">
-              <summary>
-                <span class="name">Linksy</span>
-                <span class="meta">repo · public</span>
-                <time>2026-05-22</time>
-                <span class="subject">docs: add instruction manual</span>
-                <span class="status dirty">dirty</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Live wager tracker for casual golf rounds.</p>
-                <p class="links"><a href="https://github.com/DrewBeFree/golf" target="_blank" rel="noreferrer">GitHub</a> <a href="https://linksy.drewbefree.com" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path">/home/drew/GitHub/apps/golf</p>
+            <template id="project-detail-26">
+              <p class="eyebrow">repo · public</p>
+              <h2>Linksy</h2>
+              <p class="summary-text">Live wager tracker for casual golf rounds.</p>
+              <p class="latest-subject"><strong>Latest:</strong> 2026-05-22 01:52 · docs: add instruction manual</p>
+              <p class="links"><a href="https://github.com/DrewBeFree/golf" target="_blank" rel="noreferrer">GitHub</a> <a href="https://linksy.drewbefree.com" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path">/home/drew/GitHub/apps/golf</p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul>
             <li>
               <time>2026-05-22 01:52</time>
               <span><code>7d347d3b</code> docs: add instruction manual<small>Drew</small></span>
@@ -1401,32 +1550,26 @@ small { display:block; color:var(--dim); margin-top:2px; }
               <span><code>19a00eb2</code> fix: point apple-touch-icon to PWA icon instead of favicon<small>Andrew Webb</small></span>
             </li>
             </ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>2026-05-10 — PWA refresh button (v0.2.2)</span><span>2026-05-07–08 — PWA installable support (v0.2.1)</span><span>2026-05-01 — LastPass fixes</span><span>2026-04-27 — Copyright, README</span><span>2026-04-21 — Active game fixes</span></div>
-                  </section>
-                </div>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>2026-05-10 — PWA refresh button (v0.2.2)</span><span>2026-05-07–08 — PWA installable support (v0.2.1)</span><span>2026-05-01 — LastPass fixes</span><span>2026-04-27 — Copyright, README</span><span>2026-04-21 — Active game fixes</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="clean">
-              <summary>
-                <span class="name">LLM Debate Union</span>
-                <span class="meta">repo · private</span>
-                <time>2026-06-24</time>
-                <span class="subject">fix: restore BACKLOG.md, update version to v0.5.1, date to June 24, NWO WOLFPACK</span>
-                <span class="status clean">clean</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Local LLM debate and orchestration experiment.</p>
-                <p class="links"><a href="https://github.com/DrewBeFree/llm-debate-union" target="_blank" rel="noreferrer">GitHub</a> </p>
-                <p class="path">/home/drew/GitHub/apps/llm-debate-union</p>
+            <template id="project-detail-27">
+              <p class="eyebrow">repo · private</p>
+              <h2>LLM Debate Union</h2>
+              <p class="summary-text">Local LLM debate and orchestration experiment.</p>
+              <p class="latest-subject"><strong>Latest:</strong> 2026-06-24 03:30 · fix: restore BACKLOG.md, update version to v0.5.1, date to June 24, NWO WOLFPACK</p>
+              <p class="links"><a href="https://github.com/DrewBeFree/llm-debate-union" target="_blank" rel="noreferrer">GitHub</a> </p>
+              <p class="path">/home/drew/GitHub/apps/llm-debate-union</p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul>
             <li>
               <time>2026-06-24 03:30</time>
               <span><code>e4c9d8ea</code> fix: restore BACKLOG.md, update version to v0.5.1, date to June 24, NWO WOLFPACK<small>DrewBeFree</small></span>
@@ -1467,32 +1610,26 @@ small { display:block; color:var(--dim); margin-top:2px; }
               <span><code>b7fe2146</code> feat: per-mode labels + drag-and-drop document upload (#15)<small>Andrew Webb</small></span>
             </li>
             </ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>2026-06-05 00:24 — Atlas backend gateway live for LDU</span><span>2026-06-24 — Rebrand + 4-Mode Arena (LLM Cage Match)</span><span>2026-06-24 (cont.) — Dynamic timeline + poll labels per mode</span><span>2026-05-30 16:41 — Fixed telemetry report persistence bug</span><span>2026-05-29 (overnight) — Custom Persona System Prompts (v0.3.8)</span></div>
-                  </section>
-                </div>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>2026-06-05 00:24 — Atlas backend gateway live for LDU</span><span>2026-06-24 — Rebrand + 4-Mode Arena (LLM Cage Match)</span><span>2026-06-24 (cont.) — Dynamic timeline + poll labels per mode</span><span>2026-05-30 16:41 — Fixed telemetry report persistence bug</span><span>2026-05-29 (overnight) — Custom Persona System Prompts (v0.3.8)</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="clean">
-              <summary>
-                <span class="name">Luke Codex Guide</span>
-                <span class="meta">repo · public</span>
-                <time>2026-06-06</time>
-                <span class="subject">Update session log for GUI-first revision</span>
-                <span class="status clean">clean</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Public guide/site for Luke’s Codex workflow.</p>
-                <p class="links"><a href="https://github.com/DrewBeFree/luke-codex-guide" target="_blank" rel="noreferrer">GitHub</a> </p>
-                <p class="path">/home/drew/GitHub/sites/luke-codex-guide</p>
+            <template id="project-detail-28">
+              <p class="eyebrow">repo · public</p>
+              <h2>Luke Codex Guide</h2>
+              <p class="summary-text">Public guide/site for Luke’s Codex workflow.</p>
+              <p class="latest-subject"><strong>Latest:</strong> 2026-06-06 19:35 · Update session log for GUI-first revision</p>
+              <p class="links"><a href="https://github.com/DrewBeFree/luke-codex-guide" target="_blank" rel="noreferrer">GitHub</a> </p>
+              <p class="path">/home/drew/GitHub/sites/luke-codex-guide</p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul>
             <li>
               <time>2026-06-06 19:35</time>
               <span><code>b9b7b121</code> Update session log for GUI-first revision<small>Andrew Webb</small></span>
@@ -1528,32 +1665,26 @@ small { display:block; color:var(--dim); margin-top:2px; }
               <span><code>d1d785ce</code> Create Luke Codex setup guide<small>Andrew Webb</small></span>
             </li>
             </ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>2026-06-06 (GUI-first Luke guide revision)</span></div>
-                  </section>
-                </div>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>2026-06-06 (GUI-first Luke guide revision)</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="dirty">
-              <summary>
-                <span class="name">Photography</span>
-                <span class="meta">repo · public</span>
-                <time>2026-04-21</time>
-                <span class="subject">Add first photos — boogiesnaps gallery, cover, and ticker</span>
-                <span class="status dirty">dirty</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Photography portfolio for portraits, dogs, weddings, and street work.</p>
-                <p class="links"><a href="https://github.com/DrewBeFree/photography" target="_blank" rel="noreferrer">GitHub</a> <a href="https://photography.drewbefree.com" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path">/home/drew/GitHub/sites/photography</p>
+            <template id="project-detail-29">
+              <p class="eyebrow">repo · public</p>
+              <h2>Photography</h2>
+              <p class="summary-text">Photography portfolio for portraits, dogs, weddings, and street work.</p>
+              <p class="latest-subject"><strong>Latest:</strong> 2026-04-21 11:33 · Add first photos — boogiesnaps gallery, cover, and ticker</p>
+              <p class="links"><a href="https://github.com/DrewBeFree/photography" target="_blank" rel="noreferrer">GitHub</a> <a href="https://photography.drewbefree.com" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path">/home/drew/GitHub/sites/photography</p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul>
             <li>
               <time>2026-04-21 11:33</time>
               <span><code>60efd507</code> Add first photos — boogiesnaps gallery, cover, and ticker<small>Andrew Webb</small></span>
@@ -1584,32 +1715,26 @@ small { display:block; color:var(--dim); margin-top:2px; }
               <span><code>bcbbecae</code> Initial commit — Boogiesnaps photography gallery<small>Andrew Webb</small></span>
             </li>
             </ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>None found</span></div>
-                  </section>
-                </div>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>None found</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="dirty">
-              <summary>
-                <span class="name">Poker Night</span>
-                <span class="meta">repo · public</span>
-                <time>2026-06-07</time>
-                <span class="subject">docs: update session log</span>
-                <span class="status dirty">dirty</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">No-Limit Hold&#x27;em session manager with timers, buy-ins, and payout balancing.</p>
-                <p class="links"><a href="https://github.com/DrewBeFree/poker" target="_blank" rel="noreferrer">GitHub</a> <a href="https://poker.drewbefree.com" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path">/home/drew/GitHub/apps/poker</p>
+            <template id="project-detail-30">
+              <p class="eyebrow">repo · public</p>
+              <h2>Poker Night</h2>
+              <p class="summary-text">No-Limit Hold&#x27;em session manager with timers, buy-ins, and payout balancing.</p>
+              <p class="latest-subject"><strong>Latest:</strong> 2026-06-07 18:15 · docs: update session log</p>
+              <p class="links"><a href="https://github.com/DrewBeFree/poker" target="_blank" rel="noreferrer">GitHub</a> <a href="https://poker.drewbefree.com" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path">/home/drew/GitHub/apps/poker</p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul>
             <li>
               <time>2026-06-07 18:15</time>
               <span><code>d0af7544</code> docs: update session log<small>Andrew Webb</small></span>
@@ -1650,32 +1775,26 @@ small { display:block; color:var(--dim); margin-top:2px; }
               <span><code>3e1f0ad5</code> log: game status badge with host cancel control (v1.7.0)<small>Drew</small></span>
             </li>
             </ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>2026-05-29 17:28 — Final session: v0.7.0 deployed with game status control</span><span>2026-05-29 — Game status badge with host cancel control (v0.7.0)</span><span>2026-05-10 — PWA refresh button (v1.5.2)</span><span>2026-05-07–08 — PWA installable support (v1.5.1)</span><span>2026-05-01 — LastPass fix</span></div>
-                  </section>
-                </div>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>2026-05-29 17:28 — Final session: v0.7.0 deployed with game status control</span><span>2026-05-29 — Game status badge with host cancel control (v0.7.0)</span><span>2026-05-10 — PWA refresh button (v1.5.2)</span><span>2026-05-07–08 — PWA installable support (v1.5.1)</span><span>2026-05-01 — LastPass fix</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="dirty">
-              <summary>
-                <span class="name">Recap Agents</span>
-                <span class="meta">repo · private</span>
-                <time>2026-05-24</time>
-                <span class="subject">Merge branch &#x27;main&#x27; of https://github.com/DrewBeFree/recap-agents</span>
-                <span class="status dirty">dirty</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Meeting recap pipeline that updates knowledge and dashboard outputs.</p>
-                <p class="links"><a href="https://github.com/DrewBeFree/recap-agents" target="_blank" rel="noreferrer">GitHub</a> <a href="https://drewbefree.github.io/recap-agents/" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path">/home/drew/GitHub/agents/recap-agents</p>
+            <template id="project-detail-31">
+              <p class="eyebrow">repo · private</p>
+              <h2>Recap Agents</h2>
+              <p class="summary-text">Meeting recap pipeline that updates knowledge and dashboard outputs.</p>
+              <p class="latest-subject"><strong>Latest:</strong> 2026-05-24 20:13 · Merge branch &#x27;main&#x27; of https://github.com/DrewBeFree/recap-agents</p>
+              <p class="links"><a href="https://github.com/DrewBeFree/recap-agents" target="_blank" rel="noreferrer">GitHub</a> <a href="https://drewbefree.github.io/recap-agents/" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path">/home/drew/GitHub/agents/recap-agents</p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul>
             <li>
               <time>2026-05-24 20:13</time>
               <span><code>f3eadf6a</code> Merge branch &#x27;main&#x27; of https://github.com/DrewBeFree/recap-agents<small>Andrew Webb</small></span>
@@ -1716,32 +1835,26 @@ small { display:block; color:var(--dim); margin-top:2px; }
               <span><code>81620313</code> chore: update session log — session 6<small>Andrew Webb</small></span>
             </li>
             </ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>2026-05-20 06:27 — Answering-agent spec + new repo</span><span>2026-05-19 — run_update.bat progress indicators + recap-viewer resources fix</span><span>2026-05-10 (session 7) — Step 4: Carry-forward block</span><span>2026-05-10 (session 6) — Agenda notes, highlight polish, logo, recap scope fix</span><span>2026-05-10 (session 5) — recap-viewer Step 3 + ring animations</span></div>
-                  </section>
-                </div>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>2026-05-20 06:27 — Answering-agent spec + new repo</span><span>2026-05-19 — run_update.bat progress indicators + recap-viewer resources fix</span><span>2026-05-10 (session 7) — Step 4: Carry-forward block</span><span>2026-05-10 (session 6) — Agenda notes, highlight polish, logo, recap scope fix</span><span>2026-05-10 (session 5) — recap-viewer Step 3 + ring animations</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="dirty">
-              <summary>
-                <span class="name">Recap Viewer</span>
-                <span class="meta">repo · public</span>
-                <time>2026-05-22</time>
-                <span class="subject">docs: add instruction manual</span>
-                <span class="status dirty">dirty</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Viewer for structured meeting summaries generated by recap agents.</p>
-                <p class="links"><a href="https://github.com/DrewBeFree/recap-viewer" target="_blank" rel="noreferrer">GitHub</a> <a href="https://recap.drewbefree.com" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path">/home/drew/GitHub/apps/recap-viewer</p>
+            <template id="project-detail-32">
+              <p class="eyebrow">repo · public</p>
+              <h2>Recap Viewer</h2>
+              <p class="summary-text">Viewer for structured meeting summaries generated by recap agents.</p>
+              <p class="latest-subject"><strong>Latest:</strong> 2026-05-22 01:52 · docs: add instruction manual</p>
+              <p class="links"><a href="https://github.com/DrewBeFree/recap-viewer" target="_blank" rel="noreferrer">GitHub</a> <a href="https://recap.drewbefree.com" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path">/home/drew/GitHub/apps/recap-viewer</p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul>
             <li>
               <time>2026-05-22 01:52</time>
               <span><code>b95e08ad</code> docs: add instruction manual<small>Drew</small></span>
@@ -1782,32 +1895,26 @@ small { display:block; color:var(--dim); margin-top:2px; }
               <span><code>833336f3</code> feat: Step 2+3 — Notes bulleted list, Follow-up card, item note ring animations<small>Andrew Webb</small></span>
             </li>
             </ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>2026-05-19 — Resources save fix + RLS policy</span><span>2026-05-10 (session 7) — Step 4: Carry-forward block</span><span>2026-05-10 (session 6) — Agenda notes, highlight polish, logo</span><span>2026-05-10 (session 5) — Step 3: Follow-up card + ring animations</span><span>2026-05-10 (session 4) — Step 2: Notes bulleted list</span></div>
-                  </section>
-                </div>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>2026-05-19 — Resources save fix + RLS policy</span><span>2026-05-10 (session 7) — Step 4: Carry-forward block</span><span>2026-05-10 (session 6) — Agenda notes, highlight polish, logo</span><span>2026-05-10 (session 5) — Step 3: Follow-up card + ring animations</span><span>2026-05-10 (session 4) — Step 2: Notes bulleted list</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="dirty">
-              <summary>
-                <span class="name">Recipes</span>
-                <span class="meta">repo · public</span>
-                <time>2026-05-22</time>
-                <span class="subject">docs: add instruction manual</span>
-                <span class="status dirty">dirty</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Searchable family recipe collection with editable data.</p>
-                <p class="links"><a href="https://github.com/DrewBeFree/recipes" target="_blank" rel="noreferrer">GitHub</a> <a href="https://food.drewbefree.com" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path">/home/drew/GitHub/apps/recipes</p>
+            <template id="project-detail-33">
+              <p class="eyebrow">repo · public</p>
+              <h2>Recipes</h2>
+              <p class="summary-text">Searchable family recipe collection with editable data.</p>
+              <p class="latest-subject"><strong>Latest:</strong> 2026-05-22 01:52 · docs: add instruction manual</p>
+              <p class="links"><a href="https://github.com/DrewBeFree/recipes" target="_blank" rel="noreferrer">GitHub</a> <a href="https://food.drewbefree.com" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path">/home/drew/GitHub/apps/recipes</p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul>
             <li>
               <time>2026-05-22 01:52</time>
               <span><code>01f7d747</code> docs: add instruction manual<small>Drew</small></span>
@@ -1848,32 +1955,26 @@ small { display:block; color:var(--dim); margin-top:2px; }
               <span><code>19220816</code> fix: point apple-touch-icon to PWA icon instead of favicon<small>Andrew Webb</small></span>
             </li>
             </ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>2026-05-10 — PWA refresh button (v1.0.2)</span><span>2026-05-07–08 — PWA installable support (v1.0.1)</span><span>2026-05-01 — Full initial build (v1.0)</span></div>
-                  </section>
-                </div>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>2026-05-10 — PWA refresh button (v1.0.2)</span><span>2026-05-07–08 — PWA installable support (v1.0.1)</span><span>2026-05-01 — Full initial build (v1.0)</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="dirty">
-              <summary>
-                <span class="name">RV Maintenance</span>
-                <span class="meta">repo · public</span>
-                <time>2026-05-22</time>
-                <span class="subject">docs: add instruction manual</span>
-                <span class="status dirty">dirty</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">RV maintenance dashboard with trip, history, and overdue tracking.</p>
-                <p class="links"><a href="https://github.com/DrewBeFree/rv-maintenance" target="_blank" rel="noreferrer">GitHub</a> <a href="https://rv.drewbefree.com" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path">/home/drew/GitHub/apps/rv-maintenance</p>
+            <template id="project-detail-34">
+              <p class="eyebrow">repo · public</p>
+              <h2>RV Maintenance</h2>
+              <p class="summary-text">RV maintenance dashboard with trip, history, and overdue tracking.</p>
+              <p class="latest-subject"><strong>Latest:</strong> 2026-05-22 01:52 · docs: add instruction manual</p>
+              <p class="links"><a href="https://github.com/DrewBeFree/rv-maintenance" target="_blank" rel="noreferrer">GitHub</a> <a href="https://rv.drewbefree.com" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path">/home/drew/GitHub/apps/rv-maintenance</p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul>
             <li>
               <time>2026-05-22 01:52</time>
               <span><code>2375b701</code> docs: add instruction manual<small>Drew</small></span>
@@ -1914,32 +2015,26 @@ small { display:block; color:var(--dim); margin-top:2px; }
               <span><code>00d32ce2</code> fix: point apple-touch-icon to PWA icon instead of favicon<small>Andrew Webb</small></span>
             </li>
             </ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>2026-05-10 — PWA refresh button (v0.5.2)</span><span>2026-05-07–08 — PWA installable support (v0.5.1)</span><span>2026-04-27 — Mobile session buttons, due dates, fixes (v0.5)</span><span>2026-04-26 — Full initial build</span></div>
-                  </section>
-                </div>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>2026-05-10 — PWA refresh button (v0.5.2)</span><span>2026-05-07–08 — PWA installable support (v0.5.1)</span><span>2026-04-27 — Mobile session buttons, due dates, fixes (v0.5)</span><span>2026-04-26 — Full initial build</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="dirty">
-              <summary>
-                <span class="name">Selling Shit</span>
-                <span class="meta">repo · private</span>
-                <time>2026-06-30</time>
-                <span class="subject">fix: tuck advanced listing controls behind menu</span>
-                <span class="status dirty">dirty</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Personal listing/sales helper app.</p>
-                <p class="links"><a href="https://github.com/DrewBeFree/selling-shit" target="_blank" rel="noreferrer">GitHub</a> </p>
-                <p class="path">/home/drew/GitHub/apps/selling-shit</p>
+            <template id="project-detail-35">
+              <p class="eyebrow">repo · private</p>
+              <h2>Selling Shit</h2>
+              <p class="summary-text">Personal listing/sales helper app.</p>
+              <p class="latest-subject"><strong>Latest:</strong> 2026-06-30 06:40 · fix: tuck advanced listing controls behind menu</p>
+              <p class="links"><a href="https://github.com/DrewBeFree/selling-shit" target="_blank" rel="noreferrer">GitHub</a> </p>
+              <p class="path">/home/drew/GitHub/apps/selling-shit</p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul>
             <li>
               <time>2026-06-30 06:40</time>
               <span><code>ed26113a</code> fix: tuck advanced listing controls behind menu<small>DrewBeFree</small></span>
@@ -1980,32 +2075,26 @@ small { display:block; color:var(--dim); margin-top:2px; }
               <span><code>26f4a010</code> feat: add listing metrics dashboard<small>Andrew Webb</small></span>
             </li>
             </ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>2026-06-23 (initial Flask recovery)</span><span>2026-06-23 (marketplace drafting MVP)</span><span>2026-06-23 (flatten repo folder)</span><span>2026-06-23 (scanned photo preview fix)</span><span>2026-06-23 (featured photo carousel)</span></div>
-                  </section>
-                </div>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>2026-06-23 (initial Flask recovery)</span><span>2026-06-23 (marketplace drafting MVP)</span><span>2026-06-23 (flatten repo folder)</span><span>2026-06-23 (scanned photo preview fix)</span><span>2026-06-23 (featured photo carousel)</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="dirty">
-              <summary>
-                <span class="name">Soccer Pickup</span>
-                <span class="meta">repo · public</span>
-                <time>2026-05-22</time>
-                <span class="subject">docs: add instruction manual</span>
-                <span class="status dirty">dirty</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Pickup soccer signup page with game details, weather, and admin editing.</p>
-                <p class="links"><a href="https://github.com/DrewBeFree/soccer-pickup" target="_blank" rel="noreferrer">GitHub</a> <a href="https://soccer.drewbefree.com" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path">/home/drew/GitHub/apps/soccer-pickup</p>
+            <template id="project-detail-36">
+              <p class="eyebrow">repo · public</p>
+              <h2>Soccer Pickup</h2>
+              <p class="summary-text">Pickup soccer signup page with game details, weather, and admin editing.</p>
+              <p class="latest-subject"><strong>Latest:</strong> 2026-05-22 01:52 · docs: add instruction manual</p>
+              <p class="links"><a href="https://github.com/DrewBeFree/soccer-pickup" target="_blank" rel="noreferrer">GitHub</a> <a href="https://soccer.drewbefree.com" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path">/home/drew/GitHub/apps/soccer-pickup</p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul>
             <li>
               <time>2026-05-22 01:52</time>
               <span><code>1e390883</code> docs: add instruction manual<small>Drew</small></span>
@@ -2046,58 +2135,46 @@ small { display:block; color:var(--dim); margin-top:2px; }
               <span><code>6038fe54</code> fix: point apple-touch-icon to PWA icon instead of favicon<small>Andrew Webb</small></span>
             </li>
             </ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>2026-05-10 — PWA refresh button (v0.8.8)</span><span>2026-05-07–08 — PWA installable support (v0.8.7)</span><span>2026-05-01 — LastPass fix</span><span>2026-04-27 — UX polish session (v0.3 → v0.8)</span><span>2026-04-27 — Share, cancelled, auto-clear (v0.2)</span></div>
-                  </section>
-                </div>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>2026-05-10 — PWA refresh button (v0.8.8)</span><span>2026-05-07–08 — PWA installable support (v0.8.7)</span><span>2026-05-01 — LastPass fix</span><span>2026-04-27 — UX polish session (v0.3 → v0.8)</span><span>2026-04-27 — Share, cancelled, auto-clear (v0.2)</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="not local">
-              <summary>
-                <span class="name">Surf The Webb</span>
-                <span class="meta">repo · public</span>
-                <time>—</time>
-                <span class="subject">No local git history</span>
-                <span class="status not-local">not local</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Framer-managed business site for monday.com consulting, workflow automation, and systems design.</p>
-                <p class="links"> <a href="https://surfthewebb.com" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path"></p>
+            <template id="project-detail-37">
+              <p class="eyebrow">repo · public</p>
+              <h2>Surf The Webb</h2>
+              <p class="summary-text">Framer-managed business site for monday.com consulting, workflow automation, and systems design.</p>
+              <p class="latest-subject"><strong>Latest:</strong> — · No local git history</p>
+              <p class="links"> <a href="https://surfthewebb.com" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path"></p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul><li><span class="muted">No local git commits available.</span></li></ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>None found</span></div>
-                  </section>
-                </div>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul><li><span class="muted">No local git commits available.</span></li></ul>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>None found</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="dirty">
-              <summary>
-                <span class="name">Trading Scanner</span>
-                <span class="meta">repo · private</span>
-                <time>2026-07-01</time>
-                <span class="subject">fix(dashboard): align accounts equity progress</span>
-                <span class="status dirty">dirty</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Production-grade volatility-controlled market scanner with a live Atlas dashboard.</p>
-                <p class="links"><a href="https://github.com/DrewBeFree/trading-scanner" target="_blank" rel="noreferrer">GitHub</a> <a href="http://atlas:8787" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path">/home/drew/GitHub/apps/trading-scanner</p>
+            <template id="project-detail-38">
+              <p class="eyebrow">repo · private</p>
+              <h2>Trading Scanner</h2>
+              <p class="summary-text">Production-grade volatility-controlled market scanner with a live Atlas dashboard.</p>
+              <p class="latest-subject"><strong>Latest:</strong> 2026-07-01 19:36 · fix(dashboard): align accounts equity progress</p>
+              <p class="links"><a href="https://github.com/DrewBeFree/trading-scanner" target="_blank" rel="noreferrer">GitHub</a> <a href="http://atlas:8787" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path">/home/drew/GitHub/apps/trading-scanner</p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul>
             <li>
               <time>2026-07-01 19:36</time>
               <span><code>e5890c10</code> fix(dashboard): align accounts equity progress<small>DrewBeFree</small></span>
@@ -2138,32 +2215,26 @@ small { display:block; color:var(--dim); margin-top:2px; }
               <span><code>93565afc</code> docs: session log for Farley Phase 4 (2026-06-25)<small>Drew Webb</small></span>
             </li>
             </ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>2026-06-25 22:38 EDT — Add separate crypto_200 paper lane</span><span>2026-06-25 20:24 EDT — Farley dashboard data gaps + aggressive fractional order fix</span><span>2026-06-24 10:45 — Fix trading-scanner mobile responsive CSS</span><span>2026-06-18 (closeout: aggressive paper armed)</span><span>2026-06-18 (aggressive paper account credential split)</span></div>
-                  </section>
-                </div>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>2026-06-25 22:38 EDT — Add separate crypto_200 paper lane</span><span>2026-06-25 20:24 EDT — Farley dashboard data gaps + aggressive fractional order fix</span><span>2026-06-24 10:45 — Fix trading-scanner mobile responsive CSS</span><span>2026-06-18 (closeout: aggressive paper armed)</span><span>2026-06-18 (aggressive paper account credential split)</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="dirty">
-              <summary>
-                <span class="name">UHaul Planner</span>
-                <span class="meta">repo · sensitive</span>
-                <time>2026-05-29</time>
-                <span class="subject">chore: bump version to v0.14.2 (camera rotation bug fix)</span>
-                <span class="status dirty">dirty</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Interactive 26-foot moving truck load planner. Keep out of the public Command Center until IP direction is clear.</p>
-                <p class="links"><a href="https://github.com/DrewBeFree/uhaul-load-planner" target="_blank" rel="noreferrer">GitHub</a> <a href="https://uhaul.drewbefree.com" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path">/home/drew/GitHub/apps/uhaul-load-planner</p>
+            <template id="project-detail-39">
+              <p class="eyebrow">repo · sensitive</p>
+              <h2>UHaul Planner</h2>
+              <p class="summary-text">Interactive 26-foot moving truck load planner. Keep out of the public Command Center until IP direction is clear.</p>
+              <p class="latest-subject"><strong>Latest:</strong> 2026-05-29 20:59 · chore: bump version to v0.14.2 (camera rotation bug fix)</p>
+              <p class="links"><a href="https://github.com/DrewBeFree/uhaul-load-planner" target="_blank" rel="noreferrer">GitHub</a> <a href="https://uhaul.drewbefree.com" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path">/home/drew/GitHub/apps/uhaul-load-planner</p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul>
             <li>
               <time>2026-05-29 20:59</time>
               <span><code>aa85d50c</code> chore: bump version to v0.14.2 (camera rotation bug fix)<small>Drew</small></span>
@@ -2204,32 +2275,26 @@ small { display:block; color:var(--dim); margin-top:2px; }
               <span><code>30cab559</code> fix: remove all position/target props from camera, set purely imperatively<small>Drew</small></span>
             </li>
             </ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>2026-05-30 02:50 — camera rotation fix, v0.14.2</span><span>2026-05-29 (camera controls bug)</span><span>2026-05-29 (overnight session 2) — Auto-pack, 3D polish, mobile UX (v0.14.0)</span><span>2026-05-29 (overnight) — PWA banner + ongoing improvements</span><span>2026-05-26 09:16 — fix atlas wiki conflict after deploy</span></div>
-                  </section>
-                </div>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>2026-05-30 02:50 — camera rotation fix, v0.14.2</span><span>2026-05-29 (camera controls bug)</span><span>2026-05-29 (overnight session 2) — Auto-pack, 3D polish, mobile UX (v0.14.0)</span><span>2026-05-29 (overnight) — PWA banner + ongoing improvements</span><span>2026-05-26 09:16 — fix atlas wiki conflict after deploy</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="clean">
-              <summary>
-                <span class="name">Yes App</span>
-                <span class="meta">repo · public</span>
-                <time>2026-06-07</time>
-                <span class="subject">chore: consolidate full Yes implementation into canonical GitHub/apps/yes + recover Codex chats</span>
-                <span class="status clean">clean</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Yes app local workspace and GitHub repo.</p>
-                <p class="links"><a href="https://github.com/DrewBeFree/yes-app" target="_blank" rel="noreferrer">GitHub</a> </p>
-                <p class="path">/home/drew/GitHub/apps/yes</p>
+            <template id="project-detail-40">
+              <p class="eyebrow">repo · public</p>
+              <h2>Yes App</h2>
+              <p class="summary-text">Yes app local workspace and GitHub repo.</p>
+              <p class="latest-subject"><strong>Latest:</strong> 2026-06-07 05:03 · chore: consolidate full Yes implementation into canonical GitHub/apps/yes + recover Codex chats</p>
+              <p class="links"><a href="https://github.com/DrewBeFree/yes-app" target="_blank" rel="noreferrer">GitHub</a> </p>
+              <p class="path">/home/drew/GitHub/apps/yes</p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul>
             <li>
               <time>2026-06-07 05:03</time>
               <span><code>9fce6edd</code> chore: consolidate full Yes implementation into canonical GitHub/apps/yes + recover Codex chats<small>Drew</small></span>
@@ -2270,110 +2335,86 @@ small { display:block; color:var(--dim); margin-top:2px; }
               <span><code>0f84a7f4</code> docs: rename project to yes app<small>Andrew Webb</small></span>
             </li>
             </ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>2026-06-07 (project setup)</span><span>2026-06-07 (Leantime location)</span><span>2026-06-07 (interactive demo POC)</span><span>2026-06-07 (demo correction: mic and artifacts)</span><span>2026-06-07 (capability matrix and talk-back)</span></div>
-                  </section>
-                </div>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>2026-06-07 (project setup)</span><span>2026-06-07 (Leantime location)</span><span>2026-06-07 (interactive demo POC)</span><span>2026-06-07 (demo correction: mic and artifacts)</span><span>2026-06-07 (capability matrix and talk-back)</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="not local">
-              <summary>
-                <span class="name">Atlas iDRAC7</span>
-                <span class="meta">service · sensitive</span>
-                <time>—</time>
-                <span class="subject">No local git history</span>
-                <span class="status not-local">not local</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text"></p>
-                <p class="links"> <a href="https://10.0.0.38" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path"></p>
+            <template id="project-detail-41">
+              <p class="eyebrow">service · sensitive</p>
+              <h2>Atlas iDRAC7</h2>
+              <p class="summary-text"></p>
+              <p class="latest-subject"><strong>Latest:</strong> — · No local git history</p>
+              <p class="links"> <a href="https://10.0.0.38" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path"></p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul><li><span class="muted">No local git commits available.</span></li></ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>None found</span></div>
-                  </section>
-                </div>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul><li><span class="muted">No local git commits available.</span></li></ul>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>None found</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="not local">
-              <summary>
-                <span class="name">Atlas SSH</span>
-                <span class="meta">service · private</span>
-                <time>—</time>
-                <span class="subject">No local git history</span>
-                <span class="status not-local">not local</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text"></p>
-                <p class="links"> <a href="ssh://drew@10.0.0.105" target="_blank" rel="noreferrer">open</a> <a href="ssh://drew@100.71.165.80" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path"></p>
+            <template id="project-detail-42">
+              <p class="eyebrow">service · private</p>
+              <h2>Atlas SSH</h2>
+              <p class="summary-text"></p>
+              <p class="latest-subject"><strong>Latest:</strong> — · No local git history</p>
+              <p class="links"> <a href="ssh://drew@10.0.0.105" target="_blank" rel="noreferrer">open</a> <a href="ssh://drew@100.71.165.80" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path"></p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul><li><span class="muted">No local git commits available.</span></li></ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>None found</span></div>
-                  </section>
-                </div>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul><li><span class="muted">No local git commits available.</span></li></ul>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>None found</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="not local">
-              <summary>
-                <span class="name">Atlas Wiki</span>
-                <span class="meta">service · private</span>
-                <time>—</time>
-                <span class="subject">No local git history</span>
-                <span class="status not-local">not local</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text"></p>
-                <p class="links"> <a href="http://atlas/wiki/" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path"></p>
+            <template id="project-detail-43">
+              <p class="eyebrow">service · private</p>
+              <h2>Atlas Wiki</h2>
+              <p class="summary-text"></p>
+              <p class="latest-subject"><strong>Latest:</strong> — · No local git history</p>
+              <p class="links"> <a href="http://atlas/wiki/" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path"></p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul><li><span class="muted">No local git commits available.</span></li></ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>None found</span></div>
-                  </section>
-                </div>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul><li><span class="muted">No local git commits available.</span></li></ul>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>None found</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="dirty">
-              <summary>
-                <span class="name">Hermes Agent</span>
-                <span class="meta">service · private</span>
-                <time>2026-06-30</time>
-                <span class="subject">Merge pull request #55473 from NousResearch/bb/cmdk-drag-region</span>
-                <span class="status dirty">dirty</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Atlas-first Hermes Agent CLI/runtime install. Access the dashboard through an SSH tunnel; do not bind it directly to the tailnet because it can expose API keys.</p>
-                <p class="links"><a href="https://github.com/NousResearch/hermes-agent" target="_blank" rel="noreferrer">GitHub</a> <a href="http://100.71.165.80:9119" target="_blank" rel="noreferrer">open</a> <a href="http://localhost:9119" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path">/home/drew/.hermes/hermes-agent</p>
+            <template id="project-detail-44">
+              <p class="eyebrow">service · private</p>
+              <h2>Hermes Agent</h2>
+              <p class="summary-text">Atlas-first Hermes Agent CLI/runtime install. Access the dashboard through an SSH tunnel; do not bind it directly to the tailnet because it can expose API keys.</p>
+              <p class="latest-subject"><strong>Latest:</strong> 2026-06-30 02:11 · Merge pull request #55473 from NousResearch/bb/cmdk-drag-region</p>
+              <p class="links"><a href="https://github.com/NousResearch/hermes-agent" target="_blank" rel="noreferrer">GitHub</a> <a href="http://100.71.165.80:9119" target="_blank" rel="noreferrer">open</a> <a href="http://localhost:9119" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path">/home/drew/.hermes/hermes-agent</p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul>
             <li>
               <time>2026-06-30 02:11</time>
               <span><code>ddf0d980</code> Merge pull request #55473 from NousResearch/bb/cmdk-drag-region<small>brooklyn!</small></span>
@@ -2414,172 +2455,167 @@ small { display:block; color:var(--dim); margin-top:2px; }
               <span><code>821d9f70</code> feat(agent): add configurable coding_instructions<small>Brooklyn Nicholson</small></span>
             </li>
             </ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>None found</span></div>
-                  </section>
-                </div>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>None found</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="not local">
-              <summary>
-                <span class="name">Homelab Status Dashboard</span>
-                <span class="meta">service · private</span>
-                <time>—</time>
-                <span class="subject">No local git history</span>
-                <span class="status not-local">not local</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text"></p>
-                <p class="links"> <a href="http://atlas/status/" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path"></p>
+            <template id="project-detail-45">
+              <p class="eyebrow">service · private</p>
+              <h2>Homelab Status Dashboard</h2>
+              <p class="summary-text"></p>
+              <p class="latest-subject"><strong>Latest:</strong> — · No local git history</p>
+              <p class="links"> <a href="http://atlas/status/" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path"></p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul><li><span class="muted">No local git commits available.</span></li></ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>None found</span></div>
-                  </section>
-                </div>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul><li><span class="muted">No local git commits available.</span></li></ul>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>None found</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="not local">
-              <summary>
-                <span class="name">Leantime</span>
-                <span class="meta">service · private</span>
-                <time>—</time>
-                <span class="subject">No local git history</span>
-                <span class="status not-local">not local</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text">Private planning cockpit for cross-project roadmap, task, and current-state tracking.</p>
-                <p class="links"> <a href="http://atlas:8095" target="_blank" rel="noreferrer">open</a> <a href="http://100.71.165.80:8095" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path"></p>
+            <template id="project-detail-46">
+              <p class="eyebrow">service · private</p>
+              <h2>Leantime</h2>
+              <p class="summary-text">Private planning cockpit for cross-project roadmap, task, and current-state tracking.</p>
+              <p class="latest-subject"><strong>Latest:</strong> — · No local git history</p>
+              <p class="links"> <a href="http://atlas:8095" target="_blank" rel="noreferrer">open</a> <a href="http://100.71.165.80:8095" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path"></p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul><li><span class="muted">No local git commits available.</span></li></ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>None found</span></div>
-                  </section>
-                </div>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul><li><span class="muted">No local git commits available.</span></li></ul>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>None found</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="not local">
-              <summary>
-                <span class="name">Ollama</span>
-                <span class="meta">service · private</span>
-                <time>—</time>
-                <span class="subject">No local git history</span>
-                <span class="status not-local">not local</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text"></p>
-                <p class="links"> <a href="http://127.0.0.1:11434" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path"></p>
+            <template id="project-detail-47">
+              <p class="eyebrow">service · private</p>
+              <h2>Ollama</h2>
+              <p class="summary-text"></p>
+              <p class="latest-subject"><strong>Latest:</strong> — · No local git history</p>
+              <p class="links"> <a href="http://127.0.0.1:11434" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path"></p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul><li><span class="muted">No local git commits available.</span></li></ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>None found</span></div>
-                  </section>
-                </div>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul><li><span class="muted">No local git commits available.</span></li></ul>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>None found</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="not local">
-              <summary>
-                <span class="name">Open WebUI</span>
-                <span class="meta">service · private</span>
-                <time>—</time>
-                <span class="subject">No local git history</span>
-                <span class="status not-local">not local</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text"></p>
-                <p class="links"> <a href="http://localhost:8080" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path"></p>
+            <template id="project-detail-48">
+              <p class="eyebrow">service · private</p>
+              <h2>Open WebUI</h2>
+              <p class="summary-text"></p>
+              <p class="latest-subject"><strong>Latest:</strong> — · No local git history</p>
+              <p class="links"> <a href="http://localhost:8080" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path"></p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul><li><span class="muted">No local git commits available.</span></li></ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>None found</span></div>
-                  </section>
-                </div>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul><li><span class="muted">No local git commits available.</span></li></ul>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>None found</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="not local">
-              <summary>
-                <span class="name">OpenClaw</span>
-                <span class="meta">service · private</span>
-                <time>—</time>
-                <span class="subject">No local git history</span>
-                <span class="status not-local">not local</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text"></p>
-                <p class="links"> <a href="http://127.0.0.1:18789" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path"></p>
+            <template id="project-detail-49">
+              <p class="eyebrow">service · private</p>
+              <h2>OpenClaw</h2>
+              <p class="summary-text"></p>
+              <p class="latest-subject"><strong>Latest:</strong> — · No local git history</p>
+              <p class="links"> <a href="http://127.0.0.1:18789" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path"></p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul><li><span class="muted">No local git commits available.</span></li></ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>None found</span></div>
-                  </section>
-                </div>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul><li><span class="muted">No local git commits available.</span></li></ul>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>None found</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-            <details class="project-row" data-status="not local">
-              <summary>
-                <span class="name">Portainer</span>
-                <span class="meta">service · sensitive</span>
-                <time>—</time>
-                <span class="subject">No local git history</span>
-                <span class="status not-local">not local</span>
-              </summary>
-              <div class="detail-panel">
-                <p class="summary-text"></p>
-                <p class="links"> <a href="https://atlas:9443" target="_blank" rel="noreferrer">open</a> <a href="https://100.71.165.80:9443" target="_blank" rel="noreferrer">open</a></p>
-                <p class="path"></p>
+            <template id="project-detail-50">
+              <p class="eyebrow">service · sensitive</p>
+              <h2>Portainer</h2>
+              <p class="summary-text"></p>
+              <p class="latest-subject"><strong>Latest:</strong> — · No local git history</p>
+              <p class="links"> <a href="https://atlas:9443" target="_blank" rel="noreferrer">open</a> <a href="https://100.71.165.80:9443" target="_blank" rel="noreferrer">open</a></p>
+              <p class="path"></p>
 
-                <div class="detail-grid">
-                  <section>
-                    <h3>Recent commits</h3>
-                    <ul><li><span class="muted">No local git commits available.</span></li></ul>
-                  </section>
-                  <section>
-                    <h3>Session log dates</h3>
-                    <div class="session-pills"><span>None found</span></div>
-                  </section>
-                </div>
+              <div class="detail-grid">
+                <section>
+                  <h3>Recent commits</h3>
+                  <ul><li><span class="muted">No local git commits available.</span></li></ul>
+                </section>
+                <section>
+                  <h3>Session log dates</h3>
+                  <div class="session-pills"><span>None found</span></div>
+                </section>
               </div>
-            </details>
+            </template>
 
-</section>
+<div id="drawerBackdrop" class="drawer-backdrop" hidden></div>
+<aside id="projectDrawer" class="drawer" aria-hidden="true" aria-label="Project changelog details">
+  <button id="drawerClose" class="drawer-close" type="button">Close</button>
+  <div id="drawerContent"></div>
+</aside>
+<script>
+const drawer = document.getElementById('projectDrawer');
+const drawerContent = document.getElementById('drawerContent');
+const drawerBackdrop = document.getElementById('drawerBackdrop');
+const drawerClose = document.getElementById('drawerClose');
+function closeDrawer() {
+  drawer.classList.remove('is-open');
+  drawerBackdrop.classList.remove('is-open');
+  drawer.setAttribute('aria-hidden', 'true');
+  drawerBackdrop.hidden = true;
+  document.querySelectorAll('.project-row.is-active').forEach((row) => row.classList.remove('is-active'));
+}
+function openDrawer(button) {
+  const template = document.getElementById(button.dataset.detailId);
+  if (!template) return;
+  drawerContent.replaceChildren(template.content.cloneNode(true));
+  document.querySelectorAll('.project-row.is-active').forEach((row) => row.classList.remove('is-active'));
+  button.classList.add('is-active');
+  drawerBackdrop.hidden = false;
+  drawer.classList.add('is-open');
+  drawerBackdrop.classList.add('is-open');
+  drawer.setAttribute('aria-hidden', 'false');
+}
+document.querySelectorAll('.project-row').forEach((button) => button.addEventListener('click', () => openDrawer(button)));
+drawerClose.addEventListener('click', closeDrawer);
+drawerBackdrop.addEventListener('click', closeDrawer);
+document.addEventListener('keydown', (event) => { if (event.key === 'Escape') closeDrawer(); });
+</script>
 </div>
 </body>
 </html>
