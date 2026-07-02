@@ -50,7 +50,11 @@ def run_git(repo: Path, args: list[str]) -> str:
 def local_path(value: str | None) -> Path | None:
     if not value:
         return None
-    # Windows paths in the registry are useful documentation but not readable on Atlas.
+    windows_root = "C:\\Users\\drewb\\Documents\\GitHub\\"
+    if value.startswith(windows_root):
+        relative = value.removeprefix(windows_root).replace("\\", "/")
+        return Path("/home/drew/GitHub") / relative
+    # Other Windows paths in the registry are useful documentation but not readable on Atlas.
     if ":\\" in value or value.startswith("C:\\"):
         return None
     return Path(value).expanduser()
@@ -94,7 +98,10 @@ def git_commits(repo: Path, limit: int) -> list[dict[str, str]]:
 
 
 def git_status(repo: Path) -> str:
-    status = run_git(repo, ["status", "--short"])
+    args = ["status", "--short"]
+    if repo.resolve() == ROOT:
+        args.extend(["--", ":!internal-portal/changelog.html"])
+    status = run_git(repo, args)
     return "dirty" if status else "clean"
 
 

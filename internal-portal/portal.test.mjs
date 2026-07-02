@@ -35,6 +35,7 @@ const requiredRepos = [
   "homelab",
   "infra",
   "interactive-setup",
+  "john-share",
   "kybernet-tech",
   "lead-gen-agent",
   "llm-debate-union",

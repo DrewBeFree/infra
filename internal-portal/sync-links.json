@@ -363,6 +363,17 @@
       "taskCount": 0,
       "tasks": []
     },
+    "john-share": {
+      "project": "John Share",
+      "repoFullName": "DrewBeFree/john-share",
+      "githubRepoUrl": "https://github.com/DrewBeFree/john-share",
+      "githubProjectNumber": null,
+      "githubProjectUrl": null,
+      "leantimeProjectId": null,
+      "leantimeProjectUrl": null,
+      "taskCount": 0,
+      "tasks": []
+    },
     "bob": {
       "project": "Bob",
       "repoFullName": "DrewBeFree/bob",

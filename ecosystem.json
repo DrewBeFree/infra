@@ -962,6 +962,45 @@
       }
     },
     {
+      "name": "john-share",
+      "displayName": "John Share",
+      "category": "agent",
+      "visibility": "sensitive",
+      "summary": "Private Python web app for the John Webb document/evidence share.",
+      "githubUrl": "https://github.com/DrewBeFree/john-share",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\john-share",
+      "liveUrls": [],
+      "docs": [
+        {
+          "label": "Repository README",
+          "url": "https://github.com/DrewBeFree/john-share/blob/main/README.md"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "systemd-user-service",
+          "host": "atlas",
+          "service": "john-share.service",
+          "notes": "Tracks app code and handoff logs only; private content and env files stay out of git."
+        }
+      ],
+      "publicCommandCenter": false,
+      "statusControl": {
+        "state": "private-runtime",
+        "checks": [
+          "github",
+          "service",
+          "logs"
+        ],
+        "actions": [
+          "open",
+          "status",
+          "restart",
+          "logs"
+        ]
+      }
+    },
+    {
       "name": "bob",
       "displayName": "Bob",
       "category": "agent",
