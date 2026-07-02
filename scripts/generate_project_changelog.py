@@ -12,7 +12,7 @@ import html
 import json
 import subprocess
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
@@ -162,11 +162,11 @@ def fmt_date(value: str) -> str:
 
 
 def render(rows: list[dict[str, Any]], output: Path, limit: int) -> None:
-    generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     local_repos = sum(1 for row in rows if row["has_repo"])
     dirty = sum(1 for row in rows if row["status"] == "dirty")
     latest = [dict(commit, project=row["name"]) for row in rows for commit in row["commits"][:1]]
     latest.sort(key=lambda c: c.get("committed_at", ""), reverse=True)
+    generated_at = latest[0].get("committed_at", "unknown") if latest else "unknown"
 
     def link(url: str, label: str) -> str:
         if not url:

@@ -26,6 +26,7 @@ The portal was showing stale/inaccurate dirty counts because the static changelo
 - `scripts/generate_project_changelog.py`
   - Maps `C:\Users\drewb\Documents\GitHub\...` paths to `/home/drew/GitHub/...` on Atlas.
   - Ignores the generated `internal-portal/changelog.html` file when checking the infra repo's dirty status and recent commits, preventing self-generated dirty rows and self-referential changelog refresh loops.
+  - Uses the newest collected commit timestamp instead of wall-clock time so repeat deploys do not dirty the tracked generated file.
 - `internal-portal/changelog.html`
   - Regenerated and deployed static changelog output.
 

@@ -60,6 +60,8 @@ metadata. This keeps `ecosystem.json` portable while letting the deployed change
 clean/dirty state from Atlas checkouts. The generated `internal-portal/changelog.html` file is
 ignored when checking the infra repo's own dirty state and recent commits so the changelog does
 not mark itself dirty or create a self-referential refresh loop just because it was regenerated.
+The page timestamp is derived from the newest collected commit instead of wall-clock time, so
+repeat deploys are idempotent when repo metadata has not changed.
 
 Related cleanup handoff: `../logs/session-2026-07-02-changelog-repo-cleanup.md`.
 
