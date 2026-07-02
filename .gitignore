@@ -4,3 +4,7 @@
 __pycache__/
 *.py[cod]
 *.log
+
+# Local Codex/Hookify rules
+.Codex/*.local.md
+.worktrees/

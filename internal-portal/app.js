@@ -21,7 +21,7 @@ const syncLinksCandidates = [
   "/ecosystem/sync-links.json"
 ];
 
-const leadDeskDashboardUrl = "http://127.0.0.1:8017/api/dashboard";
+const leadDeskDashboardUrl = "http://100.71.165.80:8017/api/dashboard";
 
 const $ = (selector) => document.querySelector(selector);
 
