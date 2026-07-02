@@ -86,7 +86,10 @@ def load_projects() -> list[Project]:
 
 
 def git_commits(repo: Path, limit: int) -> list[dict[str, str]]:
-    raw = run_git(repo, ["log", f"-{limit}", "--date=iso-strict", f"--pretty=format:%H{FIELD_SEP}%cI{FIELD_SEP}%s{FIELD_SEP}%an"])
+    args = ["log", f"-{limit}", "--date=iso-strict", f"--pretty=format:%H{FIELD_SEP}%cI{FIELD_SEP}%s{FIELD_SEP}%an"]
+    if repo.resolve() == ROOT:
+        args.extend(["--", ":!internal-portal/changelog.html"])
+    raw = run_git(repo, args)
     commits: list[dict[str, str]] = []
     for line in raw.splitlines():
         parts = line.split(FIELD_SEP)

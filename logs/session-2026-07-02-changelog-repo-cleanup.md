@@ -25,7 +25,7 @@ The portal was showing stale/inaccurate dirty counts because the static changelo
   - Added `john-share` to the required repo contract.
 - `scripts/generate_project_changelog.py`
   - Maps `C:\Users\drewb\Documents\GitHub\...` paths to `/home/drew/GitHub/...` on Atlas.
-  - Ignores the generated `internal-portal/changelog.html` file when checking the infra repo's dirty status, preventing self-generated dirty rows.
+  - Ignores the generated `internal-portal/changelog.html` file when checking the infra repo's dirty status and recent commits, preventing self-generated dirty rows and self-referential changelog refresh loops.
 - `internal-portal/changelog.html`
   - Regenerated and deployed static changelog output.
 

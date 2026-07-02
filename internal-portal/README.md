@@ -58,8 +58,8 @@ On Atlas, the generator maps Drew's Windows registry paths under
 `C:\Users\drewb\Documents\GitHub\...` to `/home/drew/GitHub/...` before reading local git
 metadata. This keeps `ecosystem.json` portable while letting the deployed changelog show live
 clean/dirty state from Atlas checkouts. The generated `internal-portal/changelog.html` file is
-ignored when checking the infra repo's own dirty state so the changelog does not mark itself dirty
-just because it was refreshed.
+ignored when checking the infra repo's own dirty state and recent commits so the changelog does
+not mark itself dirty or create a self-referential refresh loop just because it was regenerated.
 
 Related cleanup handoff: `../logs/session-2026-07-02-changelog-repo-cleanup.md`.
 
