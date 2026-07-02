@@ -54,6 +54,15 @@ Project changelog shortcuts:
 - Generator: `python3 scripts/generate_project_changelog.py --output internal-portal/changelog.html`
 - Logoff hook: `./update-session-logs.sh ...` regenerates `internal-portal/changelog.html` after updating touched repo session logs.
 
+On Atlas, the generator maps Drew's Windows registry paths under
+`C:\Users\drewb\Documents\GitHub\...` to `/home/drew/GitHub/...` before reading local git
+metadata. This keeps `ecosystem.json` portable while letting the deployed changelog show live
+clean/dirty state from Atlas checkouts. The generated `internal-portal/changelog.html` file is
+ignored when checking the infra repo's own dirty state so the changelog does not mark itself dirty
+just because it was refreshed.
+
+Related cleanup handoff: `../logs/session-2026-07-02-changelog-repo-cleanup.md`.
+
 ## Priority links
 
 The first viewport includes priority access tiles for:
