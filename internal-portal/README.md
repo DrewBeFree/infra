@@ -74,6 +74,7 @@ The first viewport includes priority access tiles for:
 - AI Token Dashboard: `http://atlas:7474`
 - Leantime: `http://100.71.165.80:8095`
 - Hermes: `http://100.71.165.80:9119`, a Tailscale-only user-level nginx proxy with Basic Auth.
+- Hermes WebUI / Hermex backend: `http://100.71.165.80:9121`, Tailscale-only with WebUI password auth.
 
 On mobile, the navigator is an off-canvas sidebar opened by the fixed menu button. Priority links remain visible above filters so operational surfaces are not buried in the directory.
 

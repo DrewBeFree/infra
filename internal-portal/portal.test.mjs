@@ -213,8 +213,7 @@ test("protected Access routes cover the local operator surfaces", async () => {
     ["grafana", "https://grafana.drewbefree.com/", "http://127.0.0.1:3001", "http://atlas:3001/"],
     ["prometheus", "https://prometheus.drewbefree.com/", "http://127.0.0.1:9090", "http://atlas:9090/"],
     ["ai-token-dashboard", "https://tokens.drewbefree.com/", "http://127.0.0.1:7474", "http://atlas:7474/"],
-    ["leantime", "https://planning.drewbefree.com/", "http://127.0.0.1:8095", "http://100.71.165.80:8095/"],
-    ["hermes", "https://hermes.drewbefree.com/", "http://100.71.165.80:9119", "http://100.71.165.80:9119/"]
+    ["leantime", "https://planning.drewbefree.com/", "http://127.0.0.1:8095", "http://100.71.165.80:8095/"]
   ];
 
   for (const [id, publicUrl, origin, fallbackUrl] of expectedRoutes) {
@@ -247,11 +246,6 @@ test("protected Access routes cover the local operator surfaces", async () => {
     "http://100.71.165.80:8095",
     "http://100.71.165.80:8095/",
     "http://127.0.0.1:8095"
-  ]);
-  assert.deepEqual(routes.get("hermes").aliases, [
-    "http://localhost:9119",
-    "http://100.71.165.80:9119",
-    "http://127.0.0.1:9119"
   ]);
 });
 
@@ -816,7 +810,7 @@ test("protected hosted links preserve route suffixes and normalize slash variant
   );
   assert.equal(
     app.protectedUrlFor("http://100.71.165.80:9119/metrics?format=text#top"),
-    "https://hermes.drewbefree.com/metrics?format=text#top"
+    "http://100.71.165.80:9119/metrics?format=text#top"
   );
   assert.equal(
     app.protectedUrlFor("http://100.71.165.80:3027/projects/showProject/7"),

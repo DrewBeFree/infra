@@ -104,19 +104,6 @@
           "http://127.0.0.1:8095"
         ],
         "access": "cloudflare-access"
-      },
-      {
-        "id": "hermes",
-        "label": "Hermes",
-        "publicUrl": "https://hermes.drewbefree.com/",
-        "origin": "http://100.71.165.80:9119",
-        "fallbackUrl": "http://100.71.165.80:9119/",
-        "aliases": [
-          "http://localhost:9119",
-          "http://100.71.165.80:9119",
-          "http://127.0.0.1:9119"
-        ],
-        "access": "cloudflare-access"
       }
     ]
   },
@@ -1386,7 +1373,7 @@
       "type": "agent-runtime",
       "host": "atlas",
       "visibility": "private",
-      "summary": "Atlas-first Hermes Agent CLI/runtime install. Access the dashboard through an SSH tunnel; do not bind it directly to the tailnet because it can expose API keys.",
+      "summary": "Atlas-first Hermes Agent CLI/runtime install. Built-in dashboard is reachable only over Tailscale.",
       "liveUrls": [
         "http://100.71.165.80:9119",
         "http://localhost:9119"
@@ -1453,6 +1440,64 @@
           "open",
           "status",
           "run",
+          "logs"
+        ]
+      }
+    },
+    {
+      "id": "hermes-webui",
+      "name": "Hermes WebUI / Hermex Backend",
+      "type": "agent-web-ui",
+      "host": "atlas",
+      "visibility": "private",
+      "summary": "Standalone Hermes WebUI for browser access and the Hermex iOS client. Tailscale-only with WebUI password auth.",
+      "liveUrls": [
+        "http://100.71.165.80:9121"
+      ],
+      "ports": [
+        9121
+      ],
+      "githubUrl": "https://github.com/nesquena/hermes-webui",
+      "localPath": "/home/drew/services/hermes-webui",
+      "accessCommands": [
+        {
+          "label": "Service status",
+          "command": "systemctl --user status hermes-webui.service --no-pager"
+        },
+        {
+          "label": "Restart WebUI",
+          "command": "systemctl --user restart hermes-webui.service"
+        },
+        {
+          "label": "View logs",
+          "command": "journalctl --user -u hermes-webui.service -f"
+        }
+      ],
+      "docs": [
+        {
+          "label": "Hermes WebUI README",
+          "url": "https://github.com/nesquena/hermes-webui/blob/main/README.md"
+        },
+        {
+          "label": "Hermex setup site",
+          "url": "https://hermexapp.com/"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "user-systemd-service",
+          "host": "atlas",
+          "path": "/home/drew/.config/systemd/user/hermes-webui.service",
+          "url": "http://100.71.165.80:9121",
+          "notes": "Runs /home/drew/services/hermes-webui on Atlas bound to the Tailscale IP only. Password stored outside git."
+        }
+      ],
+      "statusControl": {
+        "state": "live",
+        "actions": [
+          "open",
+          "status",
+          "restart",
           "logs"
         ]
       }
