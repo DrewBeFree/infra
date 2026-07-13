@@ -1,6 +1,6 @@
 {
   "schema": "drewbefree.ecosystem.v1",
-  "updatedAt": "2026-06-18",
+  "updatedAt": "2026-07-12",
   "owner": "DrewBeFree",
   "canonical": true,
   "generatedFrom": [
@@ -46,13 +46,13 @@
         "id": "lead-desk",
         "label": "Lead Desk",
         "publicUrl": "https://leads.drewbefree.com/",
-        "origin": "http://127.0.0.1:3027",
-        "fallbackUrl": "http://atlas:3027/",
+        "origin": "http://100.71.165.80:3027",
+        "fallbackUrl": "http://100.71.165.80:3027/",
         "aliases": [
-          "http://100.117.87.57:3027",
-          "http://10.0.0.91:3027",
+          "http://atlas:3027",
+          "http://atlas:3027/",
           "http://127.0.0.1:3027",
-          "http://atlas:3027/"
+          "http://10.0.0.91:3027"
         ],
         "access": "cloudflare-access"
       },
@@ -96,12 +96,24 @@
         "label": "Leantime",
         "publicUrl": "https://planning.drewbefree.com/",
         "origin": "http://127.0.0.1:8095",
-        "fallbackUrl": "http://atlas:8095/",
+        "fallbackUrl": "http://100.71.165.80:8095/",
         "aliases": [
           "http://100.71.165.80:8095",
-          "http://atlas:8095",
-          "http://atlas:8095/",
+          "http://100.71.165.80:8095/",
           "http://127.0.0.1:8095"
+        ],
+        "access": "cloudflare-access"
+      },
+      {
+        "id": "hermes",
+        "label": "Hermes",
+        "publicUrl": "https://hermes.drewbefree.com/",
+        "origin": "http://127.0.0.1:9119",
+        "fallbackUrl": "http://100.71.165.80:9119/",
+        "aliases": [
+          "http://100.71.165.80:9119",
+          "http://atlas:9119",
+          "http://localhost:9119"
         ],
         "access": "cloudflare-access"
       }
@@ -187,6 +199,42 @@
           "open",
           "run",
           "deploy"
+        ]
+      }
+    },
+    {
+      "name": "ai-chat-history",
+      "displayName": "AI Chat History",
+      "category": "infrastructure",
+      "visibility": "private",
+      "summary": "Private AI chat archive pipeline and curated knowledge extraction workspace.",
+      "githubUrl": "https://github.com/DrewBeFree/ai-chat-history",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\ai-chat-history",
+      "liveUrls": [],
+      "docs": [
+        {
+          "label": "Repository README",
+          "url": "https://github.com/DrewBeFree/ai-chat-history/blob/main/README.md"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "local-archive",
+          "host": "atlas",
+          "notes": "Private archive/curation workspace; raw exports are not generally exposed to Hermes."
+        }
+      ],
+      "publicCommandCenter": false,
+      "statusControl": {
+        "state": "tracked",
+        "checks": [
+          "github",
+          "docs"
+        ],
+        "actions": [
+          "open",
+          "run",
+          "index"
         ]
       }
     },
@@ -897,9 +945,9 @@
       "githubUrl": "https://github.com/DrewBeFree/lead-gen-agent",
       "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\agents\\lead-gen-agent",
       "liveUrls": [
-        "http://100.117.87.57:3027",
-        "http://10.0.0.91:3027",
-        "http://127.0.0.1:3027"
+        "http://100.71.165.80:3027",
+        "http://100.71.165.80:3027/",
+        "http://atlas:3027"
       ],
       "docs": [
         {
@@ -914,15 +962,15 @@
       "deployTargets": [
         {
           "type": "fastapi-local",
-          "host": "alienware",
-          "url": "http://100.117.87.57:8017",
-          "notes": "Phase 1 runs locally with SQLite; Atlas deployment is planned after the manual inbox workflow proves useful."
+          "host": "atlas",
+          "url": "http://100.71.165.80:8017",
+          "notes": "Atlas-hosted FastAPI backend for Lead Desk dashboard API."
         },
         {
           "type": "nextjs-local",
-          "host": "alienware",
-          "url": "http://100.117.87.57:3027",
-          "notes": "Surf the Webb Lead Desk Hub frontend for morning lead review."
+          "host": "atlas",
+          "url": "http://100.71.165.80:3027",
+          "notes": "Atlas-hosted Surf the Webb Lead Desk Hub frontend for morning lead review."
         },
         {
           "type": "atlas-compose-planned",
@@ -968,7 +1016,8 @@
           "type": "systemd-user-service",
           "host": "atlas",
           "service": "john-share.service",
-          "notes": "Tracks app code and handoff logs only; private content and env files stay out of git."
+          "url": "http://127.0.0.1:8127",
+          "notes": "Atlas-local private web app bound to localhost; use the service or a protected proxy/SSH tunnel rather than a public link."
         }
       ],
       "publicCommandCenter": false,
@@ -1252,6 +1301,219 @@
           "build",
           "deploy",
           "logs"
+        ]
+      }
+    },
+    {
+      "name": "firecrawl",
+      "displayName": "Firecrawl",
+      "category": "infrastructure",
+      "visibility": "private",
+      "summary": "Self-hosted web crawling/scraping service used by Atlas research and archive workflows.",
+      "githubUrl": "https://github.com/DrewBeFree/firecrawl",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\firecrawl",
+      "liveUrls": [
+        "http://127.0.0.1:3002"
+      ],
+      "docs": [
+        {
+          "label": "Repository README",
+          "url": "https://github.com/DrewBeFree/firecrawl/blob/main/README.md"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "self-hosted-service",
+          "host": "atlas",
+          "url": "http://127.0.0.1:3002",
+          "notes": "Local-only Firecrawl runtime; not exposed publicly."
+        }
+      ],
+      "publicCommandCenter": false,
+      "statusControl": {
+        "state": "tracked",
+        "checks": [
+          "github",
+          "docs"
+        ],
+        "actions": [
+          "open",
+          "review"
+        ]
+      }
+    },
+    {
+      "name": "hermes-memory-archive",
+      "displayName": "Hermes Memory Archive",
+      "category": "infrastructure",
+      "visibility": "private",
+      "summary": "Private archive workspace for Hermes memory exports and durable-context review.",
+      "githubUrl": "https://github.com/DrewBeFree/hermes-memory-archive",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\hermes-memory-archive",
+      "liveUrls": [],
+      "docs": [
+        {
+          "label": "Repository README",
+          "url": "https://github.com/DrewBeFree/hermes-memory-archive/blob/main/README.md"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "local-archive",
+          "host": "local",
+          "notes": "Private archival repository; no public runtime URL recorded."
+        }
+      ],
+      "publicCommandCenter": false,
+      "statusControl": {
+        "state": "tracked",
+        "checks": [
+          "github",
+          "docs"
+        ],
+        "actions": [
+          "open",
+          "review"
+        ]
+      }
+    },
+    {
+      "name": "luke-codex-guide",
+      "displayName": "Luke Codex Guide",
+      "category": "site",
+      "visibility": "public",
+      "summary": "Guide/reference project for Codex usage and onboarding.",
+      "githubUrl": "https://github.com/DrewBeFree/luke-codex-guide",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\luke-codex-guide",
+      "liveUrls": [],
+      "docs": [
+        {
+          "label": "Repository README",
+          "url": "https://github.com/DrewBeFree/luke-codex-guide/blob/main/README.md"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "docs",
+          "host": "github",
+          "notes": "GitHub-hosted guide/reference repo; no live URL recorded."
+        }
+      ],
+      "publicCommandCenter": false,
+      "statusControl": {
+        "state": "tracked",
+        "checks": [
+          "github",
+          "docs"
+        ],
+        "actions": [
+          "open",
+          "review"
+        ]
+      }
+    },
+    {
+      "name": "personas-claude",
+      "displayName": "Personas Claude",
+      "category": "infrastructure",
+      "visibility": "private",
+      "summary": "Claude/Hermes persona definitions and routing reference superseded by native Hermes personalities.",
+      "githubUrl": "https://github.com/DrewBeFree/personas-claude",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\personas-claude",
+      "liveUrls": [],
+      "docs": [
+        {
+          "label": "Repository README",
+          "url": "https://github.com/DrewBeFree/personas-claude/blob/main/README.md"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "config-reference",
+          "host": "local",
+          "notes": "Reference/persona configuration repository; native Hermes personalities are configured separately."
+        }
+      ],
+      "publicCommandCenter": false,
+      "statusControl": {
+        "state": "tracked",
+        "checks": [
+          "github",
+          "docs"
+        ],
+        "actions": [
+          "open",
+          "review"
+        ]
+      }
+    },
+    {
+      "name": "selling-shit",
+      "displayName": "Selling Shit",
+      "category": "app",
+      "visibility": "private",
+      "summary": "Private personal selling/inventory utility repository.",
+      "githubUrl": "https://github.com/DrewBeFree/selling-shit",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\apps\\selling-shit",
+      "liveUrls": [],
+      "docs": [
+        {
+          "label": "Repository README",
+          "url": "https://github.com/DrewBeFree/selling-shit/blob/main/README.md"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "local-app",
+          "host": "local",
+          "notes": "No public runtime URL recorded."
+        }
+      ],
+      "publicCommandCenter": false,
+      "statusControl": {
+        "state": "tracked",
+        "checks": [
+          "github",
+          "docs"
+        ],
+        "actions": [
+          "open",
+          "review"
+        ]
+      }
+    },
+    {
+      "name": "yes",
+      "displayName": "Yes",
+      "category": "app",
+      "visibility": "public",
+      "summary": "Small app/experiment repository tracked in the DrewBeFree ecosystem.",
+      "githubUrl": "https://github.com/DrewBeFree/yes",
+      "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\apps\\yes",
+      "liveUrls": [],
+      "docs": [
+        {
+          "label": "Repository README",
+          "url": "https://github.com/DrewBeFree/yes/blob/main/README.md"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "static-app",
+          "host": "github",
+          "notes": "No public runtime URL recorded."
+        }
+      ],
+      "publicCommandCenter": false,
+      "statusControl": {
+        "state": "tracked",
+        "checks": [
+          "github",
+          "docs"
+        ],
+        "actions": [
+          "open",
+          "review"
         ]
       }
     }
@@ -1737,6 +1999,10 @@
         {
           "label": "Atlas overview dashboard JSON",
           "url": "https://github.com/DrewBeFree/homelab/blob/main/docs/528/atlas-overview.json"
+        },
+        {
+          "label": "Atlas services wiki",
+          "url": "http://atlas/wiki/infrastructure/services/"
         }
       ],
       "deployTargets": [

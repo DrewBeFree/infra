@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#eef4ff">
+<title>DrewBeFree Ecosystem World</title>
+<style>
+:root {
+  --bg: #eef4ff;
+  --bg2: #f8fbff;
+  --panel: rgba(255, 255, 255, 0.84);
+  --panel-solid: #ffffff;
+  --ink: #172033;
+  --muted: #64748b;
+  --line: rgba(45, 66, 99, 0.14);
+  --line-strong: rgba(45, 66, 99, 0.24);
+  --blue: #2563eb;
+  --green: #059669;
+  --violet: #7c3aed;
+  --amber: #d97706;
+  --rose: #e11d48;
+  --cyan: #0891b2;
+  --shadow: 0 22px 60px rgba(31, 41, 55, 0.13);
+  --node-shadow: 0 16px 36px rgba(15, 23, 42, 0.14);
+  --radius: 28px;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  color: var(--ink);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(37, 99, 235, 0.18), transparent 30%),
+    radial-gradient(circle at 80% 18%, rgba(124, 58, 237, 0.16), transparent 31%),
+    radial-gradient(circle at 72% 82%, rgba(5, 150, 105, 0.16), transparent 34%),
+    linear-gradient(135deg, #eef4ff, #fbfdff 48%, #eef7f1);
+  overflow: hidden;
+}
+button, input, select { font: inherit; }
+a { color: inherit; }
+.app-shell {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+}
+.topbar {
+  position: relative;
+  z-index: 20;
+  min-height: 76px;
+  padding: 14px 18px;
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) minmax(280px, 520px) auto;
+  gap: 14px;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.72);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(24px);
+}
+.brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.brand-mark {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  color: white;
+  font-weight: 900;
+  letter-spacing: -0.08em;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  border-radius: 15px;
+  box-shadow: 0 14px 34px rgba(37, 99, 235, 0.24);
+}
+.brand h1 { margin: 0; font-size: clamp(1.05rem, 2.4vw, 1.46rem); letter-spacing: -0.04em; }
+.brand p { margin: 2px 0 0; color: var(--muted); font-size: 0.82rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.searchbar {
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) auto auto;
+  gap: 8px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  box-shadow: 0 12px 34px rgba(15, 23, 42, 0.06);
+}
+.searchbar input, .searchbar select {
+  min-width: 0;
+  height: 38px;
+  padding: 0 12px;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  outline: none;
+}
+.searchbar select {
+  background: rgba(241, 245, 249, 0.9);
+  border-radius: 999px;
+  cursor: pointer;
+}
+.btn {
+  height: 38px;
+  padding: 0 14px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.72);
+  cursor: pointer;
+  transition: transform 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+}
+.btn:hover { transform: translateY(-1px); border-color: rgba(37, 99, 235, 0.38); box-shadow: 0 10px 24px rgba(37, 99, 235, 0.1); }
+.btn.primary { color: white; background: linear-gradient(135deg, #2563eb, #7c3aed); border-color: transparent; }
+.quick-links { display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
+.quick-links a { text-decoration: none; }
+.world-frame { position: relative; min-height: 0; overflow: hidden; }
+.world-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(rgba(45, 66, 99, 0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(45, 66, 99, 0.06) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(circle at center, black 36%, transparent 86%);
+}
+.viewport {
+  position: absolute;
+  inset: 0;
+  cursor: grab;
+  touch-action: none;
+}
+.viewport.is-dragging { cursor: grabbing; }
+.world {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 2300px;
+  height: 1500px;
+  transform-origin: 0 0;
+}
+.ocean-glow {
+  position: absolute;
+  inset: 100px;
+  border-radius: 44% 56% 52% 48%;
+  background:
+    radial-gradient(circle at 46% 46%, rgba(255,255,255,0.88), rgba(255,255,255,0.38) 45%, rgba(255,255,255,0.1) 70%, transparent 76%),
+    radial-gradient(circle at 40% 50%, rgba(37, 99, 235, 0.08), transparent 58%);
+  border: 1px solid rgba(255,255,255,0.62);
+  box-shadow: inset 0 0 100px rgba(37, 99, 235, 0.08), 0 50px 120px rgba(30, 64, 175, 0.14);
+}
+.connection-layer { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.connection-layer path { fill: none; stroke: rgba(37, 99, 235, 0.18); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 7 12; animation: dash 20s linear infinite; }
+@keyframes dash { to { stroke-dashoffset: -380; } }
+.region {
+  position: absolute;
+  width: 520px;
+  min-height: 330px;
+  padding: 20px;
+  border-radius: var(--radius);
+  background:
+    radial-gradient(circle at 14% 8%, color-mix(in srgb, var(--accent, var(--blue)) 22%, transparent), transparent 34%),
+    linear-gradient(145deg, rgba(255,255,255,0.9), color-mix(in srgb, var(--accent, var(--blue)) 9%, white));
+  border: 1px solid color-mix(in srgb, var(--accent, var(--blue)) 24%, rgba(255,255,255,0.74));
+  box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,0.7);
+  backdrop-filter: blur(20px);
+  transition: opacity 160ms ease, transform 180ms ease, box-shadow 180ms ease;
+}
+.region:hover { box-shadow: 0 30px 80px rgba(31, 41, 55, 0.18), 0 0 0 4px color-mix(in srgb, var(--accent, var(--blue)) 16%, transparent); }
+.region.is-dragging { z-index: 15; cursor: grabbing; box-shadow: 0 42px 110px rgba(15,23,42,0.28); }
+.region.is-dimmed { opacity: 0.24; }
+.region-head {
+  width: 100%;
+  margin-bottom: 14px;
+  padding: 0;
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 16px;
+  color: inherit;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  cursor: grab;
+  touch-action: none;
+}
+.region.is-dragging .region-head { cursor: grabbing; }
+.region-head:hover .region-title { color: var(--accent, var(--blue)); }
+.region-kicker { margin: 0 0 4px; color: var(--muted); font-size: 0.72rem; font-weight: 900; letter-spacing: 0.13em; text-transform: uppercase; }
+.region-title { margin: 0; font-size: 1.4rem; letter-spacing: -0.04em; }
+.region-desc { margin: 4px 0 0; color: var(--muted); font-size: 0.88rem; line-height: 1.35; }
+.region-count { min-width: 48px; height: 48px; display: grid; grid-template-columns: auto auto; gap: 4px; place-items: center; border-radius: 16px; color: white; font-weight: 900; font-size: 1.18rem; background: var(--accent, var(--blue)); box-shadow: 0 14px 28px color-mix(in srgb, var(--accent, var(--blue)) 30%, transparent); }
+.region-count::after { content: "+"; font-size: 0.82rem; opacity: 0.72; }
+.region.is-open .region-count::after { content: "−"; }
+.node-field { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.region:not(.is-open) .node-field { display: none; }
+.region:not(.is-open) { min-height: 0; }
+.node {
+  position: relative;
+  min-height: 94px;
+  padding: 12px;
+  display: grid;
+  align-content: space-between;
+  gap: 8px;
+  text-align: left;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 150ms ease, border-color 150ms ease, background 150ms ease, opacity 150ms ease;
+}
+.node::before { content: ""; position: absolute; inset: 0 0 auto; height: 4px; background: var(--accent, var(--blue)); opacity: 0.82; }
+.node:hover, .node:focus-visible { transform: translateY(-3px); border-color: color-mix(in srgb, var(--accent, var(--blue)) 46%, white); outline: none; }
+.node.is-hidden { display: none; }
+.node.is-dimmed { opacity: 0.2; }
+.node-name { display: block; margin-top: 2px; font-weight: 850; font-size: 0.88rem; line-height: 1.1; overflow-wrap: anywhere; }
+.node-meta { display: flex; gap: 5px; flex-wrap: wrap; align-items: center; }
+.pill { display: inline-flex; align-items: center; min-height: 20px; padding: 2px 7px; border-radius: 999px; font-size: 0.66rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; background: #eef2ff; color: #3730a3; }
+.pill.public { background: #dcfce7; color: #166534; }
+.pill.private { background: #e0e7ff; color: #3730a3; }
+.pill.sensitive { background: #ffe4e6; color: #9f1239; }
+.pill.live { background: #d1fae5; color: #065f46; }
+.pill.tracked { background: #e0f2fe; color: #075985; }
+.controls-panel, .legend-panel, .detail-drawer, .minimap {
+  position: absolute;
+  z-index: 15;
+  background: rgba(255, 255, 255, 0.76);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(22px);
+}
+.controls-panel { left: 18px; bottom: 18px; padding: 10px; display: flex; gap: 8px; }
+.controls-panel button { width: 42px; padding: 0; font-weight: 900; }
+.legend-panel { left: 18px; top: 18px; width: 260px; padding: 14px; }
+.legend-panel h2 { margin: 0 0 8px; font-size: 0.95rem; }
+.legend-panel p { margin: 0 0 12px; color: var(--muted); font-size: 0.82rem; line-height: 1.35; }
+.legend-grid { display: grid; gap: 7px; }
+.legend-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; color: var(--muted); font-size: 0.78rem; }
+.legend-dot { width: 12px; height: 12px; border-radius: 999px; background: var(--accent); box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 16%, transparent); }
+.minimap { right: 18px; bottom: 18px; width: 210px; height: 142px; padding: 8px; }
+.minimap-map { position: relative; width: 100%; height: 100%; border-radius: 15px; background: linear-gradient(135deg, rgba(37,99,235,0.09), rgba(5,150,105,0.08)); overflow: hidden; }
+.mini-region { position: absolute; width: 18px; height: 14px; border-radius: 5px; background: var(--accent); opacity: 0.78; }
+.mini-window { position: absolute; border: 2px solid #172033; border-radius: 8px; background: rgba(255,255,255,0.25); }
+.detail-drawer {
+  top: 92px;
+  right: 18px;
+  width: min(420px, calc(100vw - 36px));
+  max-height: calc(100vh - 112px);
+  padding: 0;
+  overflow: auto;
+  transform: translateX(calc(100% + 40px));
+  opacity: 0;
+  transition: transform 220ms ease, opacity 220ms ease;
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(145deg, rgba(37, 99, 235, 0.72), rgba(124, 58, 237, 0.58), rgba(5, 150, 105, 0.42)) border-box;
+  border: 2px solid transparent;
+  border-radius: 30px;
+  box-shadow: 0 34px 90px rgba(15, 23, 42, 0.28);
+}
+.detail-drawer.is-open { transform: translateX(0); opacity: 1; }
+.drawer-head {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  padding: 20px 20px 18px;
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 14px;
+  color: white;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.22), transparent 34%),
+    linear-gradient(135deg, #172033, #2563eb 55%, #7c3aed);
+  border-radius: 26px 26px 18px 18px;
+  box-shadow: 0 18px 40px rgba(37, 99, 235, 0.2);
+}
+.drawer-head::before {
+  content: "Selected node";
+  position: absolute;
+  left: 20px;
+  top: 8px;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.66rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.drawer-head h2 { margin: 0; font-size: 1.4rem; letter-spacing: -0.04em; }
+.drawer-head .node-meta { margin-top: 14px !important; }
+.drawer-head .pill { background: rgba(255, 255, 255, 0.18); color: white; border: 1px solid rgba(255, 255, 255, 0.22); }
+.drawer-close { width: 38px; height: 38px; flex: 0 0 auto; border-radius: 999px; border: 1px solid rgba(255, 255, 255, 0.36); color: white; background: rgba(255,255,255,0.16); cursor: pointer; }
+.drawer-close:hover { background: rgba(255,255,255,0.26); }
+.drawer-summary { margin: 0; padding: 18px 20px 4px; color: #43536e; line-height: 1.55; font-size: 0.96rem; }
+.drawer-section { margin: 16px 20px 0; padding: 14px; border: 1px solid rgba(45, 66, 99, 0.12); border-radius: 18px; background: linear-gradient(180deg, rgba(248, 250, 252, 0.88), rgba(241, 245, 249, 0.72)); }
+.drawer-section h3 { margin: 0 0 8px; color: var(--muted); font-size: 0.78rem; letter-spacing: 0.13em; text-transform: uppercase; }
+.action-list { margin: 16px 20px 4px; padding: 12px; display: flex; gap: 8px; flex-wrap: wrap; background: rgba(15, 23, 42, 0.05); border: 1px dashed rgba(37, 99, 235, 0.22); border-radius: 18px; }
+.action-list a { text-decoration: none; }
+.data-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.data-list li { color: var(--muted); font-size: 0.88rem; overflow-wrap: anywhere; }
+.empty-state { position: absolute; inset: 0; display: none; place-items: center; color: var(--muted); pointer-events: none; }
+.empty-state.is-visible { display: grid; }
+
+.active-sites {
+  position: absolute;
+  z-index: 18;
+  left: 22px;
+  right: 22px;
+  bottom: 22px;
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 12px;
+  border-radius: 24px;
+  background: rgba(255,255,255,0.72);
+  border: 1px solid rgba(255,255,255,0.78);
+  box-shadow: 0 22px 60px rgba(15,23,42,0.16);
+  backdrop-filter: blur(18px);
+}
+.active-site {
+  min-width: 188px;
+  padding: 12px;
+  color: var(--ink);
+  text-decoration: none;
+  border-radius: 18px;
+  background: linear-gradient(145deg, rgba(255,255,255,0.9), color-mix(in srgb, var(--accent, var(--blue)) 10%, white));
+  border: 1px solid color-mix(in srgb, var(--accent, var(--blue)) 26%, rgba(255,255,255,0.8));
+}
+.active-site strong { display:block; font-size: 0.92rem; }
+.active-site span { display:block; margin-top:4px; color: var(--muted); font-size:0.74rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; }
+.active-site:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(15,23,42,0.12); }
+
+.toast {
+  position: absolute;
+  z-index: 30;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  padding: 10px 14px;
+  color: white;
+  background: rgba(15, 23, 42, 0.84);
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+}
+.toast.is-visible { opacity: 1; }
+.region[data-region="atlas"] { --accent: var(--blue); left: 885px; top: 505px; width: 540px; }
+.region[data-region="apps"] { --accent: var(--green); left: 300px; top: 210px; }
+.region[data-region="agents"] { --accent: var(--violet); left: 1470px; top: 210px; }
+.region[data-region="business"] { --accent: var(--amber); left: 300px; top: 920px; }
+.region[data-region="ops"] { --accent: var(--cyan); left: 1470px; top: 920px; }
+.region[data-region="sensitive"] { --accent: var(--rose); left: 895px; top: 1060px; min-height: 260px; }
+@media (max-width: 900px) {
+  body { overflow: auto; }
+  .app-shell { height: auto; min-height: 100%; }
+  .topbar { position: sticky; top: 0; grid-template-columns: 1fr; }
+  .quick-links { justify-content: flex-start; }
+  .world-frame { height: calc(100vh - 176px); min-height: 660px; }
+  .legend-panel { display: none; }
+  .minimap { display: none; }
+  .active-sites { left: 12px; right: 12px; bottom: 12px; }
+  .detail-drawer { top: auto; left: 12px; right: 12px; bottom: 12px; width: auto; max-height: 70vh; transform: translateY(calc(100% + 40px)); }
+  .detail-drawer.is-open { transform: translateY(0); }
+  .searchbar { grid-template-columns: 1fr; border-radius: 20px; }
+  .searchbar .btn { width: 100%; }
+}
+</style>
+</head>
+<body>
+<div class="app-shell">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">DW</div>
+      <div>
+        <h1>Drew’s Ecosystem World</h1>
+        <p id="subtitle">Loading Atlas registry…</p>
+      </div>
+    </div>
+    <form class="searchbar" id="searchForm" role="search">
+      <input id="searchInput" type="search" placeholder="Search projects, services, dashboards, docs…" autocomplete="off">
+      <select id="visibilityFilter" aria-label="Visibility filter">
+        <option value="all">All visibility</option>
+        <option value="public">Public</option>
+        <option value="private">Private</option>
+        <option value="sensitive">Sensitive</option>
+      </select>
+      <button class="btn primary" type="button" id="focusButton">Focus</button>
+    </form>
+    <nav class="quick-links" aria-label="Portal links">
+      <a class="btn" href="launcher.html">Launcher</a>
+      <a class="btn" href="index.html">Registry</a>
+      <a class="btn" href="tree.html">Tree</a>
+      <a class="btn" href="changelog.html">Changelog</a>
+    </nav>
+  </header>
+
+  <main class="world-frame">
+    <aside class="legend-panel">
+      <h2>World navigation</h2>
+      <p>Drag the map, scroll to zoom, click any node for links and details. This is powered by <code>ecosystem.json</code>.</p>
+      <div id="legendGrid" class="legend-grid"></div>
+    </aside>
+
+    <section id="viewport" class="viewport" aria-label="Pan and zoom ecosystem world">
+      <div id="world" class="world">
+        <div class="globe-shell" aria-hidden="true"></div>
+        <div class="ocean-glow"></div>
+        <svg id="connectionLayer" class="connection-layer" viewBox="0 0 2300 1500" aria-hidden="true"></svg>
+        <div id="regions"></div>
+      </div>
+      <div id="emptyState" class="empty-state">No matching nodes. Clear search or visibility filter.</div>
+      <div id="activeSites" class="active-sites" aria-label="Most active websites"></div>
+    </section>
+
+    <div class="controls-panel" aria-label="Map controls">
+      <button class="btn" id="zoomIn" type="button" aria-label="Zoom in">+</button>
+      <button class="btn" id="zoomOut" type="button" aria-label="Zoom out">−</button>
+      <button class="btn" id="resetView" type="button" aria-label="Reset view">⌂</button>
+    </div>
+
+    <aside class="minimap" aria-label="Mini map">
+      <div id="minimapMap" class="minimap-map"><div id="miniWindow" class="mini-window"></div></div>
+    </aside>
+
+    <aside id="drawer" class="detail-drawer" aria-hidden="true" aria-label="Ecosystem item details"></aside>
+    <div id="toast" class="toast" role="status"></div>
+  </main>
+</div>
+
+<script type="module">
+const registryCandidates = ["./ecosystem.json", "../ecosystem.json", "/ecosystem/ecosystem.json", "/ecosystem.json"];
+const regionDefinitions = [
+  { id: "atlas", title: "Atlas Core", kicker: "Private infrastructure", desc: "Runtime surfaces, local services, wiki, planning, and AI control planes.", color: "#2563eb" },
+  { id: "apps", title: "Apps Island", kicker: "Products + utilities", desc: "Public and private app projects, experiments, and daily-use tools.", color: "#059669" },
+  { id: "agents", title: "Agent Range", kicker: "Automation", desc: "Bots, workers, AI assistants, recap systems, and agent-facing code.", color: "#7c3aed" },
+  { id: "business", title: "Business Coast", kicker: "Sites + domains", desc: "Surf The Webb, Kybernet, DW Solutions, public web properties, and brand surfaces.", color: "#d97706" },
+  { id: "ops", title: "Operations Bay", kicker: "Dashboards + docs", desc: "Monitoring, changelogs, registry views, project docs, and operational dashboards.", color: "#0891b2" },
+  { id: "sensitive", title: "Restricted Harbor", kicker: "Sensitive controls", desc: "IP-gated, restricted, private, and operationally sensitive resources.", color: "#e11d48" }
+];
+const regionCenters = {
+  atlas: [1155, 670], apps: [560, 375], agents: [1730, 375], business: [560, 1085], ops: [1730, 1085], sensitive: [1155, 1190]
+};
+const state = {
+  registry: null,
+  items: [],
+  regions: [],
+  query: "",
+  visibility: "all",
+  scale: 0.68,
+  x: 0,
+  y: 0,
+  dragging: false,
+  dragStart: null,
+  selected: null,
+  openRegions: new Set(["atlas"]),
+  regionPositions: {},
+  regionDrag: null
+};
+const $ = (selector) => document.querySelector(selector);
+const $$ = (selector) => Array.from(document.querySelectorAll(selector));
+const itemKey = (item) => `${item.mapKind || item.category || "item"}:${item.id || item.name || item.displayName}`;
+const text = (value) => String(value ?? "");
+const htmlEscape = (value) => text(value).replace(/[&<>"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
+
+async function loadRegistry() {
+  let lastError;
+  for (const path of registryCandidates) {
+    try {
+      const response = await fetch(path, { cache: "no-store" });
+      if (response.ok) return response.json();
+      lastError = new Error(`${path}: ${response.status}`);
+    } catch (error) { lastError = error; }
+  }
+  throw lastError || new Error("Registry not found");
+}
+function isProtectedHostedMode() {
+  return window.location.protocol === "https:" && /(^|\.)drewbefree\.com$/i.test(window.location.hostname);
+}
+function normalizeUrlParts(url) {
+  try {
+    const parsed = new URL(url);
+    return { origin: parsed.origin, pathname: parsed.pathname.replace(/\/+$/, "") || "/", rawPathname: parsed.pathname, search: parsed.search, hash: parsed.hash };
+  } catch { return null; }
+}
+function routeMatch(route, sourceUrl) {
+  const source = normalizeUrlParts(sourceUrl);
+  if (!source) return null;
+  let match = null;
+  for (const candidateUrl of [route.fallbackUrl, route.origin, ...(route.aliases || [])]) {
+    const candidate = normalizeUrlParts(candidateUrl);
+    if (!candidate || candidate.origin !== source.origin) continue;
+    const matchesBase = candidate.pathname === "/" ? true : source.pathname === candidate.pathname || source.pathname.startsWith(`${candidate.pathname}/`);
+    if (matchesBase && (!match || candidate.pathname.length > match.pathname.length)) match = candidate;
+  }
+  return match ? { source, base: match } : null;
+}
+function protectedUrlFor(url) {
+  if (!url || !/^https?:\/\//i.test(url) || !isProtectedHostedMode()) return url;
+  for (const route of state.registry?.protectedAccess?.routes || []) {
+    const match = routeMatch(route, url);
+    if (!match) continue;
+    const base = new URL(route.publicUrl);
+    const suffix = match.source.pathname.slice(match.base.pathname.length).replace(/^\/+/, "");
+    const publicPath = base.pathname.replace(/\/+$/, "");
+    if (suffix) base.pathname = publicPath ? `${publicPath}/${suffix}` : `/${suffix}`;
+    base.search = match.source.search;
+    base.hash = match.source.hash;
+    return base.toString();
+  }
+  return url;
+}
+function openUrls(item) {
+  const urls = [
+    ...(item.liveUrls || []),
+    item.url,
+    item.publicUrl,
+    ...(item.deployTargets || []).map((target) => target.url),
+    item.githubUrl,
+    ...(item.docs || []).map((doc) => doc.url)
+  ].flat().filter(Boolean).filter((url, index, arr) => arr.indexOf(url) === index);
+  return urls.map(protectedUrlFor);
+}
+function statusState(item) {
+  return item.statusControl?.state || item.state || item.status || (item.liveUrls?.length ? "live" : "tracked");
+}
+function hostsFor(item) {
+  const raw = [item.host, item.managedBy, ...(item.deployTargets || []).map((target) => target.host || target.type || target.url), ...(item.liveUrls || [])].filter(Boolean).join(" ").toLowerCase();
+  return raw;
+}
+function classifyRegion(item) {
+  const category = text(item.category).toLowerCase();
+  const type = text(item.type).toLowerCase();
+  const name = text(item.name || item.id || item.displayName).toLowerCase();
+  const hosts = hostsFor(item);
+  const visibility = text(item.visibility).toLowerCase();
+  if (visibility === "sensitive" || item.accessControl?.ipFilter) return "sensitive";
+  if (category === "agent" || type.includes("agent") || /\b(bot|agent|recap)\b/.test(name)) return "agents";
+  if (category === "site" || name.includes("surfthewebb") || name.includes("kybernet") || name.includes("dwebbsolutions") || hosts.includes("framer")) return "business";
+  if (item.mapKind === "dashboard" || type.includes("dashboard") || type.includes("docs") || type.includes("planning") || name.includes("grafana") || name.includes("prometheus") || name.includes("wiki") || name.includes("portal")) return "ops";
+  if (category === "app") return "apps";
+  if (hosts.includes("atlas") || hosts.includes("tailscale") || category === "infrastructure" || type.includes("runtime") || type.includes("docker") || type.includes("access")) return "atlas";
+  return "apps";
+}
+function allItems(registry) {
+  const repos = (registry.repositories || []).map((item) => ({ ...item, mapKind: "repo" }));
+  const services = (registry.services || []).map((item) => ({ ...item, mapKind: "service", displayName: item.name || item.displayName }));
+  const dashboards = (registry.dashboards || []).map((item) => ({ ...item, mapKind: "dashboard", displayName: item.name || item.displayName || item.id }));
+  const docs = (registry.docs || []).map((item) => ({ ...item, mapKind: "doc", displayName: item.title || item.name || item.id, visibility: item.visibility || "private", category: "docs" }));
+  const routes = (registry.protectedAccess?.routes || []).map((route) => ({
+    ...route,
+    mapKind: "route",
+    displayName: route.label,
+    name: route.id,
+    visibility: "private",
+    category: "infrastructure",
+    liveUrls: [route.publicUrl, route.fallbackUrl].filter(Boolean),
+    summary: `Cloudflare Access route for ${route.label}`,
+    statusControl: { state: "live" }
+  }));
+  const seen = new Set();
+  return [...repos, ...services, ...dashboards, ...docs, ...routes]
+    .filter((item) => {
+      const key = itemKey(item);
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    })
+    .map((item) => ({ ...item, region: classifyRegion(item) }));
+}
+function matchesFilters(item) {
+  const haystack = [item.displayName, item.name, item.id, item.summary, item.category, item.type, item.mapKind, item.visibility, ...(item.liveUrls || []), item.githubUrl].filter(Boolean).join(" ").toLowerCase();
+  const queryOk = !state.query || haystack.includes(state.query);
+  const visibilityOk = state.visibility === "all" || item.visibility === state.visibility;
+  return queryOk && visibilityOk;
+}
+function groupItems() {
+  return regionDefinitions.map((region) => ({ ...region, items: state.items.filter((item) => item.region === region.id) }));
+}
+function regionStyle(region) {
+  const pos = state.regionPositions[region.id];
+  const moved = pos ? `left:${pos.left}px;top:${pos.top}px;` : "";
+  return `--accent:${region.color};${moved}`;
+}
+function activeWebsiteItems() {
+  const preferred = new Set(["drewbefree-command-center", "daily-planner", "linksy", "rv-maintenance", "soccer-pickup", "recipes", "kybernet", "dw-solutions", "surf-the-webb", "john-share"]);
+  return state.items
+    .filter((item) => preferred.has(item.name || item.id) || (item.publicCommandCenter && statusState(item) === "live"))
+    .sort((a, b) => (preferred.has(b.name || b.id) - preferred.has(a.name || a.id)) || text(a.displayName || a.name).localeCompare(text(b.displayName || b.name)))
+    .slice(0, 10);
+}
+function renderActiveSites() {
+  const panel = $("#activeSites");
+  const items = activeWebsiteItems();
+  panel.innerHTML = items.map((item) => {
+    const url = openUrls(item)[0] || "#";
+    const region = regionDefinitions.find((candidate) => candidate.id === item.region) || regionDefinitions[0];
+    return `<a class="active-site" style="--accent:${region.color}" href="${htmlEscape(url)}" data-key="${htmlEscape(itemKey(item))}"><strong>${htmlEscape(item.displayName || item.name || item.id)}</strong><span>${htmlEscape(item.visibility || "private")} · ${htmlEscape(statusState(item))}</span></a>`;
+  }).join("");
+  panel.querySelectorAll(".active-site").forEach((link) => link.addEventListener("click", (event) => {
+    event.preventDefault();
+    const item = state.items.find((candidate) => itemKey(candidate) === link.dataset.key);
+    if (item) { state.openRegions.add(item.region); focusRegion(item.region); openDrawerByKey(itemKey(item)); }
+  }));
+}
+function renderRegions() {
+  const groups = groupItems();
+  state.regions = groups;
+  $("#regions").innerHTML = groups.map((region) => `
+    <section class="region ${state.openRegions.has(region.id) ? "is-open" : ""}" data-region="${region.id}" style="${regionStyle(region)}">
+      <button class="region-head" type="button" aria-expanded="${state.openRegions.has(region.id)}" aria-controls="region-${region.id}-nodes">
+        <div>
+          <p class="region-kicker">${htmlEscape(region.kicker)}</p>
+          <h2 class="region-title">${htmlEscape(region.title)}</h2>
+          <p class="region-desc">${htmlEscape(region.desc)}</p>
+        </div>
+        <div class="region-count" data-count-for="${region.id}">${region.items.length}</div>
+      </button>
+      <div class="node-field" id="region-${region.id}-nodes">
+        ${region.items.map((item) => renderNode(item, region.color)).join("")}
+      </div>
+    </section>
+  `).join("");
+  $("#legendGrid").innerHTML = groups.map((region) => `
+    <div class="legend-row"><span style="display:flex;align-items:center;gap:8px"><span class="legend-dot" style="--accent:${region.color}"></span>${htmlEscape(region.title)}</span><strong data-legend-count="${region.id}">${region.items.length}</strong></div>
+  `).join("");
+  renderMinimap(groups);
+  renderConnections();
+  renderActiveSites();
+  $$(".region-head").forEach((head) => bindRegionDrag(head));
+  $$(".node").forEach((node) => node.addEventListener("click", () => openDrawerByKey(node.dataset.key)));
+  applyFilters();
+}
+function renderNode(item, color) {
+  const status = statusState(item);
+  const label = item.displayName || item.name || item.id || "Untitled";
+  return `<button class="node" type="button" data-key="${htmlEscape(itemKey(item))}" data-region="${item.region}" style="--accent:${color}">
+    <span class="node-name">${htmlEscape(label)}</span>
+    <span class="node-meta">
+      <span class="pill ${htmlEscape(item.visibility || "private")}">${htmlEscape(item.visibility || "private")}</span>
+      <span class="pill ${htmlEscape(status)}">${htmlEscape(status)}</span>
+    </span>
+  </button>`;
+}
+function renderConnections() {
+  const centerFor = (id) => {
+    const moved = state.regionPositions[id];
+    if (moved) return [moved.left + 260, moved.top + 165];
+    return regionCenters[id];
+  };
+  const center = centerFor("atlas");
+  const paths = Object.keys(regionCenters)
+    .filter((id) => id !== "atlas")
+    .map((id) => {
+      const target = centerFor(id);
+      return `<path d="M ${center[0]} ${center[1]} C ${(center[0] + target[0]) / 2} ${center[1]}, ${(center[0] + target[0]) / 2} ${target[1]}, ${target[0]} ${target[1]}" data-to="${id}" />`;
+    })
+    .join("");
+  $("#connectionLayer").innerHTML = paths;
+}
+function renderMinimap(groups) {
+  const map = $("#minimapMap");
+  map.querySelectorAll(".mini-region").forEach((el) => el.remove());
+  for (const region of groups) {
+    const [x, y] = regionCenters[region.id];
+    const dot = document.createElement("button");
+    dot.className = "mini-region";
+    dot.type = "button";
+    dot.title = region.title;
+    dot.style.left = `${(x / 2300) * 100}%`;
+    dot.style.top = `${(y / 1500) * 100}%`;
+    dot.style.background = region.color;
+    dot.addEventListener("click", () => focusRegion(region.id));
+    map.append(dot);
+  }
+}
+function applyFilters() {
+  let visible = 0;
+  const visibleByRegion = Object.fromEntries(regionDefinitions.map((region) => [region.id, 0]));
+  $$(".node").forEach((node) => {
+    const item = state.items.find((candidate) => itemKey(candidate) === node.dataset.key);
+    const ok = item && matchesFilters(item);
+    node.classList.toggle("is-hidden", !ok);
+    if (ok) { visible += 1; visibleByRegion[item.region] += 1; }
+  });
+  $$(".region").forEach((regionEl) => {
+    const count = visibleByRegion[regionEl.dataset.region] || 0;
+    regionEl.classList.toggle("is-dimmed", count === 0 && (state.query || state.visibility !== "all"));
+    regionEl.classList.toggle("is-open", state.openRegions.has(regionEl.dataset.region));
+    regionEl.querySelector(".region-head")?.setAttribute("aria-expanded", String(state.openRegions.has(regionEl.dataset.region)));
+    regionEl.querySelector("[data-count-for]").textContent = count === regionEl.querySelectorAll(".node").length ? String(count) : `${count}/${regionEl.querySelectorAll(".node").length}`;
+  });
+  $$('[data-legend-count]').forEach((el) => {
+    const id = el.dataset.legendCount;
+    el.textContent = String(visibleByRegion[id] || 0);
+  });
+  $("#emptyState").classList.toggle("is-visible", visible === 0);
+  $("#subtitle").textContent = `${visible} visible / ${state.items.length} total nodes • ${state.registry?.updatedAt || "registry"}`;
+}
+function bindRegionDrag(head) {
+  head.addEventListener("pointerdown", (event) => {
+    if (event.button !== 0) return;
+    const region = head.closest(".region");
+    const rect = region.getBoundingClientRect();
+    const worldRect = $("#world").getBoundingClientRect();
+    state.regionDrag = {
+      id: region.dataset.region,
+      startX: event.clientX,
+      startY: event.clientY,
+      left: (rect.left - worldRect.left) / state.scale,
+      top: (rect.top - worldRect.top) / state.scale,
+      moved: false
+    };
+    region.classList.add("is-dragging");
+    head.setPointerCapture?.(event.pointerId);
+  });
+  head.addEventListener("pointermove", (event) => {
+    if (!state.regionDrag) return;
+    const dx = (event.clientX - state.regionDrag.startX) / state.scale;
+    const dy = (event.clientY - state.regionDrag.startY) / state.scale;
+    if (Math.abs(dx) + Math.abs(dy) > 6) state.regionDrag.moved = true;
+    const left = Math.max(80, Math.min(1700, state.regionDrag.left + dx));
+    const top = Math.max(70, Math.min(1220, state.regionDrag.top + dy));
+    state.regionPositions[state.regionDrag.id] = { left, top };
+    const region = head.closest(".region");
+    region.style.left = `${left}px`;
+    region.style.top = `${top}px`;
+    renderConnections();
+  });
+  const finish = (event) => {
+    if (!state.regionDrag) return;
+    const dragged = state.regionDrag;
+    head.closest(".region")?.classList.remove("is-dragging");
+    head.releasePointerCapture?.(event.pointerId);
+    state.regionDrag = null;
+    if (!dragged.moved) toggleRegion(dragged.id);
+  };
+  head.addEventListener("pointerup", finish);
+  head.addEventListener("pointercancel", finish);
+}
+function toggleRegion(id) {
+  if (state.openRegions.has(id)) {
+    state.openRegions.delete(id);
+  } else {
+    state.openRegions.add(id);
+  }
+  applyFilters();
+}
+function itemDetails(item) {
+  const urls = openUrls(item);
+  const docs = item.docs || [];
+  const targets = item.deployTargets || [];
+  return `
+    <div class="drawer-head">
+      <div>
+        <h2>${htmlEscape(item.displayName || item.name || item.id)}</h2>
+        <div class="node-meta" style="margin-top:8px">
+          <span class="pill ${htmlEscape(item.visibility || "private")}">${htmlEscape(item.visibility || "private")}</span>
+          <span class="pill ${htmlEscape(statusState(item))}">${htmlEscape(statusState(item))}</span>
+          <span class="pill">${htmlEscape(item.mapKind || item.category || item.type || "item")}</span>
+        </div>
+      </div>
+      <button class="drawer-close" type="button" id="drawerClose" aria-label="Close details">×</button>
+    </div>
+    <p class="drawer-summary">${htmlEscape(item.summary || item.description || item.notes || "No summary recorded yet.")}</p>
+    <div class="action-list">
+      ${urls.slice(0, 6).map((url, index) => `<a class="btn ${index === 0 ? "primary" : ""}" href="${htmlEscape(url)}" target="_blank" rel="noreferrer">${index === 0 ? "Open" : linkLabel(url)}</a>`).join("")}
+    </div>
+    ${item.localPath ? `<section class="drawer-section"><h3>Local path</h3><ul class="data-list"><li><code>${htmlEscape(item.localPath)}</code></li></ul></section>` : ""}
+    ${item.githubUrl ? `<section class="drawer-section"><h3>Repository</h3><ul class="data-list"><li><a href="${htmlEscape(item.githubUrl)}" target="_blank" rel="noreferrer">${htmlEscape(item.githubUrl)}</a></li></ul></section>` : ""}
+    ${docs.length ? `<section class="drawer-section"><h3>Docs</h3><ul class="data-list">${docs.map((doc) => `<li><a href="${htmlEscape(protectedUrlFor(doc.url))}" target="_blank" rel="noreferrer">${htmlEscape(doc.label || doc.title || doc.url)}</a></li>`).join("")}</ul></section>` : ""}
+    ${targets.length ? `<section class="drawer-section"><h3>Deploy targets</h3><ul class="data-list">${targets.slice(0, 8).map((target) => `<li>${htmlEscape([target.type, target.host, target.url].filter(Boolean).join(" / ") || target.notes || "Target")}</li>`).join("")}</ul></section>` : ""}
+  `;
+}
+function linkLabel(url) {
+  const lower = text(url).toLowerCase();
+  if (lower.includes("github.com")) return "GitHub";
+  if (lower.includes("wiki")) return "Docs";
+  if (lower.includes("grafana")) return "Grafana";
+  if (lower.includes("prometheus")) return "Prometheus";
+  if (lower.includes("planning")) return "Leantime";
+  if (lower.includes("leads")) return "Lead Desk";
+  return "Link";
+}
+function openDrawerByKey(key) {
+  const item = state.items.find((candidate) => itemKey(candidate) === key);
+  if (!item) return;
+  state.selected = item;
+  const drawer = $("#drawer");
+  drawer.innerHTML = itemDetails(item);
+  drawer.classList.add("is-open");
+  drawer.setAttribute("aria-hidden", "false");
+  $("#drawerClose").addEventListener("click", closeDrawer);
+}
+function closeDrawer() {
+  const drawer = $("#drawer");
+  drawer.classList.remove("is-open");
+  drawer.setAttribute("aria-hidden", "true");
+}
+function setTransform() {
+  $("#world").style.transform = `translate(${state.x}px, ${state.y}px) scale(${state.scale})`;
+  updateMiniWindow();
+}
+function resetView() {
+  const frame = $(".world-frame").getBoundingClientRect();
+  state.scale = Math.min(Math.max(frame.width / 2300, 0.46), 0.78);
+  state.x = -1150 * state.scale;
+  state.y = -750 * state.scale;
+  setTransform();
+}
+function zoomAt(delta, cx, cy) {
+  const oldScale = state.scale;
+  const next = Math.min(1.5, Math.max(0.32, state.scale + delta));
+  const rect = $("#viewport").getBoundingClientRect();
+  const px = cx ?? rect.width / 2;
+  const py = cy ?? rect.height / 2;
+  const worldX = (px - state.x) / oldScale;
+  const worldY = (py - state.y) / oldScale;
+  state.scale = next;
+  state.x = px - worldX * next;
+  state.y = py - worldY * next;
+  setTransform();
+}
+function focusRegion(id) {
+  state.openRegions.add(id);
+  const [x, y] = regionCenters[id] || regionCenters.atlas;
+  const rect = $("#viewport").getBoundingClientRect();
+  state.scale = Math.max(state.scale, 0.78);
+  state.x = rect.width / 2 - x * state.scale;
+  state.y = rect.height / 2 - y * state.scale;
+  setTransform();
+  showToast(regionDefinitions.find((region) => region.id === id)?.title || "Focused");
+}
+function focusFirstMatch() {
+  const first = $$(".node:not(.is-hidden)")[0];
+  if (!first) return;
+  const region = first.closest(".region")?.dataset.region;
+  if (region) focusRegion(region);
+  setTimeout(() => openDrawerByKey(first.dataset.key), 130);
+}
+function updateMiniWindow() {
+  const rect = $("#viewport").getBoundingClientRect();
+  const mini = $("#minimapMap").getBoundingClientRect();
+  const left = Math.max(0, (-state.x / state.scale / 2300) * mini.width);
+  const top = Math.max(0, (-state.y / state.scale / 1500) * mini.height);
+  const width = Math.min(mini.width, (rect.width / state.scale / 2300) * mini.width);
+  const height = Math.min(mini.height, (rect.height / state.scale / 1500) * mini.height);
+  Object.assign($("#miniWindow").style, { left: `${left}px`, top: `${top}px`, width: `${width}px`, height: `${height}px` });
+}
+function showToast(message) {
+  const toast = $("#toast");
+  toast.textContent = message;
+  toast.classList.add("is-visible");
+  clearTimeout(showToast.timer);
+  showToast.timer = setTimeout(() => toast.classList.remove("is-visible"), 1400);
+}
+function bindEvents() {
+  $("#searchForm").addEventListener("submit", (event) => { event.preventDefault(); focusFirstMatch(); });
+  $("#searchInput").addEventListener("input", (event) => {
+    state.query = event.target.value.trim().toLowerCase();
+    if (state.query) {
+      state.items.filter(matchesFilters).forEach((item) => state.openRegions.add(item.region));
+    }
+    applyFilters();
+  });
+  $("#visibilityFilter").addEventListener("change", (event) => { state.visibility = event.target.value; applyFilters(); });
+  $("#focusButton").addEventListener("click", focusFirstMatch);
+  $("#zoomIn").addEventListener("click", () => zoomAt(0.1));
+  $("#zoomOut").addEventListener("click", () => zoomAt(-0.1));
+  $("#resetView").addEventListener("click", resetView);
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeDrawer();
+    if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") { event.preventDefault(); $("#searchInput").focus(); }
+  });
+  const viewport = $("#viewport");
+  viewport.addEventListener("pointerdown", (event) => {
+    if (event.target.closest("button, a, input, select")) return;
+    state.dragging = true;
+    state.dragStart = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, startX: state.x, startY: state.y };
+    viewport.setPointerCapture(event.pointerId);
+    viewport.classList.add("is-dragging");
+  });
+  viewport.addEventListener("pointermove", (event) => {
+    if (!state.dragging || !state.dragStart) return;
+    state.x = state.dragStart.startX + event.clientX - state.dragStart.x;
+    state.y = state.dragStart.startY + event.clientY - state.dragStart.y;
+    setTransform();
+  });
+  viewport.addEventListener("pointerup", () => { state.dragging = false; viewport.classList.remove("is-dragging"); });
+  viewport.addEventListener("wheel", (event) => {
+    event.preventDefault();
+    const rect = viewport.getBoundingClientRect();
+    zoomAt(event.deltaY < 0 ? 0.08 : -0.08, event.clientX - rect.left, event.clientY - rect.top);
+  }, { passive: false });
+}
+async function init() {
+  bindEvents();
+  state.registry = await loadRegistry();
+  state.items = allItems(state.registry);
+  renderRegions();
+  resetView();
+}
+init().catch((error) => {
+  console.error(error);
+  $("#subtitle").textContent = `Registry failed to load: ${error.message}`;
+  showToast("Registry failed to load");
+});
+</script>
+</body>
+</html>

@@ -7,6 +7,7 @@ Atlas/Tailscale-only launcher and status/control-ready surface for the DrewBeFre
 - Registry: `../ecosystem.json`
 - Private Command Center launcher: `launcher.html`
 - Ecosystem UI: `index.html`, `style.css`, `app.js`
+- World view: `world.html` with a 3D globe-style map, expandable/draggable regions, active-site strip, and detail drawer
 - Test contract: `portal.test.mjs`
 
 ## Atlas deployment
@@ -41,11 +42,21 @@ location /ecosystem/ {
 
 Then open `http://atlas/`, `http://atlas/ecosystem/launcher.html`, or `http://atlas/ecosystem/` from a Tailscale-connected device.
 
-Direct ecosystem-tree shortcuts:
+Direct ecosystem navigation shortcuts:
 
-- Hosted phone URL: `https://portal.drewbefree.com/ecosystem/tree.html`
-- Stable hosted alias: `https://portal.drewbefree.com/ecosystem-tree.html` or `https://portal.drewbefree.com/ecosystem-tree/`
-- Tailscale fallback: `http://atlas/ecosystem/tree.html` or `http://atlas/ecosystem-tree.html`
+- Hosted world URL: `https://portal.drewbefree.com/ecosystem/world.html`
+- Tailscale world fallback: `http://atlas/ecosystem/world.html`
+
+World view notes:
+
+- Starts with high-level ecosystem regions instead of showing every node at once.
+- Region headers expand/collapse and can be dragged around the globe canvas; connection lines follow moved regions during the session.
+- The bottom active-site strip surfaces the most frequently opened websites, including John Share as a sensitive/private runtime.
+- John Share runs as `john-share.service` on Atlas and binds to `http://127.0.0.1:8127`; do not publish it as a normal public live URL unless a protected proxy is explicitly configured.
+
+- Hosted phone tree URL: `https://portal.drewbefree.com/ecosystem/tree.html`
+- Stable hosted tree alias: `https://portal.drewbefree.com/ecosystem-tree.html` or `https://portal.drewbefree.com/ecosystem-tree/`
+- Tailscale tree fallback: `http://atlas/ecosystem/tree.html` or `http://atlas/ecosystem-tree.html`
 
 Project changelog shortcuts:
 

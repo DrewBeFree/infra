@@ -36,7 +36,7 @@
       "tasks": [
         {
           "stableId": "task-db49f2ba0483",
-          "title": "Task categories — category grouping deferred; revisit when core app is stable",
+          "title": "Task categories \u2014 category grouping deferred; revisit when core app is stable",
           "sourceFile": "apps/daily-planner/BACKLOG.md",
           "sourceLine": 4,
           "githubIssueNumber": 1,
@@ -45,7 +45,7 @@
         },
         {
           "stableId": "task-458eb59f7fb9",
-          "title": "PWA install banner — show iOS Safari tooltip nudging \"Share → Add to Home Screen\" on first visit; dismiss stored in localStorage",
+          "title": "PWA install banner \u2014 show iOS Safari tooltip nudging \"Share \u2192 Add to Home Screen\" on first visit; dismiss stored in localStorage",
           "sourceFile": "apps/daily-planner/BACKLOG.md",
           "sourceLine": 7,
           "githubIssueNumber": 2,
@@ -54,7 +54,7 @@
         },
         {
           "stableId": "task-f0b793c2918f",
-          "title": "Delete archived list — add a delete button to archived grocery and trip lists to permanently remove them",
+          "title": "Delete archived list \u2014 add a delete button to archived grocery and trip lists to permanently remove them",
           "sourceFile": "apps/daily-planner/BACKLOG.md",
           "sourceLine": 8,
           "githubIssueNumber": 3,
@@ -97,7 +97,7 @@
       "tasks": [
         {
           "stableId": "task-4d0663c14cf1",
-          "title": "Migrate host PIN gate to Supabase Auth — replace JS PIN check with email/password login so RLS DELETE/UPDATE policies can be scoped to authenticated role",
+          "title": "Migrate host PIN gate to Supabase Auth \u2014 replace JS PIN check with email/password login so RLS DELETE/UPDATE policies can be scoped to authenticated role",
           "sourceFile": "apps/golf/BACKLOG.md",
           "sourceLine": 4,
           "githubIssueNumber": 1,
@@ -106,7 +106,7 @@
         },
         {
           "stableId": "task-7c9689f6b517",
-          "title": "PWA install banner — show iOS Safari tooltip nudging \"Share → Add to Home Screen\" on first visit; dismiss stored in localStorage",
+          "title": "PWA install banner \u2014 show iOS Safari tooltip nudging \"Share \u2192 Add to Home Screen\" on first visit; dismiss stored in localStorage",
           "sourceFile": "apps/golf/BACKLOG.md",
           "sourceLine": 7,
           "githubIssueNumber": 2,
@@ -184,7 +184,7 @@
       "tasks": [
         {
           "stableId": "task-0c7a56c5ef1b",
-          "title": "Migrate host PIN gate to Supabase Auth — replace JS PIN check with email/password login so RLS DELETE/UPDATE policies can be scoped to authenticated role",
+          "title": "Migrate host PIN gate to Supabase Auth \u2014 replace JS PIN check with email/password login so RLS DELETE/UPDATE policies can be scoped to authenticated role",
           "sourceFile": "apps/poker/BACKLOG.md",
           "sourceLine": 4,
           "githubIssueNumber": 3,
@@ -193,7 +193,7 @@
         },
         {
           "stableId": "task-c6a0d5521a05",
-          "title": "PWA install banner — show iOS Safari tooltip nudging \"Share → Add to Home Screen\" on first visit; dismiss stored in localStorage",
+          "title": "PWA install banner \u2014 show iOS Safari tooltip nudging \"Share \u2192 Add to Home Screen\" on first visit; dismiss stored in localStorage",
           "sourceFile": "apps/poker/BACKLOG.md",
           "sourceLine": 7,
           "githubIssueNumber": 4,
@@ -225,7 +225,7 @@
       "tasks": [
         {
           "stableId": "task-138123e65db7",
-          "title": "PWA install banner — show iOS Safari tooltip nudging \"Share → Add to Home Screen\" on first visit; dismiss stored in localStorage",
+          "title": "PWA install banner \u2014 show iOS Safari tooltip nudging \"Share \u2192 Add to Home Screen\" on first visit; dismiss stored in localStorage",
           "sourceFile": "apps/recipes/BACKLOG.md",
           "sourceLine": 4,
           "githubIssueNumber": 1,
@@ -246,7 +246,7 @@
       "tasks": [
         {
           "stableId": "task-bd0f2cd0b3f3",
-          "title": "PWA install banner — show iOS Safari tooltip nudging \"Share → Add to Home Screen\" on first visit; dismiss stored in localStorage",
+          "title": "PWA install banner \u2014 show iOS Safari tooltip nudging \"Share \u2192 Add to Home Screen\" on first visit; dismiss stored in localStorage",
           "sourceFile": "apps/rv-maintenance/BACKLOG.md",
           "sourceLine": 4,
           "githubIssueNumber": 1,
@@ -267,7 +267,7 @@
       "tasks": [
         {
           "stableId": "task-d7eed15e89c7",
-          "title": "PWA install banner — show iOS Safari tooltip nudging \"Share → Add to Home Screen\" on first visit; dismiss stored in localStorage",
+          "title": "PWA install banner \u2014 show iOS Safari tooltip nudging \"Share \u2192 Add to Home Screen\" on first visit; dismiss stored in localStorage",
           "sourceFile": "apps/soccer-pickup/BACKLOG.md",
           "sourceLine": 4,
           "githubIssueNumber": 1,
@@ -288,7 +288,7 @@
       "tasks": [
         {
           "stableId": "task-bf08c88cab18",
-          "title": "PWA install banner — show iOS Safari tooltip nudging \"Share → Add to Home Screen\" on first visit; dismiss stored in localStorage",
+          "title": "PWA install banner \u2014 show iOS Safari tooltip nudging \"Share \u2192 Add to Home Screen\" on first visit; dismiss stored in localStorage",
           "sourceFile": "apps/uhaul-load-planner/BACKLOG.md",
           "sourceLine": 4,
           "githubIssueNumber": 53,
@@ -441,7 +441,7 @@
       "tasks": [
         {
           "stableId": "task-a7097fe36107",
-          "title": "WSL Setup — Move infrastructure work to WSL",
+          "title": "WSL Setup \u2014 Move infrastructure work to WSL",
           "sourceFile": "infra/BACKLOG.md",
           "sourceLine": 30,
           "githubIssueNumber": 6,
@@ -450,7 +450,7 @@
         },
         {
           "stableId": "task-4dab448a4ca0",
-          "title": "Ecosystem project tracking — standardize GitHub Projects + Issues",
+          "title": "Ecosystem project tracking \u2014 standardize GitHub Projects + Issues",
           "sourceFile": "infra/BACKLOG.md",
           "sourceLine": 39,
           "githubIssueNumber": 7,
@@ -459,7 +459,7 @@
         },
         {
           "stableId": "task-1ab1fdc791c0",
-          "title": "Cleanup — Remove hardcoded paths, use environment variables",
+          "title": "Cleanup \u2014 Remove hardcoded paths, use environment variables",
           "sourceFile": "infra/BACKLOG.md",
           "sourceLine": 54,
           "githubIssueNumber": 8,
@@ -468,7 +468,7 @@
         },
         {
           "stableId": "task-93a299f844c0",
-          "title": "Task 2 — Create project templates for apps and sites",
+          "title": "Task 2 \u2014 Create project templates for apps and sites",
           "sourceFile": "infra/BACKLOG.md",
           "sourceLine": 61,
           "githubIssueNumber": 9,
@@ -477,7 +477,7 @@
         },
         {
           "stableId": "task-d24877040850",
-          "title": "Task 3 — Design multi-system sync strategy for .claude memory and projects",
+          "title": "Task 3 \u2014 Design multi-system sync strategy for .claude memory and projects",
           "sourceFile": "infra/BACKLOG.md",
           "sourceLine": 67,
           "githubIssueNumber": 10,
@@ -486,7 +486,7 @@
         },
         {
           "stableId": "task-c8b2fe3ea971",
-          "title": "Task 4 — Automate recurring tasks: logoff checklist, version management, updates",
+          "title": "Task 4 \u2014 Automate recurring tasks: logoff checklist, version management, updates",
           "sourceFile": "infra/BACKLOG.md",
           "sourceLine": 83,
           "githubIssueNumber": 11,
@@ -549,7 +549,7 @@
         },
         {
           "stableId": "task-d10ce323599e",
-          "title": "Wiki — Make all URLs clickable",
+          "title": "Wiki \u2014 Make all URLs clickable",
           "sourceFile": "infra/BACKLOG.md",
           "sourceLine": 127,
           "githubIssueNumber": 18,
@@ -558,7 +558,7 @@
         },
         {
           "stableId": "task-4ff1865e67f0",
-          "title": "Wiki — Upgrade UI",
+          "title": "Wiki \u2014 Upgrade UI",
           "sourceFile": "infra/BACKLOG.md",
           "sourceLine": 131,
           "githubIssueNumber": 19,
@@ -575,6 +575,41 @@
       "githubProjectUrl": null,
       "leantimeProjectId": null,
       "leantimeProjectUrl": null,
+      "taskCount": 0,
+      "tasks": []
+    },
+    "ai-chat-history": {
+      "project": "AI Chat History",
+      "taskCount": 0,
+      "tasks": []
+    },
+    "firecrawl": {
+      "project": "Firecrawl",
+      "taskCount": 0,
+      "tasks": []
+    },
+    "hermes-memory-archive": {
+      "project": "Hermes Memory Archive",
+      "taskCount": 0,
+      "tasks": []
+    },
+    "luke-codex-guide": {
+      "project": "Luke Codex Guide",
+      "taskCount": 0,
+      "tasks": []
+    },
+    "personas-claude": {
+      "project": "Personas Claude",
+      "taskCount": 0,
+      "tasks": []
+    },
+    "selling-shit": {
+      "project": "Selling Shit",
+      "taskCount": 0,
+      "tasks": []
+    },
+    "yes": {
+      "project": "Yes",
       "taskCount": 0,
       "tasks": []
     }

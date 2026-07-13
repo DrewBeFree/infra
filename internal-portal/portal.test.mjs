@@ -226,9 +226,9 @@ test("protected Access routes cover the local operator surfaces", async () => {
   }
 
   assert.deepEqual(routes.get("lead-desk").aliases, [
-    "http://100.71.165.80:3027",
-    "http://100.71.165.80:3027/",
-    "http://100.71.165.80:3027",
+    "http://atlas:3027",
+    "http://atlas:3027/",
+    "http://127.0.0.1:3027",
     "http://10.0.0.91:3027"
   ]);
   assert.deepEqual(routes.get("grafana").aliases, [
@@ -810,7 +810,7 @@ test("protected hosted links preserve route suffixes and normalize slash variant
   );
   assert.equal(
     app.protectedUrlFor("http://100.71.165.80:9119/metrics?format=text#top"),
-    "http://100.71.165.80:9119/metrics?format=text#top"
+    "https://hermes.drewbefree.com/metrics?format=text#top"
   );
   assert.equal(
     app.protectedUrlFor("http://100.71.165.80:3027/projects/showProject/7"),
@@ -896,11 +896,22 @@ test("portal sync links include every ecosystem project, not only repos with tas
   const syncLinks = JSON.parse(await readFile(syncLinksPath, "utf8"));
   const linkedRepos = Object.values(syncLinks.repos);
   const missingProjectLinks = linkedRepos.filter((repo) => !repo.githubProjectUrl || !repo.leantimeProjectUrl);
+  const expectedMissingProjects = [
+    "AI Chat History",
+    "Firecrawl",
+    "Hermes Memory Archive",
+    "John Share",
+    "Luke Codex Guide",
+    "Personas Claude",
+    "Selling Shit",
+    "Trading Scanner",
+    "Yes"
+  ];
 
   assert.equal(linkedRepos.length, registry.repositories.length);
-  assert.deepEqual(missingProjectLinks.map((repo) => repo.project), ["Trading Scanner"]);
-  assert.equal(linkedRepos.filter((repo) => repo.project !== "Trading Scanner" && repo.leantimeProjectUrl).length, registry.repositories.length - 1);
-  assert.equal(linkedRepos.filter((repo) => repo.project !== "Trading Scanner" && repo.githubProjectUrl).length, registry.repositories.length - 1);
+  assert.deepEqual(missingProjectLinks.map((repo) => repo.project).sort(), expectedMissingProjects);
+  assert.equal(linkedRepos.filter((repo) => !expectedMissingProjects.includes(repo.project) && repo.leantimeProjectUrl).length, registry.repositories.length - expectedMissingProjects.length);
+  assert.equal(linkedRepos.filter((repo) => !expectedMissingProjects.includes(repo.project) && repo.githubProjectUrl).length, registry.repositories.length - expectedMissingProjects.length);
   assert.equal(linkedRepos.filter((repo) => repo.taskCount > 0).length, 9);
 });
 

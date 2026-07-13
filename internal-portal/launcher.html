@@ -56,7 +56,7 @@
 
   .atlas-rail {
     display: grid;
-    grid-template-columns: minmax(0, 1.4fr) repeat(6, minmax(118px, 1fr));
+    grid-template-columns: minmax(0, 1.4fr) repeat(7, minmax(104px, 1fr));
     gap: 10px;
     margin-bottom: 30px;
   }
@@ -177,8 +177,10 @@
     <a class="rail-link" href="http://100.71.165.80:3027/" data-protected-href="https://leads.drewbefree.com/" style="--card-accent:#00ff88;--card-glow:rgba(0,255,136,0.1);"><small>LOCAL APP</small><b>Lead Desk</b><span class="rail-signal" id="leadRailSignal">checking leads</span></a>
     <a class="rail-link" href="http://atlas/wiki/" data-protected-href="https://wiki.drewbefree.com/wiki/" style="--card-accent:#00d4ff;"><small>DOCS</small><b>Atlas Wiki</b></a>
     <a class="rail-link" href="http://atlas/ecosystem/" data-protected-href="https://portal.drewbefree.com/ecosystem/" style="--card-accent:#a78bfa;"><small>REGISTRY</small><b>Ecosystem</b></a>
-    <a class="rail-link" href="http://atlas/ecosystem/tree.html" data-protected-href="https://portal.drewbefree.com/ecosystem/tree.html" style="--card-accent:#8b5cf6;"><small>TREE</small><b>Ecosystem Tree</b></a>
+    <a class="rail-link" href="http://atlas/ecosystem/world.html" data-protected-href="https://portal.drewbefree.com/ecosystem/world.html" style="--card-accent:#8b5cf6;"><small>WORLD</small><b>Ecosystem World</b></a>
+    <a class="rail-link" href="http://atlas/ecosystem/tree.html" data-protected-href="https://portal.drewbefree.com/ecosystem/tree.html" style="--card-accent:#a78bfa;"><small>TREE</small><b>Ecosystem Tree</b></a>
     <a class="rail-link" href="http://atlas/ecosystem/changelog.html" data-protected-href="https://portal.drewbefree.com/ecosystem/changelog.html" style="--card-accent:#38bdf8;"><small>HISTORY</small><b>Changelog</b></a>
+    <a class="rail-link" href="http://atlas:9121/" data-protected-href="https://hermes.drewbefree.com/" style="--card-accent:#22c55e;--card-glow:rgba(34,197,94,0.12);"><small>AGENT</small><b>Hermes WebUI</b></a>
     <a class="rail-link" href="http://atlas:3001/d/atlas-overview/poweredge-dashboard" data-protected-href="https://grafana.drewbefree.com/d/atlas-overview/poweredge-dashboard" style="--card-accent:#f59e0b;"><small>HEALTH</small><b>Grafana</b><span class="rail-signal" id="grafanaRailSignal">checking</span></a>
   </section>
 
@@ -219,6 +221,13 @@
       <div class="card-url">http://atlas/ecosystem/tree.html</div>
       <div class="card-desc">Fast collapsible tree view for the ecosystem when you just need the right project, dashboard, repo, or domain link from your phone.</div>
       <div class="tags"><span class="tag">Phone</span><span class="tag">Tree</span><span class="tag">Shortcut</span></div>
+    </a>
+    <a class="card" href="http://atlas/ecosystem/world.html" data-protected-href="https://portal.drewbefree.com/ecosystem/world.html" style="--card-accent:#6366f1;--card-glow:rgba(99,102,241,0.13);">
+      <div class="card-id">ATLAS_003D // WORLD</div>
+      <div class="card-name">ECOSYSTEM WORLD</div>
+      <div class="card-url">http://atlas/ecosystem/world.html</div>
+      <div class="card-desc">Pan-and-zoom world map for navigating projects, agents, dashboards, businesses, services, and restricted surfaces from the canonical registry.</div>
+      <div class="tags"><span class="tag">World</span><span class="tag">Zoom</span><span class="tag">Navigator</span></div>
     </a>
     <a class="card" href="http://atlas/ecosystem/changelog.html" data-protected-href="https://portal.drewbefree.com/ecosystem/changelog.html" style="--card-accent:#38bdf8;--card-glow:rgba(56,189,248,0.13);">
       <div class="card-id">ATLAS_003C // HISTORY</div>
@@ -265,10 +274,17 @@
     </a>
     <a class="card" href="http://100.71.165.80:9119" data-protected-href="https://hermes.drewbefree.com/" style="--card-accent:#22c55e;">
       <div class="card-id">ATLAS_008 // AGENT</div>
-      <div class="card-name">HERMES</div>
+      <div class="card-name">HERMES CLI DASHBOARD</div>
       <div class="card-url">http://100.71.165.80:9119</div>
-      <div class="card-desc">Agent runtime dashboard and terminal surface, still backed by Atlas/Tailscale access rules.</div>
-      <div class="tags"><span class="tag">Agent</span><span class="tag">Terminal</span></div>
+      <div class="card-desc">Hermes CLI dashboard surface for runtime visibility and agent operations.</div>
+      <div class="tags"><span class="tag">Agent</span><span class="tag">CLI</span></div>
+    </a>
+    <a class="card" href="http://100.71.165.80:9121" data-protected-href="https://hermes.drewbefree.com/" style="--card-accent:#16a34a;--card-glow:rgba(22,163,74,0.12);">
+      <div class="card-id">ATLAS_008B // WEBUI</div>
+      <div class="card-name">HERMES WEBUI</div>
+      <div class="card-url">http://100.71.165.80:9121</div>
+      <div class="card-desc">Hermes browser chat interface for WebUI sessions on Atlas.</div>
+      <div class="tags"><span class="tag">Agent</span><span class="tag">WebUI</span></div>
     </a>
   </section>
 
