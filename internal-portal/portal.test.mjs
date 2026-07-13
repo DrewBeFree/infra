@@ -8,6 +8,8 @@ const registryPath = new URL("../ecosystem.json", import.meta.url);
 const indexPath = new URL("./index.html", import.meta.url);
 const launcherPath = new URL("./launcher.html", import.meta.url);
 const treePath = new URL("./tree.html", import.meta.url);
+const worldPath = new URL("./world.html", import.meta.url);
+const pinGatewayPath = new URL("./pin_gateway.py", import.meta.url);
 const changelogPath = new URL("./changelog.html", import.meta.url);
 const appPath = new URL("./app.js", import.meta.url);
 const stylePath = new URL("./style.css", import.meta.url);
@@ -205,6 +207,14 @@ test("protected Access routes cover the local operator surfaces", async () => {
 
   assert.equal(registry.protectedAccess.provider, "cloudflare-access");
   assert.equal(registry.protectedAccess.defaultPolicy, "drew-only");
+
+  const worldRoute = routes.get("world");
+  assert.ok(worldRoute, "missing protected route: world");
+  assert.equal(worldRoute.publicUrl, "https://world.kybernet.tech/");
+  assert.equal(worldRoute.origin, "http://127.0.0.1:8137/");
+  assert.equal(worldRoute.fallbackUrl, "http://atlas/ecosystem/world.html");
+  assert.deepEqual(worldRoute.aliases, ["https://world.drewbefree.com/"]);
+  assert.equal(worldRoute.access, "pin-gated-cloudflare-tunnel");
 
   const expectedRoutes = [
     ["portal", "https://portal.drewbefree.com/ecosystem/", "http://127.0.0.1/ecosystem/", "http://atlas/ecosystem/"],
@@ -920,6 +930,22 @@ test("local preview serves rendered wiki site pages instead of raw markdown", as
 
   assert.match(server, /wikiDocPath/);
   assert.match(server, /wiki", "site"/);
+});
+
+test("world view documents protected PIN access and ships a local gateway", async () => {
+  const world = await readFile(worldPath, "utf8");
+  const gateway = await readFile(pinGatewayPath, "utf8");
+
+  assert.match(world, /High-level map first/);
+  assert.match(world, /PIN protected · \$\{host\}/);
+  assert.match(world, /function updateAccessBadge/);
+  assert.match(world, /activeWebsiteItems/);
+  assert.match(world, /bindRegionDrag/);
+  assert.match(world, /globe-shell/);
+  assert.match(gateway, /WORLD_PORTAL_PIN_SHA256/);
+  assert.match(gateway, /drew_world_session/);
+  assert.match(gateway, /127\.0\.0\.1/);
+  assert.match(gateway, /8137/);
 });
 
 test("public Command Center no longer exposes UHaul Planner", async () => {

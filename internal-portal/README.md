@@ -44,7 +44,9 @@ Then open `http://atlas/`, `http://atlas/ecosystem/launcher.html`, or `http://at
 
 Direct ecosystem navigation shortcuts:
 
-- Hosted world URL: `https://portal.drewbefree.com/ecosystem/world.html`
+- Hosted world URL: `https://world.kybernet.tech/` — Cloudflare Tunnel to the local PIN gateway
+- Desired DrewBeFree alias: `https://world.drewbefree.com/` after DrewBeFree-zone DNS is created
+- Hosted portal world path: `https://portal.drewbefree.com/ecosystem/world.html` when the full portal hostname is configured
 - Tailscale world fallback: `http://atlas/ecosystem/world.html`
 
 World view notes:
@@ -53,6 +55,7 @@ World view notes:
 - Region headers expand/collapse and can be dragged around the globe canvas; connection lines follow moved regions during the session.
 - The bottom active-site strip surfaces the most frequently opened websites, including John Share as a sensitive/private runtime.
 - John Share runs as `john-share.service` on Atlas and binds to `http://127.0.0.1:8127`; do not publish it as a normal public live URL unless a protected proxy is explicitly configured.
+- The dedicated hosted world URL uses `internal-portal/pin_gateway.py` on `127.0.0.1:8137`; the PIN hash/session secret live in a local user environment file, not in git.
 
 - Hosted phone tree URL: `https://portal.drewbefree.com/ecosystem/tree.html`
 - Stable hosted tree alias: `https://portal.drewbefree.com/ecosystem-tree.html` or `https://portal.drewbefree.com/ecosystem-tree/`

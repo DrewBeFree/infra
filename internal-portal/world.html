@@ -330,6 +330,36 @@ a { color: inherit; }
 .active-site strong { display:block; font-size: 0.92rem; }
 .active-site span { display:block; margin-top:4px; color: var(--muted); font-size:0.74rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; }
 .active-site:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(15,23,42,0.12); }
+.hosted-note {
+  position: absolute;
+  z-index: 19;
+  left: 22px;
+  top: 22px;
+  max-width: 340px;
+  padding: 14px 16px;
+  border-radius: 22px;
+  background: rgba(255,255,255,0.78);
+  border: 1px solid rgba(255,255,255,0.82);
+  box-shadow: 0 18px 50px rgba(15,23,42,0.12);
+  backdrop-filter: blur(18px);
+}
+.hosted-note strong { display:block; font-size: 0.86rem; }
+.hosted-note span { display:block; margin-top: 4px; color: var(--muted); font-size: 0.78rem; line-height: 1.35; }
+.pin-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 10px;
+  padding: 7px 10px;
+  color: #312e81;
+  background: rgba(238, 242, 255, 0.9);
+  border: 1px solid rgba(79,70,229,0.18);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
 
 .toast {
   position: absolute;
@@ -361,6 +391,7 @@ a { color: inherit; }
   .world-frame { height: calc(100vh - 176px); min-height: 660px; }
   .legend-panel { display: none; }
   .minimap { display: none; }
+  .hosted-note { position: relative; left: auto; top: auto; margin: 12px; max-width: none; }
   .active-sites { left: 12px; right: 12px; bottom: 12px; }
   .detail-drawer { top: auto; left: 12px; right: 12px; bottom: 12px; width: auto; max-height: 70vh; transform: translateY(calc(100% + 40px)); }
   .detail-drawer.is-open { transform: translateY(0); }
@@ -412,6 +443,11 @@ a { color: inherit; }
         <div id="regions"></div>
       </div>
       <div id="emptyState" class="empty-state">No matching nodes. Clear search or visibility filter.</div>
+      <aside class="hosted-note" aria-label="Protected world access">
+        <strong>High-level map first. Details on click.</strong>
+        <span>Drag regions around the globe, expand only what you need, then use the active-site strip for the daily surfaces.</span>
+        <span class="pin-badge" id="accessBadge">Atlas local</span>
+      </aside>
       <div id="activeSites" class="active-sites" aria-label="Most active websites"></div>
     </section>
 
@@ -464,6 +500,17 @@ const $$ = (selector) => Array.from(document.querySelectorAll(selector));
 const itemKey = (item) => `${item.mapKind || item.category || "item"}:${item.id || item.name || item.displayName}`;
 const text = (value) => String(value ?? "");
 const htmlEscape = (value) => text(value).replace(/[&<>"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char]));
+function updateAccessBadge() {
+  const badge = $("#accessBadge");
+  const host = window.location.hostname;
+  if (host === "world.kybernet.tech" || host === "world.drewbefree.com") {
+    badge.textContent = `PIN protected · ${host}`;
+  } else if (host.endsWith("drewbefree.com")) {
+    badge.textContent = "Cloudflare protected";
+  } else {
+    badge.textContent = "Atlas local";
+  }
+}
 
 async function loadRegistry() {
   let lastError;
@@ -896,6 +943,7 @@ function bindEvents() {
   }, { passive: false });
 }
 async function init() {
+  updateAccessBadge();
   bindEvents();
   state.registry = await loadRegistry();
   state.items = allItems(state.registry);

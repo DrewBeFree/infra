@@ -24,6 +24,17 @@
     "notes": "Browser-facing routes are HTTPS Cloudflare Access hostnames. Origins stay private on Atlas behind cloudflared.",
     "routes": [
       {
+        "id": "world",
+        "label": "Ecosystem World",
+        "publicUrl": "https://world.kybernet.tech/",
+        "origin": "http://127.0.0.1:8137/",
+        "fallbackUrl": "http://atlas/ecosystem/world.html",
+        "aliases": [
+          "https://world.drewbefree.com/"
+        ],
+        "access": "pin-gated-cloudflare-tunnel"
+      },
+      {
         "id": "portal",
         "label": "Internal Ecosystem",
         "publicUrl": "https://portal.drewbefree.com/ecosystem/",
