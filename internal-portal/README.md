@@ -44,8 +44,7 @@ Then open `http://atlas/`, `http://atlas/ecosystem/launcher.html`, or `http://at
 
 Direct ecosystem navigation shortcuts:
 
-- Hosted world URL: `https://world.kybernet.tech/` — Cloudflare Tunnel to the local PIN gateway
-- Desired DrewBeFree alias: `https://world.drewbefree.com/` after DrewBeFree-zone DNS is created
+- Hosted world URL: `https://world.drewbefree.com/` — Cloudflare Tunnel to the local PIN gateway
 - Hosted portal world path: `https://portal.drewbefree.com/ecosystem/world.html` when the full portal hostname is configured
 - Tailscale world fallback: `http://atlas/ecosystem/world.html`
 

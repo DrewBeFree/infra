@@ -210,10 +210,9 @@ test("protected Access routes cover the local operator surfaces", async () => {
 
   const worldRoute = routes.get("world");
   assert.ok(worldRoute, "missing protected route: world");
-  assert.equal(worldRoute.publicUrl, "https://world.kybernet.tech/");
+  assert.equal(worldRoute.publicUrl, "https://world.drewbefree.com/");
   assert.equal(worldRoute.origin, "http://127.0.0.1:8137/");
   assert.equal(worldRoute.fallbackUrl, "http://atlas/ecosystem/world.html");
-  assert.deepEqual(worldRoute.aliases, ["https://world.drewbefree.com/"]);
   assert.equal(worldRoute.access, "pin-gated-cloudflare-tunnel");
 
   const expectedRoutes = [

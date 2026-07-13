@@ -10,8 +10,7 @@ Expose the Atlas internal ecosystem portal and high-use local operator surfaces 
 | --- | --- | --- |
 | `https://drewbefree.com/` | GitHub Pages Command Center, Cloudflare proxied | `https://drewbefree.github.io/drewbefree-command-center/` |
 | `https://www.drewbefree.com/` | GitHub Pages redirect to apex, Cloudflare proxied | `https://drewbefree.com/` |
-| `https://world.kybernet.tech/` | `http://127.0.0.1:8137` PIN gateway -> `/opt/homelab-status-dashboard/ecosystem/world.html` | `http://atlas/ecosystem/world.html` |
-| `https://world.drewbefree.com/` | Desired DrewBeFree-zone alias for the same gateway; requires DrewBeFree-zone DNS/API credentials | `https://world.kybernet.tech/` |
+| `https://world.drewbefree.com/` | `http://127.0.0.1:8137` PIN gateway -> `/opt/homelab-status-dashboard/ecosystem/world.html` | `http://atlas/ecosystem/world.html` |
 | `https://portal.drewbefree.com/` | `http://127.0.0.1/` -> `/ecosystem/launcher.html` | `http://atlas/ecosystem/launcher.html` |
 | `https://portal.drewbefree.com/ecosystem/` | `http://127.0.0.1/ecosystem/` | `http://atlas/ecosystem/` |
 | `https://wiki.drewbefree.com/wiki/` | `http://127.0.0.1/wiki/` | `http://atlas/wiki/` |
@@ -40,8 +39,7 @@ Expose the Atlas internal ecosystem portal and high-use local operator surfaces 
 When creating DNS manually, each protected app hostname should point at the Atlas tunnel:
 
 ```text
-world.kybernet.tech      CNAME 188e5c59-c931-49a2-84c9-6646aadcd3c9.cfargotunnel.com
-world.drewbefree.com     CNAME 188e5c59-c931-49a2-84c9-6646aadcd3c9.cfargotunnel.com  # desired DrewBeFree-zone alias; do not create in Kybernet zone
+world.drewbefree.com     CNAME 188e5c59-c931-49a2-84c9-6646aadcd3c9.cfargotunnel.com
 wiki.drewbefree.com       CNAME 188e5c59-c931-49a2-84c9-6646aadcd3c9.cfargotunnel.com
 grafana.drewbefree.com    CNAME 188e5c59-c931-49a2-84c9-6646aadcd3c9.cfargotunnel.com
 prometheus.drewbefree.com CNAME 188e5c59-c931-49a2-84c9-6646aadcd3c9.cfargotunnel.com
@@ -59,9 +57,9 @@ The intended public replacement surface is `https://resume.drewbefree.com/`. Kee
 
 The tunnel service URLs use Atlas local origins. The browser-facing URLs are HTTPS, but the origin URLs can remain HTTP because `cloudflared` connects from Atlas to local services.
 
-`world.kybernet.tech` is intentionally narrower than the full portal route. It points at `internal-portal/pin_gateway.py` on `127.0.0.1:8137`, which serves the deployed static ecosystem world only after a valid PIN creates a signed short-lived cookie. Keep the PIN hash and session secret in a chmod `600` local environment file; do not commit the PIN, hash, or session secret.
+`world.drewbefree.com` is intentionally narrower than the full portal route. It points at `internal-portal/pin_gateway.py` on `127.0.0.1:8137`, which serves the deployed static ecosystem world only after a valid PIN creates a signed short-lived cookie. Keep the PIN hash and session secret in a chmod `600` local environment file; do not commit the PIN, hash, or session secret.
 
-`world.drewbefree.com` is the preferred final alias, but Atlas currently has no DrewBeFree-zone Cloudflare API credentials available to create that DNS record. If using the dashboard, create the CNAME in the `drewbefree.com` zone, not in the Kybernet zone. A mistaken Kybernet-zone record looks like `world.drewbefree.com.kybernet.tech` and should be removed.
+If using the dashboard or API, create the DNS record in the `drewbefree.com` Cloudflare zone, not the Kybernet zone. A mistaken Kybernet-zone record looks like `world.drewbefree.com.kybernet.tech` and should be removed.
 
 Run the world gateway from the user systemd service:
 
@@ -74,8 +72,6 @@ journalctl --user -u world-portal-pin.service -n 80 --no-pager
 Keep this cloudflared ingress above the final `http_status:404` rule:
 
 ```yaml
-- hostname: world.kybernet.tech
-  service: http://127.0.0.1:8137
 - hostname: world.drewbefree.com
   service: http://127.0.0.1:8137
 ```
@@ -109,8 +105,7 @@ git diff --check
 
 After Cloudflare setup:
 
-- `https://world.kybernet.tech/` shows the PIN page before serving the ecosystem world; successful PIN entry opens the world map.
-- `https://world.drewbefree.com/` should behave the same after the DrewBeFree-zone DNS alias is created.
+- `https://world.drewbefree.com/` shows the PIN page before serving the ecosystem world; successful PIN entry opens the world map.
 - `https://portal.drewbefree.com/` requires Cloudflare Access before Atlas redirects to the private Command Center launcher.
 - `https://drewbefree.com/` requires Cloudflare Access before showing the GitHub Pages Command Center.
 - `https://portal.drewbefree.com/ecosystem/` requires Cloudflare Access before showing the portal.

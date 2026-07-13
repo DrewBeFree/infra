@@ -9,13 +9,7 @@ Flesh out the ecosystem world page and expose it through a Cloudflare Tunnel URL
 
 ## Result
 
-Live PIN-gated URL:
-
-```text
-https://world.kybernet.tech/
-```
-
-Desired future alias once DrewBeFree-zone DNS/API credentials are available:
+Canonical PIN-gated URL:
 
 ```text
 https://world.drewbefree.com/
@@ -80,8 +74,6 @@ Added ingress routes:
   service: http://127.0.0.1:8137
 ```
 
-`world.kybernet.tech` DNS was created successfully with `cloudflared tunnel route dns answering-agent world.kybernet.tech`.
-
 ## DNS caveat
 
 Attempting to create `world.drewbefree.com` with the current cloudflared certificate created the wrong Kybernet-zone record:
@@ -91,6 +83,8 @@ world.drewbefree.com.kybernet.tech
 ```
 
 This matches the existing repo warning about accidental Kybernet-zone DrewBeFree records. The correct `world.drewbefree.com` record must be created in the `drewbefree.com` Cloudflare zone with DrewBeFree-zone credentials or through the Cloudflare dashboard.
+
+Correction on 2026-07-13: `world.kybernet.tech` was removed from the live tunnel ingress and repo docs because the canonical hostname should be `world.drewbefree.com`, not Kybernet. The correct DrewBeFree-zone DNS record still needs to be created in Cloudflare.
 
 ## Verification
 
@@ -109,20 +103,7 @@ systemctl --user is-active world-portal-pin.service
 active
 ```
 
-Observed public HTTPS behavior after rotating the session secret:
-
-```text
-HEAD status: HTTP/2 200
-Unauth marker: <label for="pin">Access PIN</label>
-Auth marker: <strong>High-level map first. Details on click.</strong>
-```
-
-Browser check:
-
-```text
-https://world.kybernet.tech/
-PIN page rendered with Access PIN field and Unlock world button.
-```
+Observed public HTTPS behavior was verified on the temporary Kybernet hostname before correction. After correction, `world.drewbefree.com` is the only configured tunnel hostname, but DNS does not yet resolve until the DrewBeFree-zone CNAME is created. 
 
 ## Safety notes
 
