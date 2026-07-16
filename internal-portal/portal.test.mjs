@@ -939,6 +939,8 @@ test("world view documents protected PIN access and ships a local gateway", asyn
   assert.match(world, /PIN protected · \$\{host\}/);
   assert.match(world, /function updateAccessBadge/);
   assert.match(world, /activeWebsiteItems/);
+  assert.match(world, /visualRegionCenter\("atlas"\)/);
+  assert.match(world, /zoomCore\(0\.1\)/);
   assert.match(world, /candidates\.sort\(\(a, b\) => b\.match\.base\.pathname\.length - a\.match\.base\.pathname\.length\)/);
   assert.match(world, /renderDrillPanel/);
   assert.match(world, /drillToRegion/);

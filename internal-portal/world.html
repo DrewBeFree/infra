@@ -995,12 +995,24 @@ function setTransform() {
   $("#world").style.transform = `translate(${state.x}px, ${state.y}px) scale(${state.scale})`;
   updateMiniWindow();
 }
+function visualRegionCenter(id) {
+  const region = document.querySelector(`.region[data-region="${id}"]`);
+  if (!region) return regionCenters[id] || regionCenters.atlas;
+  const moved = state.regionPositions[id];
+  const left = moved?.left ?? region.offsetLeft;
+  const top = moved?.top ?? region.offsetTop;
+  return [left + region.offsetWidth / 2, top + region.offsetHeight / 2];
+}
+function centerWorldPoint(x, y, scale = state.scale) {
+  state.scale = scale;
+  state.x = -x * state.scale;
+  state.y = -y * state.scale;
+  setTransform();
+}
 function resetView() {
   const frame = $(".world-frame").getBoundingClientRect();
-  state.scale = Math.min(Math.max(frame.width / 2300, 0.46), 0.78);
-  state.x = -1150 * state.scale;
-  state.y = -750 * state.scale;
-  setTransform();
+  const scale = Math.min(Math.max(frame.width / 2300, 0.46), 0.78);
+  centerWorldPoint(...visualRegionCenter("atlas"), scale);
 }
 function zoomAt(delta, cx, cy) {
   const oldScale = state.scale;
@@ -1008,12 +1020,16 @@ function zoomAt(delta, cx, cy) {
   const rect = $("#viewport").getBoundingClientRect();
   const px = cx ?? rect.width / 2;
   const py = cy ?? rect.height / 2;
-  const worldX = (px - state.x) / oldScale;
-  const worldY = (py - state.y) / oldScale;
+  const worldX = (px - rect.width / 2 - state.x) / oldScale;
+  const worldY = (py - rect.height / 2 - state.y) / oldScale;
   state.scale = next;
-  state.x = px - worldX * next;
-  state.y = py - worldY * next;
+  state.x = px - rect.width / 2 - worldX * next;
+  state.y = py - rect.height / 2 - worldY * next;
   setTransform();
+}
+function zoomCore(delta) {
+  const next = Math.min(1.5, Math.max(0.32, state.scale + delta));
+  centerWorldPoint(...visualRegionCenter("atlas"), next);
 }
 function focusRegion(id, preferredScale = 0.72) {
   state.openRegions.add(id);
@@ -1064,8 +1080,8 @@ function bindEvents() {
   });
   $("#visibilityFilter").addEventListener("change", (event) => { state.visibility = event.target.value; renderDrillPanel(); applyFilters(); });
   $("#focusButton").addEventListener("click", focusFirstMatch);
-  $("#zoomIn").addEventListener("click", () => zoomAt(0.1));
-  $("#zoomOut").addEventListener("click", () => zoomAt(-0.1));
+  $("#zoomIn").addEventListener("click", () => zoomCore(0.1));
+  $("#zoomOut").addEventListener("click", () => zoomCore(-0.1));
   $("#resetView").addEventListener("click", resetView);
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") { closeDrawer(); state.drillItemKey = null; renderDrillPanel(); applyFilters(); }
