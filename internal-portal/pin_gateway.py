@@ -193,6 +193,10 @@ class PinGateway(http.server.BaseHTTPRequestHandler):
         if raw_path in {"", "/"}:
             raw_path = f"/{DEFAULT_INDEX}"
         normalized = posixpath.normpath(raw_path).lstrip("/")
+        if normalized == "ecosystem":
+            normalized = DEFAULT_INDEX
+        elif normalized.startswith("ecosystem/"):
+            normalized = normalized.removeprefix("ecosystem/")
         if normalized.startswith("..") or "/../" in normalized:
             return None
         candidate = (self.gateway.root / normalized).resolve()

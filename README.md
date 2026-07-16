@@ -21,6 +21,12 @@ Generate the private project changelog:
 python3 scripts/generate_project_changelog.py
 ```
 
+Deploy the internal ecosystem portal to Atlas static hosting:
+
+```bash
+./internal-portal/deploy.sh
+```
+
 Generate the wiki project catalog:
 
 ```bash

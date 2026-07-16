@@ -1463,7 +1463,9 @@
       "summary": "Private personal selling/inventory utility repository.",
       "githubUrl": "https://github.com/DrewBeFree/selling-shit",
       "localPath": "C:\\Users\\drewb\\Documents\\GitHub\\apps\\selling-shit",
-      "liveUrls": [],
+      "liveUrls": [
+        "https://sell.drewbefree.com/"
+      ],
       "docs": [
         {
           "label": "Repository README",

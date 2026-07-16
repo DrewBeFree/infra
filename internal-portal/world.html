@@ -136,6 +136,7 @@ a { color: inherit; }
   height: 1500px;
   transform-origin: 0 0;
 }
+.globe-shell { display: none; }
 .ocean-glow {
   position: absolute;
   inset: 100px;
@@ -161,8 +162,9 @@ a { color: inherit; }
   border: 1px solid color-mix(in srgb, var(--accent, var(--blue)) 24%, rgba(255,255,255,0.74));
   box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,0.7);
   backdrop-filter: blur(20px);
-  transition: opacity 160ms ease, transform 180ms ease, box-shadow 180ms ease;
+  transition: opacity 160ms ease, transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
 }
+.region.is-focused { z-index: 16; transform: scale(1.02); filter: saturate(1.08); box-shadow: 0 30px 80px rgba(31, 41, 55, 0.2), 0 0 0 4px color-mix(in srgb, var(--accent, var(--blue)) 18%, transparent); }
 .region:hover { box-shadow: 0 30px 80px rgba(31, 41, 55, 0.18), 0 0 0 4px color-mix(in srgb, var(--accent, var(--blue)) 16%, transparent); }
 .region.is-dragging { z-index: 15; cursor: grabbing; box-shadow: 0 42px 110px rgba(15,23,42,0.28); }
 .region.is-dimmed { opacity: 0.24; }
@@ -211,6 +213,7 @@ a { color: inherit; }
 }
 .node::before { content: ""; position: absolute; inset: 0 0 auto; height: 4px; background: var(--accent, var(--blue)); opacity: 0.82; }
 .node:hover, .node:focus-visible { transform: translateY(-3px); border-color: color-mix(in srgb, var(--accent, var(--blue)) 46%, white); outline: none; }
+.node.is-selected { border-color: var(--accent, var(--blue)); box-shadow: 0 18px 42px color-mix(in srgb, var(--accent, var(--blue)) 22%, transparent); transform: translateY(-4px); }
 .node.is-hidden { display: none; }
 .node.is-dimmed { opacity: 0.2; }
 .node-name { display: block; margin-top: 2px; font-weight: 850; font-size: 0.88rem; line-height: 1.1; overflow-wrap: anywhere; }
@@ -232,21 +235,33 @@ a { color: inherit; }
 }
 .controls-panel { left: 18px; bottom: 18px; padding: 10px; display: flex; gap: 8px; }
 .controls-panel button { width: 42px; padding: 0; font-weight: 900; }
-.legend-panel { left: 18px; top: 18px; width: 260px; padding: 14px; }
+.legend-panel { left: 18px; top: calc(18px + 450px); width: 360px; padding: 14px; display: none; } /* Hide static legend as drill-panel handles interactive navigation */
 .legend-panel h2 { margin: 0 0 8px; font-size: 0.95rem; }
 .legend-panel p { margin: 0 0 12px; color: var(--muted); font-size: 0.82rem; line-height: 1.35; }
 .legend-grid { display: grid; gap: 7px; }
 .legend-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; color: var(--muted); font-size: 0.78rem; }
 .legend-dot { width: 12px; height: 12px; border-radius: 999px; background: var(--accent); box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 16%, transparent); }
+.drill-panel { position: absolute; z-index: 24; left: 18px; top: 122px; width: 360px; max-height: calc(100vh - 216px); padding: 14px; overflow: auto; background: rgba(255,255,255,0.78); border: 1px solid rgba(255,255,255,0.84); border-radius: 24px; box-shadow: var(--shadow); backdrop-filter: blur(22px); }
+.drill-breadcrumbs { display: flex; gap: 7px; flex-wrap: wrap; align-items: center; margin-bottom: 10px; }
+.crumb { min-height: 34px; padding: 0 10px; border: 1px solid var(--line); border-radius: 999px; color: var(--ink); background: rgba(255,255,255,0.72); font-weight: 850; font-size: 0.76rem; cursor: pointer; }
+.crumb[aria-current="page"] { color: white; background: linear-gradient(135deg, #2563eb, #7c3aed); border-color: transparent; }
+.drill-title { margin: 0; font-size: 1.04rem; letter-spacing: -0.03em; }
+.drill-subtitle { margin: 3px 0 12px; color: var(--muted); font-size: 0.78rem; line-height: 1.35; }
+.drill-grid { display: grid; gap: 8px; }
+.drill-card { width: 100%; padding: 12px; display: grid; gap: 7px; text-align: left; color: var(--ink); background: linear-gradient(145deg, rgba(255,255,255,0.92), color-mix(in srgb, var(--accent, var(--blue)) 9%, white)); border: 1px solid color-mix(in srgb, var(--accent, var(--blue)) 24%, rgba(255,255,255,0.86)); border-radius: 18px; cursor: pointer; box-shadow: 0 10px 26px rgba(15,23,42,0.08); }
+.drill-card:hover, .drill-card:focus-visible { transform: translateY(-2px); outline: none; box-shadow: 0 16px 34px rgba(15,23,42,0.12); }
+.drill-card strong { font-size: 0.92rem; letter-spacing: -0.02em; }
+.drill-card span { color: var(--muted); font-size: 0.76rem; line-height: 1.35; }
+.drill-card .node-meta { margin-top: 2px; }
 .minimap { right: 18px; bottom: 18px; width: 210px; height: 142px; padding: 8px; }
 .minimap-map { position: relative; width: 100%; height: 100%; border-radius: 15px; background: linear-gradient(135deg, rgba(37,99,235,0.09), rgba(5,150,105,0.08)); overflow: hidden; }
 .mini-region { position: absolute; width: 18px; height: 14px; border-radius: 5px; background: var(--accent); opacity: 0.78; }
 .mini-window { position: absolute; border: 2px solid #172033; border-radius: 8px; background: rgba(255,255,255,0.25); }
 .detail-drawer {
-  top: 92px;
+  top: 18px;
   right: 18px;
-  width: min(420px, calc(100vw - 36px));
-  max-height: calc(100vh - 112px);
+  width: 400px;
+  max-height: calc(100vh - 122px);
   padding: 0;
   overflow: auto;
   transform: translateX(calc(100% + 40px));
@@ -305,8 +320,8 @@ a { color: inherit; }
 .active-sites {
   position: absolute;
   z-index: 18;
-  left: 22px;
-  right: 22px;
+  left: 300px;
+  right: 246px;
   bottom: 22px;
   display: flex;
   gap: 10px;
@@ -331,11 +346,12 @@ a { color: inherit; }
 .active-site span { display:block; margin-top:4px; color: var(--muted); font-size:0.74rem; font-weight:800; text-transform:uppercase; letter-spacing:0.08em; }
 .active-site:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(15,23,42,0.12); }
 .hosted-note {
+  display: none;
   position: absolute;
   z-index: 19;
-  left: 22px;
-  top: 22px;
-  max-width: 340px;
+  left: 18px;
+  top: 18px;
+  width: 360px;
   padding: 14px 16px;
   border-radius: 22px;
   background: rgba(255,255,255,0.78);
@@ -383,17 +399,20 @@ a { color: inherit; }
 .region[data-region="business"] { --accent: var(--amber); left: 300px; top: 920px; }
 .region[data-region="ops"] { --accent: var(--cyan); left: 1470px; top: 920px; }
 .region[data-region="sensitive"] { --accent: var(--rose); left: 895px; top: 1060px; min-height: 260px; }
-@media (max-width: 900px) {
+@media (max-width: 768px) {
   body { overflow: auto; }
   .app-shell { height: auto; min-height: 100%; }
   .topbar { position: sticky; top: 0; grid-template-columns: 1fr; }
   .quick-links { justify-content: flex-start; }
-  .world-frame { height: calc(100vh - 176px); min-height: 660px; }
+  .world-frame { height: calc(100vh - 168px); min-height: 680px; }
   .legend-panel { display: none; }
   .minimap { display: none; }
-  .hosted-note { position: relative; left: auto; top: auto; margin: 12px; max-width: none; }
-  .active-sites { left: 12px; right: 12px; bottom: 12px; }
-  .detail-drawer { top: auto; left: 12px; right: 12px; bottom: 12px; width: auto; max-height: 70vh; transform: translateY(calc(100% + 40px)); }
+  .hosted-note { display: none; }
+  .active-sites { display: none; }
+  .controls-panel { left: 12px; right: auto; bottom: 12px; flex-direction: column; }
+  .drill-panel { left: 12px; right: 12px; top: 12px; bottom: auto; width: auto; max-height: 42vh; padding: 12px; border-radius: 22px; }
+  .drill-grid { grid-template-columns: 1fr; }
+  .detail-drawer { top: auto; left: 12px; right: 12px; bottom: 12px; width: auto; max-height: 56vh; transform: translateY(calc(100% + 40px)); }
   .detail-drawer.is-open { transform: translateY(0); }
   .searchbar { grid-template-columns: 1fr; border-radius: 20px; }
   .searchbar .btn { width: 100%; }
@@ -444,10 +463,11 @@ a { color: inherit; }
       </div>
       <div id="emptyState" class="empty-state">No matching nodes. Clear search or visibility filter.</div>
       <aside class="hosted-note" aria-label="Protected world access">
-        <strong>High-level map first. Details on click.</strong>
-        <span>Drag regions around the globe, expand only what you need, then use the active-site strip for the daily surfaces.</span>
+        <strong>World → category → item drilldown.</strong>
+        <span>Tap a category to zoom in, tap a node to open details, then use breadcrumbs to climb back out.</span>
         <span class="pin-badge" id="accessBadge">Atlas local</span>
       </aside>
+      <aside id="drillPanel" class="drill-panel" aria-label="World drilldown navigation"></aside>
       <div id="activeSites" class="active-sites" aria-label="Most active websites"></div>
     </section>
 
@@ -491,7 +511,9 @@ const state = {
   dragging: false,
   dragStart: null,
   selected: null,
-  openRegions: new Set(["atlas"]),
+  drillRegion: null,
+  drillItemKey: null,
+  openRegions: new Set(),
   regionPositions: {},
   regionDrag: null
 };
@@ -546,18 +568,21 @@ function routeMatch(route, sourceUrl) {
 }
 function protectedUrlFor(url) {
   if (!url || !/^https?:\/\//i.test(url) || !isProtectedHostedMode()) return url;
+  const candidates = [];
   for (const route of state.registry?.protectedAccess?.routes || []) {
     const match = routeMatch(route, url);
-    if (!match) continue;
-    const base = new URL(route.publicUrl);
-    const suffix = match.source.pathname.slice(match.base.pathname.length).replace(/^\/+/, "");
-    const publicPath = base.pathname.replace(/\/+$/, "");
-    if (suffix) base.pathname = publicPath ? `${publicPath}/${suffix}` : `/${suffix}`;
-    base.search = match.source.search;
-    base.hash = match.source.hash;
-    return base.toString();
+    if (match) candidates.push({ route, match });
   }
-  return url;
+  if (!candidates.length) return url;
+  candidates.sort((a, b) => b.match.base.pathname.length - a.match.base.pathname.length);
+  const { route, match } = candidates[0];
+  const base = new URL(route.publicUrl);
+  const suffix = match.source.pathname.slice(match.base.pathname.length).replace(/^\/+/, "");
+  const publicPath = base.pathname.replace(/\/+$/, "");
+  if (suffix) base.pathname = publicPath ? `${publicPath}/${suffix}` : `/${suffix}`;
+  base.search = match.source.search;
+  base.hash = match.source.hash;
+  return base.toString();
 }
 function openUrls(item) {
   const urls = [
@@ -676,14 +701,16 @@ function renderRegions() {
   renderMinimap(groups);
   renderConnections();
   renderActiveSites();
+  renderDrillPanel();
   $$(".region-head").forEach((head) => bindRegionDrag(head));
-  $$(".node").forEach((node) => node.addEventListener("click", () => openDrawerByKey(node.dataset.key)));
+  $$(".node").forEach((node) => node.addEventListener("click", () => drillToItem(node.dataset.key)));
   applyFilters();
 }
 function renderNode(item, color) {
   const status = statusState(item);
   const label = item.displayName || item.name || item.id || "Untitled";
-  return `<button class="node" type="button" data-key="${htmlEscape(itemKey(item))}" data-region="${item.region}" style="--accent:${color}">
+  const selectedClass = state.drillItemKey === itemKey(item) ? " is-selected" : "";
+  return `<button class="node${selectedClass}" type="button" data-key="${htmlEscape(itemKey(item))}" data-region="${item.region}" style="--accent:${color}">
     <span class="node-name">${htmlEscape(label)}</span>
     <span class="node-meta">
       <span class="pill ${htmlEscape(item.visibility || "private")}">${htmlEscape(item.visibility || "private")}</span>
@@ -723,6 +750,101 @@ function renderMinimap(groups) {
     map.append(dot);
   }
 }
+function filteredItemsForRegion(regionId) {
+  return state.items.filter((item) => item.region === regionId && matchesFilters(item));
+}
+function drillLevelLabel() {
+  if (state.drillItemKey) return "Item details";
+  if (state.drillRegion) return "Category view";
+  return "World overview";
+}
+function renderDrillPanel() {
+  const panel = $("#drillPanel");
+  if (!panel) return;
+  const activeRegion = regionDefinitions.find((region) => region.id === state.drillRegion);
+  const activeItem = state.items.find((item) => itemKey(item) === state.drillItemKey);
+  const crumbs = [
+    `<button class="crumb" type="button" data-drill="world" ${!state.drillRegion && !state.drillItemKey ? 'aria-current="page"' : ""}>World</button>`,
+    activeRegion ? `<button class="crumb" type="button" data-drill="region" data-region="${htmlEscape(activeRegion.id)}" ${state.drillRegion && !state.drillItemKey ? 'aria-current="page"' : ""}>${htmlEscape(activeRegion.title)}</button>` : "",
+    activeItem ? `<button class="crumb" type="button" aria-current="page">${htmlEscape(activeItem.displayName || activeItem.name || activeItem.id)}</button>` : ""
+  ].filter(Boolean).join("");
+  const title = activeItem ? (activeItem.displayName || activeItem.name || activeItem.id) : activeRegion ? activeRegion.title : "Choose a world category";
+  const subtitle = activeItem
+    ? (activeItem.summary || activeItem.description || "Selected item details are open below.")
+    : activeRegion
+      ? `${filteredItemsForRegion(activeRegion.id).length} visible nodes. Tap an item to zoom further and open details.`
+      : "Tap a category to zoom into that part of the ecosystem. Breadcrumbs bring you back out.";
+  const cards = activeItem ? renderItemDrillCard(activeItem) : activeRegion ? renderRegionItemCards(activeRegion) : renderRegionCards();
+  panel.innerHTML = `
+    <div class="drill-breadcrumbs">${crumbs}</div>
+    <h2 class="drill-title">${htmlEscape(title)}</h2>
+    <p class="drill-subtitle">${htmlEscape(subtitle)}</p>
+    <div class="drill-grid">${cards}</div>
+  `;
+  panel.querySelectorAll("[data-drill='world']").forEach((button) => button.addEventListener("click", drillToWorld));
+  panel.querySelectorAll("[data-drill='region']").forEach((button) => button.addEventListener("click", () => drillToRegion(button.dataset.region)));
+  panel.querySelectorAll("[data-drill-region]").forEach((button) => button.addEventListener("click", () => drillToRegion(button.dataset.drillRegion)));
+  panel.querySelectorAll("[data-drill-item]").forEach((button) => button.addEventListener("click", () => drillToItem(button.dataset.drillItem)));
+}
+function renderRegionCards() {
+  return groupItems().map((region) => {
+    const count = filteredItemsForRegion(region.id).length;
+    return `<button class="drill-card" type="button" data-drill-region="${htmlEscape(region.id)}" style="--accent:${region.color}">
+      <strong>${htmlEscape(region.title)}</strong>
+      <span>${htmlEscape(region.kicker)} · ${count} visible nodes</span>
+      <span>${htmlEscape(region.desc)}</span>
+    </button>`;
+  }).join("");
+}
+function renderRegionItemCards(region) {
+  const items = filteredItemsForRegion(region.id).slice(0, 40);
+  if (!items.length) return `<div class="drill-card" style="--accent:${region.color}"><strong>No visible nodes</strong><span>Clear search or visibility filters to see this category.</span></div>`;
+  return items.map((item) => `<button class="drill-card" type="button" data-drill-item="${htmlEscape(itemKey(item))}" style="--accent:${region.color}">
+    <strong>${htmlEscape(item.displayName || item.name || item.id)}</strong>
+    <span>${htmlEscape(item.summary || item.description || item.type || item.category || "No summary recorded yet.")}</span>
+    <span class="node-meta"><span class="pill ${htmlEscape(item.visibility || "private")}">${htmlEscape(item.visibility || "private")}</span><span class="pill ${htmlEscape(statusState(item))}">${htmlEscape(statusState(item))}</span></span>
+  </button>`).join("");
+}
+function renderItemDrillCard(item) {
+  const urls = openUrls(item);
+  const region = regionDefinitions.find((candidate) => candidate.id === item.region) || regionDefinitions[0];
+  return `<div class="drill-card" style="--accent:${region.color}">
+    <strong>${htmlEscape(item.mapKind || item.category || "item")}</strong>
+    <span>${htmlEscape(item.localPath || item.githubUrl || urls[0] || "No primary path recorded.")}</span>
+    <span class="node-meta"><span class="pill ${htmlEscape(item.visibility || "private")}">${htmlEscape(item.visibility || "private")}</span><span class="pill ${htmlEscape(statusState(item))}">${htmlEscape(statusState(item))}</span></span>
+  </div>`;
+}
+function drillToWorld() {
+  state.drillRegion = null;
+  state.drillItemKey = null;
+  state.openRegions = new Set();
+  closeDrawer();
+  renderDrillPanel();
+  applyFilters();
+  resetView();
+  showToast("World overview");
+}
+function drillToRegion(id) {
+  if (!id) return;
+  state.drillRegion = id;
+  state.drillItemKey = null;
+  state.openRegions.add(id);
+  closeDrawer();
+  renderDrillPanel();
+  applyFilters();
+  focusRegion(id);
+}
+function drillToItem(key) {
+  const item = state.items.find((candidate) => itemKey(candidate) === key);
+  if (!item) return;
+  state.drillRegion = item.region;
+  state.drillItemKey = key;
+  state.openRegions.add(item.region);
+  renderDrillPanel();
+  applyFilters();
+  focusRegion(item.region, 1.08);
+  setTimeout(() => openDrawerByKey(key), 110);
+}
 function applyFilters() {
   let visible = 0;
   const visibleByRegion = Object.fromEntries(regionDefinitions.map((region) => [region.id, 0]));
@@ -734,6 +856,7 @@ function applyFilters() {
   });
   $$(".region").forEach((regionEl) => {
     const count = visibleByRegion[regionEl.dataset.region] || 0;
+    regionEl.classList.toggle("is-focused", state.drillRegion === regionEl.dataset.region);
     regionEl.classList.toggle("is-dimmed", count === 0 && (state.query || state.visibility !== "all"));
     regionEl.classList.toggle("is-open", state.openRegions.has(regionEl.dataset.region));
     regionEl.querySelector(".region-head")?.setAttribute("aria-expanded", String(state.openRegions.has(regionEl.dataset.region)));
@@ -747,6 +870,19 @@ function applyFilters() {
   $("#subtitle").textContent = `${visible} visible / ${state.items.length} total nodes • ${state.registry?.updatedAt || "registry"}`;
 }
 function bindRegionDrag(head) {
+  head.addEventListener("click", (event) => {
+    if (state.suppressNextRegionClick) {
+      state.suppressNextRegionClick = false;
+      return;
+    }
+    if (state.regionDrag) return;
+    toggleRegion(head.closest(".region")?.dataset.region);
+  });
+  head.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    event.preventDefault();
+    toggleRegion(head.closest(".region")?.dataset.region);
+  });
   head.addEventListener("pointerdown", (event) => {
     if (event.button !== 0) return;
     const region = head.closest(".region");
@@ -782,7 +918,7 @@ function bindRegionDrag(head) {
     head.closest(".region")?.classList.remove("is-dragging");
     head.releasePointerCapture?.(event.pointerId);
     state.regionDrag = null;
-    if (!dragged.moved) toggleRegion(dragged.id);
+    if (dragged.moved) state.suppressNextRegionClick = true;
   };
   head.addEventListener("pointerup", finish);
   head.addEventListener("pointercancel", finish);
@@ -790,10 +926,17 @@ function bindRegionDrag(head) {
 function toggleRegion(id) {
   if (state.openRegions.has(id)) {
     state.openRegions.delete(id);
-  } else {
-    state.openRegions.add(id);
+    if (state.drillRegion === id) {
+      state.drillRegion = null;
+      state.drillItemKey = null;
+      closeDrawer();
+      renderDrillPanel();
+    }
+    applyFilters();
+    showToast("Collapsed");
+    return;
   }
-  applyFilters();
+  drillToRegion(id);
 }
 function itemDetails(item) {
   const urls = openUrls(item);
@@ -835,6 +978,8 @@ function openDrawerByKey(key) {
   const item = state.items.find((candidate) => itemKey(candidate) === key);
   if (!item) return;
   state.selected = item;
+  state.drillItemKey = key;
+  state.drillRegion = item.region;
   const drawer = $("#drawer");
   drawer.innerHTML = itemDetails(item);
   drawer.classList.add("is-open");
@@ -870,13 +1015,17 @@ function zoomAt(delta, cx, cy) {
   state.y = py - worldY * next;
   setTransform();
 }
-function focusRegion(id) {
+function focusRegion(id, preferredScale = 0.72) {
   state.openRegions.add(id);
-  const [x, y] = regionCenters[id] || regionCenters.atlas;
+  let [x, y] = regionCenters[id] || regionCenters.atlas;
+  if (state.openRegions.has(id)) {
+    y += 120; // Shift focus point downward when region is open/expanded to keep contents centered on screen
+  }
   const rect = $("#viewport").getBoundingClientRect();
-  state.scale = Math.max(state.scale, 0.78);
-  state.x = rect.width / 2 - x * state.scale;
-  state.y = rect.height / 2 - y * state.scale;
+  const mobile = window.matchMedia("(max-width: 768px)").matches;
+  state.scale = mobile ? 0.58 : preferredScale;
+  state.x = - x * state.scale;
+  state.y = - y * state.scale;
   setTransform();
   showToast(regionDefinitions.find((region) => region.id === id)?.title || "Focused");
 }
@@ -910,15 +1059,16 @@ function bindEvents() {
     if (state.query) {
       state.items.filter(matchesFilters).forEach((item) => state.openRegions.add(item.region));
     }
+    renderDrillPanel();
     applyFilters();
   });
-  $("#visibilityFilter").addEventListener("change", (event) => { state.visibility = event.target.value; applyFilters(); });
+  $("#visibilityFilter").addEventListener("change", (event) => { state.visibility = event.target.value; renderDrillPanel(); applyFilters(); });
   $("#focusButton").addEventListener("click", focusFirstMatch);
   $("#zoomIn").addEventListener("click", () => zoomAt(0.1));
   $("#zoomOut").addEventListener("click", () => zoomAt(-0.1));
   $("#resetView").addEventListener("click", resetView);
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") closeDrawer();
+    if (event.key === "Escape") { closeDrawer(); state.drillItemKey = null; renderDrillPanel(); applyFilters(); }
     if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") { event.preventDefault(); $("#searchInput").focus(); }
   });
   const viewport = $("#viewport");

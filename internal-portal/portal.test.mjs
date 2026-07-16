@@ -935,16 +935,30 @@ test("world view documents protected PIN access and ships a local gateway", asyn
   const world = await readFile(worldPath, "utf8");
   const gateway = await readFile(pinGatewayPath, "utf8");
 
-  assert.match(world, /High-level map first/);
+  assert.match(world, /World → category → item drilldown/);
   assert.match(world, /PIN protected · \$\{host\}/);
   assert.match(world, /function updateAccessBadge/);
   assert.match(world, /activeWebsiteItems/);
+  assert.match(world, /candidates\.sort\(\(a, b\) => b\.match\.base\.pathname\.length - a\.match\.base\.pathname\.length\)/);
+  assert.match(world, /renderDrillPanel/);
+  assert.match(world, /drillToRegion/);
+  assert.match(world, /drillToItem/);
   assert.match(world, /bindRegionDrag/);
   assert.match(world, /globe-shell/);
   assert.match(gateway, /WORLD_PORTAL_PIN_SHA256/);
   assert.match(gateway, /drew_world_session/);
+  assert.match(gateway, /removeprefix\("ecosystem\/"\)/);
   assert.match(gateway, /127\.0\.0\.1/);
   assert.match(gateway, /8137/);
+});
+
+test("Selling Shit records the live selling site before GitHub fallback", async () => {
+  const registry = await loadRegistry();
+  const repo = registry.repositories.find((item) => item.name === "selling-shit");
+
+  assert.ok(repo);
+  assert.deepEqual(repo.liveUrls, ["https://sell.drewbefree.com/"]);
+  assert.equal(repo.githubUrl, "https://github.com/DrewBeFree/selling-shit");
 });
 
 test("public Command Center no longer exposes UHaul Planner", async () => {
