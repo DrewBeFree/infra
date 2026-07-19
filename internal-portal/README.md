@@ -83,6 +83,7 @@ Related cleanup handoff: `../logs/session-2026-07-02-changelog-repo-cleanup.md`.
 The first viewport includes priority access tiles for:
 
 - Lead Desk: `http://100.71.165.80:3027`
+- Mission Control Dashboard: `http://100.71.165.80:8096/dashboard/`
 - AI Dashboard / Grafana: `http://atlas:3001/d/atlas-overview/poweredge-dashboard`
 - AI Token Dashboard: `http://atlas:7474`
 - Leantime: `http://100.71.165.80:8095`

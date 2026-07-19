@@ -65,6 +65,19 @@
         "access": "cloudflare-access"
       },
       {
+        "id": "mission-control-dashboard",
+        "label": "Mission Control",
+        "publicUrl": "https://portal.drewbefree.com/mission-control/",
+        "origin": "http://127.0.0.1:8096/dashboard/",
+        "fallbackUrl": "http://100.71.165.80:8096/dashboard/",
+        "aliases": [
+          "http://10.0.0.145:8096/dashboard/",
+          "http://atlas:8096/dashboard/",
+          "http://127.0.0.1:8096/dashboard/"
+        ],
+        "access": "tailscale-only-pending-cloudflare-access"
+      },
+      {
         "id": "grafana",
         "label": "Grafana",
         "publicUrl": "https://grafana.drewbefree.com/",
@@ -1892,6 +1905,36 @@
           "open",
           "status",
           "restart",
+          "logs",
+          "deploy"
+        ]
+      }
+    },
+    {
+      "id": "mission-control-dashboard",
+      "name": "Mission Control Dashboard",
+      "visibility": "private",
+      "summary": "Touch-first Atlas command center for Obsidian tasks, Pomodoro/task timers, quick capture, and homelab status.",
+      "liveUrls": [
+        "http://100.71.165.80:8096/dashboard/",
+        "http://10.0.0.145:8096/dashboard/",
+        "http://atlas:8096/dashboard/"
+      ],
+      "localPath": "/home/drew/workspace/mission-control-dashboard",
+      "deployTargets": [
+        {
+          "type": "node-static-express",
+          "host": "atlas",
+          "path": "/home/drew/workspace/mission-control-dashboard",
+          "url": "http://100.71.165.80:8096/dashboard/",
+          "notes": "Prototype currently runs from local Node process on Atlas. Docker compose is configured for 8096/8097 but container cleanup/start is still pending."
+        }
+      ],
+      "statusControl": {
+        "state": "prototype-live",
+        "actions": [
+          "open",
+          "status",
           "logs",
           "deploy"
         ]

@@ -258,6 +258,33 @@ test("protected Access routes cover the local operator surfaces", async () => {
   ]);
 });
 
+test("Mission Control is registered and pinned for quick access", async () => {
+  const registry = await loadRegistry();
+  const launcher = await readFile(new URL("./launcher.html", import.meta.url), "utf8");
+  const index = await readFile(indexPath, "utf8");
+  const routes = new Map(registry.protectedAccess.routes.map((route) => [route.id, route]));
+  const dashboard = registry.dashboards.find((item) => item.id === "mission-control-dashboard");
+
+  assert.ok(dashboard, "missing Mission Control dashboard registry entry");
+  assert.equal(dashboard.name, "Mission Control Dashboard");
+  assert.equal(dashboard.visibility, "private");
+  assert.ok(dashboard.liveUrls.includes("http://100.71.165.80:8096/dashboard/"));
+  assert.equal(dashboard.localPath, "/home/drew/workspace/mission-control-dashboard");
+  assert.equal(dashboard.statusControl.state, "prototype-live");
+
+  const route = routes.get("mission-control-dashboard");
+  assert.ok(route, "missing Mission Control protected/fallback route");
+  assert.equal(route.fallbackUrl, "http://100.71.165.80:8096/dashboard/");
+  assert.ok(route.aliases.includes("http://10.0.0.145:8096/dashboard/"));
+  assert.ok(route.aliases.includes("http://atlas:8096/dashboard/"));
+
+  assert.match(launcher, /MISSION CONTROL/);
+  assert.match(launcher, /http:\/\/100\.71\.165\.80:8096\/dashboard\//);
+  assert.match(launcher, /Tasks<\/span><span class="tag">Pomodoro/);
+  assert.match(index, /data-protected-route="mission-control-dashboard"/);
+  assert.match(index, /Tasks \+ timers/);
+});
+
 test("Hermes Agent is tracked as an Atlas install with access commands", async () => {
   const registry = await loadRegistry();
   const hermes = registry.services.find((service) => service.id === "hermes-agent");
