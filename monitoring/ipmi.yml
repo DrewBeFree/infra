@@ -1,0 +1,5 @@
+modules:
+  default:
+    collectors:
+      - ipmi
+      - dcmi

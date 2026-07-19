@@ -1,0 +1,164 @@
+groups:
+  - name: atlas_alerts
+    interval: 30s
+    rules:
+      # SMART Alerts
+      - alert: DiskSmartHealthCritical
+        expr: smartctl_device_health_status != 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "SMART health critical on {{ $labels.device }}"
+          description: "Device {{ $labels.device }} has failed SMART health status"
+
+      - alert: DiskSmartReallocatedSectors
+        expr: smartctl_device_reallocated_sector_count > 10
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Reallocated sectors detected on {{ $labels.device }}"
+          description: "{{ $labels.device }} has {{ $value }} reallocated sectors"
+
+      - alert: DiskSmartUdmaErrors
+        expr: smartctl_device_udma_crc_error_count > 0
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "UDMA CRC errors on {{ $labels.device }}"
+          description: "{{ $labels.device }} reporting {{ $value }} UDMA CRC errors"
+
+      # Disk Space Alerts
+      - alert: DiskSpaceCritical
+        expr: (node_filesystem_avail_bytes / node_filesystem_size_bytes) * 100 < 5
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Low disk space on {{ $labels.device }}"
+          description: "{{ $labels.mountpoint }} has only {{ $value | humanize }}% free"
+
+      - alert: DiskSpaceWarning
+        expr: (node_filesystem_avail_bytes / node_filesystem_size_bytes) * 100 < 15
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Disk space warning on {{ $labels.device }}"
+          description: "{{ $labels.mountpoint }} has {{ $value | humanize }}% free"
+
+      # Memory Alerts
+      - alert: MemoryUsageHigh
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 90
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage on Atlas"
+          description: "Memory usage is {{ $value | humanize }}%"
+
+      # CPU Alerts
+      - alert: CPULoadHigh
+        expr: node_load5 > 8
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU load on Atlas"
+          description: "5-minute load average is {{ $value }}"
+
+      # Container Alerts
+      - alert: ContainerDown
+        expr: up{job="cadvisor"} == 0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Container monitoring down"
+          description: "cAdvisor is unreachable"
+
+      # Prometheus Self-Monitoring
+      - alert: PrometheusDown
+        expr: up{job="prometheus"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Prometheus is down"
+          description: "Prometheus monitoring instance is unreachable"
+
+      # Monitoring Backup Alerts
+      - alert: MonitoringBackupStale
+        expr: time() - monitoring_backup_last_success_unixtime > 172800
+        for: 15m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Monitoring backups are stale"
+          description: "No successful Grafana/Prometheus monitoring backup has completed in over 48 hours"
+
+      - alert: MonitoringBackupFailed
+        expr: monitoring_backup_last_run_status != 0
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Monitoring backup failed"
+          description: "The last Grafana/Prometheus monitoring backup exited with code {{ $value }}"
+
+      - alert: MonitoringBackupMetricMissing
+        expr: absent(monitoring_backup_last_success_unixtime)
+        for: 30m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Monitoring backup freshness metric is missing"
+          description: "Node exporter is not exposing monitoring_backup_last_success_unixtime from the textfile collector"
+
+      # UPS / Battery Backup Alerts
+      - alert: UpsMonitorDown
+        expr: apcupsd_up == 0 or up{job="apcupsd"} == 0
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "APC UPS monitoring is down"
+          description: "Prometheus cannot read apcupsd status from Atlas"
+
+      - alert: UpsOnBattery
+        expr: apcupsd_status{flag="ONBATT"} == 1
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: "Atlas UPS is running on battery"
+          description: "APC UPS reports ONBATT"
+
+      - alert: UpsReplaceBattery
+        expr: apcupsd_status{flag="REPLACEBATT"} == 1
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: "APC UPS battery needs replacement"
+          description: "APC UPS reports REPLACEBATT"
+
+      - alert: UpsOverload
+        expr: apcupsd_status{flag="OVERLOAD"} == 1 or apcupsd_load_percent > 90
+        for: 30s
+        labels:
+          severity: critical
+        annotations:
+          summary: "APC UPS is overloaded"
+          description: "APC UPS reports overload or load is above 90%"
+
+      - alert: UpsBatteryLow
+        expr: apcupsd_battery_charge_percent < 50 or apcupsd_time_left_minutes < 10
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "APC UPS battery is low"
+          description: "Battery charge is below 50% or estimated runtime is below 10 minutes"

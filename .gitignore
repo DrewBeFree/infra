@@ -4,6 +4,9 @@
 __pycache__/
 *.py[cod]
 *.log
+*.bak.*
+/monitoring/node-exporter-textfile/*.prom
+!/monitoring/node-exporter-textfile/.gitkeep
 
 # Local Codex/Hookify rules
 .Codex/*.local.md

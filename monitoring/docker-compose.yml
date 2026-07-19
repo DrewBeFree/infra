@@ -1,0 +1,164 @@
+version: '3.8'
+
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: atlas-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./alert.rules.yml:/etc/prometheus/alert.rules.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=3y'
+    networks:
+      - monitoring
+    restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:9090/-/healthy"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: atlas-grafana
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=atlas_admin
+      - GF_SECURITY_ALLOW_EMBEDDING=true
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_INSTALL_PLUGINS=
+      - GF_ANALYTICS_CHECK_FOR_UPDATES=false
+    volumes:
+      - ./grafana-provisioning:/etc/grafana/provisioning:ro
+      - grafana_data:/var/lib/grafana
+    networks:
+      - monitoring
+    depends_on:
+      prometheus:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  ipmi-exporter:
+    image: prometheuscommunity/ipmi-exporter:latest
+    container_name: atlas-ipmi-exporter
+    user: "0:0"
+    restart: unless-stopped
+    network_mode: host
+    privileged: true
+    volumes:
+      - /dev:/dev
+      - ./ipmi.yml:/config.yml:ro
+    command:
+      - '--config.file=/config.yml'
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: atlas-node-exporter
+    ports:
+      - "9100:9100"
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+      - ./node-exporter-textfile:/var/lib/node_exporter/textfile_collector:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+      - '--collector.netclass.ignored-devices=^(veth.*|br-.*)$$'
+      - '--collector.textfile.directory=/var/lib/node_exporter/textfile_collector'
+    networks:
+      - monitoring
+    restart: unless-stopped
+
+  smartctl-exporter:
+    image: prometheuscommunity/smartctl-exporter:latest
+    container_name: atlas-smartctl-exporter
+    ports:
+      - "9633:9633"
+    privileged: true
+    volumes:
+      - /dev:/dev:ro
+    environment:
+      - SMARTCTL_HOSTWIDE_SUDO=true
+    networks:
+      - monitoring
+    restart: unless-stopped
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: atlas-cadvisor
+    ports:
+      - "8085:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    privileged: true
+    devices:
+      - /dev/kmsg
+    networks:
+      - monitoring
+    restart: unless-stopped
+
+  ollama-exporter:
+    image: node:18-alpine
+    container_name: atlas-ollama-exporter
+    ports:
+      - "9642:9642"
+    volumes:
+      - ./ollama-exporter.js:/app/exporter.js:ro
+    working_dir: /app
+    command: node exporter.js
+    environment:
+      - OLLAMA_HOST=http://host.docker.internal:11434
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - monitoring
+    restart: unless-stopped
+    depends_on:
+      - prometheus
+
+  apcupsd-exporter:
+    image: python:3.12-alpine
+    container_name: atlas-apcupsd-exporter
+    network_mode: host
+    volumes:
+      - ./apcupsd-exporter.py:/app/apcupsd-exporter.py:ro
+    working_dir: /app
+    command: python /app/apcupsd-exporter.py
+    environment:
+      - APCUPSD_HOST=127.0.0.1
+      - APCUPSD_PORT=3551
+      - LISTEN_PORT=9162
+    restart: unless-stopped
+    depends_on:
+      - prometheus
+
+networks:
+  monitoring:
+    driver: bridge
+
+volumes:
+  prometheus_data:
+    external: true
+    name: 0db9bc6fd1bc569ef3a64c0487b0b21283e1ac21784891087f3aaf0cc531a9fb
+  grafana_data:
+    external: true
+    name: atlas_grafana_data
