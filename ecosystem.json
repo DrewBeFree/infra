@@ -1920,6 +1920,7 @@
         "http://10.0.0.145:8096/dashboard/",
         "http://atlas:8096/dashboard/"
       ],
+      "githubUrl": "https://github.com/DrewBeFree/mission-control-dashboard",
       "localPath": "/home/drew/workspace/mission-control-dashboard",
       "deployTargets": [
         {
