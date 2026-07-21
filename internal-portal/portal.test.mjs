@@ -9,6 +9,8 @@ const indexPath = new URL("./index.html", import.meta.url);
 const launcherPath = new URL("./launcher.html", import.meta.url);
 const treePath = new URL("./tree.html", import.meta.url);
 const worldPath = new URL("./world.html", import.meta.url);
+const storagePath = new URL("./storage.html", import.meta.url);
+const storageInventoryPath = new URL("./storage-inventory.json", import.meta.url);
 const pinGatewayPath = new URL("./pin_gateway.py", import.meta.url);
 const changelogPath = new URL("./changelog.html", import.meta.url);
 const appPath = new URL("./app.js", import.meta.url);
@@ -215,6 +217,8 @@ test("protected Access routes cover the local operator surfaces", async () => {
   assert.equal(worldRoute.fallbackUrl, "http://atlas/ecosystem/world.html");
   assert.equal(worldRoute.access, "pin-gated-cloudflare-tunnel");
 
+  assert.equal(routes.has("world-atlas-agents"), false, "Agent Atlas should stay Tailscale-only, not a public protected route");
+
   const expectedRoutes = [
     ["portal", "https://portal.drewbefree.com/ecosystem/", "http://127.0.0.1/ecosystem/", "http://atlas/ecosystem/"],
     ["wiki", "https://wiki.drewbefree.com/wiki/", "http://127.0.0.1/wiki/", "http://atlas/wiki/"],
@@ -305,6 +309,30 @@ test("Hermes Agent is tracked as an Atlas install with access commands", async (
   assert.ok(hermes.deployTargets.some((target) => target.type === "tailscale-auth-proxy" && target.url === "http://100.71.165.80:9119"));
   assert.ok(hermes.docs.some((doc) => doc.url === "https://github.com/NousResearch/hermes-agent/blob/main/README.md"));
   assert.equal(hermes.statusControl.state, "installed");
+});
+
+test("Hermes World Atlas is registered and linked Tailscale-only", async () => {
+  const registry = await loadRegistry();
+  const launcher = await readFile(launcherPath, "utf8");
+  const tree = await readFile(treePath, "utf8");
+  const index = await readFile(indexPath, "utf8");
+  const dashboard = registry.dashboards.find((item) => item.id === "hermes-world-atlas");
+
+  assert.ok(dashboard, "missing Hermes World Atlas dashboard registry entry");
+  assert.equal(dashboard.name, "Hermes World Atlas");
+  assert.equal(dashboard.visibility, "private");
+  assert.deepEqual(dashboard.liveUrls, ["http://agents.drewbefree.com/", "http://100.71.165.80:4185/"]);
+  assert.ok(dashboard.ports.includes(4185));
+  assert.equal(dashboard.localPath, "/home/drew/workspace/hermes-world-atlas");
+  assert.ok(dashboard.deployTargets.some((target) => target.service === "hermes-world-atlas.service"));
+
+  assert.doesNotMatch(index, /data-protected-route="world-atlas-agents"/);
+  assert.match(index, /World \+ kanban/);
+  assert.doesNotMatch(launcher, /https:\/\/agents\.drewbefree\.com\//);
+  assert.match(launcher, /http:\/\/agents\.drewbefree\.com\//);
+  assert.doesNotMatch(launcher, /http:\/\/100\.71\.165\.80:4185\//);
+  assert.match(launcher, /HERMES WORLD ATLAS/);
+  assert.match(tree, /Hermes World Atlas/);
 });
 
 test("Atlas / PowerEdge Monitoring links to Grafana and exposes docs", async () => {
@@ -516,6 +544,33 @@ test("ecosystem tree is a hosted phone-friendly shortcut", async () => {
   assert.match(tree, /data-protected-href="https:\/\/hermes\.drewbefree\.com\/"/);
   assert.match(tree, /https:\/\/kybernet\.tech/);
   assert.doesNotMatch(tree, /kybernet-tech\.com/);
+});
+
+test("Atlas storage map is generated and linked from the ecosystem registry", async () => {
+  assert.ok(existsSync(storagePath), "storage.html missing");
+  assert.ok(existsSync(storageInventoryPath), "storage-inventory.json missing");
+
+  const registry = await loadRegistry();
+  const storage = registry.services.find((service) => service.id === "atlas-storage-map");
+  const page = await readFile(storagePath, "utf8");
+  const inventory = JSON.parse(await readFile(storageInventoryPath, "utf8"));
+
+  assert.ok(storage, "missing atlas-storage-map service");
+  assert.equal(storage.host, "atlas");
+  assert.equal(storage.type, "storage-inventory");
+  assert.ok(storage.liveUrls.includes("http://atlas/ecosystem/storage.html"));
+  assert.ok(storage.docs.some((doc) => doc.url === "http://atlas/ecosystem/storage-inventory.json"));
+  assert.equal(inventory.schema, "drewbefree.atlas.storage.v1");
+  assert.equal(inventory.host, "atlas");
+  assert.ok(inventory.summary.linuxVisibleDisks >= 8);
+  assert.ok(inventory.summary.percVirtualDisksVisible >= 6);
+  assert.ok(inventory.summary.sabrentDisksVisible >= 2);
+  assert.ok(inventory.devices.some((device) => device.path === "/dev/sdg" && device.model === "Dual SATA Bridge"));
+  assert.ok(inventory.devices.some((device) => device.path === "/dev/sdh1" && device.proposedName?.filesystemLabel === "atlas-sabrent-b"));
+  assert.match(page, /Atlas Drive Map/);
+  assert.match(page, /storage-inventory\.json/);
+  assert.match(page, /atlas-sabrent-a/);
+  assert.match(page, /PERC virtual disks/);
 });
 
 test("project changelog page is generated for phone review", async () => {
@@ -814,6 +869,7 @@ test("private launcher rewrites Atlas-only links in protected hosted mode", asyn
 
   const clickableAtlasLinks = links.filter((link) => /^http:\/\/(atlas|100\.)/i.test(link.href));
   assert.deepEqual(clickableAtlasLinks.map((link) => link.href), []);
+  assert.ok(links.some((link) => link.href === "http://agents.drewbefree.com/"));
   assert.ok(links.some((link) => link.href === "https://scanner.drewbefree.com/"));
   assert.ok(links.some((link) => link.href === "https://portal.drewbefree.com/status/"));
 });

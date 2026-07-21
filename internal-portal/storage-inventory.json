@@ -1,0 +1,1825 @@
+{
+  "schema": "drewbefree.atlas.storage.v1",
+  "host": "atlas",
+  "generatedAt": "2026-07-20T02:34:06",
+  "summary": {
+    "linuxVisibleDisks": 8,
+    "percVirtualDisksVisible": 6,
+    "sabrentDisksVisible": 2,
+    "mountedDataVolumes": [
+      "/dev/sdc1",
+      "/dev/sdd1",
+      "/dev/sde1",
+      "/dev/sdf1"
+    ],
+    "note": "Linux currently sees PERC virtual disks, not the physical internal bay members. Drew expects 8 internal physical drives; that requires sudo + PERC/SMART probing."
+  },
+  "limitations": [
+    "No sudo available in this Hermes session, so raw block probing, read-only mounting of unmounted externals, and PERC physical bay enumeration were not performed.",
+    "The Sabrent bridge reports duplicate serial/WWN values for both slots; use USB path slot 0:0 vs 0:1 and filesystem/partition labels instead of by-id WWN for identity.",
+    "/dev/sdg1 has a partition but no filesystem was detected by lsblk/blkid without sudo; contents are unknown until sudo wipefs/blkid/read-only mount confirms it."
+  ],
+  "devices": [
+    {
+      "name": "sda",
+      "kname": "sda",
+      "path": "/dev/sda",
+      "type": "disk",
+      "size": 999116767232,
+      "rota": true,
+      "tran": null,
+      "hotplug": false,
+      "fstype": null,
+      "fsver": null,
+      "label": null,
+      "uuid": null,
+      "partlabel": null,
+      "partuuid": null,
+      "model": "PERC H710P",
+      "vendor": "DELL    ",
+      "serial": "0063537f0bffbb9826007db2d460f681",
+      "wwn": "0x6c81f660d4b27d002698bbff0b7f5363",
+      "state": "running",
+      "sizeHuman": "930.5GB",
+      "parent": null,
+      "disk": "/dev/sda",
+      "mountpoints": [],
+      "links": [
+        "/dev/disk/by-id/scsi-36c81f660d4b27d002698bbff0b7f5363",
+        "/dev/disk/by-id/scsi-SDELL_PERC_H710P_0063537f0bffbb9826007db2d460f681",
+        "/dev/disk/by-id/wwn-0x6c81f660d4b27d002698bbff0b7f5363",
+        "/dev/disk/by-path/pci-0000:03:00.0-scsi-0:2:0:0"
+      ],
+      "proposedName": {
+        "logicalName": "atlas-perc-vd-spare-0",
+        "why": "PERC virtual disk visible with no partitions/filesystem; requires sudo/PERC probe before use."
+      }
+    },
+    {
+      "name": "sdb",
+      "kname": "sdb",
+      "path": "/dev/sdb",
+      "type": "disk",
+      "size": 999653638144,
+      "rota": true,
+      "tran": null,
+      "hotplug": false,
+      "fstype": null,
+      "fsver": null,
+      "label": null,
+      "uuid": null,
+      "partlabel": null,
+      "partuuid": null,
+      "model": "PERC H710P",
+      "vendor": "DELL    ",
+      "serial": "00d782120575cf9826007db2d460f681",
+      "wwn": "0x6c81f660d4b27d002698cf75051282d7",
+      "state": "running",
+      "sizeHuman": "931.0GB",
+      "parent": null,
+      "disk": "/dev/sdb",
+      "mountpoints": [],
+      "links": [
+        "/dev/disk/by-id/scsi-36c81f660d4b27d002698cf75051282d7",
+        "/dev/disk/by-id/scsi-SDELL_PERC_H710P_00d782120575cf9826007db2d460f681",
+        "/dev/disk/by-id/wwn-0x6c81f660d4b27d002698cf75051282d7",
+        "/dev/disk/by-path/pci-0000:03:00.0-scsi-0:2:1:0"
+      ]
+    },
+    {
+      "name": "sdb1",
+      "kname": "sdb1",
+      "path": "/dev/sdb1",
+      "type": "part",
+      "size": 1127219200,
+      "rota": true,
+      "tran": null,
+      "hotplug": false,
+      "fstype": "vfat",
+      "fsver": "FAT32",
+      "label": null,
+      "uuid": "CD23-C5DE",
+      "partlabel": null,
+      "partuuid": "1775f17c-6e73-4d4f-b545-513eaaf43503",
+      "model": null,
+      "vendor": null,
+      "serial": null,
+      "wwn": "0x6c81f660d4b27d002698cf75051282d7",
+      "state": null,
+      "sizeHuman": "1.0GB",
+      "parent": "/dev/sdb",
+      "disk": "/dev/sdb",
+      "mountpoints": [
+        "/boot/efi"
+      ],
+      "links": [
+        "/dev/disk/by-id/scsi-36c81f660d4b27d002698cf75051282d7-part1",
+        "/dev/disk/by-id/scsi-SDELL_PERC_H710P_00d782120575cf9826007db2d460f681-part1",
+        "/dev/disk/by-id/wwn-0x6c81f660d4b27d002698cf75051282d7-part1",
+        "/dev/disk/by-path/pci-0000:03:00.0-scsi-0:2:1:0-part1",
+        "/dev/disk/by-uuid/CD23-C5DE"
+      ],
+      "usage": {
+        "/boot/efi": {
+          "filesystem": "/dev/sdb1",
+          "type": "vfat",
+          "sizeBytes": 1124995072,
+          "usedBytes": 6451200,
+          "availableBytes": 1118543872,
+          "usePercent": "1%"
+        }
+      },
+      "topContents": {},
+      "proposedName": {
+        "filesystemLabel": "ATLAS-EFI",
+        "why": "EFI system partition; vfat label max 11 chars."
+      }
+    },
+    {
+      "name": "sdb2",
+      "kname": "sdb2",
+      "path": "/dev/sdb2",
+      "type": "part",
+      "size": 2147483648,
+      "rota": true,
+      "tran": null,
+      "hotplug": false,
+      "fstype": "ext4",
+      "fsver": "1.0",
+      "label": null,
+      "uuid": "eaba053b-5681-4bc7-b919-d319820f37e8",
+      "partlabel": null,
+      "partuuid": "72613d89-31fb-4917-a064-869fde149c2d",
+      "model": null,
+      "vendor": null,
+      "serial": null,
+      "wwn": "0x6c81f660d4b27d002698cf75051282d7",
+      "state": null,
+      "sizeHuman": "2.0GB",
+      "parent": "/dev/sdb",
+      "disk": "/dev/sdb",
+      "mountpoints": [
+        "/boot"
+      ],
+      "links": [
+        "/dev/disk/by-id/scsi-36c81f660d4b27d002698cf75051282d7-part2",
+        "/dev/disk/by-id/scsi-SDELL_PERC_H710P_00d782120575cf9826007db2d460f681-part2",
+        "/dev/disk/by-id/wwn-0x6c81f660d4b27d002698cf75051282d7-part2",
+        "/dev/disk/by-path/pci-0000:03:00.0-scsi-0:2:1:0-part2",
+        "/dev/disk/by-uuid/eaba053b-5681-4bc7-b919-d319820f37e8"
+      ],
+      "usage": {
+        "/boot": {
+          "filesystem": "/dev/sdb2",
+          "type": "ext4",
+          "sizeBytes": 2040373248,
+          "usedBytes": 224145408,
+          "availableBytes": 1692078080,
+          "usePercent": "12%"
+        }
+      },
+      "topContents": {},
+      "proposedName": {
+        "filesystemLabel": "atlas-boot",
+        "why": "Boot partition."
+      }
+    },
+    {
+      "name": "sdb3",
+      "kname": "sdb3",
+      "path": "/dev/sdb3",
+      "type": "part",
+      "size": 996376838144,
+      "rota": true,
+      "tran": null,
+      "hotplug": false,
+      "fstype": "LVM2_member",
+      "fsver": "LVM2 001",
+      "label": null,
+      "uuid": "b1TCAO-kheH-02SA-2mY5-s4a2-K1wr-s3z16R",
+      "partlabel": null,
+      "partuuid": "97b8e605-8afa-4a0b-a201-e1c2180041aa",
+      "model": null,
+      "vendor": null,
+      "serial": null,
+      "wwn": "0x6c81f660d4b27d002698cf75051282d7",
+      "state": null,
+      "sizeHuman": "927.9GB",
+      "parent": "/dev/sdb",
+      "disk": "/dev/sdb",
+      "mountpoints": [],
+      "links": [
+        "/dev/disk/by-id/lvm-pv-uuid-b1TCAO-kheH-02SA-2mY5-s4a2-K1wr-s3z16R",
+        "/dev/disk/by-id/scsi-36c81f660d4b27d002698cf75051282d7-part3",
+        "/dev/disk/by-id/scsi-SDELL_PERC_H710P_00d782120575cf9826007db2d460f681-part3",
+        "/dev/disk/by-id/wwn-0x6c81f660d4b27d002698cf75051282d7-part3",
+        "/dev/disk/by-path/pci-0000:03:00.0-scsi-0:2:1:0-part3"
+      ]
+    },
+    {
+      "name": "ubuntu--vg-ubuntu--lv",
+      "kname": "dm-0",
+      "path": "/dev/mapper/ubuntu--vg-ubuntu--lv",
+      "type": "lvm",
+      "size": 536870912000,
+      "rota": true,
+      "tran": null,
+      "hotplug": false,
+      "fstype": "ext4",
+      "fsver": "1.0",
+      "label": null,
+      "uuid": "c9d3ec8d-2b87-481b-90bd-1d4e1bfe9e50",
+      "partlabel": null,
+      "partuuid": null,
+      "model": null,
+      "vendor": null,
+      "serial": null,
+      "wwn": null,
+      "state": "running",
+      "sizeHuman": "500.0GB",
+      "parent": "/dev/sdb3",
+      "disk": "/dev/sdb",
+      "mountpoints": [
+        "/var/snap/firefox/common/host-hunspell",
+        "/"
+      ],
+      "links": [],
+      "usage": {
+        "/": {
+          "filesystem": "/dev/mapper/ubuntu--vg-ubuntu--lv",
+          "type": "ext4",
+          "sizeBytes": 527836135424,
+          "usedBytes": 237318664192,
+          "availableBytes": 267931066368,
+          "usePercent": "47%"
+        }
+      },
+      "topContents": {
+        "/": [
+          {
+            "name": "swap.img",
+            "path": "/swap.img",
+            "kind": "file",
+            "sizeBytes": 8589934592
+          },
+          {
+            "name": "tmp",
+            "path": "/tmp",
+            "kind": "directory",
+            "sizeBytes": 49152
+          },
+          {
+            "name": "etc",
+            "path": "/etc",
+            "kind": "directory",
+            "sizeBytes": 12288
+          },
+          {
+            "name": "dev",
+            "path": "/dev",
+            "kind": "directory",
+            "sizeBytes": 5200
+          },
+          {
+            "name": "atlas",
+            "path": "/atlas",
+            "kind": "directory",
+            "sizeBytes": 4096
+          },
+          {
+            "name": "home",
+            "path": "/home",
+            "kind": "directory",
+            "sizeBytes": 4096
+          },
+          {
+            "name": "var",
+            "path": "/var",
+            "kind": "directory",
+            "sizeBytes": 4096
+          },
+          {
+            "name": "srv",
+            "path": "/srv",
+            "kind": "directory",
+            "sizeBytes": 4096
+          },
+          {
+            "name": "usr",
+            "path": "/usr",
+            "kind": "directory",
+            "sizeBytes": 4096
+          },
+          {
+            "name": "opt",
+            "path": "/opt",
+            "kind": "directory",
+            "sizeBytes": 4096
+          },
+          {
+            "name": "root",
+            "path": "/root",
+            "kind": "directory",
+            "sizeBytes": 4096
+          },
+          {
+            "name": "lib.usr-is-merged",
+            "path": "/lib.usr-is-merged",
+            "kind": "directory",
+            "sizeBytes": 4096
+          },
+          {
+            "name": "snap",
+            "path": "/snap",
+            "kind": "directory",
+            "sizeBytes": 4096
+          },
+          {
+            "name": "mnt",
+            "path": "/mnt",
+            "kind": "directory",
+            "sizeBytes": 4096
+          },
+          {
+            "name": "bin.usr-is-merged",
+            "path": "/bin.usr-is-merged",
+            "kind": "directory",
+            "sizeBytes": 4096
+          },
+          {
+            "name": "sbin.usr-is-merged",
+            "path": "/sbin.usr-is-merged",
+            "kind": "directory",
+            "sizeBytes": 4096
+          },
+          {
+            "name": "boot",
+            "path": "/boot",
+            "kind": "directory",
+            "sizeBytes": 4096
+          },
+          {
+            "name": "cdrom",
+            "path": "/cdrom",
+            "kind": "directory",
+            "sizeBytes": 4096
+          },
+          {
+            "name": "media",
+            "path": "/media",
+            "kind": "directory",
+            "sizeBytes": 4096
+          },
+          {
+            "name": "run",
+            "path": "/run",
+            "kind": "directory",
+            "sizeBytes": 1560
+          },
+          {
+            "name": "lib64",
+            "path": "/lib64",
+            "kind": "file",
+            "sizeBytes": 9
+          },
+          {
+            "name": "sbin",
+            "path": "/sbin",
+            "kind": "file",
+            "sizeBytes": 8
+          },
+          {
+            "name": "bin",
+            "path": "/bin",
+            "kind": "file",
+            "sizeBytes": 7
+          },
+          {
+            "name": "lib",
+            "path": "/lib",
+            "kind": "file",
+            "sizeBytes": 7
+          },
+          {
+            "name": "proc",
+            "path": "/proc",
+            "kind": "directory",
+            "sizeBytes": 0
+          },
+          {
+            "name": "sys",
+            "path": "/sys",
+            "kind": "directory",
+            "sizeBytes": 0
+          }
+        ]
+      },
+      "proposedName": {
+        "filesystemLabel": "atlas-root",
+        "why": "Root filesystem; optional ext4 label."
+      }
+    },
+    {
+      "name": "sdc",
+      "kname": "sdc",
+      "path": "/dev/sdc",
+      "type": "disk",
+      "size": 999653638144,
+      "rota": true,
+      "tran": null,
+      "hotplug": false,
+      "fstype": null,
+      "fsver": null,
+      "label": null,
+      "uuid": null,
+      "partlabel": null,
+      "partuuid": null,
+      "model": "PERC H710P",
+      "vendor": "DELL    ",
+      "serial": "00e650a207a0cf9826007db2d460f681",
+      "wwn": "0x6c81f660d4b27d002698cfa007a250e6",
+      "state": "running",
+      "sizeHuman": "931.0GB",
+      "parent": null,
+      "disk": "/dev/sdc",
+      "mountpoints": [],
+      "links": [
+        "/dev/disk/by-id/scsi-36c81f660d4b27d002698cfa007a250e6",
+        "/dev/disk/by-id/scsi-SDELL_PERC_H710P_00e650a207a0cf9826007db2d460f681",
+        "/dev/disk/by-id/wwn-0x6c81f660d4b27d002698cfa007a250e6",
+        "/dev/disk/by-path/pci-0000:03:00.0-scsi-0:2:3:0"
+      ]
+    },
+    {
+      "name": "sdc1",
+      "kname": "sdc1",
+      "path": "/dev/sdc1",
+      "type": "part",
+      "size": 999643152384,
+      "rota": true,
+      "tran": null,
+      "hotplug": false,
+      "fstype": "ext4",
+      "fsver": "1.0",
+      "label": "data4",
+      "uuid": "fb9e6d13-41f7-4d8a-a86e-2dccc4c7970f",
+      "partlabel": "zfs-210403b63cf779f9",
+      "partuuid": "eed1ddbd-16e7-4e45-8e2f-c13647fb9c54",
+      "model": null,
+      "vendor": null,
+      "serial": null,
+      "wwn": "0x6c81f660d4b27d002698cfa007a250e6",
+      "state": null,
+      "sizeHuman": "931.0GB",
+      "parent": "/dev/sdc",
+      "disk": "/dev/sdc",
+      "mountpoints": [
+        "/mnt/data2"
+      ],
+      "links": [
+        "/dev/disk/by-id/scsi-36c81f660d4b27d002698cfa007a250e6-part1",
+        "/dev/disk/by-id/scsi-SDELL_PERC_H710P_00e650a207a0cf9826007db2d460f681-part1",
+        "/dev/disk/by-id/wwn-0x6c81f660d4b27d002698cfa007a250e6-part1",
+        "/dev/disk/by-label/data4",
+        "/dev/disk/by-path/pci-0000:03:00.0-scsi-0:2:3:0-part1",
+        "/dev/disk/by-uuid/fb9e6d13-41f7-4d8a-a86e-2dccc4c7970f"
+      ],
+      "usage": {
+        "/mnt/data2": {
+          "filesystem": "/dev/sdc1",
+          "type": "ext4",
+          "sizeBytes": 982799933440,
+          "usedBytes": 28672,
+          "availableBytes": 932800970752,
+          "usePercent": "1%"
+        }
+      },
+      "topContents": {
+        "/mnt/data2": []
+      },
+      "proposedName": {
+        "filesystemLabel": "atlas-data2",
+        "why": "Mounted at /mnt/data2; current label data4 is misleading."
+      }
+    },
+    {
+      "name": "sdc9",
+      "kname": "sdc9",
+      "path": "/dev/sdc9",
+      "type": "part",
+      "size": 8388608,
+      "rota": true,
+      "tran": null,
+      "hotplug": false,
+      "fstype": null,
+      "fsver": null,
+      "label": null,
+      "uuid": null,
+      "partlabel": null,
+      "partuuid": "26a74b4c-623c-4b48-be81-15e9c2a1a741",
+      "model": null,
+      "vendor": null,
+      "serial": null,
+      "wwn": "0x6c81f660d4b27d002698cfa007a250e6",
+      "state": null,
+      "sizeHuman": "8.0MB",
+      "parent": "/dev/sdc",
+      "disk": "/dev/sdc",
+      "mountpoints": [],
+      "links": [
+        "/dev/disk/by-id/scsi-36c81f660d4b27d002698cfa007a250e6-part9",
+        "/dev/disk/by-id/scsi-SDELL_PERC_H710P_00e650a207a0cf9826007db2d460f681-part9",
+        "/dev/disk/by-id/wwn-0x6c81f660d4b27d002698cfa007a250e6-part9",
+        "/dev/disk/by-path/pci-0000:03:00.0-scsi-0:2:3:0-part9"
+      ]
+    },
+    {
+      "name": "sdd",
+      "kname": "sdd",
+      "path": "/dev/sdd",
+      "type": "disk",
+      "size": 999653638144,
+      "rota": true,
+      "tran": null,
+      "hotplug": false,
+      "fstype": null,
+      "fsver": null,
+      "label": null,
+      "uuid": null,
+      "partlabel": null,
+      "partuuid": null,
+      "model": "PERC H710P",
+      "vendor": "DELL    ",
+      "serial": "00f77ef208b6cf9826007db2d460f681",
+      "wwn": "0x6c81f660d4b27d002698cfb608f27ef7",
+      "state": "running",
+      "sizeHuman": "931.0GB",
+      "parent": null,
+      "disk": "/dev/sdd",
+      "mountpoints": [],
+      "links": [
+        "/dev/disk/by-id/scsi-36c81f660d4b27d002698cfb608f27ef7",
+        "/dev/disk/by-id/scsi-SDELL_PERC_H710P_00f77ef208b6cf9826007db2d460f681",
+        "/dev/disk/by-id/wwn-0x6c81f660d4b27d002698cfb608f27ef7",
+        "/dev/disk/by-path/pci-0000:03:00.0-scsi-0:2:4:0"
+      ]
+    },
+    {
+      "name": "sdd1",
+      "kname": "sdd1",
+      "path": "/dev/sdd1",
+      "type": "part",
+      "size": 999643152384,
+      "rota": true,
+      "tran": null,
+      "hotplug": false,
+      "fstype": "ext4",
+      "fsver": "1.0",
+      "label": "data3",
+      "uuid": "33b7c17b-6ec8-4eaf-af4a-5f75f1959d64",
+      "partlabel": "zfs-8385f277ac5c8866",
+      "partuuid": "c6cf4332-0003-f347-91d6-be94845f8aae",
+      "model": null,
+      "vendor": null,
+      "serial": null,
+      "wwn": "0x6c81f660d4b27d002698cfb608f27ef7",
+      "state": null,
+      "sizeHuman": "931.0GB",
+      "parent": "/dev/sdd",
+      "disk": "/dev/sdd",
+      "mountpoints": [
+        "/mnt/data3"
+      ],
+      "links": [
+        "/dev/disk/by-id/scsi-36c81f660d4b27d002698cfb608f27ef7-part1",
+        "/dev/disk/by-id/scsi-SDELL_PERC_H710P_00f77ef208b6cf9826007db2d460f681-part1",
+        "/dev/disk/by-id/wwn-0x6c81f660d4b27d002698cfb608f27ef7-part1",
+        "/dev/disk/by-label/data3",
+        "/dev/disk/by-path/pci-0000:03:00.0-scsi-0:2:4:0-part1",
+        "/dev/disk/by-uuid/33b7c17b-6ec8-4eaf-af4a-5f75f1959d64"
+      ],
+      "usage": {
+        "/mnt/data3": {
+          "filesystem": "/dev/sdd1",
+          "type": "ext4",
+          "sizeBytes": 982799933440,
+          "usedBytes": 28672,
+          "availableBytes": 932800970752,
+          "usePercent": "1%"
+        }
+      },
+      "topContents": {
+        "/mnt/data3": []
+      },
+      "proposedName": {
+        "filesystemLabel": "atlas-data3",
+        "why": "Mounted at /mnt/data3; mostly empty."
+      }
+    },
+    {
+      "name": "sdd9",
+      "kname": "sdd9",
+      "path": "/dev/sdd9",
+      "type": "part",
+      "size": 8388608,
+      "rota": true,
+      "tran": null,
+      "hotplug": false,
+      "fstype": null,
+      "fsver": null,
+      "label": null,
+      "uuid": null,
+      "partlabel": null,
+      "partuuid": "0c992efd-ce80-e84b-9e88-d958879cfc05",
+      "model": null,
+      "vendor": null,
+      "serial": null,
+      "wwn": "0x6c81f660d4b27d002698cfb608f27ef7",
+      "state": null,
+      "sizeHuman": "8.0MB",
+      "parent": "/dev/sdd",
+      "disk": "/dev/sdd",
+      "mountpoints": [],
+      "links": [
+        "/dev/disk/by-id/scsi-36c81f660d4b27d002698cfb608f27ef7-part9",
+        "/dev/disk/by-id/scsi-SDELL_PERC_H710P_00f77ef208b6cf9826007db2d460f681-part9",
+        "/dev/disk/by-id/wwn-0x6c81f660d4b27d002698cfb608f27ef7-part9",
+        "/dev/disk/by-path/pci-0000:03:00.0-scsi-0:2:4:0-part9"
+      ]
+    },
+    {
+      "name": "sde",
+      "kname": "sde",
+      "path": "/dev/sde",
+      "type": "disk",
+      "size": 999653638144,
+      "rota": true,
+      "tran": null,
+      "hotplug": false,
+      "fstype": null,
+      "fsver": null,
+      "label": null,
+      "uuid": null,
+      "partlabel": null,
+      "partuuid": null,
+      "model": "PERC H710P",
+      "vendor": "DELL    ",
+      "serial": "000c559e0be3cf9826007db2d460f681",
+      "wwn": "0x6c81f660d4b27d002698cfe30b9e550c",
+      "state": "running",
+      "sizeHuman": "931.0GB",
+      "parent": null,
+      "disk": "/dev/sde",
+      "mountpoints": [],
+      "links": [
+        "/dev/disk/by-id/scsi-36c81f660d4b27d002698cfe30b9e550c",
+        "/dev/disk/by-id/scsi-SDELL_PERC_H710P_000c559e0be3cf9826007db2d460f681",
+        "/dev/disk/by-id/wwn-0x6c81f660d4b27d002698cfe30b9e550c",
+        "/dev/disk/by-path/pci-0000:03:00.0-scsi-0:2:6:0"
+      ]
+    },
+    {
+      "name": "sde1",
+      "kname": "sde1",
+      "path": "/dev/sde1",
+      "type": "part",
+      "size": 999643152384,
+      "rota": true,
+      "tran": null,
+      "hotplug": false,
+      "fstype": "ext4",
+      "fsver": "1.0",
+      "label": "data",
+      "uuid": "ec0c458e-8e7b-4b80-a2db-56213fc3a5fe",
+      "partlabel": "zfs-2250d3c1aa4c7977",
+      "partuuid": "6af2ebf8-d216-df4d-9030-0bcdc3bd89f2",
+      "model": null,
+      "vendor": null,
+      "serial": null,
+      "wwn": "0x6c81f660d4b27d002698cfe30b9e550c",
+      "state": null,
+      "sizeHuman": "931.0GB",
+      "parent": "/dev/sde",
+      "disk": "/dev/sde",
+      "mountpoints": [
+        "/mnt/data"
+      ],
+      "links": [
+        "/dev/disk/by-id/scsi-36c81f660d4b27d002698cfe30b9e550c-part1",
+        "/dev/disk/by-id/scsi-SDELL_PERC_H710P_000c559e0be3cf9826007db2d460f681-part1",
+        "/dev/disk/by-id/wwn-0x6c81f660d4b27d002698cfe30b9e550c-part1",
+        "/dev/disk/by-label/data",
+        "/dev/disk/by-path/pci-0000:03:00.0-scsi-0:2:6:0-part1",
+        "/dev/disk/by-uuid/ec0c458e-8e7b-4b80-a2db-56213fc3a5fe"
+      ],
+      "usage": {
+        "/mnt/data": {
+          "filesystem": "/dev/sde1",
+          "type": "ext4",
+          "sizeBytes": 982799933440,
+          "usedBytes": 71879270400,
+          "availableBytes": 860921729024,
+          "usePercent": "8%"
+        }
+      },
+      "topContents": {
+        "/mnt/data": [
+          {
+            "name": "Documents",
+            "path": "/mnt/data/Documents",
+            "kind": "directory",
+            "sizeBytes": 4096
+          },
+          {
+            "name": "atlas",
+            "path": "/mnt/data/atlas",
+            "kind": "directory",
+            "sizeBytes": 4096
+          },
+          {
+            "name": "ai-server",
+            "path": "/mnt/data/ai-server",
+            "kind": "directory",
+            "sizeBytes": 4096
+          }
+        ]
+      },
+      "proposedName": {
+        "filesystemLabel": "atlas-data0",
+        "why": "Mounted at /mnt/data; contains Documents plus Atlas data directories."
+      }
+    },
+    {
+      "name": "sde9",
+      "kname": "sde9",
+      "path": "/dev/sde9",
+      "type": "part",
+      "size": 8388608,
+      "rota": true,
+      "tran": null,
+      "hotplug": false,
+      "fstype": null,
+      "fsver": null,
+      "label": null,
+      "uuid": null,
+      "partlabel": null,
+      "partuuid": "cb67e25a-e3b5-5140-869b-83a64abac945",
+      "model": null,
+      "vendor": null,
+      "serial": null,
+      "wwn": "0x6c81f660d4b27d002698cfe30b9e550c",
+      "state": null,
+      "sizeHuman": "8.0MB",
+      "parent": "/dev/sde",
+      "disk": "/dev/sde",
+      "mountpoints": [],
+      "links": [
+        "/dev/disk/by-id/scsi-36c81f660d4b27d002698cfe30b9e550c-part9",
+        "/dev/disk/by-id/scsi-SDELL_PERC_H710P_000c559e0be3cf9826007db2d460f681-part9",
+        "/dev/disk/by-id/wwn-0x6c81f660d4b27d002698cfe30b9e550c-part9",
+        "/dev/disk/by-path/pci-0000:03:00.0-scsi-0:2:6:0-part9"
+      ]
+    },
+    {
+      "name": "sdf",
+      "kname": "sdf",
+      "path": "/dev/sdf",
+      "type": "disk",
+      "size": 999653638144,
+      "rota": true,
+      "tran": null,
+      "hotplug": false,
+      "fstype": null,
+      "fsver": null,
+      "label": null,
+      "uuid": null,
+      "partlabel": null,
+      "partuuid": null,
+      "model": "PERC H710P",
+      "vendor": "DELL    ",
+      "serial": "0091843f0acccf9826007db2d460f681",
+      "wwn": "0x6c81f660d4b27d002698cfcc0a3f8491",
+      "state": "running",
+      "sizeHuman": "931.0GB",
+      "parent": null,
+      "disk": "/dev/sdf",
+      "mountpoints": [],
+      "links": [
+        "/dev/disk/by-id/scsi-36c81f660d4b27d002698cfcc0a3f8491",
+        "/dev/disk/by-id/scsi-SDELL_PERC_H710P_0091843f0acccf9826007db2d460f681",
+        "/dev/disk/by-id/wwn-0x6c81f660d4b27d002698cfcc0a3f8491",
+        "/dev/disk/by-path/pci-0000:03:00.0-scsi-0:2:5:0"
+      ]
+    },
+    {
+      "name": "sdf1",
+      "kname": "sdf1",
+      "path": "/dev/sdf1",
+      "type": "part",
+      "size": 999643152384,
+      "rota": true,
+      "tran": null,
+      "hotplug": false,
+      "fstype": "ext4",
+      "fsver": "1.0",
+      "label": "data1",
+      "uuid": "638e4d2d-2f28-4752-923c-ea43e48f5524",
+      "partlabel": "zfs-cbddb8ddd5d3ee37",
+      "partuuid": "e4b2f8ce-59e0-c044-9f06-eeca22f77e25",
+      "model": null,
+      "vendor": null,
+      "serial": null,
+      "wwn": "0x6c81f660d4b27d002698cfcc0a3f8491",
+      "state": null,
+      "sizeHuman": "931.0GB",
+      "parent": "/dev/sdf",
+      "disk": "/dev/sdf",
+      "mountpoints": [
+        "/mnt/data1"
+      ],
+      "links": [
+        "/dev/disk/by-id/scsi-36c81f660d4b27d002698cfcc0a3f8491-part1",
+        "/dev/disk/by-id/scsi-SDELL_PERC_H710P_0091843f0acccf9826007db2d460f681-part1",
+        "/dev/disk/by-id/wwn-0x6c81f660d4b27d002698cfcc0a3f8491-part1",
+        "/dev/disk/by-label/data1",
+        "/dev/disk/by-path/pci-0000:03:00.0-scsi-0:2:5:0-part1",
+        "/dev/disk/by-uuid/638e4d2d-2f28-4752-923c-ea43e48f5524"
+      ],
+      "usage": {
+        "/mnt/data1": {
+          "filesystem": "/dev/sdf1",
+          "type": "ext4",
+          "sizeBytes": 982799933440,
+          "usedBytes": 40960,
+          "availableBytes": 932800958464,
+          "usePercent": "1%"
+        }
+      },
+      "topContents": {
+        "/mnt/data1": [
+          {
+            "name": "atlas-vault-backups",
+            "path": "/mnt/data1/atlas-vault-backups",
+            "kind": "directory",
+            "sizeBytes": 4096
+          }
+        ]
+      },
+      "proposedName": {
+        "filesystemLabel": "atlas-data1",
+        "why": "Mounted at /mnt/data1; mostly empty except atlas-vault-backups stub."
+      }
+    },
+    {
+      "name": "sdf9",
+      "kname": "sdf9",
+      "path": "/dev/sdf9",
+      "type": "part",
+      "size": 8388608,
+      "rota": true,
+      "tran": null,
+      "hotplug": false,
+      "fstype": null,
+      "fsver": null,
+      "label": null,
+      "uuid": null,
+      "partlabel": null,
+      "partuuid": "f139ce60-e58d-d648-8032-87c6b3640f39",
+      "model": null,
+      "vendor": null,
+      "serial": null,
+      "wwn": "0x6c81f660d4b27d002698cfcc0a3f8491",
+      "state": null,
+      "sizeHuman": "8.0MB",
+      "parent": "/dev/sdf",
+      "disk": "/dev/sdf",
+      "mountpoints": [],
+      "links": [
+        "/dev/disk/by-id/scsi-36c81f660d4b27d002698cfcc0a3f8491-part9",
+        "/dev/disk/by-id/scsi-SDELL_PERC_H710P_0091843f0acccf9826007db2d460f681-part9",
+        "/dev/disk/by-id/wwn-0x6c81f660d4b27d002698cfcc0a3f8491-part9",
+        "/dev/disk/by-path/pci-0000:03:00.0-scsi-0:2:5:0-part9"
+      ]
+    },
+    {
+      "name": "sdg",
+      "kname": "sdg",
+      "path": "/dev/sdg",
+      "type": "disk",
+      "size": 6001175126016,
+      "rota": true,
+      "tran": "usb",
+      "hotplug": false,
+      "fstype": null,
+      "fsver": null,
+      "label": null,
+      "uuid": null,
+      "partlabel": null,
+      "partuuid": null,
+      "model": "Dual SATA Bridge",
+      "vendor": "Sabrent ",
+      "serial": "00000000000000000000",
+      "wwn": "0x5000000000000001",
+      "state": "running",
+      "sizeHuman": "5.5TB",
+      "parent": null,
+      "disk": "/dev/sdg",
+      "mountpoints": [],
+      "links": [
+        "/dev/disk/by-id/usb-Sabrent_Dual_SATA_Bridge_00000000000000000000-0:0",
+        "/dev/disk/by-path/pci-0000:00:1a.0-usb-0:1.4.1.1:1.0-scsi-0:0:0:0",
+        "/dev/disk/by-path/pci-0000:00:1a.0-usbv2-0:1.4.1.1:1.0-scsi-0:0:0:0"
+      ]
+    },
+    {
+      "name": "sdg1",
+      "kname": "sdg1",
+      "path": "/dev/sdg1",
+      "type": "part",
+      "size": 6001173463040,
+      "rota": true,
+      "tran": null,
+      "hotplug": false,
+      "fstype": null,
+      "fsver": null,
+      "label": null,
+      "uuid": null,
+      "partlabel": "primary",
+      "partuuid": "d762f7d3-16dc-4452-bdd8-42451777c76b",
+      "model": null,
+      "vendor": null,
+      "serial": null,
+      "wwn": "0x5000000000000001",
+      "state": null,
+      "sizeHuman": "5.5TB",
+      "parent": "/dev/sdg",
+      "disk": "/dev/sdg",
+      "mountpoints": [],
+      "links": [
+        "/dev/disk/by-id/usb-Sabrent_Dual_SATA_Bridge_00000000000000000000-0:0-part1",
+        "/dev/disk/by-path/pci-0000:00:1a.0-usb-0:1.4.1.1:1.0-scsi-0:0:0:0-part1",
+        "/dev/disk/by-path/pci-0000:00:1a.0-usbv2-0:1.4.1.1:1.0-scsi-0:0:0:0-part1"
+      ],
+      "proposedName": {
+        "partitionLabel": "atlas-sabrent-a",
+        "why": "Sabrent bridge slot 0:0; no filesystem detected, so use GPT partition label unless a filesystem is later found."
+      }
+    },
+    {
+      "name": "sdh",
+      "kname": "sdh",
+      "path": "/dev/sdh",
+      "type": "disk",
+      "size": 6001175126016,
+      "rota": true,
+      "tran": "usb",
+      "hotplug": false,
+      "fstype": null,
+      "fsver": null,
+      "label": null,
+      "uuid": null,
+      "partlabel": null,
+      "partuuid": null,
+      "model": "Dual SATA Bridge",
+      "vendor": "Sabrent ",
+      "serial": "00000000000000000000",
+      "wwn": "0x5000000000000001",
+      "state": "running",
+      "sizeHuman": "5.5TB",
+      "parent": null,
+      "disk": "/dev/sdh",
+      "mountpoints": [],
+      "links": [
+        "/dev/disk/by-id/scsi-35000000000000001",
+        "/dev/disk/by-id/scsi-SSabrent_Dual_SATA_Bridge_00000000000000000000",
+        "/dev/disk/by-id/usb-Sabrent_Dual_SATA_Bridge_00000000000000000000-0:1",
+        "/dev/disk/by-id/wwn-0x5000000000000001",
+        "/dev/disk/by-path/pci-0000:00:1a.0-usb-0:1.4.1.1:1.0-scsi-0:0:0:1",
+        "/dev/disk/by-path/pci-0000:00:1a.0-usbv2-0:1.4.1.1:1.0-scsi-0:0:0:1"
+      ]
+    },
+    {
+      "name": "sdh1",
+      "kname": "sdh1",
+      "path": "/dev/sdh1",
+      "type": "part",
+      "size": 6001173463040,
+      "rota": true,
+      "tran": null,
+      "hotplug": false,
+      "fstype": "ext4",
+      "fsver": "1.0",
+      "label": "wd6tb-b",
+      "uuid": "d29a8c39-68aa-46ff-a007-ae70726bdbc2",
+      "partlabel": "primary",
+      "partuuid": "e6559769-d9ec-4614-87d9-0d9ec3495d8c",
+      "model": null,
+      "vendor": null,
+      "serial": null,
+      "wwn": "0x5000000000000001",
+      "state": null,
+      "sizeHuman": "5.5TB",
+      "parent": "/dev/sdh",
+      "disk": "/dev/sdh",
+      "mountpoints": [],
+      "links": [
+        "/dev/disk/by-id/scsi-35000000000000001-part1",
+        "/dev/disk/by-id/scsi-SSabrent_Dual_SATA_Bridge_00000000000000000000-part1",
+        "/dev/disk/by-id/usb-Sabrent_Dual_SATA_Bridge_00000000000000000000-0:1-part1",
+        "/dev/disk/by-id/wwn-0x5000000000000001-part1",
+        "/dev/disk/by-label/wd6tb-b",
+        "/dev/disk/by-path/pci-0000:00:1a.0-usb-0:1.4.1.1:1.0-scsi-0:0:0:1-part1",
+        "/dev/disk/by-path/pci-0000:00:1a.0-usbv2-0:1.4.1.1:1.0-scsi-0:0:0:1-part1",
+        "/dev/disk/by-uuid/d29a8c39-68aa-46ff-a007-ae70726bdbc2"
+      ],
+      "proposedName": {
+        "filesystemLabel": "atlas-sabrent-b",
+        "partitionLabel": "atlas-sabrent-b",
+        "why": "Sabrent bridge slot 0:1; ext4 filesystem currently labeled wd6tb-b."
+      }
+    }
+  ],
+  "logicalDevices": [
+    {
+      "name": "sda",
+      "kname": "sda",
+      "path": "/dev/sda",
+      "type": "disk",
+      "size": 999116767232,
+      "rota": true,
+      "tran": null,
+      "hotplug": false,
+      "fstype": null,
+      "fsver": null,
+      "label": null,
+      "uuid": null,
+      "partlabel": null,
+      "partuuid": null,
+      "model": "PERC H710P",
+      "vendor": "DELL    ",
+      "serial": "0063537f0bffbb9826007db2d460f681",
+      "wwn": "0x6c81f660d4b27d002698bbff0b7f5363",
+      "state": "running",
+      "sizeHuman": "930.5GB",
+      "parent": null,
+      "disk": "/dev/sda",
+      "mountpoints": [],
+      "links": [
+        "/dev/disk/by-id/scsi-36c81f660d4b27d002698bbff0b7f5363",
+        "/dev/disk/by-id/scsi-SDELL_PERC_H710P_0063537f0bffbb9826007db2d460f681",
+        "/dev/disk/by-id/wwn-0x6c81f660d4b27d002698bbff0b7f5363",
+        "/dev/disk/by-path/pci-0000:03:00.0-scsi-0:2:0:0"
+      ],
+      "proposedName": {
+        "logicalName": "atlas-perc-vd-spare-0",
+        "why": "PERC virtual disk visible with no partitions/filesystem; requires sudo/PERC probe before use."
+      }
+    },
+    {
+      "name": "sdb1",
+      "kname": "sdb1",
+      "path": "/dev/sdb1",
+      "type": "part",
+      "size": 1127219200,
+      "rota": true,
+      "tran": null,
+      "hotplug": false,
+      "fstype": "vfat",
+      "fsver": "FAT32",
+      "label": null,
+      "uuid": "CD23-C5DE",
+      "partlabel": null,
+      "partuuid": "1775f17c-6e73-4d4f-b545-513eaaf43503",
+      "model": null,
+      "vendor": null,
+      "serial": null,
+      "wwn": "0x6c81f660d4b27d002698cf75051282d7",
+      "state": null,
+      "sizeHuman": "1.0GB",
+      "parent": "/dev/sdb",
+      "disk": "/dev/sdb",
+      "mountpoints": [
+        "/boot/efi"
+      ],
+      "links": [
+        "/dev/disk/by-id/scsi-36c81f660d4b27d002698cf75051282d7-part1",
+        "/dev/disk/by-id/scsi-SDELL_PERC_H710P_00d782120575cf9826007db2d460f681-part1",
+        "/dev/disk/by-id/wwn-0x6c81f660d4b27d002698cf75051282d7-part1",
+        "/dev/disk/by-path/pci-0000:03:00.0-scsi-0:2:1:0-part1",
+        "/dev/disk/by-uuid/CD23-C5DE"
+      ],
+      "usage": {
+        "/boot/efi": {
+          "filesystem": "/dev/sdb1",
+          "type": "vfat",
+          "sizeBytes": 1124995072,
+          "usedBytes": 6451200,
+          "availableBytes": 1118543872,
+          "usePercent": "1%"
+        }
+      },
+      "topContents": {},
+      "proposedName": {
+        "filesystemLabel": "ATLAS-EFI",
+        "why": "EFI system partition; vfat label max 11 chars."
+      }
+    },
+    {
+      "name": "sdb2",
+      "kname": "sdb2",
+      "path": "/dev/sdb2",
+      "type": "part",
+      "size": 2147483648,
+      "rota": true,
+      "tran": null,
+      "hotplug": false,
+      "fstype": "ext4",
+      "fsver": "1.0",
+      "label": null,
+      "uuid": "eaba053b-5681-4bc7-b919-d319820f37e8",
+      "partlabel": null,
+      "partuuid": "72613d89-31fb-4917-a064-869fde149c2d",
+      "model": null,
+      "vendor": null,
+      "serial": null,
+      "wwn": "0x6c81f660d4b27d002698cf75051282d7",
+      "state": null,
+      "sizeHuman": "2.0GB",
+      "parent": "/dev/sdb",
+      "disk": "/dev/sdb",
+      "mountpoints": [
+        "/boot"
+      ],
+      "links": [
+        "/dev/disk/by-id/scsi-36c81f660d4b27d002698cf75051282d7-part2",
+        "/dev/disk/by-id/scsi-SDELL_PERC_H710P_00d782120575cf9826007db2d460f681-part2",
+        "/dev/disk/by-id/wwn-0x6c81f660d4b27d002698cf75051282d7-part2",
+        "/dev/disk/by-path/pci-0000:03:00.0-scsi-0:2:1:0-part2",
+        "/dev/disk/by-uuid/eaba053b-5681-4bc7-b919-d319820f37e8"
+      ],
+      "usage": {
+        "/boot": {
+          "filesystem": "/dev/sdb2",
+          "type": "ext4",
+          "sizeBytes": 2040373248,
+          "usedBytes": 224145408,
+          "availableBytes": 1692078080,
+          "usePercent": "12%"
+        }
+      },
+      "topContents": {},
+      "proposedName": {
+        "filesystemLabel": "atlas-boot",
+        "why": "Boot partition."
+      }
+    },
+    {
+      "name": "sdb3",
+      "kname": "sdb3",
+      "path": "/dev/sdb3",
+      "type": "part",
+      "size": 996376838144,
+      "rota": true,
+      "tran": null,
+      "hotplug": false,
+      "fstype": "LVM2_member",
+      "fsver": "LVM2 001",
+      "label": null,
+      "uuid": "b1TCAO-kheH-02SA-2mY5-s4a2-K1wr-s3z16R",
+      "partlabel": null,
+      "partuuid": "97b8e605-8afa-4a0b-a201-e1c2180041aa",
+      "model": null,
+      "vendor": null,
+      "serial": null,
+      "wwn": "0x6c81f660d4b27d002698cf75051282d7",
+      "state": null,
+      "sizeHuman": "927.9GB",
+      "parent": "/dev/sdb",
+      "disk": "/dev/sdb",
+      "mountpoints": [],
+      "links": [
+        "/dev/disk/by-id/lvm-pv-uuid-b1TCAO-kheH-02SA-2mY5-s4a2-K1wr-s3z16R",
+        "/dev/disk/by-id/scsi-36c81f660d4b27d002698cf75051282d7-part3",
+        "/dev/disk/by-id/scsi-SDELL_PERC_H710P_00d782120575cf9826007db2d460f681-part3",
+        "/dev/disk/by-id/wwn-0x6c81f660d4b27d002698cf75051282d7-part3",
+        "/dev/disk/by-path/pci-0000:03:00.0-scsi-0:2:1:0-part3"
+      ]
+    },
+    {
+      "name": "ubuntu--vg-ubuntu--lv",
+      "kname": "dm-0",
+      "path": "/dev/mapper/ubuntu--vg-ubuntu--lv",
+      "type": "lvm",
+      "size": 536870912000,
+      "rota": true,
+      "tran": null,
+      "hotplug": false,
+      "fstype": "ext4",
+      "fsver": "1.0",
+      "label": null,
+      "uuid": "c9d3ec8d-2b87-481b-90bd-1d4e1bfe9e50",
+      "partlabel": null,
+      "partuuid": null,
+      "model": null,
+      "vendor": null,
+      "serial": null,
+      "wwn": null,
+      "state": "running",
+      "sizeHuman": "500.0GB",
+      "parent": "/dev/sdb3",
+      "disk": "/dev/sdb",
+      "mountpoints": [
+        "/var/snap/firefox/common/host-hunspell",
+        "/"
+      ],
+      "links": [],
+      "usage": {
+        "/": {
+          "filesystem": "/dev/mapper/ubuntu--vg-ubuntu--lv",
+          "type": "ext4",
+          "sizeBytes": 527836135424,
+          "usedBytes": 237318664192,
+          "availableBytes": 267931066368,
+          "usePercent": "47%"
+        }
+      },
+      "topContents": {
+        "/": [
+          {
+            "name": "swap.img",
+            "path": "/swap.img",
+            "kind": "file",
+            "sizeBytes": 8589934592
+          },
+          {
+            "name": "tmp",
+            "path": "/tmp",
+            "kind": "directory",
+            "sizeBytes": 49152
+          },
+          {
+            "name": "etc",
+            "path": "/etc",
+            "kind": "directory",
+            "sizeBytes": 12288
+          },
+          {
+            "name": "dev",
+            "path": "/dev",
+            "kind": "directory",
+            "sizeBytes": 5200
+          },
+          {
+            "name": "atlas",
+            "path": "/atlas",
+            "kind": "directory",
+            "sizeBytes": 4096
+          },
+          {
+            "name": "home",
+            "path": "/home",
+            "kind": "directory",
+            "sizeBytes": 4096
+          },
+          {
+            "name": "var",
+            "path": "/var",
+            "kind": "directory",
+            "sizeBytes": 4096
+          },
+          {
+            "name": "srv",
+            "path": "/srv",
+            "kind": "directory",
+            "sizeBytes": 4096
+          },
+          {
+            "name": "usr",
+            "path": "/usr",
+            "kind": "directory",
+            "sizeBytes": 4096
+          },
+          {
+            "name": "opt",
+            "path": "/opt",
+            "kind": "directory",
+            "sizeBytes": 4096
+          },
+          {
+            "name": "root",
+            "path": "/root",
+            "kind": "directory",
+            "sizeBytes": 4096
+          },
+          {
+            "name": "lib.usr-is-merged",
+            "path": "/lib.usr-is-merged",
+            "kind": "directory",
+            "sizeBytes": 4096
+          },
+          {
+            "name": "snap",
+            "path": "/snap",
+            "kind": "directory",
+            "sizeBytes": 4096
+          },
+          {
+            "name": "mnt",
+            "path": "/mnt",
+            "kind": "directory",
+            "sizeBytes": 4096
+          },
+          {
+            "name": "bin.usr-is-merged",
+            "path": "/bin.usr-is-merged",
+            "kind": "directory",
+            "sizeBytes": 4096
+          },
+          {
+            "name": "sbin.usr-is-merged",
+            "path": "/sbin.usr-is-merged",
+            "kind": "directory",
+            "sizeBytes": 4096
+          },
+          {
+            "name": "boot",
+            "path": "/boot",
+            "kind": "directory",
+            "sizeBytes": 4096
+          },
+          {
+            "name": "cdrom",
+            "path": "/cdrom",
+            "kind": "directory",
+            "sizeBytes": 4096
+          },
+          {
+            "name": "media",
+            "path": "/media",
+            "kind": "directory",
+            "sizeBytes": 4096
+          },
+          {
+            "name": "run",
+            "path": "/run",
+            "kind": "directory",
+            "sizeBytes": 1560
+          },
+          {
+            "name": "lib64",
+            "path": "/lib64",
+            "kind": "file",
+            "sizeBytes": 9
+          },
+          {
+            "name": "sbin",
+            "path": "/sbin",
+            "kind": "file",
+            "sizeBytes": 8
+          },
+          {
+            "name": "bin",
+            "path": "/bin",
+            "kind": "file",
+            "sizeBytes": 7
+          },
+          {
+            "name": "lib",
+            "path": "/lib",
+            "kind": "file",
+            "sizeBytes": 7
+          },
+          {
+            "name": "proc",
+            "path": "/proc",
+            "kind": "directory",
+            "sizeBytes": 0
+          },
+          {
+            "name": "sys",
+            "path": "/sys",
+            "kind": "directory",
+            "sizeBytes": 0
+          }
+        ]
+      },
+      "proposedName": {
+        "filesystemLabel": "atlas-root",
+        "why": "Root filesystem; optional ext4 label."
+      }
+    },
+    {
+      "name": "sdc1",
+      "kname": "sdc1",
+      "path": "/dev/sdc1",
+      "type": "part",
+      "size": 999643152384,
+      "rota": true,
+      "tran": null,
+      "hotplug": false,
+      "fstype": "ext4",
+      "fsver": "1.0",
+      "label": "data4",
+      "uuid": "fb9e6d13-41f7-4d8a-a86e-2dccc4c7970f",
+      "partlabel": "zfs-210403b63cf779f9",
+      "partuuid": "eed1ddbd-16e7-4e45-8e2f-c13647fb9c54",
+      "model": null,
+      "vendor": null,
+      "serial": null,
+      "wwn": "0x6c81f660d4b27d002698cfa007a250e6",
+      "state": null,
+      "sizeHuman": "931.0GB",
+      "parent": "/dev/sdc",
+      "disk": "/dev/sdc",
+      "mountpoints": [
+        "/mnt/data2"
+      ],
+      "links": [
+        "/dev/disk/by-id/scsi-36c81f660d4b27d002698cfa007a250e6-part1",
+        "/dev/disk/by-id/scsi-SDELL_PERC_H710P_00e650a207a0cf9826007db2d460f681-part1",
+        "/dev/disk/by-id/wwn-0x6c81f660d4b27d002698cfa007a250e6-part1",
+        "/dev/disk/by-label/data4",
+        "/dev/disk/by-path/pci-0000:03:00.0-scsi-0:2:3:0-part1",
+        "/dev/disk/by-uuid/fb9e6d13-41f7-4d8a-a86e-2dccc4c7970f"
+      ],
+      "usage": {
+        "/mnt/data2": {
+          "filesystem": "/dev/sdc1",
+          "type": "ext4",
+          "sizeBytes": 982799933440,
+          "usedBytes": 28672,
+          "availableBytes": 932800970752,
+          "usePercent": "1%"
+        }
+      },
+      "topContents": {
+        "/mnt/data2": []
+      },
+      "proposedName": {
+        "filesystemLabel": "atlas-data2",
+        "why": "Mounted at /mnt/data2; current label data4 is misleading."
+      }
+    },
+    {
+      "name": "sdd1",
+      "kname": "sdd1",
+      "path": "/dev/sdd1",
+      "type": "part",
+      "size": 999643152384,
+      "rota": true,
+      "tran": null,
+      "hotplug": false,
+      "fstype": "ext4",
+      "fsver": "1.0",
+      "label": "data3",
+      "uuid": "33b7c17b-6ec8-4eaf-af4a-5f75f1959d64",
+      "partlabel": "zfs-8385f277ac5c8866",
+      "partuuid": "c6cf4332-0003-f347-91d6-be94845f8aae",
+      "model": null,
+      "vendor": null,
+      "serial": null,
+      "wwn": "0x6c81f660d4b27d002698cfb608f27ef7",
+      "state": null,
+      "sizeHuman": "931.0GB",
+      "parent": "/dev/sdd",
+      "disk": "/dev/sdd",
+      "mountpoints": [
+        "/mnt/data3"
+      ],
+      "links": [
+        "/dev/disk/by-id/scsi-36c81f660d4b27d002698cfb608f27ef7-part1",
+        "/dev/disk/by-id/scsi-SDELL_PERC_H710P_00f77ef208b6cf9826007db2d460f681-part1",
+        "/dev/disk/by-id/wwn-0x6c81f660d4b27d002698cfb608f27ef7-part1",
+        "/dev/disk/by-label/data3",
+        "/dev/disk/by-path/pci-0000:03:00.0-scsi-0:2:4:0-part1",
+        "/dev/disk/by-uuid/33b7c17b-6ec8-4eaf-af4a-5f75f1959d64"
+      ],
+      "usage": {
+        "/mnt/data3": {
+          "filesystem": "/dev/sdd1",
+          "type": "ext4",
+          "sizeBytes": 982799933440,
+          "usedBytes": 28672,
+          "availableBytes": 932800970752,
+          "usePercent": "1%"
+        }
+      },
+      "topContents": {
+        "/mnt/data3": []
+      },
+      "proposedName": {
+        "filesystemLabel": "atlas-data3",
+        "why": "Mounted at /mnt/data3; mostly empty."
+      }
+    },
+    {
+      "name": "sde1",
+      "kname": "sde1",
+      "path": "/dev/sde1",
+      "type": "part",
+      "size": 999643152384,
+      "rota": true,
+      "tran": null,
+      "hotplug": false,
+      "fstype": "ext4",
+      "fsver": "1.0",
+      "label": "data",
+      "uuid": "ec0c458e-8e7b-4b80-a2db-56213fc3a5fe",
+      "partlabel": "zfs-2250d3c1aa4c7977",
+      "partuuid": "6af2ebf8-d216-df4d-9030-0bcdc3bd89f2",
+      "model": null,
+      "vendor": null,
+      "serial": null,
+      "wwn": "0x6c81f660d4b27d002698cfe30b9e550c",
+      "state": null,
+      "sizeHuman": "931.0GB",
+      "parent": "/dev/sde",
+      "disk": "/dev/sde",
+      "mountpoints": [
+        "/mnt/data"
+      ],
+      "links": [
+        "/dev/disk/by-id/scsi-36c81f660d4b27d002698cfe30b9e550c-part1",
+        "/dev/disk/by-id/scsi-SDELL_PERC_H710P_000c559e0be3cf9826007db2d460f681-part1",
+        "/dev/disk/by-id/wwn-0x6c81f660d4b27d002698cfe30b9e550c-part1",
+        "/dev/disk/by-label/data",
+        "/dev/disk/by-path/pci-0000:03:00.0-scsi-0:2:6:0-part1",
+        "/dev/disk/by-uuid/ec0c458e-8e7b-4b80-a2db-56213fc3a5fe"
+      ],
+      "usage": {
+        "/mnt/data": {
+          "filesystem": "/dev/sde1",
+          "type": "ext4",
+          "sizeBytes": 982799933440,
+          "usedBytes": 71879270400,
+          "availableBytes": 860921729024,
+          "usePercent": "8%"
+        }
+      },
+      "topContents": {
+        "/mnt/data": [
+          {
+            "name": "Documents",
+            "path": "/mnt/data/Documents",
+            "kind": "directory",
+            "sizeBytes": 4096
+          },
+          {
+            "name": "atlas",
+            "path": "/mnt/data/atlas",
+            "kind": "directory",
+            "sizeBytes": 4096
+          },
+          {
+            "name": "ai-server",
+            "path": "/mnt/data/ai-server",
+            "kind": "directory",
+            "sizeBytes": 4096
+          }
+        ]
+      },
+      "proposedName": {
+        "filesystemLabel": "atlas-data0",
+        "why": "Mounted at /mnt/data; contains Documents plus Atlas data directories."
+      }
+    },
+    {
+      "name": "sdf1",
+      "kname": "sdf1",
+      "path": "/dev/sdf1",
+      "type": "part",
+      "size": 999643152384,
+      "rota": true,
+      "tran": null,
+      "hotplug": false,
+      "fstype": "ext4",
+      "fsver": "1.0",
+      "label": "data1",
+      "uuid": "638e4d2d-2f28-4752-923c-ea43e48f5524",
+      "partlabel": "zfs-cbddb8ddd5d3ee37",
+      "partuuid": "e4b2f8ce-59e0-c044-9f06-eeca22f77e25",
+      "model": null,
+      "vendor": null,
+      "serial": null,
+      "wwn": "0x6c81f660d4b27d002698cfcc0a3f8491",
+      "state": null,
+      "sizeHuman": "931.0GB",
+      "parent": "/dev/sdf",
+      "disk": "/dev/sdf",
+      "mountpoints": [
+        "/mnt/data1"
+      ],
+      "links": [
+        "/dev/disk/by-id/scsi-36c81f660d4b27d002698cfcc0a3f8491-part1",
+        "/dev/disk/by-id/scsi-SDELL_PERC_H710P_0091843f0acccf9826007db2d460f681-part1",
+        "/dev/disk/by-id/wwn-0x6c81f660d4b27d002698cfcc0a3f8491-part1",
+        "/dev/disk/by-label/data1",
+        "/dev/disk/by-path/pci-0000:03:00.0-scsi-0:2:5:0-part1",
+        "/dev/disk/by-uuid/638e4d2d-2f28-4752-923c-ea43e48f5524"
+      ],
+      "usage": {
+        "/mnt/data1": {
+          "filesystem": "/dev/sdf1",
+          "type": "ext4",
+          "sizeBytes": 982799933440,
+          "usedBytes": 40960,
+          "availableBytes": 932800958464,
+          "usePercent": "1%"
+        }
+      },
+      "topContents": {
+        "/mnt/data1": [
+          {
+            "name": "atlas-vault-backups",
+            "path": "/mnt/data1/atlas-vault-backups",
+            "kind": "directory",
+            "sizeBytes": 4096
+          }
+        ]
+      },
+      "proposedName": {
+        "filesystemLabel": "atlas-data1",
+        "why": "Mounted at /mnt/data1; mostly empty except atlas-vault-backups stub."
+      }
+    },
+    {
+      "name": "sdg",
+      "kname": "sdg",
+      "path": "/dev/sdg",
+      "type": "disk",
+      "size": 6001175126016,
+      "rota": true,
+      "tran": "usb",
+      "hotplug": false,
+      "fstype": null,
+      "fsver": null,
+      "label": null,
+      "uuid": null,
+      "partlabel": null,
+      "partuuid": null,
+      "model": "Dual SATA Bridge",
+      "vendor": "Sabrent ",
+      "serial": "00000000000000000000",
+      "wwn": "0x5000000000000001",
+      "state": "running",
+      "sizeHuman": "5.5TB",
+      "parent": null,
+      "disk": "/dev/sdg",
+      "mountpoints": [],
+      "links": [
+        "/dev/disk/by-id/usb-Sabrent_Dual_SATA_Bridge_00000000000000000000-0:0",
+        "/dev/disk/by-path/pci-0000:00:1a.0-usb-0:1.4.1.1:1.0-scsi-0:0:0:0",
+        "/dev/disk/by-path/pci-0000:00:1a.0-usbv2-0:1.4.1.1:1.0-scsi-0:0:0:0"
+      ]
+    },
+    {
+      "name": "sdg1",
+      "kname": "sdg1",
+      "path": "/dev/sdg1",
+      "type": "part",
+      "size": 6001173463040,
+      "rota": true,
+      "tran": null,
+      "hotplug": false,
+      "fstype": null,
+      "fsver": null,
+      "label": null,
+      "uuid": null,
+      "partlabel": "primary",
+      "partuuid": "d762f7d3-16dc-4452-bdd8-42451777c76b",
+      "model": null,
+      "vendor": null,
+      "serial": null,
+      "wwn": "0x5000000000000001",
+      "state": null,
+      "sizeHuman": "5.5TB",
+      "parent": "/dev/sdg",
+      "disk": "/dev/sdg",
+      "mountpoints": [],
+      "links": [
+        "/dev/disk/by-id/usb-Sabrent_Dual_SATA_Bridge_00000000000000000000-0:0-part1",
+        "/dev/disk/by-path/pci-0000:00:1a.0-usb-0:1.4.1.1:1.0-scsi-0:0:0:0-part1",
+        "/dev/disk/by-path/pci-0000:00:1a.0-usbv2-0:1.4.1.1:1.0-scsi-0:0:0:0-part1"
+      ],
+      "proposedName": {
+        "partitionLabel": "atlas-sabrent-a",
+        "why": "Sabrent bridge slot 0:0; no filesystem detected, so use GPT partition label unless a filesystem is later found."
+      }
+    },
+    {
+      "name": "sdh",
+      "kname": "sdh",
+      "path": "/dev/sdh",
+      "type": "disk",
+      "size": 6001175126016,
+      "rota": true,
+      "tran": "usb",
+      "hotplug": false,
+      "fstype": null,
+      "fsver": null,
+      "label": null,
+      "uuid": null,
+      "partlabel": null,
+      "partuuid": null,
+      "model": "Dual SATA Bridge",
+      "vendor": "Sabrent ",
+      "serial": "00000000000000000000",
+      "wwn": "0x5000000000000001",
+      "state": "running",
+      "sizeHuman": "5.5TB",
+      "parent": null,
+      "disk": "/dev/sdh",
+      "mountpoints": [],
+      "links": [
+        "/dev/disk/by-id/scsi-35000000000000001",
+        "/dev/disk/by-id/scsi-SSabrent_Dual_SATA_Bridge_00000000000000000000",
+        "/dev/disk/by-id/usb-Sabrent_Dual_SATA_Bridge_00000000000000000000-0:1",
+        "/dev/disk/by-id/wwn-0x5000000000000001",
+        "/dev/disk/by-path/pci-0000:00:1a.0-usb-0:1.4.1.1:1.0-scsi-0:0:0:1",
+        "/dev/disk/by-path/pci-0000:00:1a.0-usbv2-0:1.4.1.1:1.0-scsi-0:0:0:1"
+      ]
+    },
+    {
+      "name": "sdh1",
+      "kname": "sdh1",
+      "path": "/dev/sdh1",
+      "type": "part",
+      "size": 6001173463040,
+      "rota": true,
+      "tran": null,
+      "hotplug": false,
+      "fstype": "ext4",
+      "fsver": "1.0",
+      "label": "wd6tb-b",
+      "uuid": "d29a8c39-68aa-46ff-a007-ae70726bdbc2",
+      "partlabel": "primary",
+      "partuuid": "e6559769-d9ec-4614-87d9-0d9ec3495d8c",
+      "model": null,
+      "vendor": null,
+      "serial": null,
+      "wwn": "0x5000000000000001",
+      "state": null,
+      "sizeHuman": "5.5TB",
+      "parent": "/dev/sdh",
+      "disk": "/dev/sdh",
+      "mountpoints": [],
+      "links": [
+        "/dev/disk/by-id/scsi-35000000000000001-part1",
+        "/dev/disk/by-id/scsi-SSabrent_Dual_SATA_Bridge_00000000000000000000-part1",
+        "/dev/disk/by-id/usb-Sabrent_Dual_SATA_Bridge_00000000000000000000-0:1-part1",
+        "/dev/disk/by-id/wwn-0x5000000000000001-part1",
+        "/dev/disk/by-label/wd6tb-b",
+        "/dev/disk/by-path/pci-0000:00:1a.0-usb-0:1.4.1.1:1.0-scsi-0:0:0:1-part1",
+        "/dev/disk/by-path/pci-0000:00:1a.0-usbv2-0:1.4.1.1:1.0-scsi-0:0:0:1-part1",
+        "/dev/disk/by-uuid/d29a8c39-68aa-46ff-a007-ae70726bdbc2"
+      ],
+      "proposedName": {
+        "filesystemLabel": "atlas-sabrent-b",
+        "partitionLabel": "atlas-sabrent-b",
+        "why": "Sabrent bridge slot 0:1; ext4 filesystem currently labeled wd6tb-b."
+      }
+    }
+  ],
+  "fstabMissingUuidEntries": [
+    {
+      "uuid": "96db7ed1-cad7-40d1-afa8-7245356e9071",
+      "line": "/dev/disk/by-uuid/96db7ed1-cad7-40d1-afa8-7245356e9071 /mnt/data4 auto nosuid,nodev,nofail,x-gvfs-show 0 0"
+    }
+  ],
+  "recommendedCommands": {
+    "readOnlyProbeBeforeNaming": [
+      "sudo wipefs -n /dev/sdg",
+      "sudo wipefs -n /dev/sdg1",
+      "sudo blkid -p /dev/sdg1 || true",
+      "sudo parted -s /dev/sdg print",
+      "sudo smartctl -i /dev/sdg",
+      "sudo smartctl -i /dev/sdh"
+    ],
+    "setFilesystemAndPartitionNames": [
+      "sudo e2label /dev/mapper/ubuntu--vg-ubuntu--lv atlas-root",
+      "sudo fatlabel /dev/sdb1 ATLAS-EFI",
+      "sudo e2label /dev/sdb2 atlas-boot",
+      "sudo e2label /dev/sde1 atlas-data0",
+      "sudo e2label /dev/sdf1 atlas-data1",
+      "sudo e2label /dev/sdc1 atlas-data2",
+      "sudo e2label /dev/sdd1 atlas-data3",
+      "sudo parted /dev/sdg name 1 atlas-sabrent-a",
+      "sudo e2label /dev/sdh1 atlas-sabrent-b",
+      "sudo parted /dev/sdh name 1 atlas-sabrent-b",
+      "sudo udevadm trigger",
+      "lsblk -o NAME,PATH,SIZE,FSTYPE,LABEL,PARTLABEL,UUID,MOUNTPOINTS,MODEL,SERIAL,WWN"
+    ],
+    "percPhysicalDriveDiscovery": [
+      "sudo smartctl --scan-open",
+      "for n in $(seq 0 15); do echo \"=== megaraid,$n ===\"; sudo smartctl -i -d megaraid,$n /dev/sda 2>/dev/null | sed -n \"1,35p\"; done",
+      "sudo apt-get update && sudo apt-get install -y storcli || true",
+      "sudo storcli /c0 /eall /sall show all"
+    ],
+    "readOnlyExternalMountExample": [
+      "sudo mkdir -p /mnt/probe-sabrent-b",
+      "sudo mount -o ro,noload /dev/sdh1 /mnt/probe-sabrent-b",
+      "find /mnt/probe-sabrent-b -maxdepth 2 -mindepth 1 -printf \"%y %s %p\\n\" | sort | sed -n \"1,120p\"",
+      "sudo umount /mnt/probe-sabrent-b"
+    ]
+  }
+}

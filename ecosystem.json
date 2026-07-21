@@ -1,6 +1,6 @@
 {
   "schema": "drewbefree.ecosystem.v1",
-  "updatedAt": "2026-07-12",
+  "updatedAt": "2026-07-21",
   "owner": "DrewBeFree",
   "canonical": true,
   "generatedFrom": [
@@ -8,7 +8,8 @@
     "infra/wiki/docs/projects",
     "infra/wiki/docs/infrastructure/services.md",
     "homelab/homelab-status-dashboard/README.md",
-    "local GitHub workspace scan"
+    "local GitHub workspace scan",
+    "live Atlas storage inventory scan"
   ],
   "access": {
     "network": "atlas-tailscale-only",
@@ -1868,6 +1869,39 @@
           "logs"
         ]
       }
+    },
+    {
+      "id": "atlas-storage-map",
+      "name": "Atlas Storage Map",
+      "type": "storage-inventory",
+      "host": "atlas",
+      "visibility": "private",
+      "summary": "Live drive and mount map for Atlas: PERC virtual disks, mounted /mnt/data volumes, Sabrent external bays, proposed labels, known contents, and sudo commands needed for physical bay discovery.",
+      "liveUrls": [
+        "http://atlas/ecosystem/storage.html"
+      ],
+      "docs": [
+        {
+          "label": "Raw storage inventory JSON",
+          "url": "http://atlas/ecosystem/storage-inventory.json"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "nginx-static",
+          "host": "atlas",
+          "path": "/opt/homelab-status-dashboard/ecosystem/storage.html",
+          "url": "http://atlas/ecosystem/storage.html"
+        }
+      ],
+      "statusControl": {
+        "state": "generated",
+        "actions": [
+          "open",
+          "review",
+          "update"
+        ]
+      }
     }
   ],
   "dashboards": [
@@ -2114,6 +2148,60 @@
           "open",
           "status",
           "logs"
+        ]
+      }
+    },
+    {
+      "id": "hermes-world-atlas",
+      "name": "Hermes World Atlas",
+      "type": "agent-observability-world",
+      "host": "atlas",
+      "visibility": "private",
+      "summary": "Tailscale-only living observability world for Hermes profiles, worker activity, dispatch, and kanban state. Live mode authenticates through the Hermes dashboard and dispatches real Hermes kanban tasks.",
+      "liveUrls": [
+        "http://agents.drewbefree.com/",
+        "http://100.71.165.80:4185/"
+      ],
+      "ports": [
+        4185
+      ],
+      "githubUrl": "https://github.com/DrewBeFree/hermes-world-atlas",
+      "localPath": "/home/drew/workspace/hermes-world-atlas",
+      "docs": [
+        {
+          "label": "World Atlas state",
+          "url": "file:///home/drew/workspace/hermes-world-atlas/STATE.md"
+        },
+        {
+          "label": "Implementation plan",
+          "url": "file:///home/drew/workspace/hermes-world-atlas/docs/implementation-plan.md"
+        }
+      ],
+      "deployTargets": [
+        {
+          "type": "user-systemd-service",
+          "host": "atlas",
+          "service": "hermes-world-atlas.service",
+          "path": "/home/drew/.config/systemd/user/hermes-world-atlas.service",
+          "url": "http://agents.drewbefree.com/",
+          "notes": "Runs from /home/drew/workspace/hermes-world-atlas, bound to Atlas Tailscale IP on port 4185; nginx serves the DNS-only tailnet vanity hostname on port 80."
+        }
+      ],
+      "statusControl": {
+        "state": "tailscale-live",
+        "checks": [
+          "service",
+          "tailscale",
+          "auth",
+          "kanban",
+          "events"
+        ],
+        "actions": [
+          "open",
+          "status",
+          "restart",
+          "logs",
+          "dispatch"
         ]
       }
     }
