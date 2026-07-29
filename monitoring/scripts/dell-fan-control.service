@@ -1,0 +1,14 @@
+[Unit]
+Description=Dell PowerEdge Intelligent Fan Control Daemon
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /home/drew/GitHub/infra/monitoring/scripts/dell_fan_control.py
+Restart=always
+RestartSec=10
+# Run as root so it has direct access to /dev/ipmi0
+User=root
+
+[Install]
+WantedBy=multi-user.target
