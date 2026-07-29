@@ -17,6 +17,7 @@ LOCK_FILE="$BACKUP_ROOT/.monitoring-backup.lock"
 LAST_SUCCESS_FILE="$BACKUP_ROOT/last_success_snapshot"
 
 mkdir -p "$BACKUP_ROOT" "$SNAPSHOT_PARENT" "$LOG_DIR" "$TEXTFILE_DIR"
+cd "$REPO_DIR"
 
 write_metrics() {
   local rc="$1"
