@@ -1,3 +1,19 @@
+## 2026-07-28 20:02 — Atlas P40 Grafana no-data triage
+
+**What we did:**
+- Restored `atlas-nvidia-smi-exporter.service` by pointing its `ExecStart` at `/home/drew/GitHub/infra/monitoring/nvidia-smi-exporter.py` instead of stale `/home/drew/monitoring/nvidia-smi-exporter.py`.
+- Verified Prometheus now scrapes `nvidia_gpu` successfully and the `Atlas P40 Benchmark Summary` dashboard has live metric inputs again.
+- Documented the separate Hermes/Ollama model-list config issue observed during the Qwen session.
+- Added GPU `No data` triage commands to `monitoring/MONITORING_DEPLOYMENT_GUIDE.md`.
+
+**Where we stopped:**
+- GPU exporter is active; `up{job="nvidia_gpu"}=1`.
+- Current observed values: temperature `89`, memory used `162529280`, utilization `0`.
+- Handoff log: `logs/session-2026-07-28-atlas-p40-grafana-no-data.md`.
+
+**Next up:**
+- Fix `/home/drew/.hermes/config.yaml` so `providers.ollama.models` is a YAML list, start a fresh Hermes session, then run a Qwen prompt while watching GPU utilization.
+
 ﻿## 2026-06-25 19:20 — Logoff and Hermes testing guidance
 
 **What we did:**

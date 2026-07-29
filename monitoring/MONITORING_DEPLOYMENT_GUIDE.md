@@ -182,6 +182,27 @@ docker compose logs prometheus
 # Check prometheus.yml syntax
 ```
 
+### P40 / NVIDIA GPU dashboard shows `No data`
+
+First distinguish a real idle GPU from a broken exporter. Grafana cannot show P40 panels unless Prometheus can scrape the host-level `atlas-nvidia-smi-exporter.service` on port `9701`.
+
+```bash
+systemctl --user status atlas-nvidia-smi-exporter.service
+systemctl --user cat atlas-nvidia-smi-exporter.service | grep '^ExecStart='
+curl -fsS http://localhost:9701/metrics | grep -E 'nvidia_gpu_(scrape_success|temperature_celsius|utilization_percent|memory_used_bytes)'
+curl -fsS 'http://localhost:9090/api/v1/query?query=up%7Bjob%3D%22nvidia_gpu%22%7D' | jq -r '.data.result[0].value[1]'
+```
+
+Expected healthy state:
+
+```text
+atlas-nvidia-smi-exporter.service active
+ExecStart=/usr/bin/python3 /home/drew/GitHub/infra/monitoring/nvidia-smi-exporter.py --host 0.0.0.0 --port 9701
+up{job="nvidia_gpu"}=1
+```
+
+If `up{job="nvidia_gpu"}` is `0` or missing, fix exporter/service reachability before blaming Ollama, Qwen, or the GPU workload.
+
 ### SMART metrics missing
 
 ```bash
