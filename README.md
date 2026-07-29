@@ -10,6 +10,7 @@ Workspace infrastructure, standards, ecosystem navigation, and repository automa
 | `repos.json` | Repository manifest used by clone/catalog tooling. |
 | `ecosystem.json` | Private ecosystem registry for apps, services, dashboards, and links. |
 | `scripts/` | Automation for cloning, syncing task state, and generating changelogs. |
+| `obsidian/` | Atlas Obsidian wiki backup scripts and restore runbook. |
 | `wiki/` | Local MkDocs-style project catalog and supporting generation scripts. |
 | `internal-portal/` | Generated internal ecosystem views, including changelog output. |
 
@@ -31,6 +32,18 @@ Generate the wiki project catalog:
 
 ```bash
 python3 wiki/scripts/gen_catalog.py
+```
+
+Install or repair the Obsidian wiki backup cron:
+
+```bash
+./obsidian/scripts/install-obsidian-wiki-backup-cron.sh
+```
+
+Run an Obsidian wiki backup manually:
+
+```bash
+./obsidian/scripts/backup-obsidian-wiki.sh
 ```
 
 Clone or refresh repositories from the manifest:

@@ -1,3 +1,20 @@
+## 2026-07-29 17:20 — Obsidian wiki backup ownership moved into infra
+
+**What we did:**
+- Verified Atlas `/home/drew/wiki` and Alienware `C:\Users\drewb\Documents\Obsidian\wiki` are synchronized through Syncthing.
+- Cleaned up Atlas Syncthing user-service supervision so `syncthing.service` is active instead of failed-with-orphaned-process.
+- Moved Obsidian backup ownership into `infra/obsidian/` instead of leaving the real script as a random `/home/drew/bin` one-off.
+- Added hourly hardlink snapshots for `/home/drew/wiki` under `/home/drew/backups/obsidian-wiki` with retention and a restore runbook.
+- Updated cron to call `/home/drew/GitHub/infra/obsidian/scripts/backup-obsidian-wiki.sh`; `/home/drew/bin/backup-obsidian-wiki.sh` is now only a compatibility wrapper.
+
+**Where we stopped:**
+- Latest verified snapshot: `/home/drew/backups/obsidian-wiki/snapshots/20260729-171736`.
+- Cron has exactly one `obsidian-wiki-backup` entry and `cron` is active.
+- Handoff log: `logs/session-2026-07-29-obsidian-wiki-sync-backups.md`.
+
+**Next up:**
+- Add off-box encrypted backup with `restic` or `borg` if Atlas disk-loss protection is required.
+
 ## 2026-07-28 20:02 — Atlas P40 Grafana no-data triage
 
 **What we did:**
