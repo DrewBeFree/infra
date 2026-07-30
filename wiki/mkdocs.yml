@@ -35,6 +35,8 @@ nav:
       - Logoff: workflows/logoff.md
       - Claude Setup: workflows/claude-setup.md
   - Benchmarks: benchmarks/index.md
+  - Logs & Docs:
+      - Hermes WebUI/SSH: logs-and-docs/hermes-webui-ssh-atlas.md
 
 not_in_nav: |
   /projects/*.md
