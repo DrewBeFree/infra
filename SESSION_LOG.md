@@ -4477,3 +4477,26 @@
 **Next up:**
 - Rotate/revoke the exposed temporary Cloudflare token.
 - If email forwarding is ever needed, run the restore helper with a fresh Cloudflare DNS token and verify MX/TXT.
+
+## 2026-09-16 - Atlas Plex media drive recovery (sdh corruption diagnosis, plan pivot)
+
+**What we did:**
+- Investigated a Plex playback failure (404 on transcode) traced to I/O errors on `/dev/sdh` (5.5TB USB backup drive holding the 2.7TB Plex library).
+- Set up scoped NOPASSWD sudo (`/etc/sudoers.d/atlas-recovery-readonly`) on atlas for read-only diagnostics (`du`, `wipefs -n`, `smartctl -a` on specific megaraid indices, `dmesg -T`, `crontab -l`).
+- Ran read-only planning checks: confirmed sdh1 corruption is far worse than the initial "one weak sector" assessment - 568 EBADMSG/checksum-invalid errors across `media/Apps` (440) and `media/Movies` (128, ~14 distinct titles). Root cause: `ext4_lookup: iget: checksum invalid` from the aborted journal + `norecovery` mount, not ongoing physical failure (no new hardware/USB errors since the original 09:05 event).
+- Found the internal disk inventory was incomplete: megaraid physical index 4 (Seagate ST91000640SS, serial 9XG0565000009129TRR1) has SMART failure prediction exceeded + 118 grown defects; an undocumented 5th volume `/mnt/data4` in fstab has been missing since the 2026-08-30 boot; at least 8 physical drives exist behind the PERC (checked to idx 7), not the 6 originally assumed.
+- Confirmed iDRAC (10.0.0.38) is unreachable (ARP FAILED) - stale IP or NIC down; no storcli/perccli/lsscsi installed for authoritative slot mapping.
+- Decision (user call): abandoned the migrate-off-sdh plan entirely given a seedbox copy exists. Restarted `plexmediaserver` against the existing (unmoved) `/mnt/tofino-media` symlink into the still-mounted, read-only sdh1.
+- Verified clean: plex user has world-readable access to the originally-failing title ("Good Luck Have Fun Don't Die (2026)", confirmed NOT among the corrupted files), Plex started clean, played back with no new sdh errors, enabled to survive reboot.
+
+**Where we stopped:**
+- Plex is up, enabled, and serving the library from sdh in place. No writes made to sdh/sdg/sda at any point.
+- ~14+ movie titles are confirmed corrupted (checksum-invalid inodes) and unplayable; likely a few more once touched. Full list not yet built from an actual Plex library scan.
+- iDRAC network access is down - no out-of-band management on atlas currently.
+- The internal PERC drive at megaraid index 4 has a SMART failure prediction; its physical bay/enclosure slot was never conclusively identified (iDRAC unreachable, no storcli/perccli). User said the drives have been physically inspected but didn't report which bay is failing.
+
+**Next up:**
+- Optionally scan the Plex library and grep the log for transcode failures to build a clean re-download list for the seedbox.
+- Fix iDRAC network reachability (10.0.0.38) - separate, lower-priority task.
+- Decide whether to replace/RMA the failing internal drive (idx 4, serial 9XG0565000009129TRR1), and whether to investigate the missing `/mnt/data4` volume.
+- Consider buying one large drive to consolidate the Plex library off the aging USB enclosure, as originally intended before the plan pivoted.
