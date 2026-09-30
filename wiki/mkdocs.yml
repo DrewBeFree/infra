@@ -37,6 +37,7 @@ nav:
   - Benchmarks: benchmarks/index.md
   - Logs & Docs:
       - Hermes WebUI/SSH: logs-and-docs/hermes-webui-ssh-atlas.md
+      - Atlas Plex Drive Recovery: logs-and-docs/atlas-plex-tofino-drive-recovery.md
 
 not_in_nav: |
   /projects/*.md
